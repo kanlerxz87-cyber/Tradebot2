@@ -553,3 +553,29 @@ td.js-move.down, .down { color: var(--down); }
 .ladder tr td { border-bottom: 1px solid rgba(255,255,255,0.03); }
 .book-side h4 { display: flex; justify-content: space-between; }
 .msg .chips a { display: inline-flex; }
+
+/* Chat feeds: explain an empty feed instead of showing a blank panel. */
+#chat-all:empty::before,
+#chat-model:empty::before {
+  display: block;
+  padding: 18px 14px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+#chat-all:empty::before {
+  content: "No ≥ $0.10 move has been observed yet. The feed starts empty when no seeded 1-minute candle crossed the threshold; it will fill as live quotes arrive.";
+}
+#chat-model:empty::before {
+  content: "No model pick yet. An event appears here only when a strategy's score and estimated ROI clear the floors — silence is a valid result, not missing data.";
+}
+
+/* Event grouping inside a topic table. */
+.group-row td {
+  background: rgba(47, 227, 176, 0.04);
+  border-top: 1px solid var(--line, #233040);
+  padding-top: 12px;
+  padding-bottom: 8px;
+  font-size: 12.5px;
+}
+.group-row td .badge { margin-right: 8px; letter-spacing: .08em; }

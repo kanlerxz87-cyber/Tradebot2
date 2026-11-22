@@ -71,7 +71,7 @@
         <thead><tr><th>Field</th><th>Meaning</th><th>Official or computed</th></tr></thead>
         <tbody>
           <tr><td><code>prices.yes_bid</code> / <code>yes_ask</code></td><td>Best YES bid and ask in dollars</td><td>Official (<code>yes_bid_dollars</code>, <code>yes_ask_dollars</code>)</td></tr>
-          <tr><td><code>prices.mid</code></td><td>(Yes bid + Yes ask) / 2; last price only when no two-sided quote</td><td>Computed, basis shown</td></tr>
+          <tr><td><code>prices.mid</code></td><td>(Yes bid + Yes ask) / 2 only when the book is two-sided and ≤ 25¢ wide; otherwise the last trade, else blank</td><td>Computed, basis shown</td></tr>
           <tr><td><code>volume.last_24h_contracts</code></td><td>Contracts traded in the last 24 hours</td><td>Official (<code>volume_24h_fp</code>)</td></tr>
           <tr><td><code>volume.open_interest_contracts</code></td><td>Open contracts</td><td>Official (<code>open_interest_fp</code>)</td></tr>
           <tr><td><code>volume.notional_24h_est</code></td><td>24h contracts × mid price in dollars</td><td>Computed estimate — not an official Kalshi field</td></tr>
@@ -96,7 +96,7 @@
     <h2 id="alerts">5. Swing alert definition</h2>
     <blockquote>An alert fires when the observed contract price changes by <strong>at least $0.10</strong> from the previous observation, in either direction.</blockquote>
     <ul>
-      <li><strong>Price:</strong> YES midpoint when both sides of the book exist and are not crossed; otherwise the last traded YES price, labelled <code>last</code>. A one-sided book is not treated as a midpoint.</li>
+      <li><strong>Price:</strong> YES midpoint when both sides of the book exist, are not crossed and the spread is ≤ 25¢; otherwise the last traded YES price, labelled <code>last</code>, or blank. A 1¢/99¢ book is not treated as a 50¢ market: that midpoint is not executable and would generate false ≥ $0.10 alerts.</li>
       <li><strong>Threshold edge:</strong> a move of exactly $0.10 fires; $0.0999 does not. Unit tests cover both.</li>
       <li><strong>First observation:</strong> establishes a baseline and cannot alert.</li>
       <li><strong>Deduplication:</strong> identical observations are fingerprinted and ignored, so polling twice does not create a second alert.</li>
@@ -142,7 +142,7 @@
       <li><strong>Live responses:</strong> the snapshot is produced from live demo API responses; exchange status, market fields, orderbooks and candles are stored verbatim (compacted) and linked from every row.</li>
       <li><strong>Unit and contract tests:</strong> 47 tests cover thresholds (0.0999 vs 0.10), direction, dedupe, candle seeding, the official fee example, model gates, paper settlement, analytics and Ed25519/RSA-PSS signature verification.</li>
       <li><strong>Browser probes:</strong> CI measures the CORS response headers and an unauthenticated WebSocket handshake; results are published in <code>data/probe.json</code>, not asserted from memory.</li>
-      <li><strong>Site checks:</strong> <code>tools/verify_site.py</code> fails on broken local links, missing official source links, unknown topics, out-of-range prices, invalid results and placeholder text.</li>
+      <li><strong>Site checks:</strong> <code>tools/verify_site.py</code> fails on broken local links, missing official source links, unknown topics, out-of-range prices, invalid results and unfinished-scaffolding markers.</li>
       <li><strong>Human-review path:</strong> unresolved items are published with sources on the <a href="flagged.html">Flagged for Review</a> page.</li>
     </ul>
     <div class="note info">
@@ -158,7 +158,7 @@ python3 -m app.server                # optional local live server</pre>
     <ul>
       <li><strong>Candlestick path (corrected).</strong> An earlier session’s dossier listed <code>/markets/{{ticker}}/candlesticks</code>. The official current reference requires the series ticker: <code>/series/{{series_ticker}}/markets/{{ticker}}/candlesticks</code>. The engine uses the documented path and records an error if a series ticker is unavailable.</li>
       <li><strong>Published-site source (corrected).</strong> The repository’s Pages configuration is a legacy build of <code>main:/</code>, so the earlier Actions deployment of <code>docs/</code> was not what the live URL served. The canonical site now lives at the repository root; <a href="docs/index.html">docs/</a> remains as the session archive.</li>
-      <li><strong>Zero quotes (clarified).</strong> Earlier tables showed 0.00 for many markets. That can be a genuine one-sided or untouched market, but it must never be confused with a midpoint. This build labels the price basis and leaves unavailable values blank.</li>
+      <li><strong>Zero quotes and wide books (clarified).</strong> Earlier tables showed 0.00 for many markets. That can be a genuine one-sided or untouched market, but it must never be confused with a midpoint. A wide two-sided book is also excluded from the alert price. This build labels the price basis and leaves unavailable values blank.</li>
       <li><strong>Authenticated execution (unverified).</strong> No demo key was available in the build environment. Signing is unit-tested; no signed request has been executed. See <a href="flagged.html#F-01">F-01</a>.</li>
       <li><strong>WebSocket (blocked for static).</strong> The official API requires a signed handshake even for public channels; a static page cannot hold a key. See <a href="flagged.html#F-02">F-02</a>.</li>
     </ul>

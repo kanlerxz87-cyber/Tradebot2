@@ -36,10 +36,10 @@ TOPICS = [
         ],
         "notes": [
             "Strike markets within one event share a close time and differ only by the strike price; the board keeps them together.",
-            "Demo liquidity is often thin: a 24h move of $0.00 is a real observation, not a missing value.",
+            "Demo liquidity is often thin: a $0.00 seeded move is a real observation, not a missing value.",
             "“Notional est.” is contracts × mid price, a computed estimate — the official API exposes contract counts, not dollar volume.",
         ],
-        "flag": "Demo gasoline liquidity is materially thinner than production. Do not read a $0.00 24h move as evidence that the market is dead.",
+        "flag": "Demo gasoline liquidity is materially thinner than production. Do not read a $0.00 seeded move as evidence that the market is dead.",
     },
     {
         "key": "elections",
@@ -115,7 +115,7 @@ TOPICS = [
         ],
         "notes": [
             "Tickers beginning <code>KXDEMO</code> are demo-only constructs and can behave differently from production crypto markets.",
-            "Hourly crypto markets close quickly; the close time column matters more than the 24h move for short-dated strikes.",
+            "Hourly crypto markets close quickly; the close time column matters more than the seeded move for short-dated strikes.",
             "Settlement sources are listed from the series metadata; the market rules and the linked source control the outcome.",
         ],
         "flag": "Binary “above/below” crypto strikes are sensitive to the exact observation window and index. Never assume the spot price you see is the settlement print.",
@@ -219,13 +219,13 @@ TEMPLATE = """<!DOCTYPE html>
         <div class="table-wrap">
           <table id="topic-markets">
             <thead>
-              <tr><th>Market</th><th class="num">YES mid</th><th class="num">Bid</th><th class="num">Ask</th><th class="num">24h move</th><th class="num">24h vol</th><th class="num">OI</th><th class="num">Notional est.</th><th class="num">Spread / depth</th><th>Close / source</th></tr>
+              <tr><th>Market</th><th class="num">YES mid</th><th class="num">Bid</th><th class="num">Ask</th><th class="num">Seeded move</th><th class="num">24h vol</th><th class="num">OI</th><th class="num">Notional est.</th><th class="num">Spread / depth</th><th>Close / source</th></tr>
             </thead>
             <tbody><tr><td colspan="10"><div class="empty">Loading verified snapshot…</div></td></tr></tbody>
           </table>
         </div>
       </div>
-      <p class="liq-note">24h move is the change between the first and last non-null 1-minute candle close in the seeded window. Notional est. = contracts × mid. Both are computed; contract counts and quotes are official.</p>
+      <p class="liq-note">Seeded move is the change between the first and last non-null 1-minute candle close in the collected window (8 hours by default). Notional est. = contracts × mid. Both are computed; contract counts and quotes are official.</p>
     </section>
 
     <section class="grid grid-2 section">

@@ -39,6 +39,7 @@
         onQuotes: (updates) => updatePrices(updates),
         onStatus: (status) => {
           if (status.status === "live") UI.setStatus("live", "LIVE · " + (TB.CONFIG.pollMs / 1000) + "s");
+          else if (status.status === "connecting") UI.setStatus("connecting", "CONNECTING");
           else if (status.status === "degraded") UI.setStatus("degraded", "RETRYING");
           else if (status.status === "offline") UI.setStatus("offline", "SNAPSHOT");
         }
@@ -54,14 +55,37 @@
       body.innerHTML = '<tr><td colspan="10"><div class="empty">No open ' + TB.esc(TB.TOPICS[topic].label.toLowerCase()) + ' markets were returned by the demo API at snapshot time. This is a coverage gap, not a zero price. See <a href="flagged.html">Flagged for review</a>.</div></td></tr>';
       return;
     }
-    const sorted = markets.slice().sort((a, b) => (b.volume.notional_24h_est || 0) - (a.volume.notional_24h_est || 0));
+    const groupKey = (m) => m.event_ticker || m.series_ticker || m.ticker;
+    const sorted = markets.slice().sort((a, b) => {
+      const ka = groupKey(a), kb = groupKey(b);
+      if (ka !== kb) return ka < kb ? -1 : 1;
+      return (b.volume.notional_24h_est || 0) - (a.volume.notional_24h_est || 0);
+    });
+    const counts = {};
+    sorted.forEach((m) => { const k = groupKey(m); counts[k] = (counts[k] || 0) + 1; });
+    let lastGroup = null;
     body.innerHTML = sorted.map((m) => {
+      const k = groupKey(m);
+      let groupRow = "";
+      if (k !== lastGroup) {
+        lastGroup = k;
+        const label = m.event_title || m.series_ticker || k;
+        groupRow = '<tr class="group-row"><td colspan="10"><span class="badge neutral">EVENT</span> <strong>' +
+          TB.esc(label) + '</strong> <span class="sub mono">' + TB.esc(k) + ' · ' + counts[k] +
+          ' market' + (counts[k] === 1 ? "" : "s") + '</span></td></tr>';
+      }
+      return groupRow + renderRow(m);
+    }).join("");
+  }
+
+  function renderRow(m) {
+    {
       const move = move24h(m);
       const liq = m.liquidity || {};
       return '<tr data-ticker="' + TB.esc(m.ticker) + '">' +
         '<td><a class="market-name" href="' + TB.esc(m.links.kalshi) + '" target="_blank" rel="noopener">' + TB.esc(m.title) + '</a>' +
         '<span class="sub mono">' + TB.esc(m.ticker) + '</span><span class="sub">' + TB.esc(m.event_title || "") + '</span></td>' +
-        '<td class="num js-price">' + TB.money(m.prices && m.prices.mid) + '<span class="sub js-basis">' + TB.esc(m.prices && m.prices.mid !== null ? "mid" : "—") + '</span></td>' +
+        '<td class="num js-price">' + TB.money(TB.snapshotPrice(m).price) + '<span class="sub js-basis">' + TB.esc(TB.snapshotPrice(m).basis) + '</span></td>' +
         '<td class="num js-bid">' + TB.money(m.prices && m.prices.yes_bid) + '</td>' +
         '<td class="num js-ask">' + TB.money(m.prices && m.prices.yes_ask) + '</td>' +
         '<td class="num js-move ' + (move > 0 ? "up" : move < 0 ? "down" : "") + '">' + (move === null ? "—" : (move > 0 ? "+" : "") + TB.cents(move)) + '</td>' +
@@ -71,7 +95,7 @@
         '<td class="num">' + (liq.spread === undefined || liq.spread === null ? "—" : TB.money(liq.spread)) + '<span class="sub">' + (liq.yes_depth_at_best !== undefined && liq.yes_depth_at_best !== null ? TB.compact(liq.yes_depth_at_best) + " at touch" : "depth n/a") + '</span></td>' +
         '<td class="small">' + TB.isoDate(m.close_time) + '<span class="sub"><span class="source-links"><a href="' + TB.esc(m.links.market_api) + '" target="_blank" rel="noopener">API ↗</a><a href="' + TB.esc(m.links.kalshi) + '" target="_blank" rel="noopener">Kalshi ↗</a></span></span></td>' +
         '</tr>';
-    }).join("");
+    }
   }
 
   function updatePrices(updates) {

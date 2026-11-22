@@ -22,12 +22,26 @@
       try { out[name] = await window.TBLive.loadData(name); }
       catch (error) { out[name] = null; out.errors = (out.errors || []).concat(name + ": " + error.message); }
     }));
+    // One visible degradation note on every page, even for pages whose own
+    // controller has nothing useful to render without data.
+    const missing = Object.keys(out).filter((key) => key !== "errors" && !out[key]);
+    const main = document.querySelector("main");
+    const existing = document.querySelector("[data-snapshot-missing]");
+    if (missing.length && main && !existing) {
+      const div = document.createElement("div");
+      div.className = "note danger";
+      div.setAttribute("data-snapshot-missing", "");
+      div.innerHTML = "<strong>Verified snapshot unavailable.</strong> Could not load " +
+        missing.map((name) => "<code>data/" + TB.esc(name) + "</code>").join(", ") +
+        ". No values are substituted: every affected figure shows a dash, and live polling is unaffected.";
+      main.insertBefore(div, main.firstChild);
+    }
     return out;
   }
 
   function setStatus(state, label, detail) {
     document.querySelectorAll(".js-live-status").forEach((el) => {
-      el.className = "badge dot " + (state === "live" ? "green" : state === "degraded" ? "warn" : state === "offline" ? "down" : "neutral");
+      el.className = "badge dot js-live-status " + (state === "live" ? "green" : state === "degraded" ? "warn" : state === "offline" ? "down" : "neutral");
       el.innerHTML = '<span class="live-dot" style="background:' +
         (state === "live" ? "#2fe3b0" : state === "degraded" ? "#ffc857" : state === "offline" ? "#ff5f7e" : "#6f829b") +
         '"></span>' + TB.esc(label || state);
@@ -65,9 +79,9 @@
     if (!track || !snapshot) return;
     const markets = (snapshot.markets || []).slice().sort((a, b) => (b.volume.notional_24h_est || 0) - (a.volume.notional_24h_est || 0)).slice(0, 6);
     track.innerHTML = markets.map((m) => {
-      const price = m.prices && m.prices.mid;
+      const price = TB.snapshotPrice(m).price;
       return '<span class="ticker-item">' + topicBadge(m.topic) + '<strong>' + TB.esc(m.title) + '</strong>' +
-        '<span class="mono">' + TB.cents(price) + "</span></span>";
+        '<span class="mono">' + (price === null ? "—" : TB.cents(price)) + "</span></span>";
     }).join('<span class="muted-2">·</span>') || '<span class="muted">No tracked markets in the snapshot.</span>';
   }
 

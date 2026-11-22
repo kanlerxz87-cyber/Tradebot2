@@ -98,7 +98,7 @@
     <h2>4. How it works</h2>
     <ol>
       <li><strong>Collect.</strong> CI pages through open and recently settled demo markets, joins event/series metadata, classifies each market into one of the five topics, and enriches the selected markets with orderbooks and 1-minute/1-hour candles.</li>
-      <li><strong>Detect.</strong> Prices are the YES mid; if the book is one-sided, the last trade is used and labelled. A move of ≥ $0.10 from the previous observation fires an alert. The same detector runs in Python and in the browser.</li>
+      <li><strong>Detect.</strong> Prices are the YES mid only when the book is two-sided and no wider than 25¢; otherwise the last trade is used and labelled, or the cell shows a dash. A move of ≥ $0.10 from the previous observation fires an alert. The same detector runs in Python and in the browser.</li>
       <li><strong>Score.</strong> Each alert is evaluated by three transparent heuristics (momentum, mean reversion, favourite drift). Entry, model probability, edge, estimated ROI, spread, depth, volume and time-to-close determine a 0–100 score. Only scores ≥ 55 with estimated ROI ≥ 5% enter the high-ROI feed (the dashboard applies an additional ≥ 65 floor and a 30-second throttle).</li>
       <li><strong>Trade (simulated).</strong> A paper broker opens a position at the ask, caps size by risk, visible depth and cash, applies the quadratic fee, exits at +$0.15/−$0.10, and settles at the official YES/NO result.</li>
       <li><strong>Verify.</strong> Every table row links to its API record; the snapshot schema and links are checked in CI; CORS and WebSocket behaviour are measured rather than assumed; unconfirmed values are blank and flagged.</li>
@@ -122,7 +122,7 @@
       <li><strong>WebSocket streaming is unavailable to a static page</strong> without exposing a key; the dashboard polls every 5 seconds instead. A local backend can add authenticated streaming.</li>
       <li><strong>CORS is measured, not guaranteed</strong> for every visitor’s network; failures are surfaced, never hidden.</li>
       <li><strong>News context is a search link, not causal evidence.</strong> The dashboard does not claim that a headline caused a move.</li>
-      <li><strong>Notional and 24h moves are computed</strong> from official contracts and prices and are labelled as estimates.</li>
+      <li><strong>Notional and seeded moves are computed</strong> from official contracts and prices and are labelled as estimates.</li>
       <li><strong>Demo coverage is sparse and can change</strong>; empty topic tables are reported as coverage gaps.</li>
     </ul>
     <p><a href="flagged.html">Every flagged item, with evidence and sources →</a></p>

@@ -365,7 +365,7 @@
         '<td><a class="market-name" href="' + TB.esc(m.links.kalshi) + '" target="_blank" rel="noopener">' + TB.esc(m.title) + "</a>" +
         '<span class="sub mono">' + TB.esc(m.ticker) + (m.is_provisional ? " · provisional" : "") + "</span></td>" +
         '<td><span class="badge neutral topic-tag">' + TB.esc((TB.TOPICS[m.topic] || {}).label || m.topic) + "</span></td>" +
-        '<td class="num js-price">' + TB.money(price.mid) + "</td>" +
+        '<td class="num js-price">' + TB.money(TB.snapshotPrice(m).price) + '<span class="sub">' + TB.esc(TB.snapshotPrice(m).basis) + "</span></td>" +
         '<td class="num js-bid muted">' + TB.money(price.yes_bid) + " / " + TB.money(price.yes_ask) + "</td>" +
         '<td class="num js-move ' + (move > 0 ? "up" : move < 0 ? "down" : "") + '">' + (move === null ? "—" : (move > 0 ? "+" : "") + TB.cents(move)) + "</td>" +
         '<td class="num">' + TB.compact(m.volume.last_24h_contracts) + '<span class="sub">contracts</span></td>' +
@@ -456,6 +456,8 @@
       UI.setStatus("live", "LIVE · " + (TB.CONFIG.pollMs / 1000) + "s poll");
       $("#feed-note").classList.add("hidden");
       $("#live-last").textContent = new Date().toLocaleTimeString();
+    } else if (status.status === "connecting") {
+      UI.setStatus("connecting", "CONNECTING", "Waiting for the first successful demo API poll.");
     } else if (status.status === "degraded") {
       UI.setStatus("degraded", "RETRYING · snapshot shown");
       showFeedNote("Live API request failed. Retrying with backoff; values below may be from the last successful poll or the verified snapshot. " + (status.error ? "(" + status.error + ")" : ""));

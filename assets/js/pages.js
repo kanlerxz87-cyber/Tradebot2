@@ -30,7 +30,7 @@
       series_indexed: stats.series_indexed,
       errors: stats.open_markets_total !== undefined ? snapshot.meta.error_count : null,
       top_market: top ? top.title : "—",
-      top_market_price: top ? TB.money(top.prices && top.prices.mid) : "—",
+      top_market_price: top ? TB.money(TB.snapshotPrice(top).price) : "—",
       top_market_volume: top ? TB.compact(top.volume.last_24h_contracts) : "—",
       top_market_notional: top ? TB.money(top.volume.notional_24h_est, 0) : "—",
       top_market_topic: top ? ((TB.TOPICS[top.topic] || {}).label || top.topic) : "—",

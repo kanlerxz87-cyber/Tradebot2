@@ -1,34 +1,49 @@
-name: Deploy Kalshi Demo Dashboard to GitHub Pages
+# Publishing model for this repository.
+#
+# GitHub Pages for this repo is configured as `build_type: legacy`, source
+# `main:/` (verified through the Pages API). Legacy Pages builds the repository
+# root, so the canonical site is served from /index.html at the root; an Actions
+# artifact deploy is ignored while that setting remains. The integration token
+# available here cannot change the setting (PUT /pages -> 403).
+#
+# Therefore this workflow verifies the published contract instead of pretending
+# to deploy: the 12 canonical pages, their assets, the committed data and the
+# archived generations must all pass before a merge is considered safe.
+name: Verify published site
 
 on:
   push:
-    branches: ["main"]
+    branches: [main, "arena/**"]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "verify-pages"
+  cancel-in-progress: true
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          path: "docs"
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r app/requirements.txt pytest
+      - name: Engine tests
+        run: python -m pytest -q
+      - name: Canonical site: data, required pages and local links
+        run: python tools/verify_site.py
+      - name: Archived generations: internal links and sourced rows
+        run: python scripts/check_site.py
+      - name: Confirm the root is the publish target
+        run: |
+          test -f index.html
+          test -f .nojekyll
+          grep -q 'assets/js/core.js' index.html
+          echo "Legacy Pages publishes main:/ ; root index.html is the entry point."

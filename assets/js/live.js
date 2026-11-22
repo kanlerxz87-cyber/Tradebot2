@@ -45,6 +45,7 @@
       this.ticks = {};
       this.alerts = [];
       this.status = "idle";
+      this.lastSuccessAt = 0;
       this.errorCount = 0;
       this.lastError = "";
       this.pollTimer = null;
@@ -103,7 +104,8 @@
     async poll() {
       const tickers = this.markets.map((m) => m.ticker).filter(Boolean);
       if (!tickers.length) return;
-      this.setStatus(this.errorCount ? "degraded" : "live");
+      if (!this.lastSuccessAt) this.setStatus("connecting");
+      else if (this.errorCount) this.setStatus("degraded");
       try {
         const chunks = [];
         for (let i = 0; i < tickers.length; i += 40) chunks.push(tickers.slice(i, i + 40));
@@ -115,7 +117,8 @@
         if (!received.length) throw new Error("API returned no markets for the tracked tickers");
         this.errorCount = 0;
         this.lastError = "";
-        const now = Date.now() / 1000;
+        this.lastSuccessAt = Date.now();
+        const now = this.lastSuccessAt / 1000;
         const updates = {};
         received.forEach((m) => {
           const meta = this.meta.get(m.ticker) || {};
@@ -171,11 +174,13 @@
       this.onOpportunity(opp);
     }
 
-    async refreshOrderbook(ticker) {
+    async refreshOrderbook(ticker, maxAgeMs) {
       const meta = this.meta.get(ticker) || {};
-      if (meta.__book) return meta.__book;
+      const maxAge = maxAgeMs || 12000;
+      if (meta.__book && Date.now() - (meta.__bookAt || 0) < maxAge) return meta.__book;
       const data = await getJSON(TB.CONFIG.apiBase + "/markets/" + encodeURIComponent(ticker) + "/orderbook?depth=10");
       meta.__book = data;
+      meta.__bookAt = Date.now();
       this.meta.set(ticker, meta);
       return data;
     }

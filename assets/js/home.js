@@ -51,7 +51,7 @@
       return '<tr>' +
         '<td><a class="market-name" href="' + TB.esc(m.links.kalshi) + '" target="_blank" rel="noopener">' + TB.esc(m.title) + '</a><span class="sub mono">' + TB.esc(m.ticker) + '</span></td>' +
         '<td>' + UI.topicBadge(m.topic) + '</td>' +
-        '<td class="num">' + TB.money(m.prices && m.prices.mid) + '</td>' +
+        '<td class="num">' + TB.money(TB.snapshotPrice(m).price) + '<span class="sub">' + TB.esc(TB.snapshotPrice(m).basis) + '</span></td>' +
         '<td class="num ' + (move > 0 ? "up" : move < 0 ? "down" : "") + '">' + (move === null ? "—" : (move > 0 ? "+" : "") + TB.cents(move)) + '</td>' +
         '<td class="num">' + TB.compact(m.volume.last_24h_contracts) + '</td>' +
         '<td class="num">' + TB.money(m.volume.notional_24h_est, 0) + '</td>' +

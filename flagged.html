@@ -41,7 +41,7 @@
       <div class="statusbar">
         <span class="badge down">1 unverified credential area</span>
         <span class="badge warn">6 assumptions</span>
-        <span class="badge green">3 corrected defects</span>
+        <span class="badge green">6 corrected defects</span>
         <span class="badge neutral">Reviewed 22 Nov 2026</span>
       </div>
     </div>
@@ -96,7 +96,7 @@
               </tr>
               <tr id="F-06">
                 <td class="mono">F-06</td><td><span class="badge blue">Low</span></td>
-                <td><strong>“Notional” and “24h move” are computed estimates</strong>, not exchange-reported dollar volume. Ranking by “highest dollar amount” uses contracts × mid.</td>
+                <td><strong>“Notional” and “seeded move” are computed estimates</strong>, not exchange-reported dollar volume. Ranking by “highest dollar amount” uses contracts × mid.</td>
                 <td><span class="badge green">Labelled</span></td>
                 <td>Official fields are contract-based: <a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">Get Markets ↗</a>. Formula in <a href="methodology.html#ranking">methodology §7</a>.</td>
                 <td>No fix available from public fields; the estimate is labelled everywhere it appears and official contract counts sit beside it.</td>
@@ -168,14 +168,31 @@
                 <td class="mono">F-16</td><td><span class="badge warn">Medium</span></td>
                 <td><strong>Signed requests from a browser are not attempted.</strong> The preflight response is published; the site assumes it cannot send Kalshi’s auth headers from JavaScript, which is the conservative choice regardless of the measured allow-list.</td>
                 <td><span class="badge blue">By design</span></td>
-                <td>Preflight result in <a href="data/probe.json">data/probe.json</a> · auth header names: <a href="https://docs.kalshi.com/getting_started/api_keys.md" target="_blank" rel="noopener">API keys ↗</a>.</td>
+                <td>Measured preflight: <code>204</code> with <code>Access-Control-Allow-Origin</code> reflecting the site, but <code>Access-Control-Allow-Headers</code> lists only <code>Origin, Content-Length, Content-Type, Idempotency-Key, X-Csrf-Token…</code> — not <code>KALSHI-ACCESS-KEY</code>, <code>KALSHI-ACCESS-SIGNATURE</code> or <code>KALSHI-ACCESS-TIMESTAMP</code>. Raw: <a href="data/probe.json">data/probe.json</a> · header definitions: <a href="https://docs.kalshi.com/getting_started/api_keys.md" target="_blank" rel="noopener">API keys ↗</a>.</td>
                 <td>Even if allowed, embedding a private key in a public page would be unsafe. Keep execution server-side.</td>
               </tr>
+              <tr id="F-17">
+                <td class="mono">F-17</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>A wide one-sided book can produce a meaningless “mid”.</strong> A 1¢ bid / 99¢ ask has a 50¢ arithmetic midpoint but no executable price. The alert engine ignores mids on books wider than 25¢, and every table now shows the last trade or a dash with the basis (“wide book” / “no quote”) instead of a 50¢ “price”. Bid and ask remain visible.</td>
+                <td><span class="badge green">Mitigated</span></td>
+                <td><code>quotePrice()</code> in <a href="assets/js/core.js">core.js</a> · <a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">Get Markets ↗</a> (bid/ask fields).</td>
+                <td>Closed for alerts. A future UI could show an “executable price” column alongside the book mid.</td>
+              </tr>
+              <tr id="F-18">
+                <td class="mono">F-18</td><td><span class="badge down">High</span></td>
+                <td><strong>Earlier parallel-session pages publish illustrative performance as if it were real.</strong> The archived page shows a $10,248 equity, +$248 (+2.48%), 75% win rate and Sharpe 1.84 with no demo account, fills or source behind them.</td>
+                <td><span class="badge green">Superseded</span></td>
+                <td>Archived copy: <a href="docs/index.html">docs/index.html</a> (lines with <code>portEquity</code>, <code>portWinRate</code>, <code>portSharpe</code>). Canonical portfolio: <a href="portfolio.html">portfolio.html</a>.</td>
+                <td>Closed by replacing the root site and marking the archive pages with a visible notice. Do not treat those numbers as results. A demo key would allow a real balance to be shown (F-01).</td>
+              </tr>
+              <tr id="F-19">
+                <td class="mono">F-19</td><td><span class="badge blue">Low</span></td>
+                <td><strong>Three site generations are kept in the repository</strong> (canonical root, <code>docs/</code>, <code>site/</code>). Only the root is maintained; the others are archives and may contain stale links or values.</td>
+                <td><span class="badge blue">Documented</span></td>
+                <td><a href="docs/index.html">docs/ archive ↗</a> · <a href="site/index.html">site/ archive ↗</a> · <a href="COORDINATION.md">coordination board ↗</a>.</td>
+                <td>Delete the archives only after an explicit decision; they are retained now so no session’s work is discarded.</td>
+              </tr>
             </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
 
     <section class="grid grid-2 section">
       <div class="card">
@@ -198,7 +215,8 @@
         <ul class="callout-list small">
           <li><strong>22 Nov 2026 · session c504d30a.</strong> Rebuilt the data pipeline from live demo responses; added the CORS/WS probes, the swing engine, the model feed and the paper broker; published the site at the repository root after finding the Pages defect (F-11); added this register.</li>
           <li><strong>22 Nov 2026 · sessions a5878007 / 7a21cbd2.</strong> First site under <code>docs/</code>, endpoint dossier and flagged page. Data values were left at zero/null because the build sandbox could not reach the API; that limitation is superseded by the Actions-runner snapshot (F-15).</li>
-          <li><strong>22 Nov 2026 · integration.</strong> Merged both histories, preserved the <code>docs/</code> archive, unified the coordination board.</li>
+          <li><strong>22 Nov 2026 · integration.</strong> Merged both histories, preserved the <code>docs/</code> and <code>site/</code> archives, unified the coordination board.</li>
+          <li><strong>22 Nov 2026 · browser tests (session c504d30a).</strong> Headless tests of all 12 pages, a mocked live API and a no-data copy. Fixed: the status badge dropped its own hook class after one update; “LIVE” was shown before the first successful poll; cached orderbooks never refreshed; negative money rendered as <code>$-0.68</code>; both chat feeds were blank with no explanation; several pages had no explicit “snapshot unavailable” notice.</li>
         </ul>
         <p class="small"><a href="COORDINATION.md">Coordination board ↗</a> · <a href="docs/api-verification.md">Earlier API dossier ↗</a> · <a href="methodology.html">Current methodology ↗</a></p>
       </div>

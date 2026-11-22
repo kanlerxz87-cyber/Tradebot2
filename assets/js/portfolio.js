@@ -30,19 +30,37 @@
     (state.snapshot.resolutions || []).forEach((r) => { resolutions[r.ticker] = r.result; });
     TB.paper.settleTrades(state.paper, resolutions);
     (state.snapshot.markets || []).forEach((m) => {
-      if (m.prices && m.prices.mid !== null) state.marks[m.ticker] = { mid: m.prices.mid, bid: m.prices.yes_bid, ask: m.prices.yes_ask };
+      const q = TB.snapshotPrice(m);
+      if (q.price !== null) state.marks[m.ticker] = { mid: q.price, bid: m.prices && m.prices.yes_bid, ask: m.prices && m.prices.yes_ask };
     });
-    const openTickers = [];
-    Object.keys(state.paper.accounts).forEach((s) => state.paper.accounts[s].positions.forEach((p) => openTickers.push(p.ticker)));
-    if (!openTickers.length) return;
-    const markets = (state.snapshot.markets || []).filter((m) => openTickers.indexOf(m.ticker) >= 0);
+    // Run the same automatic paper engine on this page, not only on the
+    // dashboard, so a trader who lands here still sees strategies working.
+    const markets = (state.snapshot.markets || []).filter((m) => m.ticker);
     if (!markets.length) return;
+    state.resolutions = resolutions;
+    state.autoSeen = new Map();
     state.feed = new TBLive.LiveFeed({
       markets: markets,
+      seed: state.snapshot.alerts_seed || [],
       onQuotes: (updates) => {
         Object.keys(updates).forEach((t) => { state.marks[t] = { mid: updates[t].mid, bid: updates[t].bid, ask: updates[t].ask }; });
+        TB.paper.settleTrades(state.paper, resolutions);
         renderPaper();
         document.querySelector("#pf-updated").textContent = "live · " + new Date().toLocaleTimeString();
+      },
+      onOpportunity: (opp) => {
+        if (!opp || opp.score < 65 || opp.estRoi < TB.CONFIG.modelRoiFloor) return;
+        const key = opp.ticker + "|" + opp.strategy;
+        const last = state.autoSeen.get(key) || 0;
+        if (Date.now() - last < 600000) return;
+        state.autoSeen.set(key, Date.now());
+        const quotes = {};
+        Object.keys(state.marks).forEach((t) => { quotes[t] = { mid: state.marks[t].mid }; });
+        const pos = TB.paper.openTrade(state.paper, opp, quotes);
+        if (pos) {
+          renderPaper();
+          UI.toast("Paper trade opened: " + (opp.side === "yes" ? "YES" : "NO") + " " + pos.contracts + " × " + TB.money(opp.entry) + " (" + opp.strategyLabel + ")", "ok");
+        }
       },
       onStatus: (status) => {
         const el = document.querySelector("#pf-updated");
@@ -292,13 +310,21 @@
     rows.forEach((t) => {
       lines.push([t.ticker, t.topic, t.strategy, t.side, t.contracts, t.entry_price, t.exit_price, t.entry_fee, t.exit_fee || 0, t.pnl, t.roi, t.status, new Date(t.opened_ts * 1000).toISOString(), t.closed_ts ? new Date(t.closed_ts * 1000).toISOString() : "", t.close_reason || ""].map((v) => '"' + String(v === undefined || v === null ? "" : v).replace(/"/g, '""') + '"').join(","));
     });
-    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
+    const text = lines.join("\n");
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
     link.download = "tradebot2-paper-trades-" + new Date().toISOString().slice(0, 10) + ".csv";
+    let objectUrl = null;
+    try {
+      const blob = new Blob([text], { type: "text/csv;charset=utf-8" });
+      objectUrl = URL.createObjectURL(blob);
+      link.href = objectUrl;
+    } catch (error) {
+      link.href = "data:text/csv;charset=utf-8," + encodeURIComponent(text);
+    }
     document.body.appendChild(link);
     link.click();
     link.remove();
-    UI.toast("Exported " + rows.length + " closed paper trade(s) as CSV.", "ok");
+    if (objectUrl) setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
+    UI.toast("Exported " + rows.length + " paper trade(s) as CSV.", "ok");
   }
 })();

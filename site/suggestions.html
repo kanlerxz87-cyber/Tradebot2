@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Suggestions · Tradebot2</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body data-page="suggestions">
+<header class="top" id="nav"></header>
+<main>
+
+<h1>Suggestions to make the site more live and interactive</h1>
+<p class="lead">Recommendations, not verified facts. Each one is a design choice for review.</p>
+<table class="sourced"><thead><tr><th>#</th><th>Suggestion</th><th>Why</th><th>Reference</th></tr></thead><tbody>
+<tr><td>1</td><td>Stream prices over WebSocket instead of 15-minute polling.</td><td>Second-level alerts. The docs list a WebSocket API with a demo host.</td><td><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener">Kalshi demo environment</a></td></tr>
+<tr><td>2</td><td>Add a per-market candlestick chart for longer history.</td><td>The OpenAPI spec defines a candlesticks endpoint with 1, 60 and 1440-minute periods.</td><td><a href="https://docs.kalshi.com/openapi.yaml" target="_blank" rel="noopener">openapi.yaml</a></td></tr>
+<tr><td>3</td><td>Use the public events endpoint’s <code>min_updated_ts</code> filter for cheaper polling.</td><td>Reduces API calls between runs.</td><td><a href="https://docs.kalshi.com/api-reference/events/get-events" target="_blank" rel="noopener">Get Events</a></td></tr>
+<tr><td>4</td><td>Add a sparkline column to each topic table.</td><td>Shows direction at a glance.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/scripts/kalshi_collector.py" target="_blank" rel="noopener">scripts/kalshi_collector.py (internal)</a></td></tr>
+<tr><td>5</td><td>Connect the demo account (balance and positions) once an API key is provided as a secret.</td><td>Needed for real portfolio tracking. Kalshi documents separate rate limits for the balance endpoint (1 or 5 calls per second depending on tier).</td><td><a href="https://docs.kalshi.com/getting_started/rate_limits" target="_blank" rel="noopener">Rate limits</a></td></tr>
+<tr><td>6</td><td>Backtest the high-ROI screen on resolved markets before using it.</td><td>The screen is a rule set, not a validated model.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/scripts/kalshi_collector.py" target="_blank" rel="noopener">scripts/kalshi_collector.py (internal)</a></td></tr>
+</tbody></table>
+
+</main>
+<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+</body>
+</html>

@@ -54,9 +54,26 @@
   function money(value, digits) {
     const n = num(value);
     if (n === null) return "—";
-    const d = digits === undefined ? (Math.abs(n) < 1 ? 2 : 2) : digits;
-    return "$" + n.toFixed(d);
+    const d = digits === undefined ? 2 : digits;
+    return (n < 0 ? "−" : "") + "$" + Math.abs(n).toFixed(d);
   }
+  // Snapshot rows carry bid/ask/mid already. A midpoint on a very wide book
+  // is arithmetic, not an executable price, so it is not shown as one.
+  function snapshotPrice(market) {
+    const p = (market && market.prices) || {};
+    const l = (market && market.liquidity) || {};
+    const bid = num(p.yes_bid);
+    const ask = num(p.yes_ask);
+    const spread = l.spread !== undefined && l.spread !== null
+      ? num(l.spread)
+      : (bid !== null && ask !== null ? ask - bid : null);
+    if (num(p.mid) !== null && bid !== null && ask !== null && bid > 0 && ask < 1 && spread !== null && spread <= 0.25) {
+      return { price: p.mid, basis: "mid" };
+    }
+    if (num(p.last) !== null && num(p.last) > 0) return { price: p.last, basis: "last" };
+    return { price: null, basis: spread !== null && spread > 0.25 ? "wide book" : "no quote" };
+  }
+
   function cents(value) {
     const n = num(value);
     return n === null ? "—" : Math.round(n * 100) + "¢";
@@ -119,9 +136,12 @@
     let ask = num(market.yes_ask_dollars);
     if (bid === null && num(market.yes_bid) !== null) bid = num(market.yes_bid) / 100;
     if (ask === null && num(market.yes_ask) !== null) ask = num(market.yes_ask) / 100;
-    if (bid !== null && ask !== null && bid > 0 && bid <= ask && ask <= 1) {
+    if (bid !== null && ask !== null && bid > 0 && bid <= ask && ask <= 1 && ask - bid <= 0.25) {
       return { price: Math.round(((bid + ask) / 2) * 1e6) / 1e6, basis: "mid", bid: bid, ask: ask };
     }
+    // A 1c/99c book has a 50c "mid" but no executable price; fall through to
+    // the last trade instead of treating book noise as a real quote.
+
     let last = num(market.last_price_dollars);
     if (last === null && num(market.last_price) !== null) last = num(market.last_price) / 100;
     if (last !== null && last >= 0 && last <= 1) return { price: last, basis: "last", bid: bid, ask: ask };
@@ -580,7 +600,7 @@
 
   window.TB = {
     CONFIG, TOPICS, STRATEGIES,
-    num, clamp, money, cents, pct, signed, compact, esc, isoDate, clock, relative, hoursToClose,
+    num, clamp, money, cents, pct, signed, compact, esc, isoDate, clock, relative, hoursToClose, snapshotPrice,
     quotePrice, bookMetrics, SwingDetector, orderFee, evaluate, bestOpportunity, positionSize,
     paper: {
       key: STORE_KEY, blankState, loadState, saveState, accountEquity,
