@@ -33,7 +33,7 @@ Statuses: unclaimed | in progress | done | needs review
 | 4 | Portfolio, simulated trading & strategy analyzer | done | arena/a5878007-tradebot2; arena/7a21cbd2-tradebot2 | docs/portfolio.html; docs/app.js | docs.kalshi.com (POST /portfolio/events/orders) | Paper-trade simulator; per-type ROI categorization | No real demo account credentials used; simulated money only |
 | 5 | Flagged for Review & verification audit | done | arena/a5878007-tradebot2 | docs/flagged.html; COORDINATION.md | Kalshi demo API snapshot | KXGASPRICE returned HTTP error; KXGOLF returned 0 active markets at snapshot | Published on docs/flagged.html |
 | 6 | GitHub Pages build, PR & merge | done | arena/a5878007-tradebot2 | .github/workflows/pages.yml; COORDINATION.md | — | Pages workflow added (uploads `docs/`), PR #1 merged to main | — |
-| 7 | Final integration of session 7a21cbd2 analysis docs | done | arena/7a21cbd2-tradebot2 | docs/executive-summary.md; docs/api-verification.md; docs/interactivity-suggestions.md | docs.kalshi.com; user-specified demo URLs | Cross-checked against docs.kalshi.com | Sandbox TLS block noted |
+| 7 | Final integration of session 7a21cbd2 analysis docs | done | arena/7a21cbd2-tradebot2 | docs/executive-summary.md; docs/api-verification.md; docs/interactivity-suggestions.md | docs.kalshi.com; user-specified demo URLs | PR #2 merged into main; Pages build+deploy succeeded (Run 44996666247) | Sandbox TLS block noted |
 
 ## Merge conflict resolution log
 - `arena/7a21cbd2-tradebot2` added a duplicate root-level site (index.html, categories/, assets/, alerts.html, chart.html, portfolio.html, flagged-for-review.html).
@@ -44,3 +44,10 @@ Statuses: unclaimed | in progress | done | needs review
 - Sandbox egress blocks `kalshi.co` / `kalshi.com` (TLS `SSL_ERROR_SYSCALL`), so live API values cannot be confirmed from the build sandbox; left blank and flagged unverified per the verification rules.
 - `KXGASPRICE` returned an HTTP error on the Demo API; `KXGOLF` returned 0 active markets at snapshot time — see `docs/flagged.html`.
 - Gas prices and golf are not standalone top-level Kalshi categories (mapped to Economics and Sports) — flagged unverified.
+
+## Publish record
+- Pull request: https://github.com/kanlerxz87-cyber/Tradebot2/pull/2 (PR #2, `arena/7a21cbd2-tradebot2` → `main`)
+- Merge result: merged via `gh pr merge 2 --merge`; main now at `3fb2259`
+- GitHub Pages: build + deploy succeeded for `main@3fb2259` (Run 44996666247, conclusion success)
+- Live site: https://kanlerxz87-cyber.github.io/Tradebot2/ (served from `docs/`)
+- Flagged for Review page: https://kanlerxz87-cyber.github.io/Tradebot2/docs/flagged.html
