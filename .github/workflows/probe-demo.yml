@@ -12,7 +12,7 @@ on:
       - ".github/workflows/probe-demo.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   probe:
@@ -38,6 +38,30 @@ jobs:
                 "trades:", len(((d.get("samples") or {}).get("trades", {}).get("body") or {}).get("trades") or []))
           print("errors:", len(d.get("errors", [])))
           PY
+      - name: CORS preflight check (what a browser would see)
+        run: |
+          for U in "https://external-api.demo.kalshi.co/trade-api/v2/exchange/status" "https://external-api.demo.kalshi.co/trade-api/v2/markets?limit=1"; do
+            echo "== $U"
+            curl -s -D - -o /dev/null -m 20 -X OPTIONS -H "Origin: https://kanlerxz87-cyber.github.io" -H "Access-Control-Request-Method: GET" "$U" | tr -d '\r'
+            echo "-- GET headers"
+            curl -s -D - -o /dev/null -m 20 -H "Origin: https://kanlerxz87-cyber.github.io" "$U" | tr -d '\r' | grep -i -E "^access-control|^content-type|^HTTP/"
+          done
+
+      - name: Collect real demo data (for local verification)
+        env:
+          KALSHI_BASE: https://external-api.demo.kalshi.co/trade-api/v2
+          OUT_DIR: probe/site-data
+          STATE_PATH: probe/state.json
+        run: python3 scripts/kalshi_collector.py
+
+      - name: Commit probe evidence to the branch
+        run: |
+          git config user.name "tradebot-probe"
+          git config user.email "actions@users.noreply.github.com"
+          git add -f probe
+          git commit -m "chore(probe): demo API evidence + collected snapshot [skip ci]" || echo "nothing to commit"
+          git push
+
       - uses: actions/upload-artifact@v4
         with:
           name: demo-probe
