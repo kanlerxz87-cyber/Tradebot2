@@ -151,7 +151,14 @@ Branch: `arena/c504d30a-tradebot2` (fixed by the runtime; base `003447e`, merged
 - `README.md` production host `trading-api.kalshi.com` was replaced with the official
   `api.elections.kalshi.com` plus a docs link (see flag I-2 raised by session 9a725a07).
 - `pages.yml` no longer pretends to deploy an artifact that legacy Pages ignores; it verifies the
-  root contract, the data and both archives (tests + `tools/verify_site.py` + `scripts/check_site.py`).
+  root contract, the data and both archives (tests + `tools/verify_site.py` + archived tests).
+- Second integration with `main` (PR #15/#19/#20): the later generation’s CSS was moved to
+  `assets/css/main-site.css` and its snapshot to `data/snapshot-main.json`, so its `pages/`, `topics/`,
+  `dash/` and archive pages still work while the root keeps the canonical site. Its root index and
+  flagged page are preserved as `main-site-index.html` / `main-site-flagged.html` with a visible banner.
+- Verification totals after the merges: **67 passed** (47 canonical + 20 archived), `verify_site.py`
+  green, 12 canonical pages, 362 links, 16 tracked markets, 3,990+ resolutions (4,724 in the newest
+  data refresh).
 
 ### Verification performed
 
@@ -174,9 +181,19 @@ F-08 gas/golf are not standalone categories · F-17 wide-book mids · F-18 archi
 
 ### PR and merge record
 
-- PR: _(filled after opening)_
-- Merge: _(filled after merge)_
-- Pages deploy confirmation: _(filled after the legacy build completes)_
+- PR: https://github.com/kanlerxz87-cyber/Tradebot2/pull/18 (base `main`, head `arena/c504d30a-tradebot2`).
+  Opened after merging `main` through `1c6e253`; required checks (`verify` / `tests`) passed.
+- Merge: **merged without approval** at 2026-11-22T07:32:21Z as `77e1282`. Main was at `4bbbb85` at
+  merge time; a follow-up `data: refresh` commit (`38b0050`) advanced main and triggered a second
+  legacy Pages build.
+- Pages deploy confirmation: legacy Pages build for `38b0050` reported **built** at 07:33:44Z. Live
+  `https://kanlerxz87-cyber.github.io/Tradebot2/index.html` returned the canonical page (“Watch the
+  events that move…”, 16 tracked markets, wide-book dashes, `data-stat` KPIs) after the CDN refresh;
+  `/dashboard.html` returned the live dashboard. The previously cached b1cd545f sample-data page is
+  gone from the root.
+- Post-merge fixes (new PR): `quotePrice()` no longer treats a $0.00 last trade as a price, so live
+  updates show “—” instead of $0.00 on untouched markets; dashboard/topic headers renamed
+  “YES price” because the basis can be mid, last or blank.
 
 The work therefore still exists only on this branch. It is re-submitted as a fresh PR rather than
 reopening the closed one, per the platform rule to merge with an explicit PR number. This note is
