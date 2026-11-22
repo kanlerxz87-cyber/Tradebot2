@@ -109,3 +109,32 @@ To run the live preview server locally:
 python3 -m http.server 8080 --bind 0.0.0.0
 ```
 Open your browser to `http://localhost:8080` (or your platform preview URL).
+
+---
+
+## Live price monitor (`/monitor/` on the Pages site)
+
+Added by session `arena-9a725a07` (branch `arena/9a725a07-tradebot2`). Published at **https://kanlerxz87-cyber.github.io/Tradebot2/monitor/**.
+
+| Path | Purpose |
+|------|---------|
+| `scripts/kalshi_collector.py` | Reads public, unauthenticated Kalshi REST endpoints (`/series`, `/events`, `/markets/{ticker}`, `/markets/{ticker}/orderbook`) and writes `site/data/*.json`. Standard library only. |
+| `scripts/check_site.py` | Checks: no broken internal links; every row of a `sourced` table has an https source link; every data record has a `source_url`. `--links-only-root DIR` checks the assembled site. |
+| `scripts/tests/mock_kalshi_server.py` | Offline mock of the documented endpoints, used to test the collector. |
+| `site/` | Monitor site (published under `/monitor/`). `site/data/` is generated at build time and not committed. |
+| `.github/workflows/pages.yml` | One Pages pipeline: collect → check → assemble (`docs/` at root, `site/` at `/monitor/`) → deploy from `main`. Runs on push, manually, and every 15 minutes. |
+
+Run locally:
+
+```bash
+KALSHI_BASE=https://external-api.kalshi.com/trade-api/v2 python3 scripts/kalshi_collector.py
+python3 scripts/check_site.py
+python3 -m http.server -d site 8000   # http://localhost:8000
+```
+
+Limits (also on the site's Findings and Flagged pages):
+
+- Trades are simulated. No orders are placed and fees are not modelled.
+- The demo-account portfolio is not connected. It needs API-key secrets that were not provided.
+- Alerts compare snapshots from consecutive scheduled runs (about 15 minutes apart), not per-second ticks.
+- The high-ROI screen is a rule set, not a validated model.

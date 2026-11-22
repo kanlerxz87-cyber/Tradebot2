@@ -1,9 +1,16 @@
+# Single Pages pipeline for this repo. Only one Pages deployment can exist, so this file
+# builds the whole published site in one artifact:
+#   /            <- docs/            (existing Kalshi Demo Dashboard, unchanged)
+#   /monitor/    <- site/            (live monitor: alerts, topic pages, charts, trades)
+# Collected data (site/data) is generated at build time and never committed.
 name: Deploy Kalshi Demo Dashboard to GitHub Pages
 
 on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
 
 permissions:
   contents: read
@@ -15,20 +22,65 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Restore collector state (history, alerts, paper trades)
+        uses: actions/cache/restore@v4
+        with:
+          path: state
+          key: kalshi-state-${{ github.run_id }}
+          restore-keys: |
+            kalshi-state-
+
+      - name: Collect public Kalshi data for the monitor
+        run: python3 scripts/kalshi_collector.py
+
+      - name: Check monitor site (links, sourced rows, data source fields)
+        run: python3 scripts/check_site.py
+
+      - name: Assemble Pages artifact (docs at root, monitor at /monitor/)
+        run: |
+          rm -rf _site
+          mkdir -p _site/monitor
+          cp -r docs/. _site/
+          cp -r site/. _site/monitor/
+          ls -la _site _site/monitor | head -60
+
+      - name: Check assembled site links
+        run: SITE_DIR=_site/monitor python3 scripts/check_site.py --links-only-root _site
+
+      - name: Save collector state
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: state
+          key: kalshi-state-${{ github.run_id }}
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
   deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "docs"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
