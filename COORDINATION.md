@@ -19,9 +19,9 @@ Claim by writing your session id and file scope below, then commit + push immedi
 | ID | Task | Status | Owner | Files touched |
 | --- | --- | --- | --- | --- |
 | T1 | Executive summary + repo line-by-line verification | done | session-arena/5f1ca159-tradebot2 | `EXECUTIVE_SUMMARY.md`, `README.md`, `COORDINATION.md` |
-| T2 | Dashboard core: data layer, market simulator, live Kalshi demo REST provider | done | session-arena/5f1ca159-tradebot2 | `docs/assets/js/topics.js`, `docs/assets/js/sim-provider.js`, `docs/assets/js/live-provider.js`, `docs/assets/js/store.js` |
+| T2 | Dashboard core: data layer, market simulator, live Kalshi demo REST provider | done | session-arena/5f1ca159-tradebot2 | `docs/assets/js/config.js`, `docs/assets/js/sim-provider.js`, `docs/assets/js/live-provider.js`, `docs/assets/js/state.js` |
 | T3 | Charts + orderbook depth display | done | session-arena/5f1ca159-tradebot2 | `docs/assets/js/charts.js`, `docs/assets/js/depth.js` |
-| T4 | Alerting engine (>= $0.10 swings) + ROI model + two scrolling chats | done | session-arena/5f1ca159-tradebot2 | `docs/assets/js/alerts.js`, `docs/assets/js/model.js`, `docs/assets/js/chats.js` |
+| T4 | Alerting engine (>= $0.10 swings) + ROI model + two scrolling chats | done | session-arena/5f1ca159-tradebot2 | `docs/assets/js/alerts.js`, `docs/assets/js/model.js` (chats render inline in `dashboard.js`) |
 | T5 | Simulated auto-trades (strategies) + portfolio performance tracking | done | session-arena/5f1ca159-tradebot2 | `docs/assets/js/strategy.js`, `docs/assets/js/portfolio.js` |
 | T6 | Site pages: landing, dashboard, topic subpages, methodology, flagged-for-review | done | session-arena/5f1ca159-tradebot2 | `docs/index.html`, `docs/dashboard.html`, `docs/topics/*.html`, `docs/methodology.html`, `docs/flagged-for-review.html`, `docs/assets/css/style.css` |
 | T7 | Line-by-line verification, source links, irregularities | done | session-arena/5f1ca159-tradebot2 | per-topic pages + `docs/methodology.html` |
