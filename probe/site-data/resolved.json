@@ -1,4 +1,61 @@
 {
- "generated_at": "2026-11-22T07:26:20Z",
- "resolved": []
+ "generated_at": "2026-11-22T07:30:02Z",
+ "resolved": [
+  {
+   "ticker": "KXBTC15M-26NOV220230-30",
+   "topic": "crypto",
+   "topic_label": "Crypto",
+   "title": "BTC price up in next 15 mins?",
+   "event_title": "BTC 15 min \u00b7 $59,032.61 target",
+   "result": "no",
+   "resolved_at": "2026-11-22T07:30:02Z",
+   "settlement_value": 0.0,
+   "last_before_resolution": 0.4,
+   "close_time": "2026-11-22T07:30:00Z",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXBTC15M-26NOV220230-30",
+   "api_source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXBTC15M-26NOV220230-30"
+  },
+  {
+   "ticker": "KXETH15M-26NOV220230-30",
+   "topic": "crypto",
+   "topic_label": "Crypto",
+   "title": "ETH price up in next 15 mins?",
+   "event_title": "ETH 15 min \u00b7 $1,660.99 target",
+   "result": "no",
+   "resolved_at": "2026-11-22T07:30:02Z",
+   "settlement_value": 0.0,
+   "last_before_resolution": 0.99,
+   "close_time": "2026-11-22T07:30:00Z",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXETH15M-26NOV220230-30",
+   "api_source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXETH15M-26NOV220230-30"
+  },
+  {
+   "ticker": "KXSOL15M-26NOV220230-30",
+   "topic": "crypto",
+   "topic_label": "Crypto",
+   "title": "SOL price up in next 15 mins?",
+   "event_title": "SOL 15 min \u00b7 $69.0410 target",
+   "result": "yes",
+   "resolved_at": "2026-11-22T07:30:02Z",
+   "settlement_value": 1.0,
+   "last_before_resolution": 0.968,
+   "close_time": "2026-11-22T07:30:00Z",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXSOL15M-26NOV220230-30",
+   "api_source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXSOL15M-26NOV220230-30"
+  },
+  {
+   "ticker": "KXXRP15M-26NOV220230-30",
+   "topic": "crypto",
+   "topic_label": "Crypto",
+   "title": "XRP price up in next 15 mins?",
+   "event_title": "XRP 15 min \u00b7 $0.9134 target",
+   "result": "yes",
+   "resolved_at": "2026-11-22T07:30:02Z",
+   "settlement_value": 1.0,
+   "last_before_resolution": 0.82,
+   "close_time": "2026-11-22T07:30:00Z",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXXRP15M-26NOV220230-30",
+   "api_source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXXRP15M-26NOV220230-30"
+  }
+ ]
 }

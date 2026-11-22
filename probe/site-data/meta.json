@@ -1,10 +1,21 @@
 {
- "generated_at": "2026-11-22T07:26:20Z",
+ "generated_at": "2026-11-22T07:30:02Z",
  "api_base": "https://external-api.demo.kalshi.co/trade-api/v2",
- "runs": 1,
+ "runs": 2,
  "first_run": null,
  "alert_threshold_dollars": 0.1,
- "live_market_count": 18298,
+ "environment": "demo",
+ "live_market_count": 1181,
+ "open_markets_seen": 18298,
+ "markets_omitted_per_topic": {
+  "gas": 2031,
+  "elections": 135,
+  "culture": 718,
+  "crypto": 13392,
+  "golf": 841
+ },
+ "candle_markets": 12,
+ "tape_markets": 12,
  "series_per_topic": {
   "gas": 25,
   "elections": 40,

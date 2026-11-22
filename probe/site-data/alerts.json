@@ -1,5 +1,108 @@
 {
- "generated_at": "2026-11-22T07:26:20Z",
+ "generated_at": "2026-11-22T07:30:02Z",
  "threshold": 0.1,
- "alerts": []
+ "alerts": [
+  {
+   "id": "KXBTCY-27JAN0100-B97500|2026-11-22T07:30:02Z",
+   "ts": "2026-11-22T07:30:02Z",
+   "ticker": "KXBTCY-27JAN0100-B97500",
+   "title": "BTC price  on Jan 1, 2027?",
+   "event_title": "Bitcoin price at the end of 2026",
+   "topic": "crypto",
+   "topic_label": "Crypto",
+   "direction": "up",
+   "from": 0.01,
+   "to": 0.97,
+   "delta": 0.96,
+   "prev_ts": "2026-11-22T07:26:20Z",
+   "spread": 0.01,
+   "ask_size": 16666.66,
+   "volume_24h": 7708.75,
+   "high_roi": false,
+   "screen_reasons": [
+    "spread 0.01 <= 0.03",
+    "ask size 16667 >= 50",
+    "24h volume 7709 >= 100",
+    "entry 0.01 outside 0.05-0.95"
+   ],
+   "entry_price": 0.01,
+   "roi_proxy": 99.0,
+   "cause": "UNVERIFIED: the API does not report what caused the move",
+   "reference_links": [
+    {
+     "name": "CF Benchmarks",
+     "url": "https://www.cfbenchmarks.com/"
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXBTCY-27JAN0100-B97500"
+  },
+  {
+   "id": "KXBTCY-27JAN0100-B87500|2026-11-22T07:30:02Z",
+   "ts": "2026-11-22T07:30:02Z",
+   "ticker": "KXBTCY-27JAN0100-B87500",
+   "title": "BTC price  on Jan 1, 2027?",
+   "event_title": "Bitcoin price at the end of 2026",
+   "topic": "crypto",
+   "topic_label": "Crypto",
+   "direction": "down",
+   "from": 0.99,
+   "to": 0.02,
+   "delta": -0.97,
+   "prev_ts": "2026-11-22T07:26:20Z",
+   "spread": 0.01,
+   "ask_size": 8333.21,
+   "volume_24h": 14458.28,
+   "high_roi": false,
+   "screen_reasons": [
+    "spread 0.01 <= 0.03",
+    "ask size 8333 >= 50",
+    "24h volume 14458 >= 100",
+    "entry 0.02 outside 0.05-0.95"
+   ],
+   "entry_price": 0.02,
+   "roi_proxy": 49.0,
+   "cause": "UNVERIFIED: the API does not report what caused the move",
+   "reference_links": [
+    {
+     "name": "CF Benchmarks",
+     "url": "https://www.cfbenchmarks.com/"
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXBTCY-27JAN0100-B87500"
+  },
+  {
+   "id": "KXPRESPERSON-28-VRAM|2026-11-22T07:30:02Z",
+   "ts": "2026-11-22T07:30:02Z",
+   "ticker": "KXPRESPERSON-28-VRAM",
+   "title": "Who will win the next presidential election?",
+   "event_title": "Who will win the next presidential election?",
+   "topic": "elections",
+   "topic_label": "Elections",
+   "direction": "up",
+   "from": 0.003,
+   "to": 0.802,
+   "delta": 0.799,
+   "prev_ts": "2026-11-22T07:26:20Z",
+   "spread": 0.001,
+   "ask_size": 55555.55,
+   "volume_24h": 58063.91,
+   "high_roi": false,
+   "screen_reasons": [
+    "spread 0.00 <= 0.03",
+    "ask size 55556 >= 50",
+    "24h volume 58064 >= 100",
+    "entry 0.00 outside 0.05-0.95"
+   ],
+   "entry_price": 0.003,
+   "roi_proxy": 332.3333,
+   "cause": "UNVERIFIED: the API does not report what caused the move",
+   "reference_links": [
+    {
+     "name": "Office of the Presidency",
+     "url": "https://www.whitehouse.gov/administration/executive-office-of-the-president/"
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-VRAM"
+  }
+ ]
 }
