@@ -74,6 +74,7 @@ jobs:
 
       - name: Check the root dashboard (links, required pages, data integrity)
         run: |
+          python3 tools/check_site.py --root . --published
           python3 tools/check_site.py --root _site --strict
           python3 tools/verify_data.py --data-dir _site/data
 
