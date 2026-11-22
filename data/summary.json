@@ -2,9 +2,9 @@
  "snapshot_ts": "2026-11-22T07:28:00Z",
  "headline": {
   "topics_tracked": 5,
-  "series_verified": 21,
+  "series_verified": 22,
   "markets_verified": 6,
-  "resolutions_verified": 8,
+  "resolutions_verified": 9,
   "queries_that_returned_nothing": 5,
   "alerts_on_recorded_data": 5,
   "high_roi_alerts": 5,

@@ -8,7 +8,7 @@
   "max_contracts": "250"
  },
  "sample": {
-  "markets_recorded": 9,
+  "markets_recorded": 10,
   "candles_recorded": 16,
   "window": "2026-11-15T04:00Z .. 2026-11-22T07:00Z (hourly bars, one instrument)",
   "caveat": "One instrument with 16 usable bars is not enough to judge a strategy. The numbers below describe this recording, not the market."
@@ -29,10 +29,10 @@
    "avg_loss": null,
    "profit_factor": null,
    "expectancy_per_trade": null,
-   "skipped": 12,
+   "skipped": 13,
    "skip_reasons": {
     "no executable quote": 4,
-    "not enough recorded points": 8
+    "not enough recorded points": 9
    },
    "name": "Momentum follow-through",
    "trade_type": "momentum",
@@ -133,10 +133,10 @@
    "avg_loss": null,
    "profit_factor": null,
    "expectancy_per_trade": null,
-   "skipped": 15,
+   "skipped": 16,
    "skip_reasons": {
     "spread > $0.06": 7,
-    "not enough recorded points": 8
+    "not enough recorded points": 9
    },
    "name": "Fade the spike (mean reversion)",
    "trade_type": "mean-reversion",
@@ -161,9 +161,9 @@
    "avg_loss": null,
    "profit_factor": null,
    "expectancy_per_trade": null,
-   "skipped": 8,
+   "skipped": 9,
    "skip_reasons": {
-    "not enough recorded points": 8
+    "not enough recorded points": 9
    },
    "name": "Cheap tail value",
    "trade_type": "value",
@@ -188,9 +188,9 @@
    "avg_loss": null,
    "profit_factor": null,
    "expectancy_per_trade": null,
-   "skipped": 8,
+   "skipped": 9,
    "skip_reasons": {
-    "not enough recorded points": 8
+    "not enough recorded points": 9
    },
    "name": "Favorite carry to resolution",
    "trade_type": "carry",
@@ -215,9 +215,9 @@
    "avg_loss": null,
    "profit_factor": null,
    "expectancy_per_trade": null,
-   "skipped": 8,
+   "skipped": 9,
    "skip_reasons": {
-    "not enough recorded points": 8
+    "not enough recorded points": 9
    },
    "name": "Threshold breakout with confirmation",
    "trade_type": "breakout",
@@ -229,7 +229,7 @@
   }
  ],
  "portfolio": {
-  "generated_at": "2026-11-22T07:16:58Z",
+  "generated_at": "2026-11-22T07:20:08Z",
   "trades": 3,
   "closed": 0,
   "net_pnl": "0.00",

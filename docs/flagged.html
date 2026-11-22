@@ -79,12 +79,17 @@
         <td class="small">Labelled everywhere it appears; not counted as a tracked topic.</td>
       </tr>
       <tr>
-        <td>F-08</td><td><span class="badge err">fixed</span></td>
-        <td><b>Prior session's pages loaded a data file that no longer supported them, and its market tickers were
-          wrong</b> (<code>KXBTC-26NOV2201-…</code> instead of the real <code>KXBTCD-…</code>). Stale pages removed;
-          real tickers re-captured.</td>
-        <td class="small"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?status=settled&amp;series_ticker=KXBTCD&amp;limit=5" target="_blank" rel="noopener">settled KXBTCD ↗</a></td>
-        <td class="small">Superseded pages deleted from <code>docs/</code>.</td>
+        <td>F-08</td><td><span class="badge err">retracted</span></td>
+        <td><b>Correction to my own earlier claim.</b> I first recorded the prior session's crypto tickers as wrong
+          (<code>KXBTC-26NOV2201-…</code> "should be" <code>KXBTCD-…</code>). That was wrong: <code>KXBTC</code> is a
+          real series — a separate hourly BRTI ladder that happens to share exchange shard 2 with
+          <code>KXBTCD</code>. Both tickers exist, both resolved NO, and both are now in the dataset. The prior
+          session's actual error was narrower: merging the two families and filing a NATO Secretary-General market
+          under Elections. The wrong claim stays visible here rather than being quietly deleted.</td>
+        <td class="small"><a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXBTC" target="_blank" rel="noopener">series KXBTC ↗</a>
+          · <a href="https://external-api.demo.kalshi.co/trade-api/v2/markets/KXBTC-26NOV2201-T66799.99" target="_blank" rel="noopener">market ↗</a>
+          · <a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXNEXTNATOSECGEN" target="_blank" rel="noopener">NATO series ↗</a></td>
+        <td class="small">Retracted; KXBTC rows added to the crypto page and the resolved tracker.</td>
       </tr>
       <tr>
         <td>F-09</td><td><span class="badge flag">open</span></td>
@@ -111,6 +116,15 @@
         <td class="small"><a href="https://docs.kalshi.com/api-reference/portfolio/get-balance.md" target="_blank" rel="noopener">balance endpoint ↗</a>
           · <a href="https://docs.kalshi.com/api-reference/orders/create-order-v2.md" target="_blank" rel="noopener">order v2 ↗</a></td>
         <td class="small">Documented, not worked around.</td>
+      </tr>
+      <tr>
+        <td>F-15</td><td><span class="badge flag">open</span></td>
+        <td><b>Some series ship empty or placeholder settlement-source names.</b> <code>KXNEXTNATOSECGEN</code> lists
+          entries with an empty <code>name</code>, the bare word <code>agency</code>, and long descriptive sentences in
+          the name field, all pointing at <code>kalshi.com</code>. Anything keyed on source names would break; this
+          site prints the name exactly as returned and links the URL, and infers nothing from it.</td>
+        <td class="small"><a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXNEXTNATOSECGEN" target="_blank" rel="noopener">series object ↗</a></td>
+        <td class="small">Upstream data quality; flagged only.</td>
       </tr>
       <tr>
         <td>F-13</td><td><span class="badge flag">open</span></td>

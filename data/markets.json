@@ -2,9 +2,9 @@
  "snapshot_ts": "2026-11-22T07:28:00Z",
  "demo_base": "https://external-api.demo.kalshi.co/trade-api/v2",
  "counts": {
-  "series": 21,
+  "series": 22,
   "markets": 6,
-  "resolved": 8,
+  "resolved": 9,
   "orderbooks": 1,
   "gaps": 5
  },
@@ -269,6 +269,24 @@
    "settlement_url": "https://www.coingecko.com",
    "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Crypto&limit=2",
    "note": "Only crypto series in the sample settled from CoinGecko rather than CF Benchmarks.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "crypto",
+   "ticker": "KXBTC",
+   "title": "Bitcoin range",
+   "category": "Crypto",
+   "tags": [
+    "Crypto",
+    "Hourly",
+    "Bitcoin"
+   ],
+   "frequency": "hourly",
+   "settlement_source": "CF Benchmarks BRTI",
+   "settlement_url": "https://www.cfbenchmarks.com/data/indices/BRTI",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series/KXBTC",
+   "note": "Same BRTI sixty-print rule as KXBTCD, published as its own series.",
    "snapshot_ts": "2026-11-22T07:28:00Z"
   },
   {
@@ -561,6 +579,23 @@
    "open_interest": "0.00",
    "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=settled&series_ticker=KXBTCD&limit=5",
    "note": "Four strikes captured; all four resolved NO.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "resolved",
+   "topic": "crypto",
+   "ticker": "KXBTC-26NOV2201-T66799.99",
+   "event_ticker": "KXBTC-26NOV2201",
+   "title": "Bitcoin price range on Nov 22, 2026? ($66,800 or above)",
+   "status": "finalized",
+   "result": "no",
+   "settlement_value": "0.0000",
+   "settlement_ts": "2026-11-22T06:24:47Z",
+   "close_time": "2026-11-22T06:00:00Z",
+   "volume": "0.00",
+   "open_interest": "0.00",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXBTC-26NOV2201-T66799.99",
+   "note": "KXBTC is its own hourly series, separate from KXBTCD (same BRTI rule, same exchange shard 2). Both exist and both resolved NO.",
    "snapshot_ts": "2026-11-22T07:28:00Z"
   },
   {

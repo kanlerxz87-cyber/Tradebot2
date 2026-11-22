@@ -216,6 +216,18 @@ SERIES = [
         "source_url": f"{DEMO}/series?category=Crypto&limit=2",
         "note": "Only crypto series in the sample settled from CoinGecko rather than CF Benchmarks.",
     },
+    {
+        "topic": "crypto",
+        "ticker": "KXBTC",
+        "title": "Bitcoin range",
+        "category": "Crypto",
+        "tags": ["Crypto", "Hourly", "Bitcoin"],
+        "frequency": "hourly",
+        "settlement_source": "CF Benchmarks BRTI",
+        "settlement_url": "https://www.cfbenchmarks.com/data/indices/BRTI",
+        "source_url": f"{DEMO}/series/KXBTC",
+        "note": "Same BRTI sixty-print rule as KXBTCD, published as its own series.",
+    },
     # ---- golf (Sports + tag "Golf") -------------------------------------
     {
         "topic": "golf",
@@ -468,6 +480,17 @@ RESOLVED = [
         "volume": "0.00", "open_interest": "0.00",
         "source_url": f"{DEMO}/markets?status=settled&series_ticker=KXBTCD&limit=5",
         "note": "Four strikes captured; all four resolved NO.",
+    },
+    {
+        "topic": "crypto", "ticker": "KXBTC-26NOV2201-T66799.99",
+        "event_ticker": "KXBTC-26NOV2201",
+        "title": "Bitcoin price range on Nov 22, 2026? ($66,800 or above)",
+        "result": "no", "settlement_value": "0.0000", "status": "finalized",
+        "settlement_ts": "2026-11-22T06:24:47Z", "close_time": "2026-11-22T06:00:00Z",
+        "volume": "0.00", "open_interest": "0.00",
+        "source_url": f"{DEMO}/markets/KXBTC-26NOV2201-T66799.99",
+        "note": "KXBTC is its own hourly series, separate from KXBTCD (same BRTI rule, same "
+                "exchange shard 2). Both exist and both resolved NO.",
     },
     {
         "topic": "golf", "ticker": "KXPGAROUNDLOW-THOC26R3-67",

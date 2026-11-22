@@ -101,7 +101,8 @@
   (async () => {
     document.getElementById("topicTitle").textContent = copy.title;
     document.getElementById("topicBlurb").innerHTML = copy.blurb;
-    document.getElementById("topicSeries").textContent = copy.series;
+    const seriesBadge = document.getElementById("topicSeries");
+    if (seriesBadge) seriesBadge.textContent = copy.series;
     document.getElementById("topicLink").href = copy.link;
     document.getElementById("topicLink").textContent = copy.linkLabel + " ↗";
 

@@ -125,9 +125,9 @@ const T2 = (() => {
      carries, so tickers are matched against verified prefixes. */
   const PREFIX = {
     gas: ["KXAAAGAS"],
-    elections: ["PRESPARTY", "KXSENATE", "KXGOV", "KXHOUSE", "KXPRES", "KXELECT", "KXMAYOR"],
+    elections: ["PRESPARTY", "KXSENATE", "KXGOV", "KXHOUSE", "KXPRES", "KXELECT", "KXMAYOR", "KXNEXTNATO"],
     culture: ["KXX", "KXOSCAR", "KXGRAMMY", "KXEMMY", "KXCELEB", "KXTIME"],
-    crypto: ["KXBTC", "KXETH", "KXSOL", "KXXRP", "KXDOGE", "KXHYPE", "KXNEAR", "KXTON", "KXBNB", "KXFDV"],
+    crypto: ["KXBTC", "KXBTCD", "KXBTC15M", "KXETH", "KXSOL", "KXXRP", "KXDOGE", "KXHYPE", "KXNEAR", "KXTON", "KXBNB", "KXFDV"],
     golf: ["KXPGA", "KXDPWT", "KXLPGA", "KXGOLF"],
   };
   function topicOf(m) {
