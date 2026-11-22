@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Categories — Kalshi Demo Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span>Kalshi Demo Dashboard</span>
+      <span id="conn-badge" class="badge">LOADING...</span>
+    </div>
+    <nav>
+      <a href="index.html">Live Dashboard</a>
+      <a href="categories.html" class="active">Categories</a>
+      <a href="portfolio.html">Portfolio &amp; Strategies</a>
+      <a href="flagged.html">Flagged for Review</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card" style="margin-bottom:20px;">
+      <h2>Events Organized by Topic</h2>
+      <p class="muted" style="margin:0 0 12px;">
+        Topics are kept separate while events within the same topic are grouped together. Every row links to its official Kalshi Demo API / settlement source.
+      </p>
+      <div class="topic-pills" id="topic-pills"></div>
+    </section>
+
+    <div id="topic-sections"></div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    let activeTopic = "ALL";
+    let markets = [];
+
+    function render() {
+      const topics = activeTopic === "ALL" ? KalshiApp.TOPICS : [activeTopic];
+      document.getElementById("topic-sections").innerHTML = topics.map(topic => {
+        const rows = markets.filter(m => m.topic === topic);
+        return `
+          <section class="card" style="margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <h3 style="margin:0;">${topic}</h3>
+              <span class="badge">${rows.length} market(s)</span>
+            </div>
+            ${rows.length === 0
+              ? `<p class="muted" style="margin:0;">No active markets returned for <strong>${topic}</strong> on Kalshi Demo right now. See <a href="flagged.html">Flagged for Review</a> for verification details.</p>`
+              : `<div style="overflow-x:auto;"><table>
+                  <thead>
+                    <tr>
+                      <th>Ticker</th>
+                      <th>Title</th>
+                      <th>Last Price</th>
+                      <th>Bid / Ask</th>
+                      <th>Liquidity (Contracts)</th>
+                      <th>Volume ($)</th>
+                      <th>Status / Result</th>
+                      <th>Official Source</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${rows.map(m => `
+                      <tr>
+                        <td><code>${m.ticker}</code></td>
+                        <td>${m.title}</td>
+                        <td>$${m.last_price.toFixed(2)}</td>
+                        <td>$${m.yes_bid.toFixed(2)} / $${m.yes_ask.toFixed(2)}</td>
+                        <td>${m.yes_bid_size} bid / ${m.yes_ask_size} ask</td>
+                        <td>$${m.volume.toLocaleString()}</td>
+                        <td>${m.result ? `<span class="badge live">${m.result.toUpperCase()}</span>` : m.status}</td>
+                        <td><a href="${m.source_url}" target="_blank" rel="noopener">${m.source_name}</a></td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table></div>`
+            }
+          </section>
+        `;
+      }).join("");
+    }
+
+    async function init() {
+      const res = await KalshiApp.fetchMarkets();
+      markets = res.markets;
+      const badge = document.getElementById("conn-badge");
+      badge.textContent = res.mode;
+      badge.className = res.mode === "LIVE DEMO API" ? "badge live" : "badge warn";
+
+      const pills = ["ALL", ...KalshiApp.TOPICS];
+      const pillBox = document.getElementById("topic-pills");
+      pillBox.innerHTML = pills.map(t => `<span class="pill ${t === activeTopic ? "active" : ""}" data-topic="${t}">${t}</span>`).join("");
+      pillBox.querySelectorAll(".pill").forEach(el => {
+        el.onclick = () => {
+          activeTopic = el.dataset.topic;
+          pillBox.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
+          el.classList.add("active");
+          render();
+        };
+      });
+      render();
+    }
+    init();
+  </script>
+</body>
+</html>
