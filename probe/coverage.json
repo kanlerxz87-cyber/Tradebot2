@@ -39,6 +39,46 @@
   "host": "https://external-api.demo.kalshi.co",
   "status": 200
  },
+ "golf_chain": {
+  "market": [],
+  "markets_http": 200,
+  "markets_seen": 0,
+  "series_count": 134,
+  "series_http": 200,
+  "series_tickers": [
+   "KXPGARYDERCUPD3",
+   "KXCHAMPTOURR1LEAD",
+   "KXGOLFMAJORS",
+   "KXPGARYDERTOP3",
+   "KXPGALOWSCORE"
+  ]
+ },
+ "golf_series_events": {
+  "KXCHAMPTOURR1LEAD": {
+   "events_http": 200,
+   "nested_markets": 0,
+   "open_events": 0,
+   "titles": []
+  },
+  "KXGOLFMAJORS": {
+   "events_http": 200,
+   "nested_markets": 0,
+   "open_events": 0,
+   "titles": []
+  },
+  "KXPGARYDERCUPD3": {
+   "events_http": 200,
+   "nested_markets": 0,
+   "open_events": 0,
+   "titles": []
+  },
+  "KXPGARYDERTOP3": {
+   "events_http": 200,
+   "nested_markets": 0,
+   "open_events": 0,
+   "titles": []
+  }
+ },
  "series": {
   "crypto": {
    "KXBTCD": {
