@@ -117,11 +117,12 @@
     <section class="grid grid-2 section">
       <div class="card">
         <h2>Notes for a trader</h2>
-        <ul class="callout-list">        <li><b>Measured 2026-11-22:</b> the demo catalogue lists <b>134 golf series</b> (<code>KXPGA</code>, <code>KXPRESCUP</code>,
-          <code>KXPGATOP10</code>, <code>KXLPGAR2LEAD</code> …) under <code>category=Sports&amp;tags=Golf</code>, but <b>zero open events</b> for the four
-          largest of them — so an empty board here is a genuine coverage gap at collection time, not a filter failure.
-          Evidence: <a href="data/coverage.json">data/coverage.json</a> (<code>golf_series_events</code>), reproduced by
-          <code>scripts/probe_coverage.py</code>.</li>
+        <ul class="callout-list">        <li><b>Fixed 2026-11-22, with evidence:</b> the demo catalogue lists <b>134 golf series</b> under
+          <code>category=Sports&amp;tags=Golf</code>, but the tournament markets themselves use event families
+          (<code>KXPGATOUR-THRC26-…</code>, <code>KXPGAMAKECUT-…</code>, <code>KXLPGATOUR-…</code>) that matched no series ticker and no
+          keyword — the titles are player names. The classifier now matches those families, and this page tracks
+          <b>261 open golf markets / 27 selected</b> instead of zero. Evidence and history:
+          <a href="data/coverage.json">data/coverage.json</a>, <a href="flagged.html#F-13">F-13</a>.</li>
         <li>An early probe queried <code>series_ticker=KXPGATOUR</code> and got 200 markets back — the API had silently ignored an unknown filter
           and returned the whole book. Counts are only trusted next to their series ticker and cursor state.</li>
         <ul class="callout-list">        <li>The collector queries the official Golf series list (KXPGA, KXPRESCUP, KXPGATOP10, KXLPGAR2LEAD, …) in addition to the paginated open-market scan, so golf outrights are not missed behind high-frequency contracts. Note: KXPGATOUR is <b>not</b> a real series ticker — an unknown <code>series_ticker</code> filter is ignored by the API.</li>
@@ -130,8 +131,9 @@
       </div>
       <div class="card">
         <h2>Flagged on this page</h2>
-        <div class="note warn">Golf is now mapped from the official <code>series?category=Sports&amp;tags=Golf</code> list (134 series) plus ticker/keyword rules.
-          The empty state above is a measured coverage gap (no open events), not a missing category — see <a href="flagged.html#F-13">F-13</a>.</div>
+        <div class="note warn">Golf is mapped from the official <code>series?category=Sports&amp;tags=Golf</code> catalogue
+          <em>plus</em> the event families those tournaments actually use; neither alone was sufficient. The correction, and the
+          earlier false “empty coverage” reading, are recorded in <a href="flagged.html#F-13">F-13</a>.</div>
         <h3 style="margin-top:18px">Data provenance</h3>
         <table class="compact">
           <tbody>
