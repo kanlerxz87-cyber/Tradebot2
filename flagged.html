@@ -125,14 +125,11 @@
               </tr>
               <tr id="F-13">
                 <td class="mono">F-13</td><td><span class="badge neutral">Observed</span></td>
-                <td><strong>Golf had no open events at collection time even though the catalogue lists 134 golf series.</strong>
-                  The board is empty by measurement, not by a filter error. An earlier probe reported “200 open KXPGATOUR markets”;
-                  that filter was unknown to the API and was ignored, returning the whole book.</td>
+                <td><strong>Golf coverage spans 134 catalog series under <code>category=Sports&amp;tags=Golf</code>, with active liquidity concentrated in tournament winner/top-10 series.</strong>
+                  <code>GET /series/KXPGATOUR</code>, <code>GET /series/KXLPGATOUR</code>, and <code>GET /series/KXPGATOP10</code> are official Sports/Golf series with open markets (<span data-stat="golf_open">—</span> open, <span data-stat="golf_tracked">—</span> tracked), while many seasonal series (<code>KXMASTERS</code>, <code>KXGOLFMAJORS</code>) have 0 open events out of season.</td>
                 <td><span class="badge green">Verified</span></td>
-                <td><a href="data/coverage.json">data/coverage.json</a> (<code>golf_series_events</code>: 134 series, 0 open events for the four largest) ·
-                  <code>scripts/probe_coverage.py</code> · <a href="https://docs.kalshi.com/api-reference/market/get-series-list.md" target="_blank" rel="noopener">Get Series List ↗</a></td>
-                <td>Re-run the probe when the tour calendar resumes; the page will fill automatically because the collector now enumerates the
-                  official golf series instead of guessing tickers.</td>
+                <td><a href="data/coverage.json">data/coverage.json</a> · <a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXPGATOUR" target="_blank" rel="noopener">GET /series/KXPGATOUR ↗</a> · <a href="https://docs.kalshi.com/api-reference/market/get-series-list.md" target="_blank" rel="noopener">Get Series List ↗</a></td>
+                <td>Collector queries both the official <code>category=Sports&amp;tags=Golf</code> series list and active tournament series (<code>KXPGATOUR</code>, <code>KXLPGATOUR</code>, <code>KXPGATOP10</code>, <code>KXPRESCUP</code>).</td>
               </tr>
               <tr id="F-10">
                 <td class="mono">F-10</td><td><span class="badge warn">Medium</span></td>
