@@ -25,7 +25,7 @@
 | [`pages/api-reference.html`](pages/api-reference.html) | **Verified API Reference** — Line-by-line Kalshi Demo REST, WebSocket, auth headers, and blank unverified runtime parameters |
 | [`pages/flagged-for-review.html`](pages/flagged-for-review.html) & [`VERIFICATION_REPORT.md`](VERIFICATION_REPORT.md) | **Flagged for Review** — Complete register of irregularities (`IR-01`–`IR-12`) and blank unverified values with official links |
 | [`COORDINATION.md`](COORDINATION.md) | **Multi-Session Coordination Board** — Unified task board, conflict resolution log, and PR/Pages record |
-| [`docs/index.html`](docs/index.html) · [`strategies.html`](strategies.html) · [`review.html`](review.html) | **Integrated Parallel Session Archives** — Preserved companion views from prior parallel sessions (`a5878007`, `7a21cbd2`, `b1cd545f`) |
+| [`docs/index.html`](docs/index.html) · [`site/index.html`](site/index.html) · [`strategies.html`](strategies.html) · [`review.html`](review.html) | **Integrated Parallel Session Sub-Sites** — Preserved companion portals (`docs/`, `/monitor/` via `site/`, and GitHub Actions collector workflow in `.github/workflows/pages.yml`) |
 
 ---
 
@@ -42,7 +42,7 @@ Per official [Kalshi Demo Environment Docs](https://docs.kalshi.com/getting_star
 
 ---
 
-## Local Python Demo Client, Strategy Simulator & Site Verifier
+## Local Python Demo Client, Collector, Strategy Simulator & Verifiers
 
 ```bash
 pip install -r requirements.txt
@@ -58,6 +58,9 @@ export KALSHI_KEY_ID="your-demo-key-id"
 export KALSHI_PRIVATE_KEY_PATH="/path/to/demo-private-key.pem"
 python3 scripts/kalshi_demo_client.py --mode demo-status
 
-# 4. Serve the live dashboard locally
+# 4. Run companion public Kalshi collector (from PR #9)
+python3 scripts/kalshi_collector.py
+
+# 5. Serve the live dashboard locally
 python3 -m http.server 4173 --bind 0.0.0.0
 ```
