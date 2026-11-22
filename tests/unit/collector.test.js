@@ -12,8 +12,7 @@ test('collector retains unresolved contracts despite discovery failure and sampl
    const path=new URL(url).pathname;
    if(path.endsWith('/series'))return {series:[series]};
    if(path.endsWith('/events'))return new URL(url).searchParams.has('cursor')?{invalid:true}:{events:[{event_ticker:'TEST-EVENT',series_ticker:'TEST',title:'Synthetic event',markets:[raw]}],cursor:'next'};
-   if(path.endsWith('/OLD-CONTRACT'))return {market:{...raw,ticker:'OLD-CONTRACT',status:'closed'}};
-   if(path.endsWith('/markets'))return {markets:[{...raw,last_price_dollars:'0.5'}]};
+   if(path.endsWith('/markets'))return {markets:new URL(url).searchParams.get('tickers').includes('OLD-CONTRACT')?[{...raw,ticker:'OLD-CONTRACT',status:'closed'}]:[{...raw,last_price_dollars:'0.5'}]};
    throw Error('Unexpected test request '+url);
  }});
  try{await import('../../scripts/collect.mjs?test='+Date.now());const s=JSON.parse(await readFile(file,'utf8'));assert.equal(s.status,'partial');assert.equal(s.coverage.complete,false);assert.equal(s.markets.length,2);assert.ok(s.markets.some(m=>m.ticker==='OLD-CONTRACT'&&m.status==='closed'));assert.equal(s.alerts.length,1);assert.equal(s.alerts[0].delta,.1);assert.equal(s.paper.trades.length,1);assert.equal(s.history['TEST-CONTRACT'].length,2);}finally{globalThis.fetch=original;process.env=oldEnv;await rm(dir,{recursive:true,force:true});}

@@ -1,5 +1,5 @@
 import {readFile, writeFile, mkdir} from 'node:fs/promises';
-import {API, topicFor, normalize, swing, runPaper, emptyPaper, isOpen, exposure} from '../src/engine.js';
+import {API, TOPICS, topicFor, normalize, swing, runPaper, emptyPaper, isOpen, exposure} from '../src/engine.js';
 const file = process.env.SNAPSHOT_FILE || 'data/snapshot.json';
 let old; try {old = JSON.parse(await readFile(file,'utf8'));} catch {old = {};}
 const errors = [], started = Date.now();
@@ -38,19 +38,26 @@ try {
     seen.add(cursor);
   } while(cursor);
 } catch(e) {complete=false;errors.push(e.message);}
-  // This runs even after partial discovery: never discard unresolved prior contracts.
-  // Retain every previously observed contract until official settlement; never equate closed with resolved.
-  for (const m of previous.values()) {
-    if (markets.has(m.ticker)) continue;
-    if(m.status==='settled' && m.result) {markets.set(m.ticker,m); continue;}
-    try {
-      const raw = (await get(`/markets/${encodeURIComponent(m.ticker)}`)).market;
-      if (!raw) throw new Error('Missing market response');
-      const updated = normalize(raw,{event_ticker:m.eventTicker,title:m.eventTitle,settlement_sources:m.settlementSources},
-        {ticker:m.seriesTicker,category:m.officialCategory,categories:[m.officialCategory],tags:m.officialTags,product_metadata:{scope:m.officialScope}},new Date().toISOString());
-      markets.set(m.ticker,updated);
-    } catch(e) {complete=false; errors.push(`${m.ticker}: ${e.message}`); markets.set(m.ticker,m);}
+// Preserve all prior records before any refresh, even after partial discovery.
+const pending=[];
+for(const m of previous.values())if(!markets.has(m.ticker)){
+ markets.set(m.ticker,m);if(!(m.status==='settled'&&m.result))pending.push(m);
+}
+for(let i=0;i<pending.length;i+=50){
+ if(Date.now()-started>200000){complete=false;errors.push('Prior-contract refresh budget exceeded; remaining prior observations retained with original timestamps.');break;}
+ const batch=pending.slice(i,i+50);
+ try{
+  const data=await get('/markets?tickers='+batch.map(m=>encodeURIComponent(m.ticker)).join(','));
+  if(!Array.isArray(data.markets))throw Error('Invalid prior-contract response');
+  const returned=new Map(data.markets.map(m=>[m.ticker,m]));
+  for(const m of batch){const raw=returned.get(m.ticker);
+   if(!raw){complete=false;errors.push(`${m.ticker}: not returned by current market API; retained, unresolved. Historical reconciliation may be needed.`);continue;}
+   const updated=normalize(raw,{event_ticker:m.eventTicker,title:m.eventTitle,settlement_sources:m.settlementSources},
+    {ticker:m.seriesTicker,category:m.officialCategory,categories:m.officialCategories||[m.officialCategory],tags:m.officialTags,product_metadata:{scope:m.officialScope}},new Date().toISOString());
+   markets.set(m.ticker,updated);
   }
+ }catch(e){complete=false;errors.push('Prior-contract batch: '+e.message);}
+}
 const alerts=[];
 for (const m of markets.values()) {
   const p = previous.get(m.ticker);
@@ -70,7 +77,7 @@ if(sampleIds.length && Date.now()-started<180000){
     if(!Array.isArray(data.markets))throw Error('Invalid live sample schema');
     for(const raw of data.markets){const p=markets.get(raw.ticker);if(!p)continue;
       const m=normalize(raw,{title:p.eventTitle,event_ticker:p.eventTicker,settlement_sources:p.settlementSources},
-        {ticker:p.seriesTicker,category:p.officialCategory,categories:[p.officialCategory],tags:p.officialTags,product_metadata:{scope:p.officialScope}},new Date().toISOString());
+        {ticker:p.seriesTicker,category:p.officialCategory,categories:p.officialCategories||[p.officialCategory],tags:p.officialTags,product_metadata:{scope:p.officialScope}},new Date().toISOString());
       const a=swing(p,m,m.observedAt);if(a)alerts.push(a);markets.set(m.ticker,m);
       if(m.last!==null){(history[m.ticker]||=[]).push({time:m.observedAt,price:m.last});history[m.ticker]=history[m.ticker].slice(-2000);}
     }
@@ -78,6 +85,13 @@ if(sampleIds.length && Date.now()-started<180000){
 }
 const now=new Date().toISOString();
 const paper = runPaper(old.paper || emptyPaper(),[...markets.values()],alerts,now);
+// Retain dense history for high-exposure contracts and strategy evidence, not 90k repeated empty timelines.
+const ranked=[...markets.values()].sort((a,b)=>(exposure(b)??-1)-(exposure(a)??-1));
+const historyIds=new Set([...ranked.slice(0,100),...TOPICS.flatMap(t=>ranked.filter(m=>m.topic===t).slice(0,20))].map(m=>m.ticker)
+  .concat(paper.trades.filter(t=>!t.closedAt).map(t=>t.ticker),[...(old.alerts||[]),...alerts].slice(-1000).map(a=>a.ticker)));
+for(const id of Object.keys(history))if(!historyIds.has(id))delete history[id];
+// Large repeated rule/source prose is intentionally omitted. Direct official market and series links remain on every row.
+for(const m of markets.values()){delete m.rules;delete m.settlementSources;}
 const result = {schemaVersion:1,observedAt:now,status:complete?'ok':'partial',markets:[...markets.values()],history,
   alerts:[...(old.alerts || []),...alerts].slice(-1000),paper,
   coverage:{complete,series:seriesCount,events:events.size,calls,scope:'Exact series categories/tags only; non-multivariate open events plus previously tracked markets.'},errors};

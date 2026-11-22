@@ -7,7 +7,7 @@ export const sourceFor = ticker => `${API}/markets/${encodeURIComponent(ticker)}
 export const isOpen = m => ['active', 'open'].includes(m.status);
 // Exact official tags/categories only. No ticker/title keyword guesses.
 export function topicFor(s) {
-  const tags = s.tags || [], categories = s.categories || [s.category];
+  const tags = s.tags || [], categories = [...(s.categories || []),s.category];
   if (s.product_metadata?.scope === 'Gasoline' || tags.includes('Gas prices') || tags.includes('Gas Prices')) return 'Gas prices';
   if (tags.includes('Golf')) return 'Golf';
   if (categories.includes('Elections') || tags.includes('Elections')) return 'Elections';
@@ -19,7 +19,7 @@ export function normalize(m, event, series, observedAt) {
   return {
     ticker: m.ticker, eventTicker: m.event_ticker || event.event_ticker, eventTitle: event.title || '',
     title: m.title || m.yes_sub_title || '', seriesTicker: series.ticker, topic: topicFor(series),
-    officialCategory: series.category || '', officialTags: series.tags || [], officialScope: series.product_metadata?.scope || null,
+    officialCategory: series.category || '', officialCategories: series.categories || [], officialTags: series.tags || [], officialScope: series.product_metadata?.scope || null,
     status: m.status || '', result: ['yes', 'no'].includes(m.result) ? m.result : null,
     last: price(m.last_price_dollars), bid: price(m.yes_bid_dollars), ask: price(m.yes_ask_dollars),
     askSize: number(m.yes_ask_size_fp), noAsk: price(m.no_ask_dollars),
