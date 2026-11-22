@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.29,
+      "bid": 0.27,
+      "bid_depth": 120.0,
+      "last": 0.28,
+      "mid": 0.28,
+      "oi": 500.0,
+      "spread": 0.02,
+      "t": "2026-11-22T07:00:00Z",
+      "ts": 1795330800,
+      "vol": 700.0
+    }
+  ],
+  "series_ticker": "KXPGATOP10",
+  "subtitle": "Yes",
+  "ticker": "KXPGATOP10-26-Y",
+  "title": "PGA Top 10 for All 4 Majors",
+  "topic": "golf",
+  "url": "fixture://kalshi/markets/KXPGATOP10-26-Y"
+}

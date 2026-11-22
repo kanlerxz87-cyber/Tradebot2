@@ -1,0 +1,335 @@
+{
+  "generated_at": "2026-11-22T07:07:09Z",
+  "orderbooks": {
+    "KXAAAGASD-26NOV23-3.00": {
+      "api_url": "fixture://kalshi/markets/KXAAAGASD-26NOV23-3.00/orderbook?depth=20",
+      "best_yes_ask": 0.43,
+      "best_yes_bid": 0.41,
+      "captured_at": "2026-11-22T07:00:00Z",
+      "contracts_ask": 240.0,
+      "contracts_bid": 240.0,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 3
+      },
+      "notional_ask_dollars": 128.0,
+      "notional_bid_dollars": 76.4,
+      "spread_dollars": 0.02,
+      "ticker": "KXAAAGASD-26NOV23-3.00",
+      "topic": "gas",
+      "yes_asks_implied": [
+        [
+          0.43,
+          80.0
+        ],
+        [
+          0.45,
+          120.0
+        ],
+        [
+          0.99,
+          40.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          50.0
+        ],
+        [
+          0.39,
+          100.0
+        ],
+        [
+          0.41,
+          90.0
+        ]
+      ]
+    },
+    "KXBTC15M-26NOV220800-UP": {
+      "api_url": "fixture://kalshi/markets/KXBTC15M-26NOV220800-UP/orderbook?depth=20",
+      "best_yes_ask": 0.55,
+      "best_yes_bid": 0.55,
+      "captured_at": "2026-11-22T07:00:00Z",
+      "contracts_ask": 1500.0,
+      "contracts_bid": 1800.0,
+      "depth_levels": {
+        "yes_ask": 2,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 834.0,
+      "notional_bid_dollars": 980.0,
+      "spread_dollars": 0.0,
+      "ticker": "KXBTC15M-26NOV220800-UP",
+      "topic": "crypto",
+      "yes_asks_implied": [
+        [
+          0.55,
+          600.0
+        ],
+        [
+          0.56,
+          900.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.54,
+          1000.0
+        ],
+        [
+          0.55,
+          800.0
+        ]
+      ]
+    },
+    "KXETHRANGE-26NOV220800-T1700": {
+      "api_url": "fixture://kalshi/markets/KXETHRANGE-26NOV220800-T1700/orderbook?depth=20",
+      "best_yes_ask": 0.32,
+      "best_yes_bid": 0.3,
+      "captured_at": "2026-11-22T07:00:00Z",
+      "contracts_ask": 350.0,
+      "contracts_bid": 400.0,
+      "depth_levels": {
+        "yes_ask": 1,
+        "yes_bid": 1
+      },
+      "notional_ask_dollars": 112.0,
+      "notional_bid_dollars": 120.0,
+      "spread_dollars": 0.02,
+      "ticker": "KXETHRANGE-26NOV220800-T1700",
+      "topic": "crypto",
+      "yes_asks_implied": [
+        [
+          0.32,
+          350.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.3,
+          400.0
+        ]
+      ]
+    },
+    "KXMAYORNYC-27-CAND1": {
+      "api_url": "fixture://kalshi/markets/KXMAYORNYC-27-CAND1/orderbook?depth=20",
+      "best_yes_ask": 0.07,
+      "best_yes_bid": 0.05,
+      "captured_at": "2026-11-22T07:00:00Z",
+      "contracts_ask": 25.0,
+      "contracts_bid": 10.0,
+      "depth_levels": {
+        "yes_ask": 1,
+        "yes_bid": 1
+      },
+      "notional_ask_dollars": 1.75,
+      "notional_bid_dollars": 0.5,
+      "spread_dollars": 0.02,
+      "ticker": "KXMAYORNYC-27-CAND1",
+      "topic": "elections",
+      "yes_asks_implied": [
+        [
+          0.07,
+          25.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.05,
+          10.0
+        ]
+      ]
+    },
+    "KXMOVIEGROSS-26NOV22-100M": {
+      "api_url": "fixture://kalshi/markets/KXMOVIEGROSS-26NOV22-100M/orderbook?depth=20",
+      "best_yes_ask": 0.65,
+      "best_yes_bid": 0.63,
+      "captured_at": "2026-11-22T07:00:00Z",
+      "contracts_ask": 400.0,
+      "contracts_bid": 800.0,
+      "depth_levels": {
+        "yes_ask": 1,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 260.0,
+      "notional_bid_dollars": 499.0,
+      "spread_dollars": 0.02,
+      "ticker": "KXMOVIEGROSS-26NOV22-100M",
+      "topic": "culture",
+      "yes_asks_implied": [
+        [
+          0.65,
+          400.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.62,
+          500.0
+        ],
+        [
+          0.63,
+          300.0
+        ]
+      ]
+    },
+    "KXNEXTNATOSECGEN-99-MAR": {
+      "api_url": "fixture://kalshi/markets/KXNEXTNATOSECGEN-99-MAR/orderbook?depth=20",
+      "best_yes_ask": 0.2,
+      "best_yes_bid": 0.18,
+      "captured_at": "2026-11-22T07:00:00Z",
+      "contracts_ask": 250.0,
+      "contracts_bid": 200.0,
+      "depth_levels": {
+        "yes_ask": 2,
+        "yes_bid": 1
+      },
+      "notional_ask_dollars": 51.5,
+      "notional_bid_dollars": 36.0,
+      "spread_dollars": 0.02,
+      "ticker": "KXNEXTNATOSECGEN-99-MAR",
+      "topic": "elections",
+      "yes_asks_implied": [
+        [
+          0.2,
+          100.0
+        ],
+        [
+          0.21,
+          150.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.18,
+          200.0
+        ]
+      ]
+    },
+    "KXPGAMASTERS-27-MCILROY": {
+      "api_url": "fixture://kalshi/markets/KXPGAMASTERS-27-MCILROY/orderbook?depth=20",
+      "best_yes_ask": 0.13,
+      "best_yes_bid": 0.11,
+      "captured_at": "2026-11-22T07:00:00Z",
+      "contracts_ask": 500.0,
+      "contracts_bid": 250.0,
+      "depth_levels": {
+        "yes_ask": 1,
+        "yes_bid": 1
+      },
+      "notional_ask_dollars": 65.0,
+      "notional_bid_dollars": 27.5,
+      "spread_dollars": 0.02,
+      "ticker": "KXPGAMASTERS-27-MCILROY",
+      "topic": "golf",
+      "yes_asks_implied": [
+        [
+          0.13,
+          500.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.11,
+          250.0
+        ]
+      ]
+    },
+    "KXPGAMASTERS-27-SCHEFFLER": {
+      "api_url": "fixture://kalshi/markets/KXPGAMASTERS-27-SCHEFFLER/orderbook?depth=20",
+      "best_yes_ask": 0.84,
+      "best_yes_bid": 0.83,
+      "captured_at": "2026-11-22T07:00:00Z",
+      "contracts_ask": 300.0,
+      "contracts_bid": 1050.0,
+      "depth_levels": {
+        "yes_ask": 1,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 252.0,
+      "notional_bid_dollars": 865.5,
+      "spread_dollars": 0.01,
+      "ticker": "KXPGAMASTERS-27-SCHEFFLER",
+      "topic": "golf",
+      "yes_asks_implied": [
+        [
+          0.84,
+          300.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.82,
+          600.0
+        ],
+        [
+          0.83,
+          450.0
+        ]
+      ]
+    },
+    "KXPGATOP10-26-Y": {
+      "api_url": "fixture://kalshi/markets/KXPGATOP10-26-Y/orderbook?depth=20",
+      "best_yes_ask": 0.29,
+      "best_yes_bid": 0.27,
+      "captured_at": "2026-11-22T07:00:00Z",
+      "contracts_ask": 90.0,
+      "contracts_bid": 120.0,
+      "depth_levels": {
+        "yes_ask": 1,
+        "yes_bid": 1
+      },
+      "notional_ask_dollars": 26.1,
+      "notional_bid_dollars": 32.4,
+      "spread_dollars": 0.02,
+      "ticker": "KXPGATOP10-26-Y",
+      "topic": "golf",
+      "yes_asks_implied": [
+        [
+          0.29,
+          90.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.27,
+          120.0
+        ]
+      ]
+    },
+    "KXXBANNEDGROK-26-Y": {
+      "api_url": "fixture://kalshi/markets/KXXBANNEDGROK-26-Y/orderbook?depth=20",
+      "best_yes_ask": 0.11,
+      "best_yes_bid": 0.1,
+      "captured_at": "2026-11-22T07:00:00Z",
+      "contracts_ask": 250.0,
+      "contracts_bid": 500.0,
+      "depth_levels": {
+        "yes_ask": 1,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 27.5,
+      "notional_bid_dollars": 47.0,
+      "spread_dollars": 0.01,
+      "ticker": "KXXBANNEDGROK-26-Y",
+      "topic": "culture",
+      "yes_asks_implied": [
+        [
+          0.11,
+          250.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.09,
+          300.0
+        ],
+        [
+          0.1,
+          200.0
+        ]
+      ]
+    }
+  }
+}

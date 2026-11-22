@@ -1,0 +1,353 @@
+{
+  "generated_at": "2026-11-22T07:07:09Z",
+  "series": [
+    {
+      "api_url": "fixture://kalshi/series?ticker=KXAAAGASD",
+      "categories": [
+        "Economics"
+      ],
+      "category": "Economics",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+      "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "fixture://kalshi/series?category=Economics",
+          "value": "Economics"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "daily",
+      "matched_rules": {
+        "gas": "series tag \u2208 {Oil & Gas}"
+      },
+      "settlement_sources": [
+        {
+          "name": "AAA",
+          "url": "https://gasprices.aaa.com/"
+        }
+      ],
+      "tags": [
+        "Oil & Gas",
+        "Oil and energy",
+        "Econ Daily"
+      ],
+      "ticker": "KXAAAGASD",
+      "title": "US gas price up",
+      "topics": [
+        "gas"
+      ],
+      "volume_fp": null
+    },
+    {
+      "api_url": "fixture://kalshi/series?ticker=KXBTC15M",
+      "categories": [
+        "Crypto"
+      ],
+      "category": "Crypto",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+      "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "fixture://kalshi/series?category=Crypto",
+          "value": "Crypto"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "hourly",
+      "matched_rules": {
+        "crypto": "series category \u2208 {Crypto}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Example Source",
+          "url": "https://example.com"
+        }
+      ],
+      "tags": [
+        "BTC",
+        "15 min"
+      ],
+      "ticker": "KXBTC15M",
+      "title": "Bitcoin price in 15 minutes",
+      "topics": [
+        "crypto"
+      ],
+      "volume_fp": null
+    },
+    {
+      "api_url": "fixture://kalshi/series?ticker=KXETHRANGE",
+      "categories": [
+        "Crypto"
+      ],
+      "category": "Crypto",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+      "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "fixture://kalshi/series?category=Crypto",
+          "value": "Crypto"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "hourly",
+      "matched_rules": {
+        "crypto": "series category \u2208 {Crypto}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Example Source",
+          "url": "https://example.com"
+        }
+      ],
+      "tags": [
+        "ETH",
+        "Hourly"
+      ],
+      "ticker": "KXETHRANGE",
+      "title": "Ethereum price above/below",
+      "topics": [
+        "crypto"
+      ],
+      "volume_fp": null
+    },
+    {
+      "api_url": "fixture://kalshi/series?ticker=KXMAYORNYC",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+      "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "fixture://kalshi/series?category=Elections",
+          "value": "Elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Example Source",
+          "url": "https://example.com"
+        }
+      ],
+      "tags": [
+        "Mayors & local"
+      ],
+      "ticker": "KXMAYORNYC",
+      "title": "Who will be the next Mayor of New York City?",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": null
+    },
+    {
+      "api_url": "fixture://kalshi/series?ticker=KXMOVIEGROSS",
+      "categories": [
+        "Entertainment"
+      ],
+      "category": "Entertainment",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+      "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "fixture://kalshi/series?category=Entertainment",
+          "value": "Entertainment"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "weekly",
+      "matched_rules": {
+        "culture": "series category \u2208 {Culture | Entertainment | Mentions}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Example Source",
+          "url": "https://example.com"
+        }
+      ],
+      "tags": [
+        "Movies"
+      ],
+      "ticker": "KXMOVIEGROSS",
+      "title": "Top movie box office this weekend",
+      "topics": [
+        "culture"
+      ],
+      "volume_fp": null
+    },
+    {
+      "api_url": "fixture://kalshi/series?ticker=KXNEXTNATOSECGEN",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+      "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "fixture://kalshi/series?category=Elections",
+          "value": "Elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "North Atlantic Treaty Organization",
+          "url": "https://www.nato.int/"
+        }
+      ],
+      "tags": [
+        "Leadership races"
+      ],
+      "ticker": "KXNEXTNATOSECGEN",
+      "title": "Who will be the next Secretary General of NATO?",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": null
+    },
+    {
+      "api_url": "fixture://kalshi/series?ticker=KXPGAMASTERS",
+      "categories": [
+        "Sports"
+      ],
+      "category": "Sports",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+      "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "fixture://kalshi/series?category=Sports",
+          "value": "Sports"
+        },
+        {
+          "by": "tags",
+          "url": "fixture://kalshi/series?tags=Golf",
+          "value": "Golf"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "golf": "series tag \u2208 {Golf}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Example Source",
+          "url": "https://example.com"
+        }
+      ],
+      "tags": [
+        "Golf"
+      ],
+      "ticker": "KXPGAMASTERS",
+      "title": "Golfers to Participate in the Masters",
+      "topics": [
+        "golf"
+      ],
+      "volume_fp": null
+    },
+    {
+      "api_url": "fixture://kalshi/series?ticker=KXPGATOP10",
+      "categories": [
+        "Sports"
+      ],
+      "category": "Sports",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+      "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "fixture://kalshi/series?category=Sports",
+          "value": "Sports"
+        },
+        {
+          "by": "tags",
+          "url": "fixture://kalshi/series?tags=Golf",
+          "value": "Golf"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "annual",
+      "matched_rules": {
+        "golf": "series tag \u2208 {Golf}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Example Source",
+          "url": "https://example.com"
+        }
+      ],
+      "tags": [
+        "Golf"
+      ],
+      "ticker": "KXPGATOP10",
+      "title": "PGA Top 10 for All 4 Majors",
+      "topics": [
+        "golf"
+      ],
+      "volume_fp": null
+    },
+    {
+      "api_url": "fixture://kalshi/series?ticker=KXXBANNEDGROK",
+      "categories": [
+        "Culture"
+      ],
+      "category": "Culture",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+      "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "fixture://kalshi/series?category=Culture",
+          "value": "Culture"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "culture": "series category \u2208 {Culture | Entertainment | Mentions}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Example Source",
+          "url": "https://example.com"
+        }
+      ],
+      "tags": [
+        "AI"
+      ],
+      "ticker": "KXXBANNEDGROK",
+      "title": "Will Grok be banned this year",
+      "topics": [
+        "culture"
+      ],
+      "volume_fp": null
+    }
+  ],
+  "source": "https://docs.kalshi.com/api-reference/market/get-series-list"
+}

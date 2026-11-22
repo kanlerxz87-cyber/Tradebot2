@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flagged for review · Tradebot2</title>
+<meta name="description" content="Irregularities, unverified values and open questions found while building this dashboard, each with a source link.">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<header class="site"><div class="wrap nav">
+  <a class="brand" href="index.html">Tradebot<span class="dot">2</span></a>
+  <a class="navlink" href="index.html">Dashboard</a>
+  <a class="navlink" href="topics/gas.html">Gas</a>
+  <a class="navlink" href="topics/elections.html">Elections</a>
+  <a class="navlink" href="topics/culture.html">Culture</a>
+  <a class="navlink" href="topics/crypto.html">Crypto</a>
+  <a class="navlink" href="topics/golf.html">Golf</a>
+  <a class="navlink" href="performance.html">Performance</a>
+  <a class="navlink" href="resolutions.html">Resolutions</a>
+  <a class="navlink" href="requirements.html">Requirements</a>
+  <a class="navlink" href="sources.html">Sources</a>
+  <a class="navlink" href="flagged.html" aria-current="page">Flagged</a>
+</div></header>
+<main class="wrap">
+  <h1>Flagged for review</h1>
+  <p class="lede">
+    Everything this build could not confirm, could not do, or found inconsistent — kept in the open
+    instead of being silently resolved. None of these block the site; each has the source that
+    shows why it is flagged.
+  </p>
+  <div class="grid cards" id="kpis"></div>
+
+  <div class="tablewrap" style="margin-top:18px"><table>
+    <thead><tr><th>ID</th><th>Item</th><th>What was observed</th><th>Impact</th><th>Status</th><th>Source</th></tr></thead>
+    <tbody id="rows"><tr><td colspan="6" class="muted">loading…</td></tr></tbody>
+  </table></div>
+
+  <h2>How flags are handled</h2>
+  <p class="small muted">
+    A flag is recorded in <code>data/flags.json</code> and rendered here. <code>tools/verify_data.py</code>
+    enforces that flagged values are blank on the site rather than guessed. If you want any of these
+    changed, the ID plus the source link is enough to start a review.
+  </p>
+</main>
+<footer><div class="wrap">Tradebot2 · <a href="sources.html">sources</a> · <a href="requirements.html">requirements</a></div></footer>
+<script src="assets/js/util.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const TB = window.TB;
+  const doc = await TB.getJSON('data/flags.json').catch(() => null);
+  const rows = doc?.flags || [];
+  const count = (s) => rows.filter((r) => r.status === s).length;
+  document.querySelector('#kpis').innerHTML = [
+    ['Flagged items', rows.length, 'total'],
+    ['Open', count('open'), 'needs a decision or credential'],
+    ['Unverified', count('unverified'), 'value withheld'],
+    ['Resolved', count('resolved'), 'checked and closed'],
+  ].map(([k, v, s]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
+  document.querySelector('#rows').innerHTML = rows.map((f) => `<tr id="${TB.esc(f.id)}">
+    <td><code>${TB.esc(f.id)}</code></td>
+    <td><strong>${TB.esc(f.title)}</strong></td>
+    <td class="small">${TB.esc(f.observed)}</td>
+    <td class="small">${TB.esc(f.impact)}</td>
+    <td><span class="tag ${f.status === 'open' ? 'elections' : f.status === 'unverified' ? 'gas' : 'crypto'}">${TB.esc(f.status)}</span></td>
+    <td class="small">${TB.sourceLink(f.source, 'source ↗')}</td></tr>`).join('')
+    || '<tr><td colspan="6" class="muted">No flags recorded.</td></tr>';
+});
+</script>
+</body>
+</html>

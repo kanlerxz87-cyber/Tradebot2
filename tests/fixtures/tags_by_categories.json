@@ -1,0 +1,46 @@
+{
+  "tags_by_categories": {
+    "Economics": [
+      "Oil and energy",
+      "Econ Daily"
+    ],
+    "Commodities": [
+      "Oil & Gas",
+      "Metals"
+    ],
+    "Elections": [
+      "US Elections",
+      "Leadership races",
+      "Mayors & local"
+    ],
+    "Culture": [
+      "Music",
+      "Awards"
+    ],
+    "Entertainment": [
+      "Movies",
+      "Television"
+    ],
+    "Mentions": [
+      "Politicians"
+    ],
+    "Crypto": [
+      "BTC",
+      "ETH",
+      "15 min",
+      "Hourly"
+    ],
+    "Sports": [
+      "Golf",
+      "Basketball"
+    ],
+    "Politics": [
+      "Trump",
+      "Trade & tariffs"
+    ],
+    "Financials": [
+      "KPIs"
+    ],
+    "Test": null
+  }
+}

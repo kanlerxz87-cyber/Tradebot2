@@ -35,7 +35,8 @@ class KalshiClient:
     """Public (unauthenticated) reads with host fallback and polite backoff."""
 
     def __init__(self, env: str = "demo", timeout: int = 25, pause: float = 0.12,
-                 session: requests.Session | None = None) -> None:
+                 session: requests.Session | None = None,
+                 max_transport_failures: int = 3) -> None:
         self.env = env
         self.hosts = DEMO_HOSTS if env == "demo" else PROD_HOSTS
         self.host = self.hosts[0]
@@ -44,6 +45,8 @@ class KalshiClient:
         self.session = session or requests.Session()
         self.session.headers.update({"User-Agent": USER_AGENT, "Accept": "application/json"})
         self.calls: list[dict[str, Any]] = []
+        self.transport_failures = 0
+        self.max_transport_failures = max_transport_failures
 
     # -- transport ---------------------------------------------------------
     def _url(self, path: str, params: dict[str, Any] | None) -> str:
@@ -81,7 +84,14 @@ class KalshiClient:
                 raise
             except Exception as exc:  # network errors -> rotate host, then retry
                 last_exc = exc
+                self.transport_failures += 1
                 self.host = self.hosts[(self.hosts.index(self.host) + 1) % len(self.hosts)]
+                if self.transport_failures >= self.max_transport_failures:
+                    raise KalshiError(
+                        "network transport to Kalshi failed repeatedly "
+                        f"({self.transport_failures} attempts, last: {type(exc).__name__}: {exc}). "
+                        "This sandbox/proxy appears to block kalshi.co; run the collector in "
+                        "GitHub Actions (see .github/workflows/collect.yml).") from exc
                 time.sleep(min(2 ** attempt, 20))
         raise KalshiError(f"GET failed after {retries} attempts: {path} ({last_exc})")
 

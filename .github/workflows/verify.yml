@@ -1,0 +1,32 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Unit tests (fees, alerts, settlement, strategies)
+        run: |
+          python tests/test_fees.py
+          python tests/test_engine.py
+          python tests/test_pipeline.py
+      - name: Offline fixture pipeline
+        run: python tests/run_fixture_pipeline.py
+      - name: Verify data integrity and source links
+        run: python tools/verify_data.py --data-dir data --strict-links
+      - name: Check the published site (links, pages, required labels)
+        run: python tools/check_site.py --root . --strict

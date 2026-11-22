@@ -1,0 +1,34 @@
+{
+  "finished_at": "2026-11-22T07:07:12Z",
+  "ok": true,
+  "stages": [
+    {
+      "ok": true,
+      "seconds": 0,
+      "skipped": true,
+      "stage": "collect"
+    },
+    {
+      "ok": true,
+      "seconds": 0.0,
+      "stage": "alerts"
+    },
+    {
+      "ok": true,
+      "seconds": 3.37,
+      "stage": "resolutions"
+    },
+    {
+      "ok": true,
+      "seconds": 0.0,
+      "stage": "paper_trading"
+    },
+    {
+      "ok": true,
+      "seconds": 0.0,
+      "stage": "portfolio_sync"
+    }
+  ],
+  "started_at": "2026-11-22T07:07:09Z",
+  "warnings": []
+}

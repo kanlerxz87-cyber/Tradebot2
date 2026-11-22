@@ -1,0 +1,38 @@
+name: probe-api
+
+# Records what the Kalshi demo API actually returns, including CORS headers and
+# WebSocket handshakes. Committed to data/verify-api.json so every claim on the
+# site can point at a response the project captured itself.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt websockets
+      - name: Probe REST + WebSocket
+        env:
+          KALSHI_DEMO_API_KEY_ID: ${{ secrets.KALSHI_DEMO_API_KEY_ID }}
+          KALSHI_DEMO_PRIVATE_KEY: ${{ secrets.KALSHI_DEMO_PRIVATE_KEY }}
+        run: python tools/probe_api.py --json-out data/verify-api.json
+      - name: Commit probe result
+        run: |
+          git config user.name "tradebot2-probe"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/verify-api.json
+          if git diff --cached --quiet; then echo "no change"; else
+            git commit -m "data: API probe $(date -u +%FT%TZ)"
+            git pull --rebase --autostash origin main
+            git push origin HEAD:main
+          fi

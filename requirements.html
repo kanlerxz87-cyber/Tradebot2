@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Requirements register · Tradebot2</title>
+<meta name="description" content="Every requirement from the brief, mapped line by line to where it is implemented, with verification status and source.">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<header class="site"><div class="wrap nav">
+  <a class="brand" href="index.html">Tradebot<span class="dot">2</span></a>
+  <a class="navlink" href="index.html">Dashboard</a>
+  <a class="navlink" href="topics/gas.html">Gas</a>
+  <a class="navlink" href="topics/elections.html">Elections</a>
+  <a class="navlink" href="topics/culture.html">Culture</a>
+  <a class="navlink" href="topics/crypto.html">Crypto</a>
+  <a class="navlink" href="topics/golf.html">Golf</a>
+  <a class="navlink" href="performance.html">Performance</a>
+  <a class="navlink" href="resolutions.html">Resolutions</a>
+  <a class="navlink" href="requirements.html" aria-current="page">Requirements</a>
+  <a class="navlink" href="sources.html">Sources</a>
+  <a class="navlink" href="flagged.html">Flagged</a>
+</div></header>
+<main class="wrap">
+  <h1>Requirements register</h1>
+  <p class="lede">
+    The brief is decomposed into numbered requirements. Each row states what is required, where it
+    is implemented, how it was verified, and its status. <strong>Not implemented</strong> and
+    <strong>needs review</strong> rows are kept visible rather than hidden — see
+    <a href="flagged.html">Flagged for Review</a>.
+  </p>
+  <div class="grid cards" id="kpis"></div>
+
+  <div class="section filters">
+    <div class="seg" id="statusFilter" role="group" aria-label="Status filter">
+      <button data-status="all" aria-pressed="true">All</button>
+      <button data-status="done" aria-pressed="false">Implemented</button>
+      <button data-status="partial" aria-pressed="false">Partial</button>
+      <button data-status="review" aria-pressed="false">Needs review</button>
+      <button data-status="open" aria-pressed="false">Not implemented</button>
+    </div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>ID</th><th>Requirement</th><th>Implementation</th><th>Verification</th>
+      <th>Status</th><th>Source</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+</main>
+<footer><div class="wrap">Tradebot2 · <a href="index.html">dashboard</a> · <a href="flagged.html">flagged</a></footer>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/requirements.js"></script>
+</body>
+</html>

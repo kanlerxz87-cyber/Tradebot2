@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.13,
+      "bid": 0.11,
+      "bid_depth": 250.0,
+      "last": 0.12,
+      "mid": 0.12,
+      "oi": 900.0,
+      "spread": 0.02,
+      "t": "2026-11-22T07:00:00Z",
+      "ts": 1795330800,
+      "vol": 1200.0
+    }
+  ],
+  "series_ticker": "KXPGAMASTERS",
+  "subtitle": "Rory McIlroy",
+  "ticker": "KXPGAMASTERS-27-MCILROY",
+  "title": "Golfers to Participate in the Masters",
+  "topic": "golf",
+  "url": "fixture://kalshi/markets/KXPGAMASTERS-27-MCILROY"
+}

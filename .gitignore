@@ -10,3 +10,5 @@ Thumbs.db
 *.key
 secrets/
 .env
+# Local test output
+/tmp/

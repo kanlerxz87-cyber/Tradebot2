@@ -1,0 +1,136 @@
+{
+  "generated_at": "2026-11-22T07:30:00Z",
+  "note": "Official sources used. Each entry was fetched during this session (2026-11-22) and the text it supports is named.",
+  "sources": [
+    {
+      "name": "API Environments and Endpoints",
+      "url": "https://docs.kalshi.com/getting_started/api_environments",
+      "used_for": "Production and demo REST/WebSocket base URLs; confirms both demo hosts used by this project."
+    },
+    {
+      "name": "Test In The Demo Environment",
+      "url": "https://docs.kalshi.com/getting_started/demo_env",
+      "used_for": "Demo environment purpose and its explicit warning that demo prices/behaviour may not reflect real markets."
+    },
+    {
+      "name": "Quick Start: Authenticated Requests",
+      "url": "https://docs.kalshi.com/getting_started/quick_start_authenticated_requests",
+      "used_for": "The three KALSHI-ACCESS-* headers, the timestamp+method+path pre-sign string, RSA-PSS/Ed25519 signing, base64 encoding."
+    },
+    {
+      "name": "Quick Start: WebSockets",
+      "url": "https://docs.kalshi.com/getting_started/quick_start_websockets",
+      "used_for": "WebSocket handshake requires authentication; signing path is /trade-api/ws/v2; ping/pong behaviour."
+    },
+    {
+      "name": "Quick Start: Market Data",
+      "url": "https://docs.kalshi.com/getting_started/quick_start_market_data",
+      "used_for": "Public market-data reads need no authentication."
+    },
+    {
+      "name": "Get Series List",
+      "url": "https://docs.kalshi.com/api-reference/market/get-series-list",
+      "used_for": "series objects: category, categories, tags, settlement_sources, fee_type \u2014 the fields the topic rules match on."
+    },
+    {
+      "name": "Get Series",
+      "url": "https://docs.kalshi.com/api-reference/market/get-series",
+      "used_for": "GET /series/{series_ticker}: per-ticker source link used on every topic page."
+    },
+    {
+      "name": "Get Markets",
+      "url": "https://docs.kalshi.com/api-reference/market/get-markets",
+      "used_for": "Market listing filters, paging rules, and the note that responses are cached for a short time."
+    },
+    {
+      "name": "Get Market Orderbook",
+      "url": "https://docs.kalshi.com/api-reference/market/get-market-orderbook",
+      "used_for": "orderbook_fp with yes_dollars / no_dollars arrays of [price, contracts]; depth 0-100; bids only."
+    },
+    {
+      "name": "Orderbook Responses",
+      "url": "https://docs.kalshi.com/getting_started/orderbook_responses",
+      "used_for": "Why only bids are returned, and that a YES ask equals 1 \u2212 NO bid. Used to build the ask ladder."
+    },
+    {
+      "name": "Get Trades",
+      "url": "https://docs.kalshi.com/api-reference/market/get-trades",
+      "used_for": "Trade shape (count_fp, yes/no price dollars, created_time) and ts filters."
+    },
+    {
+      "name": "Get Market Candlesticks",
+      "url": "https://docs.kalshi.com/api-reference/market/get-market-candlesticks",
+      "used_for": "Candlestick periods 1/60/1440 minutes, 5,000-period cap, seconds-only timestamps."
+    },
+    {
+      "name": "Get Exchange Status",
+      "url": "https://docs.kalshi.com/api-reference/exchange/get-exchange-status",
+      "used_for": "exchange_active / trading_active flags shown in the header pill and recorded by the probe."
+    },
+    {
+      "name": "Market Settlement",
+      "url": "https://docs.kalshi.com/getting_started/market_settlement",
+      "used_for": "YES holders receive $1.00 per contract on a yes result; zero settlement fee."
+    },
+    {
+      "name": "Market Lifecycle",
+      "url": "https://docs.kalshi.com/getting_started/market_lifecycle",
+      "used_for": "Status values (initialized \u2192 inactive \u2192 active \u2192 closed \u2192 determined \u2192 finalized) used by the resolution tracker."
+    },
+    {
+      "name": "Historical Data",
+      "url": "https://docs.kalshi.com/getting_started/historical_data",
+      "used_for": "Live/historical cutoffs and the /historical/* endpoints; relevant once markets age out of the live list."
+    },
+    {
+      "name": "Fixed-Point Representation",
+      "url": "https://docs.kalshi.com/getting_started/fixed_point_migration",
+      "used_for": "_dollars and _fp string fields, price_ranges/price_level_structure tick grid."
+    },
+    {
+      "name": "Rate Limits and Tiers",
+      "url": "https://docs.kalshi.com/getting_started/rate_limits",
+      "used_for": "Token buckets; /portfolio/balance has its own bucket (1/s Basic-Advanced). Bounds the collector schedule."
+    },
+    {
+      "name": "Get Balance",
+      "url": "https://docs.kalshi.com/api-reference/portfolio/get-balance",
+      "used_for": "balance, balance_dollars, portfolio_value, updated_ts \u2014 the demo portfolio panel."
+    },
+    {
+      "name": "Get Positions",
+      "url": "https://docs.kalshi.com/api-reference/portfolio/get-positions",
+      "used_for": "market_positions/event_positions, settlement_status filter."
+    },
+    {
+      "name": "Create Order (V2)",
+      "url": "https://docs.kalshi.com/api-reference/orders/create-order-v2",
+      "used_for": "POST /portfolio/events/orders with ticker, side (bid/ask), count, price, time_in_force, self_trade_prevention_type."
+    },
+    {
+      "name": "Kalshi Fee Schedule (PDF)",
+      "url": "https://kalshi.com/docs/kalshi-fee-schedule.pdf",
+      "used_for": "taker fee = ceil(M \u00d7 0.07 \u00d7 C \u00d7 P \u00d7 (1\u2212P)); maker = ceil(M \u00d7 0.0175 \u00d7 C \u00d7 P \u00d7 (1\u2212P)); General Trading Fees Table (42 values) reproduced by tests/test_fees.py."
+    },
+    {
+      "name": "Kalshi Glossary / categories",
+      "url": "https://docs.kalshi.com/getting_started/terms",
+      "used_for": "Series \u2192 Event \u2192 Market structure; category vs categories vs tags as discovery fields."
+    },
+    {
+      "name": "Get Tags for Series Categories",
+      "url": "https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories",
+      "used_for": "/search/tags_by_categories map used to enumerate official categories and tags at collection time."
+    },
+    {
+      "name": "Demo account help article",
+      "url": "https://help.kalshi.com/en/articles/13823775-creating-and-using-a-demo-account",
+      "used_for": "Linked from the official demo guide as the way to create a demo account."
+    },
+    {
+      "name": "GitHub Pages documentation",
+      "url": "https://docs.github.com/en/pages",
+      "used_for": "How the site is published from the main branch."
+    }
+  ]
+}

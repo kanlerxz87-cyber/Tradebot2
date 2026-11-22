@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.07,
+      "bid": 0.05,
+      "bid_depth": 10.0,
+      "last": 0.06,
+      "mid": 0.06,
+      "oi": 40.0,
+      "spread": 0.02,
+      "t": "2026-11-22T07:00:00Z",
+      "ts": 1795330800,
+      "vol": 50.0
+    }
+  ],
+  "series_ticker": "KXMAYORNYC",
+  "subtitle": "Candidate One",
+  "ticker": "KXMAYORNYC-27-CAND1",
+  "title": "Who will be the next Mayor of New York City?",
+  "topic": "elections",
+  "url": "fixture://kalshi/markets/KXMAYORNYC-27-CAND1"
+}
