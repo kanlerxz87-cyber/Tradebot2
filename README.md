@@ -64,3 +64,38 @@ python3 scripts/kalshi_collector.py
 # 5. Serve the live dashboard locally
 python3 -m http.server 4173 --bind 0.0.0.0
 ```
+
+---
+
+## Integrated Companion Sub-Sites (`/monitor/` & `/dash/`)
+
+Limits (also on the site's Findings and Flagged pages):
+
+- Trades are simulated. No orders are placed and fees are not modelled.
+- The demo-account portfolio is not connected. It needs API-key secrets that were not provided.
+- Alerts compare snapshots from consecutive scheduled runs (about 15 minutes apart), not per-second ticks.
+- The high-ROI screen is a rule set, not a validated model.
+
+---
+
+## 📍 Alternate full-spec dashboard at `/dash/`
+
+A second, independently-built, spec-complete dashboard is published at
+**`/dash/`** (https://kanlerxz87-cyber.github.io/Tradebot2/dash/), integrated by
+`session-arena-93ec9646` (PR #7) via the shared Pages workflow **without modifying**
+any other session's pages. Topics are separate pages with events grouped inside each
+topic; every table row links its exact official API query + website page + settlement
+source; all irregularities are published at `/dash/flagged/`.
+
+- **Landing**: `/dash/`
+- **Topics**: `/dash/topics/gas/` · `/dash/topics/elections/` · `/dash/topics/culture/` · `/dash/topics/crypto/` · `/dash/topics/golf/`
+- **Alerts (two scrolling chats)**: `/dash/alerts/`
+- **Charts (time × price + orderbook depth)**: `/dash/charts/`
+- **Simulated portfolio + strategy categorization**: `/dash/portfolio/`
+- **Executive summary / sources / strategies / verification**: `/dash/docs/`
+- **Flagged for Review**: `/dash/flagged/`
+
+Verified data snapshot (machine-readable): `data/snapshot.json`. Line-by-line
+verification log: `dash/docs/verification.md`. Regenerate topic pages + run the
+whole-site link check with `node tools/build.js`.
+

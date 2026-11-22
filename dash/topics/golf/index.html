@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Golf — Kalshi Demo Dashboard</title>
+<meta name="description" content="Golf events on the Kalshi demo exchange: verified live markets, prices, volume, liquidity and sources.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body data-page="golf">
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Golf</h1>
+    <p class="sub">PGA Tour, majors and team events. At snapshot time the demo had <b>no open golf markets</b> (the most recent event, The RSM Classic cut markets, all settled Nov 20). The demo's largest golf dollar event is <b>KXPRESCUP-26</b> (2026 President's Cup, ≈$4.2M total notional) — tracked to its verified resolution: <b>Team USA (YES)</b>. Series census: KXPGAMAKECUT, KXPRESCUP, KXGOLFMAJORS, KXPGAMAJORTOP10, KXPGAR2LEAD, KXPGARYDERCUPD1, KXPRESCUP and more, all with PGA Tour / DP World Tour settlement sources.</p>
+  </div>
+
+  <div class="card">
+    <h2>Live events — Golf <span class="tag">active markets at snapshot, ranked by notional</span></h2>
+    <div id="live-table"></div>
+  </div>
+
+  <div class="card">
+    <h2>Resolved &amp; tracked to settlement — Golf <span class="tag">yes/no outcomes</span></h2>
+    <div id="done-table"></div>
+  </div>
+
+
+      <div class="card">
+        <h2>2026 President's Cup — resolution (verified) <span class="tag">KXPRESCUP-26 · settled 2026-09-27 22:39 UTC</span></h2>
+        <table><thead><tr><th>Market</th><th class="num">Last</th><th class="num">Total volume (notional)</th><th class="num">Open interest</th><th>Result</th><th>Source</th></tr></thead><tbody>
+          <tr><td><b>Team USA</b> <span class="mono note">KXPRESCUP-26-USA</span></td><td class="num p up">0.47</td><td class="num">$393,982</td><td class="num">$204,731</td><td><span class="badge open">SETTLED YES</span></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXPRESCUP&limit=3" target="_blank" rel="noopener">API (verified)</a></td></tr>
+          <tr><td><b>Team World</b> <span class="mono note">KXPRESCUP-26-WORLD</span></td><td class="num p down">0.44</td><td class="num">$2,303,650</td><td class="num">$1,167,461</td><td><span class="badge done">SETTLED NO</span></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXPRESCUP&limit=3" target="_blank" rel="noopener">API (verified)</a></td></tr>
+          <tr><td><b>Tie</b> <span class="mono note">KXPRESCUP-26-TIE</span></td><td class="num p down">0.10</td><td class="num">$1,520,096</td><td class="num">$1,065,996</td><td><span class="badge done">SETTLED NO</span></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXPRESCUP&limit=3" target="_blank" rel="noopener">API (verified)</a></td></tr>
+        </tbody></table>
+        <p class="note">Settlement source per the API: <a href="https://www.pgatour.com/" target="_blank" rel="noopener">PGA Tour / Governing League</a>. Total event notional ≈ <b>$4.22M</b> — the largest verified dollar event in the demo at snapshot time.</p>
+      </div>
+      <div class="card">
+        <h2>PGA To Make Cut — The RSM Classic 2026 (settled) <span class="tag">KXPGAMAKECUT-THRC26</span></h2>
+        <table><thead><tr><th>Market</th><th>Result (verified)</th><th>Settled</th><th>Source</th></tr></thead><tbody>
+          <tr><td>Bill Haas makes the cut</td><td><span class="badge done">SETTLED NO</span></td><td class="mono">2026-11-20 22:08 UTC</td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXPGAMAKECUT&limit=8" target="_blank" rel="noopener">API (verified)</a></td></tr>
+          <tr><td>Robert Streb makes the cut</td><td><span class="badge done">SETTLED NO</span></td><td class="mono">2026-11-20 22:08 UTC</td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXPGAMAKECUT&limit=8" target="_blank" rel="noopener">API (verified)</a></td></tr>
+          <tr><td>Ryan Brehm makes the cut</td><td><span class="badge done">SETTLED NO</span></td><td class="mono">2026-11-20 22:08 UTC</td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXPGAMAKECUT&limit=8" target="_blank" rel="noopener">API (verified)</a></td></tr>
+        </tbody></table>
+        <p class="note">Settlement source per the API: <a href="https://www.pgatour.com/" target="_blank" rel="noopener">PGA Tour</a> + <a href="https://www.espn.com" target="_blank" rel="noopener">ESPN</a>. No open golf markets in the demo at snapshot time (verified via the same queries) — the page will show the next tournament when the demo lists it.</p>
+      </div>
+
+  <div class="card">
+    <h2>Events in this topic (grouped) <span class="tag">every event, every source link</span></h2>
+    <div id="event-groups"></div>
+  </div>
+</div>
+
+<script src="../../assets/data.js"></script>
+<script src="../../assets/charts.js"></script>
+<script src="../../assets/render.js"></script>
+<script src="../../assets/layout.js"></script>
+<script>
+(function(){
+  var D = window.KDATA, K = window.KRENDER, S = "golf";
+  K.renderMarkets("live-table", {onlyTopic:S, onlyStatus:"live", ranked:true});
+  K.renderMarkets("done-table", {onlyTopic:S, onlyStatus:"done", ranked:true});
+  K.renderEvents("event-groups", {onlyTopic:S});
+  var ms = (D.markets||[]).filter(function(m){return m.topic===S;});
+  (function(){
+    // topic-specific ladders
+    function ladder(containerId, items, titleKey){
+      if (!document.getElementById(containerId)) return;
+      var max = Math.max.apply(null, items.map(function(i){return i.vol;}).concat([1]));
+      var h = "";
+      items.forEach(function(i){
+        var pct = i.vol/max*100;
+        h += '<div class="bar-row"><div class="lbl">'+K.esc(i.label)+'</div>' +
+             '<div class="bar-track"><div class="bar-fill" style="width:'+Math.max(1.5,pct).toFixed(1)+'%"></div></div>' +
+             '<div class="val">'+K.fmtVol(i.vol)+' · last '+K.fmtP(i.last)+'</div></div>';
+      });
+      document.getElementById(containerId).innerHTML = h;
+    }
+    if (S === "gas") {
+      var gas = ms.filter(function(m){return m.series==="KXAAAGASW";});
+      gas.sort(function(a,b){return parseFloat(a.market.split("-").pop()) - parseFloat(b.market.split("-").pop());});
+      ladder("gasladder", gas.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+    }
+    if (S === "elections") {
+      var sm = ms.filter(function(m){return m.series==="KXSENMAJ";});
+      sm.sort(function(a,b){return (b.last||0)-(a.last||0);});
+      ladder("senmaj-ladder", sm.map(function(m){return {label: m.title.replace(" wins Senate Majority Leader",""), vol: m.oi||1, last: m.last};}));
+    }
+    if (S === "culture") {
+      var gta = ms.filter(function(m){return m.series==="KXGTAONLINE";});
+      gta.sort(function(a,b){return (a.closeTime||"").localeCompare(b.closeTime||"");});
+      ladder("gta-ladder", gta.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+      var nflx = ms.filter(function(m){return m.series==="KXNETFLIXRANKSHOWGLOBAL";});
+      nflx.sort(function(a,b){return (b.last||0)-(a.last||0);});
+      ladder("netflix-ladder", nflx.map(function(m){return {label: m.title, vol: (m.oi||0)+ (m.last? m.last*100:0), last: m.last};}));
+    }
+    if (S === "crypto") {
+      // candlestick chart
+      var cd = D.candlesticks;
+      var canvas = document.getElementById("btcchart");
+      if (canvas && cd) {
+        var pts = cd.candles.map(function(c){return {t:c.t, o:c.o, h:c.h, l:c.l, c:c.c, v:c.v};});
+        function draw(){
+          window.KCHART.drawPrice(canvas, {
+            points: pts,
+            granularity: parseInt(document.getElementById("btc-gran").value||"0",10),
+            showCandles: document.getElementById("btc-candles").checked,
+            title: "KXBTC15M-26NOV201900-00 — BTC up in next 15 min (settled NO @ 0.003)",
+            subtitle: "1-min candles · CF Benchmarks BRTI · target $58,870",
+            alertLevels: [{price:0.10, label:"alert zone $0.10"}]
+          });
+        }
+        document.getElementById("btc-gran").onchange = draw;
+        document.getElementById("btc-candles").onchange = draw;
+        window.addEventListener("resize", draw);
+        draw();
+      }
+      var bmax = ms.filter(function(m){return m.series==="KXBTCMAXY";});
+      bmax.sort(function(a,b){
+        var av = parseFloat(a.market.split("-").pop().replace(/D/g,""))||0;
+        var bv = parseFloat(b.market.split("-").pop().replace(/D/g,""))||0;
+        return av-bv;
+      });
+      ladder("btcmaxy-ladder", bmax.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+      var cs = ms.filter(function(m){return m.settledResult && (m.series||"").indexOf("15M")>0;});
+      var tb = document.getElementById("crypto-settled");
+      if (tb) tb.innerHTML = cs.map(function(m){
+        return '<tr><td class="mono note">'+m.market+'</td><td class="note">'+K.esc(m.rule.replace("then the market resolves to Yes.",""))+'</td>'+
+          '<td class="num p">'+(m.last!=null?m.last.toFixed(3):"–")+'</td><td class="num">'+K.fmtVol(m.volume)+'</td>'+
+          '<td><span class="badge '+(m.settledResult==="yes"?"open":"done")+'">'+m.settledResult.toUpperCase()+'</span></td>'+
+          '<td class="mono">'+(m.settledTs||"").substr(0,16)+'Z</td>'+
+          '<td class="srcs"><a href="'+m.src.api+'" target="_blank" rel="noopener">API (verified)</a></td></tr>';
+      }).join("");
+    }
+  })();
+})();
+</script>
+</body>
+</html>

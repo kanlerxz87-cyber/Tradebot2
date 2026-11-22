@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crypto — Kalshi Demo Dashboard</title>
+<meta name="description" content="Crypto events on the Kalshi demo exchange: verified live markets, prices, volume, liquidity and sources.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body data-page="crypto">
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Crypto</h1>
+    <p class="sub">The most active topic in the demo: rolling 15-minute BTC/ETH/DOGE/HYPE/SOL markets (CF Benchmarks RTI settlement), daily Bitcoin above/below ladders (KXBTCD), and the annual <b>KXBTCMAXY</b> &ldquo;how high will Bitcoin get&rdquo; ladder with real volume. The verified 15-min series below includes a real ≥$0.10 collapse that drives the alert demo.</p>
+  </div>
+
+  <div class="card">
+    <h2>Live events — Crypto <span class="tag">active markets at snapshot, ranked by notional</span></h2>
+    <div id="live-table"></div>
+  </div>
+
+  <div class="card">
+    <h2>Resolved &amp; tracked to settlement — Crypto <span class="tag">yes/no outcomes</span></h2>
+    <div id="done-table"></div>
+  </div>
+
+
+      <div class="card">
+        <h2>Price chart — KXBTC15M-26NOV201900-00 <span class="tag">verified 1-minute candlesticks, 2026-11-20 23:45 → 00:00 UTC</span></h2>
+        <div class="chartctl">
+          <label>Time axis</label>
+          <select id="btc-gran">
+            <option value="0">as verified (1 min)</option>
+            <option value="30">30-second buckets</option>
+            <option value="60">1-minute buckets</option>
+            <option value="300">5-minute buckets</option>
+            <option value="3600">hour buckets</option>
+          </select>
+          <label><input type="checkbox" id="btc-candles" checked> candlesticks</label>
+          <span class="note">x = time · y = contract price ($0–$1) · hover for OHLCV</span>
+        </div>
+        <div class="chartbox"><canvas id="btcchart"></canvas></div>
+        <p class="note">Source: <a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXBTC15M/markets/KXBTC15M-26NOV201900-00/candlesticks?start_ts=1795216500&end_ts=1795219205&period_interval=1" target="_blank" rel="noopener">Get Market Candlesticks (verified)</a>. The move 0.51 → 0.19 in ~4 minutes is a real ≥$0.10 swing — the alert chats replay it. Settled <b>NO</b> at $0.003.</p>
+      </div>
+      <div class="card">
+        <h2>Bitcoin 2026 max ladder <span class="tag">KXBTCMAXY-26DEC31 · verified last / volume / OI</span></h2>
+        <div id="btcmaxy-ladder"></div>
+        <p class="flagmark">⚑ Ladder non-monotonic in demo data ($109,999.99 leg at 0.50 vs $139,999.99 leg at 0.72) — see <a href="../../flagged/">Flagged for Review</a>.</p>
+        <p class="note">Settlement: <a href="https://www.cfbenchmarks.com/data/indices/BRTI?ref=blog.cfbenchmarks.com" target="_blank" rel="noopener">CF Benchmarks BRTI (trimmed mean)</a>. <a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXBTCMAXY&limit=4" target="_blank" rel="noopener">API query (verified)</a>.</p>
+      </div>
+      <div class="card">
+        <h2>15-minute crypto settlements (verified) <span class="tag">7:00 PM ET Nov 20 window</span></h2>
+        <table><thead><tr><th>Market</th><th>Target (official rule)</th><th class="num">Last</th><th class="num">Volume</th><th>Result</th><th>Settled</th><th>Source</th></tr></thead><tbody id="crypto-settled"></tbody></table>
+        <p class="note">Sources: <a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?min_updated_ts=1795219200&limit=100" target="_blank" rel="noopener">Get Markets (verified)</a> · settlement source for all four: <a href="https://www.cfbenchmarks.com/" target="_blank" rel="noopener">CF Benchmarks RTI</a>.</p>
+      </div>
+
+  <div class="card">
+    <h2>Events in this topic (grouped) <span class="tag">every event, every source link</span></h2>
+    <div id="event-groups"></div>
+  </div>
+</div>
+
+<script src="../../assets/data.js"></script>
+<script src="../../assets/charts.js"></script>
+<script src="../../assets/render.js"></script>
+<script src="../../assets/layout.js"></script>
+<script>
+(function(){
+  var D = window.KDATA, K = window.KRENDER, S = "crypto";
+  K.renderMarkets("live-table", {onlyTopic:S, onlyStatus:"live", ranked:true});
+  K.renderMarkets("done-table", {onlyTopic:S, onlyStatus:"done", ranked:true});
+  K.renderEvents("event-groups", {onlyTopic:S});
+  var ms = (D.markets||[]).filter(function(m){return m.topic===S;});
+  (function(){
+    // topic-specific ladders
+    function ladder(containerId, items, titleKey){
+      if (!document.getElementById(containerId)) return;
+      var max = Math.max.apply(null, items.map(function(i){return i.vol;}).concat([1]));
+      var h = "";
+      items.forEach(function(i){
+        var pct = i.vol/max*100;
+        h += '<div class="bar-row"><div class="lbl">'+K.esc(i.label)+'</div>' +
+             '<div class="bar-track"><div class="bar-fill" style="width:'+Math.max(1.5,pct).toFixed(1)+'%"></div></div>' +
+             '<div class="val">'+K.fmtVol(i.vol)+' · last '+K.fmtP(i.last)+'</div></div>';
+      });
+      document.getElementById(containerId).innerHTML = h;
+    }
+    if (S === "gas") {
+      var gas = ms.filter(function(m){return m.series==="KXAAAGASW";});
+      gas.sort(function(a,b){return parseFloat(a.market.split("-").pop()) - parseFloat(b.market.split("-").pop());});
+      ladder("gasladder", gas.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+    }
+    if (S === "elections") {
+      var sm = ms.filter(function(m){return m.series==="KXSENMAJ";});
+      sm.sort(function(a,b){return (b.last||0)-(a.last||0);});
+      ladder("senmaj-ladder", sm.map(function(m){return {label: m.title.replace(" wins Senate Majority Leader",""), vol: m.oi||1, last: m.last};}));
+    }
+    if (S === "culture") {
+      var gta = ms.filter(function(m){return m.series==="KXGTAONLINE";});
+      gta.sort(function(a,b){return (a.closeTime||"").localeCompare(b.closeTime||"");});
+      ladder("gta-ladder", gta.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+      var nflx = ms.filter(function(m){return m.series==="KXNETFLIXRANKSHOWGLOBAL";});
+      nflx.sort(function(a,b){return (b.last||0)-(a.last||0);});
+      ladder("netflix-ladder", nflx.map(function(m){return {label: m.title, vol: (m.oi||0)+ (m.last? m.last*100:0), last: m.last};}));
+    }
+    if (S === "crypto") {
+      // candlestick chart
+      var cd = D.candlesticks;
+      var canvas = document.getElementById("btcchart");
+      if (canvas && cd) {
+        var pts = cd.candles.map(function(c){return {t:c.t, o:c.o, h:c.h, l:c.l, c:c.c, v:c.v};});
+        function draw(){
+          window.KCHART.drawPrice(canvas, {
+            points: pts,
+            granularity: parseInt(document.getElementById("btc-gran").value||"0",10),
+            showCandles: document.getElementById("btc-candles").checked,
+            title: "KXBTC15M-26NOV201900-00 — BTC up in next 15 min (settled NO @ 0.003)",
+            subtitle: "1-min candles · CF Benchmarks BRTI · target $58,870",
+            alertLevels: [{price:0.10, label:"alert zone $0.10"}]
+          });
+        }
+        document.getElementById("btc-gran").onchange = draw;
+        document.getElementById("btc-candles").onchange = draw;
+        window.addEventListener("resize", draw);
+        draw();
+      }
+      var bmax = ms.filter(function(m){return m.series==="KXBTCMAXY";});
+      bmax.sort(function(a,b){
+        var av = parseFloat(a.market.split("-").pop().replace(/D/g,""))||0;
+        var bv = parseFloat(b.market.split("-").pop().replace(/D/g,""))||0;
+        return av-bv;
+      });
+      ladder("btcmaxy-ladder", bmax.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+      var cs = ms.filter(function(m){return m.settledResult && (m.series||"").indexOf("15M")>0;});
+      var tb = document.getElementById("crypto-settled");
+      if (tb) tb.innerHTML = cs.map(function(m){
+        return '<tr><td class="mono note">'+m.market+'</td><td class="note">'+K.esc(m.rule.replace("then the market resolves to Yes.",""))+'</td>'+
+          '<td class="num p">'+(m.last!=null?m.last.toFixed(3):"–")+'</td><td class="num">'+K.fmtVol(m.volume)+'</td>'+
+          '<td><span class="badge '+(m.settledResult==="yes"?"open":"done")+'">'+m.settledResult.toUpperCase()+'</span></td>'+
+          '<td class="mono">'+(m.settledTs||"").substr(0,16)+'Z</td>'+
+          '<td class="srcs"><a href="'+m.src.api+'" target="_blank" rel="noopener">API (verified)</a></td></tr>';
+      }).join("");
+    }
+  })();
+})();
+</script>
+</body>
+</html>

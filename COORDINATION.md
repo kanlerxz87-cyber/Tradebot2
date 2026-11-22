@@ -2,7 +2,7 @@
 
 > **Repository:** `kanlerxz87-cyber/Tradebot2`  
 > **GitHub Pages URL:** `https://kanlerxz87-cyber.github.io/Tradebot2/` (deployed from `main` `/`)  
-> **Integrated Sessions:** `arena/a5878007-tradebot2`, `arena/7a21cbd2-tradebot2`, `arena/b1cd545f-tradebot2`, `arena/9a725a07-tradebot2`, and `arena/4f9ce955-tradebot2`  
+> **Integrated Sessions:** `arena/a5878007-tradebot2`, `arena/7a21cbd2-tradebot2`, `arena/b1cd545f-tradebot2`, `arena/9a725a07-tradebot2`, `arena/93ec9646-tradebot2`, and `arena/4f9ce955-tradebot2`  
 > **Last Updated:** 2026-11-22 (UTC)
 
 Statuses: `unclaimed` | `in progress` | `done` | `needs review`
@@ -78,3 +78,5 @@ Runtime note: fixed to single session branch `arena/4f9ce955-tradebot2`. Integra
 1. First merge against `origin/main` (`27c53fe`, after PRs `#1`–`#3`): resolved conflicts in `COORDINATION.md`, `EXECUTIVE_SUMMARY.md`, `README.md`, and `index.html` while keeping all `docs/`, `css/`, `js/`, `.github/workflows/pages.yml`, and root companion `.html` files intact.
 2. Second merge against `origin/main` (`b3090e3`, after PR `#9` by `arena-9a725a07`): resolved conflicts in `.gitignore`, `COORDINATION.md`, and `README.md` while keeping PR `#9`'s `site/`, `scripts/kalshi_collector.py`, `scripts/check_site.py`, `scripts/tests/`, and `.github/workflows/pages.yml` completely untouched.
 3. PR Link: https://github.com/kanlerxz87-cyber/Tradebot2/pull/8
+
+4. Third merge against `origin/main` (`a7a6284`, after PR #7 by `arena-93ec9646`): preserved PR #7's `dash/`, `data/snapshot.json`, `tools/`, and `.github/workflows/pages.yml` intact while resolving `COORDINATION.md` and `README.md`.
