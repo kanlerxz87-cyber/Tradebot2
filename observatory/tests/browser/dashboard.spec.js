@@ -1,0 +1,224 @@
+import { test, expect } from "@playwright/test";
+const API = "https://external-api.demo.kalshi.co/trade-api/v2";
+async function setup(page, { offline = false, empty = false } = {}) {
+  const now = Date.now(),
+    before = new Date(now - 10000).toISOString();
+  const market = {
+    ticker: "SYNTHETIC-TEST",
+    eventTicker: "TEST-EVENT",
+    eventTitle: "Synthetic fixture event — not real market data",
+    title: "Synthetic fixture contract",
+    seriesTicker: "TEST",
+    topic: "Golf",
+    officialCategory: "Sports",
+    officialTags: ["Golf"],
+    officialScope: null,
+    status: "active",
+    result: null,
+    last: 0.4,
+    bid: 0.49,
+    ask: 0.51,
+    askSize: 20,
+    noAsk: 0.51,
+    volume: 300,
+    volume24h: 200,
+    openInterest: 100,
+    notional: 1,
+    closeTime: null,
+    settlement: null,
+    updatedAt: before,
+    observedAt: before,
+    source: API + "/markets/SYNTHETIC-TEST",
+    seriesSource: API + "/series/TEST",
+    rules: "Synthetic test rules. Never shipped as market data.",
+    settlementSources: [],
+  };
+  await page.route("**/data/snapshot.json*", (r) =>
+    r.fulfill({
+      json: {
+        schemaVersion: 1,
+        observedAt: before,
+        status: "ok",
+        markets: empty ? [] : [market],
+        history: empty
+          ? {}
+          : { [market.ticker]: [{ time: before, price: 0.4 }] },
+        alerts: [],
+        paper: {
+          version: 1,
+          trades: [],
+          processed: [],
+          initialPerStrategy: 1000,
+        },
+        coverage: { complete: true, series: 1, events: 1 },
+        errors: [],
+      },
+    }),
+  );
+  await page.route("**/data/topics/*.json*", (r) =>
+    r.fulfill({
+      json: {
+        markets: empty
+          ? []
+          : [
+              market,
+              {
+                ...market,
+                ticker: "SECOND-SYNTHETIC",
+                source: API + "/markets/SECOND-SYNTHETIC",
+                title: "Second topic-only synthetic fixture",
+              },
+            ],
+        history: {},
+      },
+    }),
+  );
+  await page.route(API + "/**", async (r) => {
+    if (offline) return r.abort("failed");
+    if (r.request().url().includes("/orderbook"))
+      return r.fulfill({
+        json: {
+          orderbook_fp: {
+            yes_dollars: [["0.49", "30"]],
+            no_dollars: [["0.49", "20"]],
+          },
+        },
+      });
+    return r.fulfill({
+      json: {
+        markets: [
+          {
+            ticker: market.ticker,
+            event_ticker: market.eventTicker,
+            title: market.title,
+            last_price_dollars: "0.5000",
+            yes_bid_dollars: "0.4900",
+            yes_ask_dollars: "0.5100",
+            yes_ask_size_fp: "20.00",
+            volume_fp: "300.00",
+            volume_24h_fp: "200.00",
+            open_interest_fp: "100.00",
+            notional_value_dollars: "1.0000",
+            status: "active",
+          },
+        ],
+      },
+    });
+  });
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto("/");
+  return errors;
+}
+test("loads data, detects exact ten-cent swing, buys paper only, and exports", async ({
+  page,
+}) => {
+  const errors = await setup(page);
+  await expect(page.locator("#connection")).toContainText("Demo API connected");
+  await expect(page.getByText("50¢", { exact: true }).first()).toBeVisible();
+  await page.locator('a[data-page="alerts"]').click();
+  await expect(page.locator(".two-feeds .chat")).toHaveCount(2);
+  await expect(page.locator(".two-feeds .chat-item")).toHaveCount(2);
+  await expect(page.locator(".two-feeds")).toContainText("+10¢");
+  await page.locator('a[data-page="portfolio"]').click();
+  await page.locator('[data-ledger="browser"]').click();
+  await expect(page.locator("table").first()).toContainText("Momentum");
+  await expect(page.locator("table").first()).toContainText("51¢");
+  const download = page.waitForEvent("download");
+  await page.locator("#export-journal").click();
+  expect((await download).suggestedFilename()).toBe(
+    "tradebot-paper-journal.json",
+  );
+  expect(errors).toEqual([]);
+});
+test("all topic and research routes work without page errors or page overflow", async ({
+  page,
+}) => {
+  const errors = await setup(page);
+  for (const path of [
+    "topics/gas-prices",
+    "topics/elections",
+    "topics/culture",
+    "topics/crypto",
+    "topics/golf",
+    "strategies",
+    "summary",
+    "sources",
+    "review",
+  ]) {
+    await page.goto("/#/" + path);
+    await expect(page.locator("#page-title")).not.toBeEmpty();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth + 1,
+      ),
+    ).toBe(true);
+  }
+  await page.goto("/#/review");
+  await expect(page.locator("#content")).toContainText(
+    "Demo account not connected",
+  );
+  expect(errors).toEqual([]);
+});
+test("live network failure is explicit and does not erase published observations", async ({
+  page,
+}) => {
+  const errors = await setup(page, { offline: true });
+  await expect(page.locator("#connection")).toContainText("Snapshot mode");
+  await expect(page.locator("#market-table")).toContainText(
+    "Synthetic fixture contract",
+  );
+  await expect(page.locator("#book")).toContainText("Unavailable");
+  expect(errors).toEqual([]);
+});
+test("empty sources stay honest, no manufactured market chart", async ({
+  page,
+}) => {
+  const errors = await setup(page, { empty: true });
+  await expect(page.locator("#market-table")).toContainText(
+    "No confirmed markets",
+  );
+  await expect(page.locator("#chart")).toContainText("No observations");
+  await page.screenshot({
+    path: `test-results/empty-${test.info().project.name}.png`,
+    fullPage: true,
+  });
+  expect(errors).toEqual([]);
+});
+test("search, chart windows, order book and source links are interactive", async ({
+  page,
+}) => {
+  const errors = await setup(page);
+  await expect(page.locator("#connection")).toContainText("Demo API connected");
+  await page.locator('[data-range="hours"]').click();
+  await expect(page.locator('[data-range="hours"]')).toHaveClass("selected");
+  await page.locator("#search").fill("no match");
+  await expect(page.locator("#market-table")).toContainText(
+    "No confirmed markets",
+  );
+  await page.locator("#search").fill("fixture");
+  await expect(page.locator("#market-table")).toContainText(
+    "Synthetic fixture contract",
+  );
+  await page.locator("[data-ticker]").click();
+  await expect(page.locator("#book")).toContainText("YES bid");
+  await expect(
+    page.locator("#market-table [data-ticker] a.source-link"),
+  ).toHaveAttribute("href", API + "/markets/SYNTHETIC-TEST");
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({
+    path: `test-results/fixture-${test.info().project.name}.png`,
+    fullPage: true,
+  });
+  expect(errors).toEqual([]);
+});
+
+test("topic shards load all collected topic entries automatically", async ({
+  page,
+}) => {
+  await setup(page);
+  await page.locator('a[data-topic="Golf"]').click();
+  await expect(page.locator("#market-table")).toContainText(
+    "Second topic-only synthetic fixture",
+  );
+});
