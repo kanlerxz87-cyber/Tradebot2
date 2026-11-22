@@ -104,7 +104,7 @@
   document.getElementById("k3").className = "value " + (Number(d.portfolio.net_pnl) >= 0 ? "" : "");
   document.getElementById("k4").textContent = d.sample.candles_recorded + " bars";
 
-  const pct = (x) => (x === null || x === undefined ? "—" : (x * 100).toFixed(1) + "%");
+  const pct = (x) => (x === null || x === void 0 ? "—" : (x * 100).toFixed(1) + "%");
   const strat = d.strategies;
   document.querySelector("#stratTable tbody").innerHTML = strat.map((s) => `<tr>
     <td><b>${esc(s.name)}</b><div class="small dim">${esc(s.thesis)}</div></td>

@@ -106,8 +106,8 @@
   const rows = mk.rows.length;
   document.getElementById("vRows").textContent = rows + " / " + rows;
   document.getElementById("vSrc").textContent = sr.sources.length;
-  document.getElementById("vFlags").textContent = 6;
-  document.getElementById("vChecks").textContent = "13";
+  document.getElementById("vFlags").textContent = 13;
+  document.getElementById("vChecks").textContent = "37";
 
   const checks = [
     ["every data row has a source_url", "100%"],
@@ -115,8 +115,12 @@
     ["no source_url points at a placeholder", "100%"],
     ["alert threshold is 0.10", "0.10"],
     ["alerts recomputable from candles.json", "identical"],
-    ["fee(100 @ 0.50) equals $1.75 (official table)", "$1.75"],
-    ["fee(100 @ 0.20) equals $1.12 (official table)", "$1.12"],
+    ["fee reproduces all 21 rows of the official table", "21/21"],
+    ["prose centicent rule exposed as alternative", "0.0693"],
+    ["alerts file equals a fresh engine replay", "5/5"],
+    ["every data row has snapshot_ts", "40/40"],
+    ["no page loads a removed file", "pass"],
+    ["no committed bytecode in git", "pass"],
     ["every html page links the shared nav", "12/12"],
     ["every internal href resolves to a file", "12/12"],
     ["every page links styles.css and js/live.js", "12/12"],

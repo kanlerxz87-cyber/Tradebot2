@@ -86,6 +86,20 @@
    "checked": "2026-11-22"
   },
   {
+   "fact_id": "get-series-list",
+   "claim": "GET /series parameters (category, tags, ticker, min_close_ts)",
+   "url": "https://docs.kalshi.com/api-reference/series/get-series-list.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "fee-schedule",
+   "claim": "Official fee schedule: taker 0.07*C*P*(1-P), maker 0.0175, no settlement fee",
+   "url": "https://kalshi.com/docs/kalshi-fee-schedule.pdf",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
    "fact_id": "get-events",
    "claim": "GET /events parameters including with_nested_markets and status",
    "url": "https://docs.kalshi.com/api-reference/events/get-events.md",

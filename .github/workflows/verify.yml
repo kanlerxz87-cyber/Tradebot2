@@ -1,0 +1,29 @@
+name: Verify data and site
+
+# Runs the publication gate: data provenance, alert reproducibility, fee-model
+# reconciliation against the official 21-row fee table, link integrity, and
+# read-only guarantees. A red run means the site must not be published.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Rebuild data from the verified dataset
+        run: python3 -m engine.build_data
+      - name: Fail if committed data is stale
+        run: git diff --exit-code -- docs/data
+      - name: Run the verification gate
+        run: python3 scripts/verify_site.py

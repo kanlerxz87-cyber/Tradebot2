@@ -32,22 +32,56 @@ from decimal import Decimal, ROUND_CEILING
 
 TAKER_RATE = Decimal("0.07")   # official fee schedule, general markets
 MAKER_RATE = Decimal("0.0175")  # official fee schedule, maker fee section
+CENT = Decimal("0.01")
 CENTICENT = Decimal("0.0001")
 
+# ---------------------------------------------------------------------------
+# A genuine contradiction inside the official fee schedule
+# ---------------------------------------------------------------------------
+# The PDF's prose says the fee is rounded up "to a centicent" ($0.0001), but
+# every one of the 21 rows in its own "General Trading Fees Table" matches
+# rounding up to the nearest CENT instead. Worked example, 100 contracts at
+# $0.50: raw = 0.07*100*0.50*0.50 = $1.75, and the table says $1.75 -- the
+# centicent rule would leave it at $1.75 too. At $0.01 the raw fee is $0.0693;
+# the table says $0.07 (a cent), not $0.0693 (a centicent).
+#
+# This module therefore defaults to TABLE_CONSISTENT rounding, because the
+# published table is the number a reader can check, and exposes the prose rule
+# as an explicit alternative. The discrepancy is flagged on the review page
+# (finding F-13) with the full 21-row reconciliation.
+TABLE_CONSISTENT = "cent"
+PROSE_RULE = "centicent"
 
-def taker_fee(price: Decimal, count: Decimal, multiplier: Decimal = Decimal(1)) -> Decimal:
-    """Official taker fee, rounded up to a centicent."""
+
+def _round_up(raw: Decimal, mode: str) -> Decimal:
+    unit = CENT if mode == TABLE_CONSISTENT else CENTICENT
+    return (raw / unit).to_integral_value(rounding=ROUND_CEILING) * unit
+
+
+def taker_fee(price: Decimal, count: Decimal, multiplier: Decimal = Decimal(1),
+              mode: str = TABLE_CONSISTENT) -> Decimal:
+    """Official taker fee. Default rounding reproduces the published table."""
     if count <= 0:
         return Decimal(0)
-    raw = multiplier * TAKER_RATE * count * price * (Decimal(1) - price)
-    return (raw / CENTICENT).to_integral_value(rounding=ROUND_CEILING) * CENTICENT
+    return _round_up(multiplier * TAKER_RATE * count * price * (Decimal(1) - price), mode)
 
 
-def maker_fee(price: Decimal, count: Decimal, multiplier: Decimal = Decimal(1)) -> Decimal:
+def maker_fee(price: Decimal, count: Decimal, multiplier: Decimal = Decimal(1),
+              mode: str = TABLE_CONSISTENT) -> Decimal:
     if count <= 0:
         return Decimal(0)
-    raw = multiplier * MAKER_RATE * count * price * (Decimal(1) - price)
-    return (raw / CENTICENT).to_integral_value(rounding=ROUND_CEILING) * CENTICENT
+    return _round_up(multiplier * MAKER_RATE * count * price * (Decimal(1) - price), mode)
+
+
+# The published "Fee for 100 contracts" column, used by the verification gate.
+OFFICIAL_FEE_TABLE_100 = (
+    ("0.01", "0.07"), ("0.05", "0.34"), ("0.10", "0.63"), ("0.15", "0.90"),
+    ("0.20", "1.12"), ("0.25", "1.32"), ("0.30", "1.47"), ("0.35", "1.60"),
+    ("0.40", "1.68"), ("0.45", "1.74"), ("0.50", "1.75"), ("0.55", "1.74"),
+    ("0.60", "1.68"), ("0.65", "1.60"), ("0.70", "1.47"), ("0.75", "1.32"),
+    ("0.80", "1.12"), ("0.85", "0.90"), ("0.90", "0.63"), ("0.95", "0.34"),
+    ("0.99", "0.07"),
+)
 
 
 def iso(ts: int) -> str:
