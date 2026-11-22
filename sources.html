@@ -46,6 +46,12 @@
         <td><code>scripts/probe_demo.py</code> + the <code>probe-demo</code> GitHub Actions workflow
           (<a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/probe-demo.yml"
              target="_blank" rel="noopener">run history ↗</a>)</td></tr>
+      <tr><td><a href="data/coverage.json">data/coverage.json</a></td>
+        <td>Per-topic coverage probe: one known open series per topic, plus the golf chain (/series count, per-series open events).
+          Records HTTP status and cursor truncation so an empty topic can be attributed to the API rather than to a missed scan.</td>
+        <td><code>scripts/probe_coverage.py</code>, run by the <code>probe-coverage</code> workflow
+          (<a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/probe-coverage.yml"
+             target="_blank" rel="noopener">run history ↗</a>)</td></tr>
       <tr><td><a href="data/meta.json">data/meta.json</a></td>
         <td>Collection timestamp, host, request count, per-topic matching rules and series lists.</td>
         <td><code>collector/collect.py</code></td></tr>
