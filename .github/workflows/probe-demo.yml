@@ -1,0 +1,45 @@
+# Manual, read-only diagnostic run against the Kalshi DEMO public API.
+# Writes probe/demo_probe.json as a downloadable artifact (never deployed).
+# Used to verify facts about the demo environment from a networked runner and to
+# inspect the CORS headers a browser would receive.
+name: Probe Kalshi demo API (read-only)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/probe_demo.py"
+      - ".github/workflows/probe-demo.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Probe demo environment
+        run: python3 scripts/probe_demo.py
+      - name: Show CORS + summary
+        run: |
+          python3 - <<'PY'
+          import json
+          d = json.load(open("probe/demo_probe.json"))
+          print("base:", d["api_base"], "exchange:", d.get("exchange_status"))
+          print("series:", {k: v["series_count"] for k, v in d["topics"].items()})
+          print("events:", {k: v["count"] for k, v in d["events"].items()})
+          print("cors:", d.get("cors"))
+          print("sample:", (d.get("samples") or {}).get("ticker"),
+                "candles:", len(((d.get("samples") or {}).get("candlesticks", {}).get("body") or {}).get("candlesticks") or []),
+                "trades:", len(((d.get("samples") or {}).get("trades", {}).get("body") or {}).get("trades") or []))
+          print("errors:", len(d.get("errors", [])))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: demo-probe
+          path: probe/demo_probe.json
+          retention-days: 7
