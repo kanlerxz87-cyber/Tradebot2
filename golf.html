@@ -82,7 +82,7 @@
       <div class="card">
         <h2>How this topic is selected</h2>
         <p class="small muted">The classifier is deliberately narrow. A market that cannot be tied to golf is excluded, not guessed into the topic.</p>
-        <ul class="callout-list">        <li>Series prefixes <code>KXPGATOUR*</code>, <code>KXGOLF*</code>, <code>KXLPGA*</code>, <code>KXRYDER*</code>, <code>KXMASTERS*</code>, <code>KXSOLHEIM*</code>.</li>
+        <ul class="callout-list">        <li>Series prefixes <code>KXPGATOUR*</code>, <code>KXLPGATOUR*</code>, <code>KXPGAMAKECUT*</code>, <code>KXPRESCUP*</code>, <code>KXGOLF*</code>, <code>KXLPGA*</code>, <code>KXRYDER*</code>, <code>KXMASTERS*</code>, <code>KXSOLHEIM*</code>.</li>
         <li>Keywords: golf, golfer, PGA, LPGA, Ryder Cup, Solheim Cup, Masters Tournament, the Masters, Open Championship, British Open, FedExCup, WM Phoenix Open, Players Championship, Presidents Cup.</li>
         <li>“Liga MX” and other non-golf sports are excluded by the classifier and covered by regression tests.</li></ul>
         <div class="note info" style="margin-top:14px">Full rules and regression cases: <a href="methodology.html#classification">methodology → classification</a>.</div>
@@ -124,6 +124,7 @@
           <code>scripts/probe_coverage.py</code>.</li>
         <li>An early probe queried <code>series_ticker=KXPGATOUR</code> and got 200 markets back — the API had silently ignored an unknown filter
           and returned the whole book. Counts are only trusted next to their series ticker and cursor state.</li>
+        <ul class="callout-list">        <li>The collector queries the official Golf series list (KXPGA, KXPRESCUP, KXPGATOP10, KXLPGAR2LEAD, …) in addition to the paginated open-market scan, so golf outrights are not missed behind high-frequency contracts. Note: KXPGATOUR is <b>not</b> a real series ticker — an unknown <code>series_ticker</code> filter is ignored by the API.</li>
         <li>Tournament outrights can remain open for days; settlement requires the official tour result and any playoff rules in the contract.</li>
         <li>Team events use selection and captain’s-pick rules; read the contract, not the headline.</li></ul>
       </div>

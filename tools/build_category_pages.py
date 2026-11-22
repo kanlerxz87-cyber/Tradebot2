@@ -23,9 +23,9 @@ TOPICS = [
         "icon": "⛽",
         "title": "Gas prices",
         "lede": (
-            "US retail gasoline markets. The demo catalog exposes the AAA weekly national-average "
-            "series (<span class='mono'>KXAAAGASW</span>): every strike is a separate market inside "
-            "one event, and the strikes stay grouped here."
+            "US retail gasoline and energy markets. The demo catalog exposes the AAA national-average "
+            "series (<span class='mono'>KXAAAGASM</span>, <span class='mono'>KXAAAGASW</span>) alongside Oil &amp; Gas "
+            "series: every strike is a separate market inside one event, and the strikes stay grouped here."
         ),
         "definition": [
             "Series prefixes <code>KXAAAGASW</code>, <code>KXAAAGASM</code>, <code>KXAAAGASD</code>, "
@@ -88,7 +88,7 @@ TOPICS = [
             "The category alone is enough; keywords exist for cross-listed series.",
         ],
         "notes": [
-            "The demo Culture catalog is small — two series were returned when this snapshot was built. That is a demo coverage fact, not a filter bug.",
+            "The collector supplements paginated discovery with targeted series queries (KXOSCARPIC, KXGTAONLINE, KXNETFLIXRANKSHOWGLOBAL, KXTIME) so older open Culture series are included alongside newly listed events.",
             "Awards markets can resolve on a ceremony that is streamed or reported by multiple outlets; the named settlement source in the series metadata controls.",
             "Officially resolved results for culture events are shown in the log below, with the API record linked.",
         ],
@@ -134,14 +134,15 @@ TOPICS = [
             "ticker prefixes and golf-specific phrases."
         ),
         "definition": [
-            "Series prefixes <code>KXPGATOUR*</code>, <code>KXGOLF*</code>, <code>KXLPGA*</code>, "
-            "<code>KXRYDER*</code>, <code>KXMASTERS*</code>, <code>KXSOLHEIM*</code>.",
+            "Series prefixes <code>KXPGATOUR*</code>, <code>KXLPGATOUR*</code>, <code>KXPGAMAKECUT*</code>, "
+            "<code>KXPRESCUP*</code>, <code>KXGOLF*</code>, <code>KXLPGA*</code>, <code>KXRYDER*</code>, "
+            "<code>KXMASTERS*</code>, <code>KXSOLHEIM*</code>.",
             "Keywords: golf, golfer, PGA, LPGA, Ryder Cup, Solheim Cup, Masters Tournament, the Masters, "
             "Open Championship, British Open, FedExCup, WM Phoenix Open, Players Championship, Presidents Cup.",
             "“Liga MX” and other non-golf sports are excluded by the classifier and covered by regression tests.",
         ],
         "notes": [
-            "Demo coverage for golf can be zero at a given snapshot. An empty board means no open golf markets were returned, not that golf was filtered out.",
+            "The collector queries official Golf series (KXPGATOUR, KXLPGATOUR, KXPRESCUP, KXPGAMAKECUT) directly in addition to paginated open-market scans so golf tournament outrights are not missed behind high-frequency contracts.",
             "Tournament outrights can remain open for days; settlement requires the official tour result and any playoff rules in the contract.",
             "Team events use selection and captain’s-pick rules; read the contract, not the headline.",
         ],
@@ -179,6 +180,7 @@ TEMPLATE = """<!DOCTYPE html>
         <a href="portfolio.html" data-nav="portfolio">Portfolio</a>
         <a href="executive-summary.html" data-nav="summary">Summary</a>
         <a href="methodology.html" data-nav="method">Method</a>
+        <a href="sources.html" data-nav="sources">Sources</a>
         <a href="flagged.html" data-nav="flagged">Flagged</a>
         <a href="suggestions.html" data-nav="suggestions">Ideas</a>
       </nav>

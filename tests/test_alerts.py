@@ -89,3 +89,18 @@ def test_candle_swings():
     assert alerts[0].ts == 240
     assert alerts[0].delta == pytest.approx(-0.13)
     assert all(a.source == "candle" for a in alerts)
+
+
+def test_candle_intra_bar_open_to_close_swing():
+    candles = [
+        {"end_period_ts": 60, "price": {"open_dollars": "0.35", "close_dollars": "0.65"}},
+        {"end_period_ts": 120, "price": {"open_dollars": "0.35", "close_dollars": "0.65"}},
+    ]
+    alerts = swings_from_candles(
+        candles, ticker="KXDEMOFUTHOURLY-26NOV22H08-UP", topic="crypto", title="Test", threshold=0.10
+    )
+    assert len(alerts) == 1
+    assert alerts[0].ts == 120
+    assert alerts[0].delta == pytest.approx(0.30)
+    assert alerts[0].basis == "candle_open_close"
+

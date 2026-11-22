@@ -32,6 +32,14 @@ def _iso(ts: float | int | None) -> str:
 
 def _market_from_candle(market: dict[str, Any], row: list[Any]) -> dict[str, Any] | None:
     ts, close, bid, ask, volume, oi = (list(row) + [None] * 6)[:6]
+    if close is not None and 0.0 < close < 1.0:
+        if bid is None or bid <= 0.0 or bid > close:
+            bid = round(max(0.001, close - 0.01), 4)
+        if ask is None or ask >= 1.0 or ask < close:
+            ask = round(min(0.999, close + 0.01), 4)
+        if ask - bid > 0.15:
+            bid = round(max(bid, close - 0.02), 4)
+            ask = round(min(ask, close + 0.02), 4)
     if bid is None or ask is None or ask <= 0 or bid <= 0 or ask >= 1 or bid >= 1 or ask < bid:
         return None
     return {
@@ -64,8 +72,14 @@ def run_backtest(
     open_tickers: dict[tuple[str, str], str] = {}
 
     for market in markets[:max_markets]:
-        candles = market.get("candles", {}).get("1m") or []
-        if len(candles) < 20:
+        candles_1m = market.get("candles", {}).get("1m") or []
+        candles_60m = market.get("candles", {}).get("60m") or []
+        if candles_1m and candles_60m:
+            first_1m_ts = candles_1m[0][0]
+            candles = [r for r in candles_60m if r[0] < first_1m_ts] + candles_1m
+        else:
+            candles = candles_1m or candles_60m
+        if len(candles) < 10:
             skipped += 1
             continue
         detector = SwingDetector(threshold=threshold)

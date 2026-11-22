@@ -328,3 +328,16 @@ rebuild is kept as an archived generation; the published pipeline is untouched e
 * Merge commit: _(filled in after the merge)_
 * Pages build/deploy: _(filled in after the deploy)_
 * Live checks: _(filled in after the deploy)_
+
+---
+
+## Session `arena/10428a57-tradebot2` — full 5-topic discovery (including Golf & AAA Gas), candle swing detection & backtest fix (claimed 2026-11-22)
+
+Base: `main` @ `330f82e` (after PRs #1–#26). Claimed after all prior sessions merged.
+
+| # | Task | Status | Owner | File scope | Notes |
+|---|------|--------|-------|-----------|-------|
+| A1 | Fix `app/topics.py` and `app/collector.py` to discover active open and settled series across all 5 topics (`gas_prices`, `elections`, `culture`, `crypto`, `golf`) — fixing `golf: 0 open` and missing high-OI AAA Gas (`KXAAAGASM`/`KXAAAGASW`), Elections (`KXPRESPERSON`/`KXPRESNOMD`/`KXSENMAJ`), Culture (`KXOSCARPIC`/`KXGTAONLINE`/`KXNETFLIXRANKSHOWGLOBAL`), Crypto (`KXBTCY`/`KXBTCMAXY`), and Golf (`KXPGATOUR`/`KXLPGATOUR`/`KXPRESCUP`/`KXPGAMAKECUT`) | done | `arena/10428a57-tradebot2` | `app/topics.py`, `app/collector.py`, `tests/test_topics.py` | Verified in `data/snapshot.json` (`053cf92`): `131` tracked markets (`gas_prices: 139 open / 25 tracked`, `elections: 164 open / 27 tracked`, `culture: 117 open / 25 tracked`, `crypto: 39,428 open / 27 tracked`, `golf: 261 open / 27 tracked`) and `25,488` resolutions |
+| A2 | Fix `app/alerts.py`, `app/collector.py`, and `app/backtest.py` so `seed_alerts` and `run_backtest` inspect both `1m` and `60m` candlesticks as well as intra-bar `open -> close` moves `>= $0.10` | done | `arena/10428a57-tradebot2` | `app/alerts.py`, `app/collector.py`, `app/backtest.py`, `tests/test_alerts.py` | Verified in `data/snapshot.json` (`56` deduplicated `>= $0.10` seed alerts across all 5 topics) and `data/backtest.json` (`17` markets tested, `4,797` candle cells, `209` closed trades, `8` open positions) |
+| A3 | Fix `tools/build_category_pages.py` nav template (`Sources` link), `site/*.html` internal `../data/probe.json` links (`scripts/check_site.py`), and `collector/kalshi.py` optional `requests` import; clean up `flagged.html` non-official link warnings | done | `arena/10428a57-tradebot2` | `tools/build_category_pages.py`, `site/{alerts,findings,flagged,sources}.html`, `collector/kalshi.py`, `flagged.html`, `.github/workflows/data.yml` | Zero warnings/failures in `tools/verify_site.py`, `tools/check_site.py --root . --strict`, `scripts/check_site.py`, `scripts/verify_site.py`, `live/tests/check_live.py`, and `tests/run_fixture_pipeline.py` |
+

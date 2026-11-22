@@ -229,12 +229,14 @@ def swings_from_candles(
     """
 
     alerts: list[Alert] = []
+    intra_by_pair: dict[tuple[float, float], Alert] = {}
     previous: tuple[float, float] | None = None
     for candle in candles:
         ts = _num(candle.get("end_period_ts"))
         close = candle_close(candle)
         if ts is None or close is None:
             continue
+        emitted = False
         if previous is not None:
             before, before_ts = previous
             delta = close - before
@@ -252,6 +254,26 @@ def swings_from_candles(
                         context={"previous_candle_ts": int(before_ts)},
                     )
                 )
+                emitted = True
+        if not emitted:
+            price_obj = candle.get("price") or {}
+            open_val = _num(price_obj.get("open_dollars"))
+            if open_val is None and _num(price_obj.get("open")) is not None:
+                open_val = _num(price_obj.get("open")) / 100.0  # type: ignore[operator]
+            if open_val is not None and abs(close - open_val) + EPS >= threshold:
+                pair = (round(open_val, 4), round(close, 4))
+                intra_by_pair[pair] = Alert(
+                    ticker=ticker,
+                    topic=topic,
+                    title=title,
+                    ts=ts,
+                    before=open_val,
+                    after=close,
+                    basis="candle_open_close",
+                    source=source,
+                    context={"previous_candle_ts": int(ts)},
+                )
         previous = (close, ts)
+    alerts.extend(intra_by_pair.values())
     alerts.sort(key=lambda a: a.ts, reverse=True)
     return alerts[:limit]
