@@ -50,3 +50,5 @@ Official references: [authentication](https://docs.kalshi.com/getting_started/ap
 `.github/workflows/check.yml` runs unit/build/schema verification and a separately labeled official API collection attempt, uploading its snapshot for manual audit. No account credentials are used by either workflow.
 
 See [the executive summary](docs/EXECUTIVE_SUMMARY.md) and [Flagged for Review](https://kanlerxz87-cyber.github.io/Tradebot2/#/review) for what remains unverified. This is independent research software, not an official Kalshi product or investment advice.
+
+Scheduled collection also requests a second real observation after 10 seconds for its top 100 active tracked contracts plus open scheduled-paper positions. This creates short sampling windows for the scheduled experiments; it does not eliminate the gaps between scheduled runs. Both the scheduled and browser paper ledgers are selectable on the portfolio page.
