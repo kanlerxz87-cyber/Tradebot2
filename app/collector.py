@@ -554,7 +554,13 @@ def collect(
             )
             seen_hours = {int(a.ts // 3600) for a in alerts}
             for ha in hourly_alerts:
-                if int(ha.ts // 3600) not in seen_hours:
+                dup = any(
+                    round(ha.before, 3) == round(a.before, 3)
+                    and round(ha.after, 3) == round(a.after, 3)
+                    and abs(ha.ts - a.ts) <= 3600
+                    for a in alerts
+                )
+                if not dup and int(ha.ts // 3600) not in seen_hours:
                     alerts.append(ha)
                     seen_hours.add(int(ha.ts // 3600))
             alerts.sort(key=lambda a: a.ts, reverse=True)
