@@ -1,0 +1,5 @@
+# Runtime dependencies for the collector and tools.
+# Versions are pinned to the latest release verified on PyPI when this file was written;
+# the CI workflows install exactly these.
+requests==2.34.2
+cryptography==50.0.2

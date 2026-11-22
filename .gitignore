@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+# Editor / OS
+.DS_Store
+Thumbs.db
+# Never commit credentials
+*.pem
+*.key
+secrets/
+.env
