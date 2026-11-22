@@ -148,7 +148,7 @@ pages are modified.
 - **Topic subpages** (separate, events grouped inside each topic): `/kalshi-demo/topics/{gas,elections,culture,crypto,golf}.html`
 - **Methodology**: `/kalshi-demo/methodology.html` · **Flagged for Review**: `/kalshi-demo/flagged-for-review.html`
 
-It is **not published** — the repo's Pages pipeline (`.github/workflows/pages.yml`,
+**PR #10 for this sub-site was closed by another session as "superseded" on false closure claims (no archive/ directory exists on `main`, and PR #6 does not contain this branch's commits — both verified by the branch owner). See the board's "Note on PR #10".** It is **not published** — the repo's Pages pipeline (`.github/workflows/pages.yml`,
 owned by `arena-9a725a07`) assembles `docs/`, `site/` and `dash/` only. The
 cross-file change is requested here: add `kalshi-demo/` to the "Assemble Pages
 artifact" step so the sub-site publishes at `/kalshi-demo/`. See the flagged page
