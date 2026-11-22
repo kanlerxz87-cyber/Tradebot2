@@ -1,4 +1,6 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
 import {
   API,
   TOPICS,
@@ -10,7 +12,9 @@ import {
   isOpen,
   exposure,
 } from "../src/engine.js";
-const file = process.env.SNAPSHOT_FILE || "data/snapshot.json";
+const file =
+  process.env.SNAPSHOT_FILE ||
+  fileURLToPath(new URL("../data/snapshot.json", import.meta.url));
 let old;
 try {
   old = JSON.parse(await readFile(file, "utf8"));
@@ -259,7 +263,7 @@ const result = {
   },
   errors,
 };
-await mkdir("data", { recursive: true });
+await mkdir(dirname(file), { recursive: true });
 await writeFile(file, JSON.stringify(result));
 console.log(
   JSON.stringify({

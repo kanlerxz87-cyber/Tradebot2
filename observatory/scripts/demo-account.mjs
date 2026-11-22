@@ -1,7 +1,10 @@
-// PRIVATE HOST ONLY. Never imported by browser or Pages build. No production host option.
+// PRIVATE HOST ONLY. Never imported by the browser. No credentials bundled; no production host option.
 import { createPrivateKey, sign, constants, randomUUID } from "node:crypto";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
-import { pathToFileURL } from "node:url";
+import { pathToFileURL, fileURLToPath } from "node:url";
+import { join } from "node:path";
+const privateDir = fileURLToPath(new URL("../private/", import.meta.url));
+const privateFile = (name) => join(privateDir, name);
 import { API, candidate, TOPICS } from "../src/engine.js";
 export function authHeaders(
   keyId,
@@ -115,7 +118,7 @@ export class DemoAccount {
       throw new Error("Demo execution is disabled");
     validateDemoOrder(m, quantity);
     // File creation is an exclusive session budget lock. Even a network failure requires manual/private reconciliation.
-    await mkdir("private", { recursive: true, mode: 0o700 });
+    await mkdir(privateDir, { recursive: true, mode: 0o700 });
     const order = {
       ticker: m.ticker,
       side: "bid",
@@ -131,10 +134,14 @@ export class DemoAccount {
       order,
       source: m.source,
     };
-    await writeFile("private/demo-order-lock.json", JSON.stringify(record), {
-      flag: "wx",
-      mode: 0o600,
-    });
+    await writeFile(
+      privateFile("demo-order-lock.json"),
+      JSON.stringify(record),
+      {
+        flag: "wx",
+        mode: 0o600,
+      },
+    );
     try {
       const result = await this.request(
         "POST",
@@ -142,7 +149,7 @@ export class DemoAccount {
         order,
       );
       await writeFile(
-        "private/demo-order-lock.json",
+        privateFile("demo-order-lock.json"),
         JSON.stringify({
           ...record,
           state: "accepted_reconcile_fills",
@@ -153,7 +160,7 @@ export class DemoAccount {
       return result;
     } catch (e) {
       await writeFile(
-        "private/demo-order-lock.json",
+        privateFile("demo-order-lock.json"),
         JSON.stringify({
           ...record,
           state: "ambiguous_or_rejected_do_not_retry",
@@ -178,10 +185,14 @@ async function main() {
     await readFile(process.env.KALSHI_DEMO_PRIVATE_KEY_FILE, "utf8"),
   );
   const data = await account.snapshot();
-  await mkdir("private", { recursive: true, mode: 0o700 });
-  await writeFile("private/demo-account.json", JSON.stringify(data, null, 2), {
-    mode: 0o600,
-  });
+  await mkdir(privateDir, { recursive: true, mode: 0o700 });
+  await writeFile(
+    privateFile("demo-account.json"),
+    JSON.stringify(data, null, 2),
+    {
+      mode: 0o600,
+    },
+  );
   console.log(
     "Private demo-account snapshot saved to ignored private/demo-account.json. No orders submitted.",
   );
