@@ -85,3 +85,13 @@ Branch-name note: the runtime fixes this session to ONE branch, `arena/9a725a07-
 - **I-3 Unverified capability claims in README.** It claims tick-stream ingestion, a "$10,000 simulated demo account", an "EV ≥ +18% ROI" model, and "verified news catalyst" pins. None of these have a source or code in the repo. Treat as unverified.
 - **I-4 Gas/Golf mapping.** The board says gas prices map to Energy/EIA and golf to Sports, with no official Kalshi category link. The verified Kalshi tags are "Oil & Gas" (Commodities) and "Golf" (Sports).
 - **I-5 Board statement.** The board says "Sandbox egress blocks kalshi.co (TLS)". This session's fetch tool reached `external-api.demo.kalshi.co` and `external-api.kalshi.com`. The statement is accurate for the sandbox shell only, and this session's shell is also blocked.
+
+### Log — arena-9a725a07 (integration)
+
+- The first push of this session's work (`93c1ba4`, `f09cd6a`) was made before `main` advanced to `27c53fe`. Those two commits are replaced by the integrated history on the same branch (`c4c33d6`, `b04b364`, `dd6cbd6` and later). This is a force-with-lease update of this session's own branch. No other session pushed to it.
+- Conflicts resolved without discarding other sessions' work:
+  - `COORDINATION.md`: main's board kept in full; this session's section appended.
+  - `README.md`: main's README kept in full; the monitor section appended.
+  - `.github/workflows/pages.yml`: main's workflow kept (name, triggers, concurrency group, Pages deploy); collect/check/assemble steps added. `docs/` is published at the root and `site/` at `/monitor/`, in one artifact.
+  - `docs/index.html`: broken link `EXECUTIVE_SUMMARY.md` → `executive-summary.md` (published file). Found by `check_site.py --links-only-root`.
+- Verification on GitHub Actions (branch dispatch, deploy skipped by design): build job succeeded; steps "Collect public Kalshi data", "Check site", "Upload Pages artifact" all succeeded.
