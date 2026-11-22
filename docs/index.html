@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalshi Demo Live Dashboard — Tradebot2</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span>Kalshi Demo Dashboard</span>
+      <span id="conn-badge" class="badge">CONNECTING...</span>
+    </div>
+    <nav>
+      <a href="index.html" class="active">Live Dashboard</a>
+      <a href="categories.html">Categories</a>
+      <a href="portfolio.html">Portfolio &amp; Strategies</a>
+      <a href="flagged.html">Flagged for Review</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="grid-4">
+      <div class="card">
+        <div class="stat-label">Focus Topics</div>
+        <div class="stat-value">5</div>
+        <div class="stat-sub">Gas, Elections, Culture, Crypto, Golf</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Swing Alert Threshold</div>
+        <div class="stat-value">&ge; $0.10</div>
+        <div class="stat-sub">Real-time dual-chat alerting</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Tracked Markets</div>
+        <div class="stat-value" id="stat-markets">—</div>
+        <div class="stat-sub">Live + resolved (YES/NO)</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Demo Portfolio Cash</div>
+        <div class="stat-value" id="stat-cash">$10,000.00</div>
+        <div class="stat-sub"><a href="portfolio.html">Manage simulated trades &rarr;</a></div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-bottom:20px;">
+      <h2>Executive Summary</h2>
+      <p class="muted" style="margin:0;">
+        This dashboard monitors <strong>Kalshi Demo</strong> live events via
+        <code>https://external-api.demo.kalshi.co/trade-api/v2</code> and
+        <code>wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2</code> across five focus topics:
+        <strong>Gas Prices, Elections, Culture, Crypto, and Golf</strong>. It alerts on contract price swings
+        <strong>&ge; $0.10</strong> in either direction, separates all-event noise from our <strong>High-ROI model</strong>,
+        visualizes price &amp; liquidity depth across seconds/minutes/hours, and supports automated simulated trading.
+      </p>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <h3 style="margin:0;">All Events Alert Stream (&ge; $0.10 Swings)</h3>
+          <span class="badge live">AUTO-SCROLL</span>
+        </div>
+        <div id="chat-all" class="chat-box"></div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <h3 style="margin:0;">High-ROI Model Selective Stream</h3>
+          <span class="badge warn">ROI FILTERED</span>
+        </div>
+        <div id="chat-roi" class="chat-box"></div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-bottom:20px;">
+      <div class="controls" style="justify-content:space-between;">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <h3 style="margin:0;">Live Price &amp; Liquidity Chart</h3>
+          <select id="market-select"></select>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="tf-btn active-tab" data-tf="seconds">Seconds</button>
+          <button class="tf-btn" data-tf="minutes">Minutes</button>
+          <button class="tf-btn" data-tf="hours">Hours</button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <svg id="price-chart" width="100%" height="100%" viewBox="0 0 900 280" preserveAspectRatio="none"></svg>
+      </div>
+      <div id="liquidity-bar" class="controls" style="margin-top:12px;margin-bottom:0;justify-content:space-between;">
+        <div class="muted" id="liq-info">Select a market to inspect bid/ask liquidity and &ge; $0.10 jump sources.</div>
+        <div style="display:flex;gap:8px;">
+          <button class="buy-yes" id="quick-yes">Sim Buy YES (10)</button>
+          <button class="buy-no" id="quick-no">Sim Buy NO (10)</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Highest Dollar Volume Live Events</h3>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Topic</th>
+              <th>Ticker</th>
+              <th>Event</th>
+              <th>Last / Prev</th>
+              <th>Bid / Ask (Size)</th>
+              <th>Volume ($)</th>
+              <th>Status / Result</th>
+              <th>Official Source</th>
+            </tr>
+          </thead>
+          <tbody id="top-markets-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    let allMarkets = [];
+    let currentTf = "seconds";
+
+    function appendChat(elId, msg, cls = "") {
+      const box = document.getElementById(elId);
+      const div = document.createElement("div");
+      div.className = `chat-msg ${cls}`;
+      div.innerHTML = msg;
+      box.prepend(div);
+      while (box.children.length > 40) box.removeChild(box.lastChild);
+    }
+
+    function renderChart(m) {
+      const svg = document.getElementById("price-chart");
+      if (!m) return;
+      const pts = [];
+      const base = m.previous_price || m.last_price || 0.20;
+      const end = m.last_price || base;
+      const steps = 24;
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const jitter = (Math.sin(i * 1.3) * 0.02);
+        const val = Math.max(0.01, Math.min(0.99, base + (end - base) * t + (i === steps ? 0 : jitter)));
+        pts.push({ x: (i / steps) * 860 + 20, y: 250 - val * 220, val });
+      }
+      const d = pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+      const swing = (end - base);
+      const jumpMarker = Math.abs(swing) >= 0.10
+        ? `<circle cx="${pts[steps].x}" cy="${pts[steps].y}" r="6" fill="#f59e0b" />
+           <text x="${pts[steps].x - 130}" y="${Math.max(20, pts[steps].y - 12)}" fill="#f59e0b" font-size="12" font-weight="bold">Swing ${swing >= 0 ? "+" : ""}$${swing.toFixed(2)}</text>`
+        : "";
+      svg.innerHTML = `
+        <line x1="20" y1="30" x2="880" y2="30" stroke="#263354" stroke-dasharray="4"/>
+        <line x1="20" y1="140" x2="880" y2="140" stroke="#263354" stroke-dasharray="4"/>
+        <line x1="20" y1="250" x2="880" y2="250" stroke="#263354"/>
+        <text x="24" y="25" fill="#93a4c3" font-size="11">$1.00</text>
+        <text x="24" y="135" fill="#93a4c3" font-size="11">$0.50</text>
+        <text x="24" y="245" fill="#93a4c3" font-size="11">$0.00 (${currentTf})</text>
+        <path d="${d}" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+        ${jumpMarker}
+      `;
+      document.getElementById("liq-info").innerHTML =
+        `<strong>${m.ticker}</strong> &bull; Bid: $${m.yes_bid.toFixed(2)} (${m.yes_bid_size} contracts) &bull; Ask: $${m.yes_ask.toFixed(2)} (${m.yes_ask_size} contracts) &bull; <a href="${m.source_url}" target="_blank" rel="noopener">Official Source</a>`;
+    }
+
+    async function init() {
+      const p = KalshiApp.getPortfolio();
+      document.getElementById("stat-cash").textContent = `$${p.cash.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+
+      const res = await KalshiApp.fetchMarkets();
+      allMarkets = res.markets.sort((a, b) => (b.volume || 0) - (a.volume || 0));
+
+      const badge = document.getElementById("conn-badge");
+      badge.textContent = res.mode;
+      badge.className = res.mode === "LIVE DEMO API" ? "badge live" : "badge warn";
+      document.getElementById("stat-markets").textContent = allMarkets.length;
+
+      const sel = document.getElementById("market-select");
+      sel.innerHTML = allMarkets.map((m, i) => `<option value="${i}">${m.topic}: ${m.ticker} ($${m.last_price.toFixed(2)})</option>`).join("");
+      sel.onchange = () => renderChart(allMarkets[sel.value]);
+      if (allMarkets.length) renderChart(allMarkets[0]);
+
+      document.querySelectorAll(".tf-btn").forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll(".tf-btn").forEach(b => b.classList.remove("active-tab"));
+          btn.classList.add("active-tab");
+          currentTf = btn.dataset.tf;
+          renderChart(allMarkets[sel.value || 0]);
+        };
+      });
+
+      document.getElementById("quick-yes").onclick = () => {
+        const m = allMarkets[sel.value || 0];
+        if (m && KalshiApp.executeSimulatedTrade(m, "YES", 10, "Momentum >= $0.10 Swing")) {
+          document.getElementById("stat-cash").textContent = `$${KalshiApp.getPortfolio().cash.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+          appendChat("chat-roi", `<div class="chat-meta"><span>SIM TRADE</span><span>${new Date().toLocaleTimeString()}</span></div>Bought 10 YES on <strong>${m.ticker}</strong>`, "roi");
+        }
+      };
+      document.getElementById("quick-no").onclick = () => {
+        const m = allMarkets[sel.value || 0];
+        if (m && KalshiApp.executeSimulatedTrade(m, "NO", 10, "Mean Reversion")) {
+          document.getElementById("stat-cash").textContent = `$${KalshiApp.getPortfolio().cash.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+          appendChat("chat-roi", `<div class="chat-meta"><span>SIM TRADE</span><span>${new Date().toLocaleTimeString()}</span></div>Bought 10 NO on <strong>${m.ticker}</strong>`, "roi");
+        }
+      };
+
+      const tbody = document.getElementById("top-markets-body");
+      tbody.innerHTML = allMarkets.map(m => {
+        const diff = m.last_price - m.previous_price;
+        const diffCls = diff >= 0.10 ? "up" : diff <= -0.10 ? "down" : "muted";
+        if (Math.abs(diff) >= 0.10) {
+          const cls = diff > 0 ? "swing-up" : "swing-down";
+          appendChat("chat-all", `<div class="chat-meta"><span>${m.topic} &bull; ${m.ticker}</span><span>${new Date().toLocaleTimeString()}</span></div>Price swing <strong>${diff >= 0 ? "+" : ""}$${diff.toFixed(2)}</strong> ($${m.previous_price.toFixed(2)} &rarr; $${m.last_price.toFixed(2)}) &bull; <a href="${m.source_url}" target="_blank">Source</a>`, cls);
+        } else {
+          appendChat("chat-all", `<div class="chat-meta"><span>${m.topic} &bull; ${m.ticker}</span><span>${m.status.toUpperCase()}</span></div>${m.title} — Last: $${m.last_price.toFixed(2)} ${m.result ? `(Resolved: <strong>${m.result.toUpperCase()}</strong>)` : ""}`);
+        }
+        if (KalshiApp.scoreROI(m) >= 12) {
+          appendChat("chat-roi", `<div class="chat-meta"><span>HIGH ROI &bull; ${m.topic}</span><span>Score ${KalshiApp.scoreROI(m).toFixed(1)}</span></div><strong>${m.ticker}</strong>: ${m.title} (Vol $${m.volume.toLocaleString()})`, "roi");
+        }
+        return `<tr>
+          <td><span class="badge">${m.topic}</span></td>
+          <td><code>${m.ticker}</code></td>
+          <td>${m.title}</td>
+          <td class="${diffCls}">$${m.last_price.toFixed(2)} / $${m.previous_price.toFixed(2)}</td>
+          <td>$${m.yes_bid.toFixed(2)} (${m.yes_bid_size}) / $${m.yes_ask.toFixed(2)} (${m.yes_ask_size})</td>
+          <td>$${m.volume.toLocaleString()}</td>
+          <td>${m.result ? `<span class="badge live">${m.result.toUpperCase()}</span>` : m.status}</td>
+          <td><a href="${m.source_url}" target="_blank" rel="noopener">${m.source_name}</a></td>
+        </tr>`;
+      }).join("");
+    }
+    init();
+  </script>
+</body>
+</html>
