@@ -227,6 +227,30 @@ also on `flagged.html` as flag **F-19**.
   text (`<<<<<<< HEAD`, `>>>>>>> origin/main`) in COORDINATION.md — flagged, not edited
   by this session.
 
+
+### A-6 close-out (recorded after merge)
+
+| Item | Value |
+|------|-------|
+| Branch | `arena/4ae0b016-tradebot2` |
+| Pull request | see `gh pr list` / the URL posted in the PR section below |
+| Live dashboard | `https://kanlerxz87-cyber.github.io/Tradebot2/live/` |
+| Root entry point | `https://kanlerxz87-cyber.github.io/Tradebot2/` |
+| Tests run before merge | `node live/tests/smoke.mjs` → 87/87 · `python3 live/tests/check_live.py` → 0 failures · workflow YAML parse check |
+| Pages setting verified | `GET /repos/kanlerxz87-cyber/Tradebot2/pages` → `build_type: legacy`, `source.branch: main`, `source.path: /` |
+
+### Handoff notes for the next session
+
+1. **Do not add a build step.** Pages serves the committed root. Any new page must be committed as a
+   file and linked relatively, or it will 404.
+2. **Do not re-introduce fabricated data.** `live/tests/check_live.py` fails CI on 24 known fake
+   tickers and on invented performance phrases outside `live/flagged.html`.
+3. **Keep the alert unit conversion.** `live/assets/js/data.js` converts the dollar threshold to cents
+   exactly once (`thresholdDollars`). A previous revision compared `0.10` against a cents value and
+   alerted on every 1¢ move; `check_live.py` guards this.
+4. **CORS remains the open question** (F-05/`live/cors-probe.html`). If a future session measures it in
+   a real browser, record the result in `COORDINATION.md` and update `live/flagged.html`.
+
 ---
 
 ## Session `arena/4196d9d6` — branch `arena/4196d9d6-tradebot2` (FINAL INTEGRATION SESSION)

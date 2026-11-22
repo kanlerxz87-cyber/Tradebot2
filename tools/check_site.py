@@ -20,13 +20,17 @@ from urllib.parse import urlparse
 # to catch. Older generations (topics/, performance.html, pages/, docs/, dash/,
 # site/) are archives and are only link-checked where they are referenced.
 PAGES = [
-    "index.html", "dashboard.html",
+    "index.html", "live/index.html", "dashboard.html",
     "gas-prices.html", "elections.html", "culture.html", "crypto.html", "golf.html",
     "portfolio.html", "executive-summary.html", "methodology.html",
     "flagged.html", "suggestions.html", "sources.html",
 ]
 REQUIRED_SNIPPETS = {
-    "index.html": ["data-tracked", "data-open-scope", "data-resolved-30d", "data-total-volume"],
+    # index.html became the landing page for the /live/ generation; the mount
+    # points it used to carry (data-tracked, data-open-scope, data-resolved-30d,
+    # data-total-volume) now belong to that generation and are gated below.
+    "index.html": ['id="site-head"', "live/index.html"],
+    "live/index.html": ['id="kpis"', 'id="topics"', 'id="events"'],
     "dashboard.html": ['id="dashboard-root"', 'id="live-last"', 'id="paper-mode"'],
     "gas-prices.html": ['id="topic-markets"', 'id="topic-swings"', 'id="topic-resolutions"'],
     "elections.html": ['id="topic-markets"', 'id="topic-swings"', 'id="topic-resolutions"'],
@@ -199,6 +203,12 @@ def main() -> int:
                             continue
                         errors.append(f"{page}: anchor not found -> {href}")
 
+        # The landing page and the /live/ generation render their nav from JS
+        # (TB.renderHeader), so a literal <a href> is not in the source there.
+        # They are still link-checked above; the static-nav pages must carry the
+        # Flagged and Sources links explicitly.
+        if page == "index.html" or page.startswith("live/"):
+            continue
         for snippet, label in [("flagged.html", "Flagged"), ("sources.html", "Sources")]:
             if f'href="{snippet}"' not in html and f'href="../{snippet}"' not in html:
                 errors.append(f"{page}: navigation is missing the {label} link")
