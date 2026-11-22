@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suggestions to make it more live &amp; interactive — Tradebot2</title>
+  <meta name="description" content="Prioritized product suggestions for the Kalshi demo dashboard: event-driven alerts, news correlation, replay, watchlists, depth visualisation and trader focus modes.">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232fe3b0'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-size='17' font-weight='bold' fill='%23041016'%3EK%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="suggestions">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">K</span><span class="brand-text"><strong>Tradebot2</strong><span>Kalshi demo terminal</span></span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html" data-nav="home">Overview</a>
+        <a href="dashboard.html" data-nav="dashboard">Dashboard</a>
+        <span class="nav-sep"></span>
+        <a href="gas-prices.html" data-nav="gas">Gas</a>
+        <a href="elections.html" data-nav="elections">Elections</a>
+        <a href="culture.html" data-nav="culture">Culture</a>
+        <a href="crypto.html" data-nav="crypto">Crypto</a>
+        <a href="golf.html" data-nav="golf">Golf</a>
+        <span class="nav-sep"></span>
+        <a href="portfolio.html" data-nav="portfolio">Portfolio</a>
+        <a href="executive-summary.html" data-nav="summary">Summary</a>
+        <a href="methodology.html" data-nav="method">Method</a>
+        <a href="flagged.html" data-nav="flagged">Flagged</a>
+        <a href="suggestions.html" data-nav="suggestions">Ideas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap page">
+    <div class="page-head">
+      <div class="grow">
+        <div class="eyebrow">Product notes · implemented vs. proposed</div>
+        <h1>Make it more live, more interactive, simpler</h1>
+        <p class="lede">The dashboard already does the basics: live polling, two alert feeds, charts, depth and automatic paper trading. These are the next changes that would most improve the speed and quality of a trader’s decision — ordered by impact, with the honest implementation cost.</p>
+      </div>
+      <div class="statusbar"><span class="badge green">9 shipped</span><span class="badge warn">12 proposed</span><span class="badge neutral">No fake numbers</span></div>
+    </div>
+
+    <section class="section">
+      <div class="section-head"><div><h2>Already shipped in this build</h2><div class="sub">If it is listed here, it is in the repository and visible on the site.</div></div></div>
+      <div class="grid grid-3">
+        <div class="card"><span class="badge green">LIVE</span><h3>Event-driven feel without a key</h3><p class="small">5-second batched polling of all tracked tickers, visible/hidden tab throttling, degraded/offline states and a verified-snapshot fallback.</p></div>
+        <div class="card"><span class="badge green">ALERTS</span><h3>Two scrolling feeds</h3><p class="small">All ≥ $0.10 swings, plus a selective model feed with score, entry, model probability, edge, estimated ROI and reasons on every line.</p></div>
+        <div class="card"><span class="badge green">CHART</span><h3>30 seconds to 24 hours</h3><p class="small">One chart with second-level live ticks, 1-minute candles and 1-hour candles, bid/ask reference lines and swing markers.</p></div>
+        <div class="card"><span class="badge green">DEPTH</span><h3>Contracts at each price</h3><p class="small">Best bid/ask, spread and a two-sided ladder showing contracts available at each level, with the implied-ask rule stated.</p></div>
+        <div class="card"><span class="badge green">PORTFOLIO</span><h3>Automatic paper trading</h3><p class="small">Three strategy sleeves open on model picks, exit on target/stop, settle on official results, and attribute performance by strategy, topic and price bucket.</p></div>
+        <div class="card"><span class="badge green">AUDIT</span><h3>Sources on every row</h3><p class="small">API record and Kalshi market link per row, settlement sources from series metadata, plus a public flagged register.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div><h2>Proposed, prioritized</h2><div class="sub">Impact = decision quality; effort = build days for one engineer with the current codebase.</div></div></div>
+      <div class="card flush">
+        <div class="table-wrap">
+          <table id="ideas">
+            <thead><tr><th>#</th><th>Idea</th><th>What it changes for the trader</th><th>Impact</th><th>Effort</th><th>Depends on</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><strong>Authenticated WebSocket consumer</strong> in the local server (ticker, trade, orderbook_delta), streamed to the page over SSE</td><td>Sub-second alerts instead of 5-second polls; no key in the browser; fewer REST calls and no unauthenticated rate-limit risk</td><td><span class="badge down">High</span></td><td>2–3 days</td><td>Demo API key (<a href="flagged.html#F-01">F-01</a>)</td></tr>
+              <tr><td>2</td><td><strong>Timestamp-aligned news timeline</strong>: licensed news API + official settlement sources, pinned to each swing</td><td>Answers “what happened?” without implying causation; gives a human a reason to check the contract rules</td><td><span class="badge down">High</span></td><td>3–5 days + data licence</td><td>News provider, dedupe rules</td></tr>
+              <tr><td>3</td><td><strong>Alert replay</strong>: scrub a 24h timeline and watch alerts, quotes and depth rebuild in order</td><td>Lets a trader study the seconds before and after a move, not just the notification</td><td><span class="badge down">High</span></td><td>2–3 days</td><td>Persisted ticks (start now)</td></tr>
+              <tr><td>4</td><td><strong>One-event cockpit / focus mode</strong>: hide everything except the selected event, its sibling strikes, depth and resolution rules</td><td>Removes the biggest source of hesitation: too many markets on screen when a decision is due</td><td><span class="badge warn">Medium</span></td><td>1–2 days</td><td>Event grouping (partly present)</td></tr>
+              <tr><td>5</td><td><strong>Watchlist + browser notifications</strong> with per-market thresholds</td><td>Only interrupt for the events the trader actually cares about; keeps the tab backgrounded</td><td><span class="badge warn">Medium</span></td><td>1–2 days</td><td>Notification permission UX</td></tr>
+              <tr><td>6</td><td><strong>Depth heatmap</strong> beside the price chart: liquidity at each price over time</td><td>Shows whether a move was thin or broad, which is often more informative than the price change alone</td><td><span class="badge warn">Medium</span></td><td>2 days</td><td>Orderbook snapshots over time</td></tr>
+              <tr><td>7</td><td><strong>Trade tape with large prints</strong>, grouped by minute, linked to the alert that followed</td><td>Separates real size from quote noise; supports or rejects the momentum thesis</td><td><span class="badge warn">Medium</span></td><td>1–2 days</td><td><code>GET /markets/trades</code></td></tr>
+              <tr><td>8</td><td><strong>Strategy lab</strong>: expose threshold, score floor, ROI floor, sizing and exit rules as sliders, with a re-run on cached candles</td><td>Turns the model into an experiment a trader can own; no code change needed per test</td><td><span class="badge warn">Medium</span></td><td>3 days</td><td>Browser backtest or server backtest</td></tr>
+              <tr><td>9</td><td><strong>Latency &amp; rate-limit monitor</strong>: request duration, HTTP status, 429 count, data age per feed</td><td>Makes “is my data current?” a glanceable fact rather than a guess</td><td><span class="badge blue">Low</span></td><td>1 day</td><td>Instrument existing poller</td></tr>
+              <tr><td>10</td><td><strong>Mobile PWA + keyboard shortcuts</strong> (<code>j/k</code> markets, <code>1–5</code> topics, <code>f</code> focus, <code>space</code> pause)</td><td>A trader can react from a phone or without leaving the keyboard</td><td><span class="badge blue">Low</span></td><td>2 days</td><td>Service worker</td></tr>
+              <tr><td>11</td><td><strong>Shareable permalinks</strong> for a market, window and alert (<code>?market=…&amp;window=…</code>)</td><td>Lets two people discuss the exact same chart and moment</td><td><span class="badge blue">Low</span></td><td>0.5 day</td><td>URL state</td></tr>
+              <tr><td>12</td><td><strong>Cross-topic correlation strip</strong> (crypto ↔ elections ↔ culture) using normalised 1h moves</td><td>Surfaces regime shifts without mixing topics into one undifferentiated list</td><td><span class="badge blue">Low</span></td><td>2 days</td><td>Enough overlapping history</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-2 section">
+      <div class="card">
+        <h2>UI principles to keep</h2>
+        <ul class="callout-list">
+          <li><strong>Topic first, event second.</strong> Keep the five topics separate and group sibling strikes inside their event. Never mix them into one global feed without a label.</li>
+          <li><strong>One decision per screen.</strong> The chart, the two feeds and the board answer three different questions; keep them in that order and avoid adding a fourth competing panel.</li>
+          <li><strong>Show the basis.</strong> Mid, last, computed and estimated must be visible wherever a number appears.</li>
+          <li><strong>Colour has one meaning.</strong> Green/red is direction only; blue is model; amber is a warning; never use colour alone to encode a result.</li>
+          <li><strong>Empty is information.</strong> A blank table with a reason beats a plausible-looking placeholder.</li>
+          <li><strong>Every claim is clickable.</strong> A row without a source link is a bug.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Data-quality work that pays for itself</h2>
+        <ul class="callout-list">
+          <li><strong>Persist ticks, not just snapshots.</strong> A 7-day rolling Parquet/SQLite store makes replay, backtests and “what happened at 14:32?” possible.</li>
+          <li><strong>Diff the catalog daily.</strong> Alert when a topic’s open-market count drops to zero or a series disappears, so coverage gaps are explained rather than discovered.</li>
+          <li><strong>Pin the docs version.</strong> Save the API reference date with each snapshot; Kalshi’s API is evolving (the order endpoint is already V2).</li>
+          <li><strong>Test the money paths.</strong> Keep the fee example, threshold edge and settlement payout in the unit suite; add a signed demo request test once a key exists.</li>
+          <li><strong>Fail closed.</strong> Never deploy a snapshot with zero in-scope markets or a missing source link — the workflow already refuses to publish an empty collection.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div><h2>Suggested build order</h2><div class="sub">Three short sprints, each ending with something a trader can use.</div></div></div>
+      <div class="grid grid-3">
+        <div class="card"><span class="badge down">Sprint 1</span><h3>Make alerts event-driven</h3><p class="small">Authenticated WebSocket consumer, SSE to the page, persisted ticks, latency monitor. Closes the polling gap without exposing a key.</p></div>
+        <div class="card"><span class="badge warn">Sprint 2</span><h3>Explain the move</h3><p class="small">News timeline, trade tape, depth heatmap, replay. Every alert can be opened into a small, source-linked story.</p></div>
+        <div class="card"><span class="badge blue">Sprint 3</span><h3>Let the trader experiment</h3><p class="small">Strategy lab, watchlists, notifications, focus mode, permalinks. The model becomes a tool the trader controls rather than a fixed feed.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="note info"><strong>What not to add.</strong> A generic “AI prediction” with no inputs, a live P&amp;L number before a fill, a news headline presented as the cause of a move, or a single merged feed across all topics. Each would make the dashboard look smarter while making it less trustworthy.</div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="cols">
+        <div><strong style="color:var(--text)">Tradebot2</strong><div class="small">Kalshi demo market intelligence.</div></div>
+        <div class="small-link-row"><a href="dashboard.html">Dashboard</a><a href="portfolio.html">Portfolio</a><a href="executive-summary.html">Executive summary</a><a href="methodology.html">Method &amp; sources</a><a href="flagged.html">Flagged for review</a></div>
+      </div>
+      <p class="fine">Demo environment only. Not financial advice. © <span data-year>2026</span> Tradebot2.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/live.js"></script>
+  <script src="assets/js/pages.js"></script>
+</body>
+</html>

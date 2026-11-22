@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio &amp; strategy analytics — Kalshi demo | Tradebot2</title>
+  <meta name="description" content="Simulated Kalshi demo portfolio: automatic paper trades from the high-ROI model, performance by strategy, topic, price bucket and side, plus a candle backtest and demo-account status.">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232fe3b0'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-size='17' font-weight='bold' fill='%23041016'%3EK%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="portfolio">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">K</span>
+        <span class="brand-text"><strong>Tradebot2</strong><span>Kalshi demo terminal</span></span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html" data-nav="home">Overview</a>
+        <a href="dashboard.html" data-nav="dashboard">Dashboard</a>
+        <span class="nav-sep"></span>
+        <a href="gas-prices.html" data-nav="gas">Gas</a>
+        <a href="elections.html" data-nav="elections">Elections</a>
+        <a href="culture.html" data-nav="culture">Culture</a>
+        <a href="crypto.html" data-nav="crypto">Crypto</a>
+        <a href="golf.html" data-nav="golf">Golf</a>
+        <span class="nav-sep"></span>
+        <a href="portfolio.html" data-nav="portfolio">Portfolio</a>
+        <a href="executive-summary.html" data-nav="summary">Summary</a>
+        <a href="methodology.html" data-nav="method">Method</a>
+        <a href="flagged.html" data-nav="flagged">Flagged</a>
+        <a href="suggestions.html" data-nav="suggestions">Ideas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap page">
+    <div class="page-head">
+      <div class="grow">
+        <div class="eyebrow">Simulated trading · performance attribution</div>
+        <h1>Portfolio &amp; strategy analytics</h1>
+        <p class="lede">Three automated strategies trade the model feed with simulated money only. Every fill, exit, fee and resolution is recorded so the strategies can be judged on realised results rather than narrative. A separate backtest on real 1-minute candles gives an immediate, clearly-caveated second read.</p>
+      </div>
+      <div class="statusbar">
+        <span class="badge blue" id="paper-mode">SIMULATED</span>
+        <span class="badge warn">No real orders</span>
+        <span class="badge neutral">Local to this browser</span>
+        <button class="btn" id="export-trades" type="button">Export CSV</button>
+      </div>
+    </div>
+
+    <div class="note info">
+      <strong>Two different kinds of number on this page.</strong> The top section is the <em>live paper portfolio</em>: trades opened automatically in this browser when the model feed fired, marked against current quotes and settled against official resolutions. The lower section is a <em>backtest</em> produced in CI on real 1-minute candles. They are never mixed.
+    </div>
+
+    <section class="kpi-row section" aria-label="Paper portfolio metrics">
+      <div class="card kpi-card kpi"><div class="label">Simulated equity</div><div class="value" id="pf-equity">—</div><div class="foot" id="pf-start">starting cash per strategy</div></div>
+      <div class="card kpi-card kpi"><div class="label">Realised + open P&amp;L</div><div class="value" id="pf-pnl">—</div><div class="foot">after fees</div></div>
+      <div class="card kpi-card kpi"><div class="label">Win rate</div><div class="value" id="pf-winrate">—</div><div class="foot" id="pf-trades">0 closed</div></div>
+      <div class="card kpi-card kpi"><div class="label">Expectancy</div><div class="value" id="pf-expectancy">—</div><div class="foot">per closed trade</div></div>
+      <div class="card kpi-card kpi"><div class="label">Max drawdown</div><div class="value" id="pf-dd">—</div><div class="foot">on realised equity</div></div>
+    </section>
+
+    <section class="grid grid-dash section">
+      <div class="card">
+        <div class="card-head">
+          <div><h2>Equity curve</h2><div class="sub">Realised paper equity after each closed trade, all three strategy sleeves combined.</div></div>
+          <span class="badge neutral" id="pf-updated">—</span>
+        </div>
+        <svg id="pf-chart" class="chart" role="img" aria-label="Simulated equity curve"></svg>
+        <div class="chart-legend"><span><span class="legend-swatch" style="background:#2fe3b0"></span>equity</span><span class="muted">Starting equity: <span id="pf-start-total">—</span></span></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Strategy sleeves</h2><div class="sub">Each strategy gets its own $10,000 sleeve, so results are comparable.</div></div></div>
+        <div class="table-wrap">
+          <table class="compact" id="pf-accounts"><thead><tr><th>Strategy</th><th class="num">Equity</th><th class="num">Return</th><th class="num">Realised</th><th class="num">Open</th></tr></thead>
+          <tbody><tr><td colspan="5"><div class="empty">No simulated account yet.</div></td></tr></tbody></table>
+        </div>
+        <p class="small muted" style="margin-top:10px">Open this page after using the <a href="dashboard.html">dashboard</a> to accumulate live paper trades.</p>
+      </div>
+    </section>
+
+    <section class="grid grid-3 section">
+      <div class="card">
+        <h3>By strategy</h3>
+        <div class="table-wrap"><table class="compact" id="pf-by-strategy"><thead><tr><th>Strategy</th><th class="num">Trades</th><th class="num">Win</th><th class="num">P&amp;L</th></tr></thead><tbody><tr><td colspan="4"><div class="empty">—</div></td></tr></tbody></table></div>
+      </div>
+      <div class="card">
+        <h3>By topic</h3>
+        <div class="table-wrap"><table class="compact" id="pf-by-topic"><thead><tr><th>Topic</th><th class="num">Trades</th><th class="num">Win</th><th class="num">P&amp;L</th></tr></thead><tbody><tr><td colspan="4"><div class="empty">—</div></td></tr></tbody></table></div>
+      </div>
+      <div class="card">
+        <h3>By entry price</h3>
+        <div class="table-wrap"><table class="compact" id="pf-by-price"><thead><tr><th>Entry bucket</th><th class="num">Trades</th><th class="num">Win</th><th class="num">P&amp;L</th></tr></thead><tbody><tr><td colspan="4"><div class="empty">—</div></td></tr></tbody></table></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div><h2>Trade log</h2><div class="sub">Every simulated execution, newest first. Fees use the published quadratic formula; settlement is modelled without a settlement fee (flagged).</div></div>
+        <span class="badge neutral" id="pf-log-count">0 trades</span>
+      </div>
+      <div class="card flush">
+        <div class="table-wrap">
+          <table id="pf-trades">
+            <thead><tr><th>Time</th><th>Market</th><th>Strategy</th><th>Side</th><th class="num">Contracts</th><th class="num">Entry</th><th class="num">Exit / mark</th><th class="num">Fees</th><th class="num">P&amp;L</th><th class="num">ROI</th><th>Status</th><th>Source</th></tr></thead>
+            <tbody><tr><td colspan="12"><div class="empty">No paper trades yet. Open the dashboard and leave it running; model picks open trades automatically.</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div><h2>Strategy playbook</h2><div class="sub">The exact rules each sleeve follows. “Backtest win” comes from the candle simulation below, not from the live paper sleeve.</div></div>
+      </div>
+      <div class="card flush">
+        <div class="table-wrap">
+          <table id="pf-playbook">
+            <thead><tr><th>Strategy</th><th>Entry trigger</th><th>Exit</th><th>Sizing</th><th class="num">Backtest trades</th><th class="num">Backtest win</th><th class="num">Backtest P&amp;L</th></tr></thead>
+            <tbody><tr><td colspan="7"><div class="empty">Backtest loading…</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="backtest">
+      <div class="section-head">
+        <div>
+          <h2>Backtest on real candles</h2>
+          <div class="sub">Generated in CI from Kalshi 1-minute candles at <span data-snapshot-time>—</span>. Same detector, model and fee formula; deliberately simple execution.</div>
+        </div>
+        <span class="badge warn">Simulation limitations</span>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Coverage &amp; method</h3>
+          <table class="compact" id="bt-coverage"><tbody><tr><td class="muted">Loading…</td><td>—</td></tr></tbody></table>
+          <ul class="callout-list" id="bt-limits" style="margin-top:12px"></ul>
+        </div>
+        <div class="card">
+          <h3>Backtest equity</h3>
+          <svg id="bt-chart" class="chart" role="img" aria-label="Backtest equity curve"></svg>
+          <div class="chart-legend"><span><span class="legend-swatch" style="background:#6aa9ff"></span>backtest equity</span></div>
+        </div>
+      </div>
+      <div class="grid grid-3" style="margin-top:16px">
+        <div class="card"><h3>Backtest by strategy</h3><div class="table-wrap"><table class="compact" id="bt-by-strategy"><tbody><tr><td class="muted">Loading…</td><td>—</td></tr></tbody></table></div></div>
+        <div class="card"><h3>Backtest by topic</h3><div class="table-wrap"><table class="compact" id="bt-by-topic"><tbody><tr><td class="muted">Loading…</td><td>—</td></tr></tbody></table></div></div>
+        <div class="card"><h3>Backtest by price</h3><div class="table-wrap"><table class="compact" id="bt-by-price"><tbody><tr><td class="muted">Loading…</td><td>—</td></tr></tbody></table></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="demo-account">
+      <div class="section-head">
+        <div><h2>Kalshi demo account</h2><div class="sub">The real demo portfolio requires a signed request with your own API key. No credential is stored in this repository or this page.</div></div>
+        <span class="badge warn" id="demo-status">UNVERIFIED</span>
+      </div>
+      <div class="card" id="demo-card">
+        <div class="grid grid-2">
+          <div>
+            <h3>Status</h3>
+            <p class="small" id="demo-message">No demo API key was provided to this project. Balance, positions and order placement are therefore <strong>unverified</strong>, and the Flagged for Review page says so.</p>
+            <p class="small">To enable authenticated reads locally:</p>
+            <ol class="callout-list small">
+              <li>Create a demo API key at the official Kalshi demo site and download the private key once.</li>
+              <li>Export <code>KALSHI_API_KEY_ID</code> and <code>KALSHI_PRIVATE_KEY_PATH</code> (or <code>KALSHI_PRIVATE_KEY_PEM</code>) in your shell. Never commit them.</li>
+              <li>Run <code>python -m app.server</code> and open <code>http://localhost:8000/portfolio.html</code>.</li>
+            </ol>
+            <p class="small"><a href="https://docs.kalshi.com/getting_started/api_keys.md" target="_blank" rel="noopener">Official API-key documentation ↗</a> · <a href="flagged.html#F-01">Why this is flagged ↗</a></p>
+          </div>
+          <div>
+            <h3>Live demo account payload</h3>
+            <div id="demo-live"><div class="empty">Not connected. Showing no balance rather than a placeholder.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="note warn">
+        <strong>Assumptions in the simulator.</strong> Buys pay the ask, sells receive the bid, the general taker fee is applied, visible depth caps size, and <strong>no settlement fee is modelled</strong>. Settlement pays $1 per winning contract. Backtest entries occur at the close of the candle in which the move completed, with no latency or queue model. These assumptions are listed in <a href="methodology.html#paper">methodology</a> and on <a href="flagged.html">Flagged for review</a>.
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="cols">
+        <div><strong style="color:var(--text)">Tradebot2</strong><div class="small">Kalshi demo market intelligence.</div></div>
+        <div class="small-link-row">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="portfolio.html">Portfolio</a>
+          <a href="executive-summary.html">Executive summary</a>
+          <a href="methodology.html">Method &amp; sources</a>
+          <a href="flagged.html">Flagged for review</a>
+          <a href="docs/index.html">Session archive</a>
+        </div>
+      </div>
+      <p class="fine">Simulated trading only. No order is sent to Kalshi by this page. Demo environment; not financial advice. © <span data-year>2026</span> Tradebot2.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/live.js"></script>
+  <script src="assets/js/portfolio.js"></script>
+</body>
+</html>

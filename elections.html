@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Elections markets — Kalshi demo | Tradebot2</title>
+  <meta name="description" content="Live elections markets on the Kalshi demo exchange: prices, $0.10 swings, liquidity, open interest and official YES/NO resolutions with source links.">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232fe3b0'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-size='17' font-weight='bold' fill='%23041016'%3EK%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="elections" data-topic="elections">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">K</span>
+        <span class="brand-text"><strong>Tradebot2</strong><span>Kalshi demo terminal</span></span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html" data-nav="home">Overview</a>
+        <a href="dashboard.html" data-nav="dashboard">Dashboard</a>
+        <span class="nav-sep"></span>
+        <a href="gas-prices.html" data-nav="gas">Gas</a>
+        <a href="elections.html" data-nav="elections">Elections</a>
+        <a href="culture.html" data-nav="culture">Culture</a>
+        <a href="crypto.html" data-nav="crypto">Crypto</a>
+        <a href="golf.html" data-nav="golf">Golf</a>
+        <span class="nav-sep"></span>
+        <a href="portfolio.html" data-nav="portfolio">Portfolio</a>
+        <a href="executive-summary.html" data-nav="summary">Summary</a>
+        <a href="methodology.html" data-nav="method">Method</a>
+        <a href="flagged.html" data-nav="flagged">Flagged</a>
+        <a href="suggestions.html" data-nav="suggestions">Ideas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap page">
+    <div class="page-head">
+      <div class="grow">
+        <div class="eyebrow">Topic 02 of 05 · Politics</div>
+        <h1>🗳️ Elections</h1>
+        <p class="lede">Election, presidential, congressional, state and local race markets. Kalshi’s “Politics” category is much broader than elections, so this page only keeps markets tied to an election by ticker or explicit election language.</p>
+      </div>
+      <div class="statusbar">
+        <span class="badge dot neutral js-live-status">CONNECTING</span>
+        <span class="badge neutral">Snapshot <span data-snapshot-time>—</span></span>
+        <a class="btn" href="dashboard.html">Open live dashboard →</a>
+      </div>
+    </div>
+
+    <section class="kpi-row" aria-label="Topic metrics">
+      <div class="card kpi-card kpi"><div class="label">Open markets</div><div class="value" data-topic-open>—</div><div class="foot">in this topic, demo API</div></div>
+      <div class="card kpi-card kpi"><div class="label">Tracked here</div><div class="value" data-topic-tracked>—</div><div class="foot">top by 24h flow / OI</div></div>
+      <div class="card kpi-card kpi"><div class="label">24h volume</div><div class="value" data-topic-volume>—</div><div class="foot">contracts, official</div></div>
+      <div class="card kpi-card kpi"><div class="label">Open interest</div><div class="value" data-topic-oi>—</div><div class="foot">contracts, official</div></div>
+      <div class="card kpi-card kpi"><div class="label">Resolved 30d</div><div class="value" data-topic-resolved>—</div><div class="foot">YES/NO outcome logged</div></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Open elections markets</h2>
+          <div class="sub">Sorted by 24h notional estimate. Prices refresh every 5 seconds while this tab is visible. Every row has a direct API record and Kalshi market link.</div>
+        </div>
+        <span class="badge neutral">Official source links</span>
+      </div>
+      <div class="card flush">
+        <div class="table-wrap">
+          <table id="topic-markets">
+            <thead>
+              <tr><th>Market</th><th class="num">YES mid</th><th class="num">Bid</th><th class="num">Ask</th><th class="num">24h move</th><th class="num">24h vol</th><th class="num">OI</th><th class="num">Notional est.</th><th class="num">Spread / depth</th><th>Close / source</th></tr>
+            </thead>
+            <tbody><tr><td colspan="10"><div class="empty">Loading verified snapshot…</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="liq-note">24h move is the change between the first and last non-null 1-minute candle close in the seeded window. Notional est. = contracts × mid. Both are computed; contract counts and quotes are official.</p>
+    </section>
+
+    <section class="grid grid-2 section">
+      <div class="card">
+        <h2>How this topic is selected</h2>
+        <p class="small muted">The classifier is deliberately narrow. A market that cannot be tied to elections is excluded, not guessed into the topic.</p>
+        <ul class="callout-list">        <li>Series prefixes <code>KXPRES*</code>, <code>KXSENATE*</code>, <code>KXHOUSE*</code>, <code>KXGOV*</code>, <code>KXMAYOR*</code>, <code>KXELECT*</code>, <code>KXCONGRESS*</code>.</li>
+        <li>Keywords: election, presidential, senate, house of representatives, governor, mayor, primary election, electoral college, midterms, ballot, vote share.</li>
+        <li>Broad Politics markets without election language are excluded rather than guessed in.</li></ul>
+        <div class="note info" style="margin-top:14px">Full rules and regression cases: <a href="methodology.html#classification">methodology → classification</a>.</div>
+      </div>
+      <div class="card">
+        <h2>Settlement sources &amp; context</h2>
+        <p class="small muted">Sources named in the official series metadata for these markets. These are the references Kalshi points to for resolution.</p>
+        <div id="settlement-sources"><div class="empty">Loading…</div></div>
+        <h3 style="margin-top:18px">Recent ≥ $0.10 swings</h3>
+        <div id="topic-swings"><div class="empty">Loading…</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Resolution log</h2>
+          <div class="sub">Settled markets from the last 30 days: the official result is <strong>YES</strong> or <strong>NO</strong>, taken from the API <code>result</code> field. Values are never inferred.</div>
+        </div>
+        <span class="badge green">Resolved</span>
+      </div>
+      <div class="card flush">
+        <div class="table-wrap">
+          <table id="topic-resolutions">
+            <thead><tr><th>Market</th><th>Result</th><th>Close time</th><th>Expiration value</th><th>Source</th></tr></thead>
+            <tbody><tr><td colspan="5"><div class="empty">Loading resolutions…</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-2 section">
+      <div class="card">
+        <h2>Notes for a trader</h2>
+        <ul class="callout-list">        <li>The demo environment’s catalog changes over time; this page reports exactly what the API returned.</li>
+        <li>Resolution rules and the official settlement source are set per event by Kalshi; the links in each row and the sources list are authoritative.</li>
+        <li>No forecasting is performed here. Prices are market quotes, not model probabilities.</li></ul>
+      </div>
+      <div class="card">
+        <h2>Flagged on this page</h2>
+        <div class="note warn">Election markets are legally and jurisdictionally sensitive. Always read the contract rules on Kalshi before trading; this dashboard does not interpret them.</div>
+        <h3 style="margin-top:18px">Data provenance</h3>
+        <table class="compact">
+          <tbody>
+            <tr><td class="muted">API base</td><td class="small mono" data-api-base>—</td></tr>
+            <tr><td class="muted">Snapshot</td><td class="small"><span data-snapshot-time>—</span> · <span data-snapshot-age>—</span></td></tr>
+            <tr><td class="muted">Resolution field</td><td class="small mono">result: yes | no</td></tr>
+            <tr><td class="muted">Alert basis</td><td class="small">YES mid; last price if one-sided</td></tr>
+          </tbody>
+        </table>
+        <p class="small" style="margin-top:12px"><a href="flagged.html">All flagged items →</a> · <a href="methodology.html">Method &amp; formulas →</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="cols">
+        <div><strong style="color:var(--text)">Tradebot2</strong><div class="small">Kalshi demo market intelligence.</div></div>
+        <div class="small-link-row">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="portfolio.html">Portfolio</a>
+          <a href="executive-summary.html">Executive summary</a>
+          <a href="methodology.html">Method &amp; sources</a>
+          <a href="flagged.html">Flagged for review</a>
+          <a href="docs/index.html">Session archive</a>
+        </div>
+      </div>
+      <p class="fine">Demo environment only. Kalshi warns that demo prices and behaviour may not reflect production markets. Not financial advice. © <span data-year>2026</span> Tradebot2.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/live.js"></script>
+  <script src="assets/js/category.js"></script>
+</body>
+</html>
