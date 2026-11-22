@@ -219,8 +219,27 @@ def check_engine() -> None:
     check(".gitignore covers __pycache__", "__pycache__" in ignored)
 
 
+def check_root_copy() -> None:
+    """The repo root must be a complete copy of docs/ so either Pages mode serves
+    a working site. Fails if pages_build.py would change anything."""
+    this = Path(__file__).resolve()
+    root = this.parent.parent
+    want = {}
+    for page in sorted((root / "docs").glob("*.html")):
+        want[page.name] = page.name
+    missing = [n for n in want if not (root / n).exists()]
+    check("every docs page also exists at the repo root", not missing, str(missing))
+    if (root / "pages_build.py").exists():
+        import subprocess
+        res = subprocess.run([sys.executable, "pages_build.py", "--check"], cwd=root,
+                             capture_output=True, text=True)
+        check("root copy is in sync with docs/ (pages_build.py --check)", res.returncode == 0,
+              res.stdout.strip().splitlines()[-1] if res.stdout.strip() else "")
+
+
 def main() -> int:
     check_data()
+    check_root_copy()
     check_links()
     check_claims()
     check_engine()

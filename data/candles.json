@@ -1,0 +1,141 @@
+{
+ "snapshot_ts": "2026-11-22T07:28:00Z",
+ "note": "Candlesticks copied from GET /series/{series}/markets/{ticker}/candlesticks with period_interval=60. Null price means the API returned no trade close for that hour; the chart draws a gap instead of interpolating.",
+ "series": {
+  "KXELONMARS-99": {
+   "series": "KXELONMARS",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series/KXELONMARS/markets/KXELONMARS-99/candlesticks?start_ts=1794700800&end_ts=1795305600&period_interval=60",
+   "rows": [
+    {
+     "ts": 1794718800,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": null,
+     "volume": "0.00",
+     "oi": "12543.05"
+    },
+    {
+     "ts": 1794744000,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": null,
+     "volume": "0.00",
+     "oi": "12543.05"
+    },
+    {
+     "ts": 1794754800,
+     "bid": "0.5000",
+     "ask": "1.0000",
+     "price": "0.1400",
+     "volume": "55.01",
+     "oi": "12598.06"
+    },
+    {
+     "ts": 1794758400,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": "0.1400",
+     "volume": "50.85",
+     "oi": "12648.91"
+    },
+    {
+     "ts": 1794762000,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": "0.3000",
+     "volume": "5.00",
+     "oi": "12653.91"
+    },
+    {
+     "ts": 1794765600,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": null,
+     "volume": "0.00",
+     "oi": "12653.91"
+    },
+    {
+     "ts": 1794787200,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": "0.1400",
+     "volume": "11.51",
+     "oi": "12665.42"
+    },
+    {
+     "ts": 1794816000,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": "0.1400",
+     "volume": "1.00",
+     "oi": "12666.42"
+    },
+    {
+     "ts": 1794844800,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": "0.1400",
+     "volume": "1.15",
+     "oi": "12667.57"
+    },
+    {
+     "ts": 1794859200,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": "0.3000",
+     "volume": "5.00",
+     "oi": "12672.57"
+    },
+    {
+     "ts": 1794880800,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": null,
+     "volume": "0.00",
+     "oi": "12672.57"
+    },
+    {
+     "ts": 1794942000,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": "0.3000",
+     "volume": "5.00",
+     "oi": "12677.57"
+    },
+    {
+     "ts": 1794963600,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": "0.3000",
+     "volume": "5.00",
+     "oi": "12682.57"
+    },
+    {
+     "ts": 1795028400,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": "0.3000",
+     "volume": "5.00",
+     "oi": "12687.57"
+    },
+    {
+     "ts": 1795269600,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": "0.1400",
+     "volume": "1.15",
+     "oi": "12769.79"
+    },
+    {
+     "ts": 1795280400,
+     "bid": "0.1400",
+     "ask": "1.0000",
+     "price": "0.3000",
+     "volume": "5.00",
+     "oi": "12774.79"
+    }
+   ],
+   "note": "16 hourly bars retained (the response contained more). Trade-price close swings 0.14 -> 0.30 repeatedly with 5.00-contract clips - the exact pattern the >= $0.10 alert rule is meant to surface."
+  }
+ }
+}

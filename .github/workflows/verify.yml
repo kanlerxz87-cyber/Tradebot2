@@ -25,6 +25,8 @@ jobs:
         run: python3 -m engine.build_data
       - name: Fail if committed data is stale
         run: git diff --exit-code -- docs/data
+      - name: Fail if the root copy is stale
+        run: python3 pages_build.py --check
       - name: Run the verification gate
         run: python3 scripts/verify_site.py
       - uses: actions/setup-node@v4

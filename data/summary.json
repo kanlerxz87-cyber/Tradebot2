@@ -1,0 +1,18 @@
+{
+ "snapshot_ts": "2026-11-22T07:28:00Z",
+ "headline": {
+  "topics_tracked": 5,
+  "series_verified": 21,
+  "markets_verified": 6,
+  "resolutions_verified": 8,
+  "queries_that_returned_nothing": 5,
+  "alerts_on_recorded_data": 5,
+  "high_roi_alerts": 5,
+  "paper_trades": 3,
+  "official_sources": 25
+ },
+ "feeds": {
+  "all_events": "every recorded >= $0.10 move, newest first",
+  "high_roi": "same detector, filtered to roi_score >= 55"
+ }
+}

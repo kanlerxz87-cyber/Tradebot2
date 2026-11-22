@@ -107,7 +107,7 @@
   document.getElementById("vRows").textContent = rows + " / " + rows;
   document.getElementById("vSrc").textContent = sr.sources.length;
   document.getElementById("vFlags").textContent = 13;
-  document.getElementById("vChecks").textContent = "37";
+  document.getElementById("vChecks").textContent = "39";
 
   const checks = [
     ["every data row has a source_url", "100%"],
@@ -123,6 +123,8 @@
     ["no committed bytecode in git", "pass"],
     ["every html page links the shared nav", "12/12"],
     ["every internal href resolves to a file", "12/12"],
+    ["repo root is a complete copy of docs/", "23/23"],
+    ["root copy in sync (pages_build --check)", "pass"],
     ["every page links styles.css and js/live.js", "12/12"],
     ["topics covered by topic pages", "5/5"],
     ["resolved markets carry result yes|no", "8/8"],
