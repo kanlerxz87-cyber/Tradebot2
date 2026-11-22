@@ -104,3 +104,28 @@ The site is static and lives at the repository root. `.github/workflows/pages.ym
 - [Flagged for review](flagged.html) · `data/flags.json`
 - [Interaction suggestions](docs/IMPROVEMENTS.md)
 - [Coordination board](COORDINATION.md)
+
+## Also in this repository (parallel sessions, preserved)
+
+Other sessions on this repository published a second collector and site. They are kept and
+linked, not deleted:
+
+| Path | What it is |
+| --- | --- |
+| `scripts/kalshi_collector.py` | A standard-library collector reading the same public endpoints and writing `site/data/*.json`. |
+| `scripts/check_site.py` | Its link/source checker (`sourced` tables, `source_url` on every record). |
+| `site/` | Its monitor site, published under `/monitor/` by the Pages pipeline. |
+| `docs/index.html`, `docs/*.html`, `docs/js/*` | First-pass dashboard from the earliest sessions. |
+| `gas-prices.html`, `elections.html`, `culture.html`, `crypto.html`, `golf.html`, `strategies.html`, `review.html` | First-pass category pages. |
+
+Live monitor: <https://kanlerxz87-cyber.github.io/Tradebot2/monitor/>
+
+Limits those sessions recorded, reproduced verbatim because they are still true for those pages:
+
+- Trades are simulated. No orders are placed and fees are not modelled.
+- The demo-account portfolio is not connected. It needs API-key secrets that were not provided.
+- Alerts compare snapshots from consecutive scheduled runs (about 15 minutes apart), not per-second ticks.
+- The high-ROI screen is a rule set, not a validated model.
+
+This branch's own pipeline (the one documented above) *does* model fees, using the official
+schedule, and is verified by `tests/test_fees.py`.

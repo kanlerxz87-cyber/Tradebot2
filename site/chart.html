@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Price chart &amp; liquidity · Tradebot2</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body data-page="chart">
+<header class="top" id="nav"></header>
+<main>
+
+<h1>Price chart &amp; liquidity</h1>
+<p class="lead">YES price over time for any tracked market, with resting order depth. Pick a market, a time range and an axis unit.</p>
+<div class="stale" id="fresh"></div>
+<div class="controls">
+  <label>Market <select id="ticker"></select></label>
+  <span id="ctl-range"><button data-r="1h">1h</button> <button data-r="6h">6h</button> <button data-r="24h" class="on">24h</button> <button data-r="7d">7d</button> <button data-r="all">All</button></span>
+  <label>X-axis labels <select id="unit"><option value="seconds">Seconds (HH:MM:SS)</option><option value="minutes" selected>Minutes (HH:MM)</option><option value="hours">Hours (date + hour)</option></select></label>
+</div>
+<p class="note">Snapshots are taken once per scheduled run (about every 15 minutes), so the finest real resolution is one snapshot. Second-level labels show the exact snapshot time only.</p>
+<div class="card" id="mkinfo"></div>
+<div class="card" id="chart"></div>
+<div id="book"></div>
+
+</main>
+<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+</body>
+</html>

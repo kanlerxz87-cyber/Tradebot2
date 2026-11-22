@@ -217,3 +217,59 @@ Statuses: unclaimed | in progress | done | needs review
 - `FLG-202`: Partisan internal campaign polling (Flagged: pending certified state election returns / non-partisan polls).
 - `FLG-203`: Private commercial crowdsourced gas app surveys (Flagged: Kalshi rulebook binds exclusively to EIA weekly release).
 - `FLG-204`: Speculative anonymous Oscar voter tallies (Flagged: pending official PwC audited Academy ballot).
+
+---
+
+## Session `arena-9a725a07` — branch `arena/9a725a07-tradebot2` (claimed 2026-11-22)
+
+Base: `main` @ `27c53fe` (after PR #3). This session rebased onto the integrated board above and did not discard any prior session's work.
+
+Branch-name note: the runtime fixes this session to ONE branch, `arena/9a725a07-tradebot2`. All tasks are on that branch with non-overlapping file scopes, not on `session-<id>/<task>` branches.
+
+| # | Task | Status | Owner | File scope | Notes |
+|---|------|--------|-------|-----------|-------|
+| 8 | Live monitor: collector (≥$0.10 alerts, history, order-book depth, resolutions, paper trades) | done (see log) | `arena-9a725a07` | `scripts/kalshi_collector.py`, `scripts/tests/` | Reads public Kalshi REST endpoints; stdlib only |
+| 9 | Live monitor site (dashboard, two alert chats, topic pages, chart & liquidity, trades, resolved, findings, suggestions, sources, repo review, flagged) | done (see log) | `arena-9a725a07` | `site/` (published at `/monitor/`) | Separate from the `docs/` site so nothing is overwritten |
+| 10 | Pages integration: one workflow builds `docs/` + `monitor/` and runs checks | done (see log) | `arena-9a725a07` | `.github/workflows/pages.yml`, `scripts/check_site.py`, `.gitignore`, `README.md` | Only one Pages deploy can exist, so the two sites ship in one artifact |
+| 11 | Repo review (line by line, sources, irregularities) | done (see log) | `arena-9a725a07` | `site/repo-review.html`, `site/sources.html` | Irregularities also logged below |
+| 12 | Demo-account portfolio (needs API-key secrets) | needs review | — | — | Blocked: not provided; see Flagged |
+
+### Log — arena-9a725a07
+
+- Sandbox curl to Kalshi hosts gets no response (HTTP 000), but the fetch tool can read the public Kalshi REST endpoints. Live collection therefore runs in GitHub Actions.
+- Verified endpoints (sources on `site/sources.html`): `/events` (filters `status`, `series_ticker`, `with_nested_markets`, `limit ≤ 200`, `cursor`), `/series` (filters `category`, `tags`, `include_volume`), `/markets/{ticker}` (`result`), `/markets/{ticker}/orderbook` (`depth 0–100`, `orderbook_fp`), and the demo REST and WS hosts.
+- Taxonomy checked on the demo host `/search/tags_by_categories`: Sports→Golf; Commodities→Oil & Gas; Elections; Crypto; Entertainment. No "Culture" category exists (flagged).
+- Pages: the repo's existing workflow deployed `docs/` only. This session added `monitor/` and checks to the same workflow.
+
+### Irregularities found in other sessions' work (for review; not edited by this session)
+
+- **I-1 Placeholder zeros.** `docs/data/verified-markets.json` lists `yes_bid`, `yes_ask`, `last_price`, `previous_price`, sizes, volume and open interest as `0.00`/`0` on active markets. A zero is a fill-in, not a verified value. The brief says blank and flag. Owner review needed.
+- **I-2 Unverified production host.** `trading-api.kalshi.com` appears in `README.md` and `COORDINATION.md` as the production REST host. The OpenAPI `servers` list (https://docs.kalshi.com/openapi.yaml) names `external-api.kalshi.com` and `api.elections.kalshi.com`. `trading-api` is not on that list, so it is unverified.
+- **I-3 Unverified capability claims in README.** It claims tick-stream ingestion, a "$10,000 simulated demo account", an "EV ≥ +18% ROI" model, and "verified news catalyst" pins. None of these have a source or code in the repo. Treat as unverified.
+- **I-4 Gas/Golf mapping.** The board says gas prices map to Energy/EIA and golf to Sports, with no official Kalshi category link. The verified Kalshi tags are "Oil & Gas" (Commodities) and "Golf" (Sports).
+- **I-5 Board statement.** The board says "Sandbox egress blocks kalshi.co (TLS)". This session's fetch tool reached `external-api.demo.kalshi.co` and `external-api.kalshi.com`. The statement is accurate for the sandbox shell only, and this session's shell is also blocked.
+
+### Log — arena-9a725a07 (integration)
+
+- The first push of this session's work (`93c1ba4`, `f09cd6a`) was made before `main` advanced to `27c53fe`. Those two commits are replaced by the integrated history on the same branch (`c4c33d6`, `b04b364`, `dd6cbd6` and later). This is a force-with-lease update of this session's own branch. No other session pushed to it.
+- Conflicts resolved without discarding other sessions' work:
+  - `COORDINATION.md`: main's board kept in full; this session's section appended.
+  - `README.md`: main's README kept in full; the monitor section appended.
+  - `.github/workflows/pages.yml`: main's workflow kept (name, triggers, concurrency group, Pages deploy); collect/check/assemble steps added. `docs/` is published at the root and `site/` at `/monitor/`, in one artifact.
+  - `docs/index.html`: broken link `EXECUTIVE_SUMMARY.md` → `executive-summary.md` (published file). Found by `check_site.py --links-only-root`.
+- Verification on GitHub Actions (branch dispatch, deploy skipped by design): build job succeeded; steps "Collect public Kalshi data", "Check site", "Upload Pages artifact" all succeeded.
+
+### Integration status — arena-9a725a07 (pre-merge)
+
+- PR: opened from `arena/9a725a07-tradebot2` to `main` (see PR link recorded in the merge step below).
+- Build on the final commit (GitHub Actions run 44997229347): build success, deploy skipped on branch by design.
+- Pages source: still `legacy` (`main` `/`). The integration token cannot change it (HTTP 403). Manual step needed: Settings → Pages → Source → GitHub Actions. Until then the artifact deploy runs but the live URL keeps the legacy build.
+- Open PR #4 (`arena/b6135c8d-tradebot2`) overlaps this scope (`pages.yml`, `README.md`, `COORDINATION.md`, `index.html`). Not merged over. Second-merging PR must integrate the other's pipeline.
+- Node 20 deprecation notice on GitHub Actions (`actions/checkout@v4`, `actions/setup-python@v5`, `actions/cache@v4`, `actions/upload-pages-artifact@v3`, `actions/configure-pages@v5`). Upgrade pending.
+
+### PR record — arena-9a725a07
+
+- PR: https://github.com/kanlerxz87-cyber/Tradebot2/pull/9 (`arena/9a725a07-tradebot2` → `main`)
+- At PR time, `main` was `27c53fe` and PR #9 was MERGEABLE/CLEAN.
+- Other open PRs overlap this PR's shared files (`.github/workflows/pages.yml`, `README.md`, `COORDINATION.md`, `index.html`, `.gitignore`): #4 (`arena/b6135c8d-tradebot2`), #5 (`arena/1546d2b0-tradebot2`), #6 (`arena/d1222891-tradebot2`), #7 (`arena/93ec9646-tradebot2`), #8 (`arena/4f9ce955-tradebot2`). Those sessions must rebase onto `main` after #9 merges and integrate this pipeline, not replace it. Logged as a coordination request, not an edit.
+- Scope rule breached by the board as a whole: the board promised non-overlapping file scopes, but several sessions chose the same shared files. Recorded for the integration owner.
