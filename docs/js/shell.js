@@ -41,11 +41,16 @@
     </footer>`;
   }
 
+  let mounted = false;
+
+  /** Idempotent: safe if DOMContentLoaded fires more than once (bfcache, tests). */
   function mount() {
+    if (mounted) return;
+    mounted = true;
     const shell = document.getElementById("shell");
-    if (shell) shell.insertAdjacentHTML("afterbegin", nav());
+    if (shell && !shell.querySelector("header.top")) shell.insertAdjacentHTML("afterbegin", nav());
     const f = document.getElementById("footer");
-    if (f) f.innerHTML = footer();
+    if (f && !f.querySelector("footer")) f.innerHTML = footer();
     paintStatus();
   }
 
