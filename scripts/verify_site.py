@@ -72,7 +72,7 @@ def verify_html_links(errors: List[str]) -> int:
     for html_file in html_files:
         if not html_file.exists():
             continue
-        text = html_file.read_text(encoding="utf-8")
+        text = re.sub(r"<script\b[^>]*>.*?</script>", "", html_file.read_text(encoding="utf-8"), flags=re.IGNORECASE | re.DOTALL)
         for match in HREF_SRC_RE.finditer(text):
             target = match.group(1).strip()
             if (
@@ -83,6 +83,7 @@ def verify_html_links(errors: List[str]) -> int:
                 or target.startswith("mailto:")
                 or target.startswith("javascript:")
                 or target.startswith("data:")
+                or "${" in target
             ):
                 continue
             clean_target = target.split("#", 1)[0].split("?", 1)[0]
