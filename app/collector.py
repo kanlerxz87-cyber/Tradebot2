@@ -316,14 +316,17 @@ def collect(
     raw_markets: list[dict[str, Any]] = []
     raw_settled: list[dict[str, Any]] = []
     try:
-        raw_markets = list(client.iter_markets(status="open", limit=MARKET_LIMIT, max_pages=10))
+        # The API caps a page at 200 rows; with ~8k open markets a 10-page scan only
+        # ever saw the first ~2k (crypto-heavy) markets, so culture and golf came
+        # back empty. 60 pages covers the whole open book.
+        raw_markets = list(client.iter_markets(status="open", limit=MARKET_LIMIT, max_pages=60))
     except KalshiError as exc:
         errors.append(f"GET /markets?status=open: {exc}")
     try:
         cutoff = int((datetime.now(tz=timezone.utc) - timedelta(days=30)).timestamp())
         raw_settled = list(
             client.iter_markets(
-                status="settled", limit=MARKET_LIMIT, max_pages=10, min_settled_ts=cutoff
+                status="settled", limit=MARKET_LIMIT, max_pages=60, min_settled_ts=cutoff
             )
         )
     except KalshiError as exc:
