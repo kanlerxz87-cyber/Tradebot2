@@ -38,7 +38,7 @@ A claim older than 60 minutes with no commit may be taken over. Record the hando
 | T8 | Resolutions to settlement, yes/no recorded | done | `arena-1546d2b0` | `resolutions.html` |
 | T9 | Interactive charts, selectable time window | done | `arena-1546d2b0` | 1 m – 24 h ranges in `assets/js/chart.js` |
 | T10 | Explain ≥ $0.10 jumps with a source link | **needs review** | `arena-1546d2b0` | F-09: no verified news feed, so no causal claim is made |
-| T11 | Requirements register + flagged page | done | `arena-1546d2b0` | 23 requirements, 18 flags |
+| T11 | Requirements register + flagged page | done | `arena-1546d2b0` | 23 requirements, 19 flags |
 | T12 | Site: landing + per-category subpages, tables | done | `arena-1546d2b0` | `tools/check_site.py` |
 | T13 | Integration, PR, Pages deploy | in progress | `arena-1546d2b0` | PR #5 |
 
