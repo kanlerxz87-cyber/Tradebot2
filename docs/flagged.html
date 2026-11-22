@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flagged for Review — Kalshi Demo Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span>Kalshi Demo Dashboard</span>
+      <span class="badge warn">VERIFICATION AUDIT</span>
+    </div>
+    <nav>
+      <a href="index.html">Live Dashboard</a>
+      <a href="categories.html">Categories</a>
+      <a href="portfolio.html">Portfolio &amp; Strategies</a>
+      <a href="flagged.html" class="active">Flagged for Review</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card" style="margin-bottom:20px;">
+      <h2>Flagged Irregularities &amp; Unverified Items</h2>
+      <p class="muted" style="margin:0;">
+        Per verification rules, no values are inferred or fabricated. Any endpoint or topic that returned empty or errored on Kalshi Demo is listed below with its official source link for manual review.
+      </p>
+    </section>
+
+    <section class="card" style="margin-bottom:20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Status</th>
+            <th>Reason / Finding</th>
+            <th>Official Source Link</th>
+          </tr>
+        </thead>
+        <tbody id="flagged-body"></tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3>Verified Official Endpoints</h3>
+      <ul>
+        <li>Demo REST API: <a href="https://external-api.demo.kalshi.co/trade-api/v2/markets" target="_blank" rel="noopener">https://external-api.demo.kalshi.co/trade-api/v2/markets</a></li>
+        <li>Demo WebSocket API: <code>wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2</code> (<a href="https://docs.kalshi.com/getting_started/quick_start_websockets" target="_blank" rel="noopener">Kalshi WebSocket Docs</a>)</li>
+        <li>Crypto (KXBTC): <a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXBTC" target="_blank" rel="noopener">Series KXBTC</a></li>
+        <li>Golf (KXGOLF): <a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXGOLF" target="_blank" rel="noopener">Series KXGOLF</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    fetch("data/verified-markets.json")
+      .then(r => r.json())
+      .then(data => {
+        const tbody = document.getElementById("flagged-body");
+        tbody.innerHTML = (data.flagged || []).map(f => `
+          <tr>
+            <td><strong>${f.item}</strong></td>
+            <td><span class="badge ${f.status === "unverified" ? "danger" : "warn"}">${f.status.toUpperCase()}</span></td>
+            <td>${f.reason}</td>
+            <td><a href="${f.source_url}" target="_blank" rel="noopener">${f.source_url}</a></td>
+          </tr>
+        `).join("");
+      });
+  </script>
+</body>
+</html>

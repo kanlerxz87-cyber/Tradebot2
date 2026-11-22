@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Live dashboard · Tradebot2</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body data-page="dashboard">
+<header class="top" id="nav"></header>
+<main>
+
+<h1>Live dashboard</h1>
+<p class="lead">Two scrolling alert chats. <b>All events</b> lists every ≥ $0.10 move. <b>High-ROI picks</b> lists only moves that pass the rule-based screen (tight spread, deep ask, enough 24h volume, entry between $0.05 and $0.95).</p>
+<div class="stale" id="fresh"></div>
+<div class="kpis" id="kpis"></div>
+<div class="controls"><span class="note">Auto-refresh every 60 s. Newest alerts at the bottom.</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" class="two">
+  <div><h2>All events (≥ $0.10)</h2><div class="scroll" id="feed-all"></div></div>
+  <div><h2>High-ROI picks</h2><div class="scroll" id="feed-roi"></div></div>
+</div>
+<h2>Live markets</h2>
+<div class="controls"><label>Topic <select id="topic-filter"><option value="all">All topics</option><option value="gas">Gas</option><option value="elections">Elections</option><option value="culture">Culture</option><option value="crypto">Crypto</option><option value="golf">Golf</option></select></label></div>
+<div id="mk-table"></div>
+<style>@media (max-width:760px){.two{grid-template-columns:1fr !important}}</style>
+
+</main>
+<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+</body>
+</html>

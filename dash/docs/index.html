@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Executive Summary — Kalshi Demo Dashboard</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-page="docs">
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Executive Summary</h1>
+    <p class="sub">Tradebot2 — a live Kalshi <b>demo</b> trading dashboard covering the five requested topics (gas prices, elections, culture, crypto, golf), built 2026-11-22 and published on GitHub Pages. Every figure on the site was verified line-by-line against official sources; irregularities are published on the <a href="../flagged/">Flagged for Review</a> page; nothing was inferred.</p>
+  </div>
+
+  <div class="card">
+    <h2>1. What was built</h2>
+    <ul class="tight">
+      <li><b>Live dashboard</b> — landing page + five topic subpages, each a clean table of verified markets (price, bid/ask, 24h/total notional volume, open interest, close/settle time) with <b>per-row source links</b> to the exact official API query, the official Kalshi website page where one was observed, and the official settlement source.</li>
+      <li><b>Live alerting system</b> — two scrolling chats: <b>Chat 1</b> logs every ≥$0.10 price swing in either direction across all tracked events; <b>Chat 2</b> is the selective <b>high-ROI model filter</b> (transparent reversion model: K=0.6, edge ≥ $0.05, OI ≥ 1). Live mode polls the official demo API from the browser every 15s; a labeled REPLAY fallback re-runs the verified historical 1-minute BTC 15-min series so the pipeline is always demonstrable.</li>
+      <li><b>Track-to-resolution</b> — every tracked market shows its exact verified resolution (<span class="mono">result: yes/no</span>, <span class="mono">settlement_ts</span>, <span class="mono">settlement_value_dollars</span>), e.g. 2026 President's Cup → <b>Team USA (YES)</b>, BTC 15-min 26NOV201900 → <b>NO @ $0.003</b>, RSM Classic cut markets → <b>NO</b>.</li>
+      <li><b>Automated simulated trading</b> — a deterministic paper engine (no real orders — no demo API keys exist in this session) runs four documented strategies (Momentum-Fade, Trend-Continue, Cheap-Side, Favorite-Edge) against the verified data, categorizes every trade, and computes P&L/ROI/win-rate per strategy.</li>
+      <li><b>Interactive charts</b> — x = time with selectable seconds/minutes/hours buckets, y = contract price; verified 1-minute candlesticks for the BTC 15-min market; ≥$0.10 alert band; hover OHLCV; plus verified orderbook depth (contracts available at each price) and bid/ask liquidity.</li>
+      <li><b>Liveness/interactivity suggestions</b> — published on the landing page (WebSocket push, price heatmap, drag-zoom, news-correlation overlay with official source links, sound/TTS alerts, one-click paper order ticket, settlement watch, parameter-set A/B, keyboard shortcuts, hourly snapshot CI).</li>
+      <li><b>Organization</b> — topics kept separate (dedicated subpages); events within a topic grouped together in rollup tables; simplified charts and tables throughout.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>2. Key verified facts about the Kalshi demo environment</h2>
+    <table><thead><tr><th>Fact</th><th>Value</th><th>Official source</th></tr></thead><tbody>
+      <tr><td>Demo REST base URL</td><td class="mono">https://external-api.demo.kalshi.co/trade-api/v2</td><td class="srcs"><a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener">API environments</a></td></tr>
+      <tr><td>Demo REST (alternate)</td><td class="mono">https://demo-api.kalshi.co/trade-api/v2</td><td class="srcs"><a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener">API environments</a></td></tr>
+      <tr><td>Demo WebSocket</td><td class="mono">wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2</td><td class="srcs"><a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener">API environments</a></td></tr>
+      <tr><td>Demo website</td><td class="mono">https://demo.kalshi.co/</td><td class="srcs"><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener">Demo environment</a></td></tr>
+      <tr><td>Public market data requires no auth</td><td>GET /markets, /series, /events, orderbook, candlesticks, trades</td><td class="srcs"><a href="https://docs.kalshi.com/getting_started/quick_start_market_data" target="_blank" rel="noopener">Market data quick start</a></td></tr>
+      <tr><td>WS + trading require signed headers</td><td>KALSHI-ACCESS-KEY / SIGNATURE / TIMESTAMP, RSA-signed timestamp+method+path</td><td class="srcs"><a href="https://docs.kalshi.com/getting_started/quick_start_websockets" target="_blank" rel="noopener">WebSocket quick start</a> · <a href="https://docs.kalshi.com/getting_started/api_keys" target="_blank" rel="noopener">API keys</a></td></tr>
+      <tr><td>Contract payout</td><td>$1.00 if the side is right, $0.00 otherwise (volume × $1 = notional)</td><td class="srcs"><a href="https://docs.kalshi.com/getting_started/market_settlement" target="_blank" rel="noopener">Market settlement</a></td></tr>
+      <tr><td>Orderbook semantics</td><td>YES bids + NO bids only; YES bid @ p ≡ NO ask @ 1−p, same size; best bid = last element</td><td class="srcs"><a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook" target="_blank" rel="noopener">Get Market Orderbook</a></td></tr>
+      <tr><td>Candlestick granularity</td><td>1 min / 60 min / 1440 min (seconds not available officially)</td><td class="srcs"><a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks" target="_blank" rel="noopener">Get Market Candlesticks</a></td></tr>
+      <tr><td>Rate limiting</td><td>token buckets, 429 with backoff; unauthenticated public limits separate</td><td class="srcs"><a href="https://docs.kalshi.com/getting_started/rate_limits" target="_blank" rel="noopener">Rate limits and tiers</a></td></tr>
+      <tr><td>Demo ↔ production isolation</td><td>Demo credentials never work in production; mock funds only</td><td class="srcs"><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener">Demo environment</a></td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="card">
+    <h2>3. What the data showed (snapshot 2026-11-22 ≈07:15 UTC)</h2>
+    <table><thead><tr><th>Topic</th><th>Live events found</th><th>Highest-dollar events (verified)</th><th>Settled &amp; tracked</th></tr></thead><tbody>
+      <tr><td><b>Gas prices</b></td><td>KXAAAGASW-26NOV23 — six AAA daily strikes open at $0.02 (current AAA price $3.65 per official demo site)</td><td>KXAAAGASW-26NOV23 ≈ <b>$16.7K</b> total notional across open strikes</td><td>EIA gas/diesel series: <b>0 demo markets</b> (verified empty)</td></tr>
+      <tr><td><b>Elections</b></td><td>KXSENMAJ-27 (Senate Majority Leader, 120th Congress) — Schumer 0.92, Cotton 0.90, Slotkin 0.02, Thune 0.00, Barrasso 0.00; KXCONTROLH-2030 (House 2030) open both parties</td><td>KXSENMAJ-27 — <b>$434,922</b> volume shown on the official demo page; Slotkin leg 102,833 contracts, OI 78,127</td><td>KXGA14SPECIAL1ROUND-26MAR10 → settled <b>NO</b> (2026-03-13)</td></tr>
+      <tr><td><b>Culture</b></td><td>KXNETFLIXRANKSHOWGLOBAL-26NOV23 (The Body S1 @ 0.73 favorite); KXGTAONLINE-GTA6ONLINE ladder (before 2028 @ 0.84, Jul 2027 @ 0.70, May 2027 @ 0.54)</td><td>KXGTAONLINE-GTA6ONLINE ≈ <b>$8.2K</b> total notional across ladder; $28,123 volume per official demo page</td><td>NOBELLIT-24 (2024 Nobel Lit) finalized — <b>two YES legs (demo anomaly, flagged F6)</b>; Billboard/RT series: 0 demo markets</td></tr>
+      <tr><td><b>Crypto</b></td><td>15-min BTC/ETH/SOL/DOGE/HYPE rolling markets (CF Benchmarks RTI); KXBTCD daily BTC ladder open pre-fix; KXBTCMAXY annual "how high" ladder with real volume</td><td>KXBTCMAXY-26DEC31 ladder ≈ <b>$8.7K</b> total verified volume (109,999.99 leg 3,667 contracts)</td><td>BTC/ETH/DOGE/HYPE 15-min 26NOV201900 all settled <b>NO</b> (2026-11-21 00:00 UTC); BTC 15-min had a verified 0.51→0.003 collapse (the alert demo)</td></tr>
+      <tr><td><b>Golf</b></td><td>None open at snapshot time (verified)</td><td>KXPRESCUP-26 (2026 President's Cup) ≈ <b>$4.22M</b> total notional — the largest verified dollar event in the demo</td><td>President's Cup settled <b>Team USA (YES)</b>, World NO, Tie NO (2026-09-27); RSM Classic cut markets (Haas/Streb/Brehm) all settled <b>NO</b> (2026-11-20)</td></tr>
+    </tbody></table>
+    <p class="note">Full per-market detail with source links: the five topic pages. Machine-readable snapshot: <span class="mono">data/snapshot.json</span> (repo).</p>
+  </div>
+
+  <div class="card">
+    <h2>4. Findings &amp; recommendations</h2>
+    <ul class="tight">
+      <li><b>The demo environment is the right testbed but is sparse.</b> Only a subset of Kalshi's markets exists there, several with explicit <span class="mono">"demo strike"</span> synthetic markers, and a few inconsistencies (F5, F6, F7, F12). Treat demo prices as plumbing tests, not market intelligence.</li>
+      <li><b>Momentum beat reversion on the verified 15-min crypto collapse</b> (S1 lost, S2 won in the paper engine) — the reversion-based high-ROI model (K=0.6) is therefore a <i>filter for the alert chat</i>, not a trading signal, until it is backtested against real historical data via <span class="mono">/historical/markets</span>.</li>
+      <li><b>Liquidity is the binding constraint in the demo</b> — verified books are 2–100 contracts deep; any strategy must carry an OI/size gate (the engine's ROI model does).</li>
+      <li><b>To go live-trading (still demo-safe):</b> create demo API keys, add the signed-order client (official SDKs: Python &amp; TypeScript), subscribe to the <span class="mono">ticker</span>/<span class="mono">trade</span> WS channels instead of 15s polling, and wire the same alert engine to the <span class="mono">fill</span> channel for the paper account.</li>
+      <li><b>To make the site more live:</b> the ten suggestions on the landing page, prioritized: (1) WebSocket push, (2) price heatmap, (3) news-correlation overlay with official source links, (4) one-click paper order ticket.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>5. Verification method</h2>
+    <p class="note">Each table row was retrieved from a single official query and transcribed verbatim; the exact query URL is linked on the row. Values the response did not contain are rendered as "–" and listed on the <a href="../flagged/">Flagged for Review</a> page (never filled by inference). The full line-by-line log is in <span class="mono">docs/verification.md</span> and <span class="mono">docs/sources.md</span> in this repository, and on the <a href="../docs/sources/">Sources page</a>. Site build is plain static HTML/CSS/JS (no build step), which is how GitHub Pages serves it; the integration pass checked every internal and external link before merge.</p>
+  </div>
+
+  <div class="card">
+    <h2>Documents</h2>
+    <p>
+      <a class="chip" href="../docs/sources/"><b>Sources</b><span>every official URL used, with what it verified</span></a>
+      <a class="chip" href="../docs/strategies/"><b>Strategies</b><span>full spec of the four paper strategies + ROI model</span></a>
+      <a class="chip" href="../flagged/"><b>Flagged for Review</b><span>12 irregularities + unverified-by-necessity list</span></a>
+      <a class="chip" href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/COORDINATION.md" target="_blank" rel="noopener"><b>COORDINATION.md</b><span>shared task board, session log, PR/merge record</span></a>
+    </p>
+  </div>
+</div>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/layout.js"></script>
+</body>
+</html>

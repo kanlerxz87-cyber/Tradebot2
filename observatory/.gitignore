@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env*
+*.pem
+*.key
+private/
+.cache/
+test-results/
+playwright-report/
