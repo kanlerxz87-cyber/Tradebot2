@@ -82,7 +82,7 @@
       <div class="card">
         <h2>How this topic is selected</h2>
         <p class="small muted">The classifier is deliberately narrow. A market that cannot be tied to golf is excluded, not guessed into the topic.</p>
-        <ul class="callout-list">        <li>Series prefixes <code>KXPGATOUR*</code>, <code>KXGOLF*</code>, <code>KXLPGA*</code>, <code>KXRYDER*</code>, <code>KXMASTERS*</code>, <code>KXSOLHEIM*</code>.</li>
+        <ul class="callout-list">        <li>Series prefixes <code>KXPGATOUR*</code>, <code>KXLPGATOUR*</code>, <code>KXPGAMAKECUT*</code>, <code>KXPRESCUP*</code>, <code>KXGOLF*</code>, <code>KXLPGA*</code>, <code>KXRYDER*</code>, <code>KXMASTERS*</code>, <code>KXSOLHEIM*</code>.</li>
         <li>Keywords: golf, golfer, PGA, LPGA, Ryder Cup, Solheim Cup, Masters Tournament, the Masters, Open Championship, British Open, FedExCup, WM Phoenix Open, Players Championship, Presidents Cup.</li>
         <li>“Liga MX” and other non-golf sports are excluded by the classifier and covered by regression tests.</li></ul>
         <div class="note info" style="margin-top:14px">Full rules and regression cases: <a href="methodology.html#classification">methodology → classification</a>.</div>
@@ -117,7 +117,7 @@
     <section class="grid grid-2 section">
       <div class="card">
         <h2>Notes for a trader</h2>
-        <ul class="callout-list">        <li>Demo coverage for golf can be zero at a given snapshot. An empty board means no open golf markets were returned, not that golf was filtered out.</li>
+        <ul class="callout-list">        <li>The collector queries official Golf series (KXPGATOUR, KXLPGATOUR, KXPRESCUP, KXPGAMAKECUT) directly in addition to paginated open-market scans so golf tournament outrights are not missed behind high-frequency contracts.</li>
         <li>Tournament outrights can remain open for days; settlement requires the official tour result and any playoff rules in the contract.</li>
         <li>Team events use selection and captain’s-pick rules; read the contract, not the headline.</li></ul>
       </div>

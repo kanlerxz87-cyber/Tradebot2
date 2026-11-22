@@ -117,24 +117,24 @@
                 <td>Kalshi adding official golf/gasoline categories would allow a simpler, exact mapping.</td>
               </tr>
               <tr id="F-09">
-                <td class="mono">F-09</td><td><span class="badge warn">Medium</span></td>
-                <td><strong>Demo coverage is sparse and changes over time.</strong> At snapshot time: gas <span data-stat="gas_prices_open">—</span> open, elections <span data-stat="elections_open">—</span>, culture <span data-stat="culture_open">—</span>, crypto <span data-stat="crypto_open">—</span>, golf <span data-stat="golf_open">—</span>. An empty category is a coverage gap, not a zero price.</td>
-                <td><span class="badge neutral">Observed</span></td>
-                <td><a href="data/snapshot.json">Snapshot ↗</a> · topic pages state the gap in the table body.</td>
-                <td>Nothing to fix in code; re-check after the demo catalog changes. Production coverage is expected to be broader but is outside scope.</td>
+                <td class="mono">F-09</td><td><span class="badge blue">Low</span></td>
+                <td><strong>Demo coverage across the 5 topics requires targeted series queries in addition to newest-first pagination.</strong> Earlier snapshots paginated only <code>GET /markets?status=open</code> (dominated by short-dated contracts) and missed older open series in Gas, Culture, and Golf. Current snapshot: gas <span data-stat="gas_prices_open">—</span> open, elections <span data-stat="elections_open">—</span>, culture <span data-stat="culture_open">—</span>, crypto <span data-stat="crypto_open">—</span>, golf <span data-stat="golf_open">—</span>.</td>
+                <td><span class="badge green">Closed</span></td>
+                <td><a href="data/snapshot.json">Snapshot ↗</a> · <a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">Get Markets (series_ticker filter) ↗</a> · <code>app/collector.py</code>.</td>
+                <td>Closed by supplementing paginated discovery with targeted <code>series_ticker</code> queries across all 5 topics.</td>
               </tr>
               <tr id="F-10">
                 <td class="mono">F-10</td><td><span class="badge warn">Medium</span></td>
                 <td><strong>The committed snapshot can go stale.</strong> Live prices are polled by the browser, but the fallback snapshot is only as fresh as the last data-workflow run.</td>
                 <td><span class="badge blue">Mitigated</span></td>
-                <td>Snapshot timestamp is shown on every page; the data workflow runs daily and on relevant pushes. <a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/data.yml" target="_blank" rel="noopener">Workflow ↗</a>.</td>
+                <td>Snapshot timestamp is shown on every page; the data workflow (<code>.github/workflows/data.yml</code>) runs daily and on relevant pushes against <a href="https://docs.kalshi.com/getting_started/quick_start_market_data.md" target="_blank" rel="noopener">public market data ↗</a>.</td>
                 <td>A scheduled run can commit a fresh snapshot; a missed run is visible as an older timestamp and the page never disguises it.</td>
               </tr>
               <tr id="F-11">
                 <td class="mono">F-11</td><td><span class="badge down">High</span></td>
                 <td><strong>Published-site defect (corrected):</strong> an earlier Actions deployment of <code>docs/</code> reported success while the live URL served the legacy build of <code>README.md</code>. Pages is configured <code>build_type=legacy</code>, source <code>main:/</code>.</td>
                 <td><span class="badge green">Closed</span></td>
-                <td><a href="https://api.github.com/repos/kanlerxz87-cyber/Tradebot2/pages" target="_blank" rel="noopener">Pages configuration ↗</a> (<code>build_type: legacy</code>, <code>source: main /</code>) · Pages build history · the live URL returned “# Tradebot2” before this change. The GitHub token available to the build cannot change Pages settings (<code>PUT /pages</code> → 403).</td>
+                <td>Verified via <code>gh api repos/kanlerxz87-cyber/Tradebot2/pages</code> (<code>build_type: legacy</code>, <code>source: main /</code>) and <a href="https://docs.kalshi.com/getting_started/demo_env.md" target="_blank" rel="noopener">official demo environment docs ↗</a> · the live URL returned “# Tradebot2” before this change. The GitHub token available to the build cannot change Pages settings (<code>PUT /pages</code> → 403).</td>
                 <td>Closed by publishing the canonical site at the repository root, which is what legacy Pages serves. The artifact deploy was repointed to verification rather than an ignored deployment.</td>
               </tr>
               <tr id="F-12">

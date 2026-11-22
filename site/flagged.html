@@ -27,7 +27,7 @@ collector's JSON.</b> With an Origin header the demo host returns <code>Access-C
 204 preflight. An early probe without an Origin header saw no CORS header and that was almost written up as a limit; the
 measurement corrected it. The WebSocket handshake, by contrast, needs signing (401 without it).</td><td>Verified, corrected</td>
 <td>Add a 5-second browser poll to this page for true per-second quotes; use the collector JSON as the fallback.</td>
-<td><a href="data/probe.json">data/probe.json</a></td></tr>
+<td><a href="../data/probe.json">data/probe.json</a> · <a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?limit=1" target="_blank" rel="noopener noreferrer">GET /markets</a></td></tr>
 <tr><td>F3</td><td><b>Demo prices are simulated.</b> Kalshi states demo prices and behaviour may not reflect real markets, so
 nothing here is evidence about production odds or liquidity.</td><td>Documented limit</td>
 <td>Run the same collector against the production host (<code>KALSHI_BASE</code> switch already exists) and label the site accordingly.</td>

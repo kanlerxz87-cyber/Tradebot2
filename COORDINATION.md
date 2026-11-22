@@ -328,3 +328,16 @@ rebuild is kept as an archived generation; the published pipeline is untouched e
 * Merge commit: _(filled in after the merge)_
 * Pages build/deploy: _(filled in after the deploy)_
 * Live checks: _(filled in after the deploy)_
+
+---
+
+## Session `arena/10428a57-tradebot2` — full 5-topic discovery (including Golf & AAA Gas), candle swing detection & backtest fix (claimed 2026-11-22)
+
+Base: `main` @ `330f82e` (after PRs #1–#26). Claimed after all prior sessions merged.
+
+| # | Task | Status | Owner | File scope | Notes |
+|---|------|--------|-------|-----------|-------|
+| A1 | Fix `app/topics.py` and `app/collector.py` to discover active open and settled series across all 5 topics (`gas_prices`, `elections`, `culture`, `crypto`, `golf`) — fixing `golf: 0 open` and missing high-OI AAA Gas (`KXAAAGASM`/`KXAAAGASW`), Elections (`KXPRESPERSON`/`KXPRESNOMD`/`KXSENMAJ`), Culture (`KXOSCARPIC`/`KXGTAONLINE`/`KXNETFLIXRANKSHOWGLOBAL`), Crypto (`KXBTCY`/`KXBTCMAXY`), and Golf (`KXPGATOUR`/`KXLPGATOUR`/`KXPRESCUP`/`KXPGAMAKECUT`) | in progress | `arena/10428a57-tradebot2` | `app/topics.py`, `app/collector.py`, `tests/test_topics.py` | Supplements 60-page `/markets?status=open` scan with targeted `series_ticker` queries and pre-populated `series_cache` |
+| A2 | Fix `app/alerts.py`, `app/collector.py`, and `app/backtest.py` so `seed_alerts` and `run_backtest` inspect both `1m` and `60m` candlesticks as well as intra-bar `open -> close` moves `>= $0.10` | in progress | `arena/10428a57-tradebot2` | `app/alerts.py`, `app/collector.py`, `app/backtest.py`, `tests/test_alerts.py` | Captures real `>= $0.10` swings in `KXSENMAJ-27-CSCH`, `KXPRESPERSON-28-VRAM`, `KXPRESNOMD-28-GW`, `KXBTCY-27JAN0100-B47500`, `KXDEMOFUTHOURLY-26NOV22H08-UP` |
+| A3 | Fix `tools/build_category_pages.py` nav template (`Sources` link) and `collector/kalshi.py` optional `requests` import; clean up `flagged.html` non-official link warnings | in progress | `arena/10428a57-tradebot2` | `tools/build_category_pages.py`, `collector/kalshi.py`, `flagged.html`, `.github/workflows/data.yml` | Zero warnings in `python3 tools/verify_site.py` and `python3 tools/check_site.py --root . --strict` |
+
