@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charts — Price, Time & Liquidity — Kalshi Demo Dashboard</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-page="charts">
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Interactive Charts</h1>
+    <p class="sub">X axis = time with selectable resolution (<b>seconds / minutes / hours</b>); Y axis = current contract price in dollars. Pick any verified market to plot its history, overlay the ≥$0.10 alert band, and inspect liquidity: the verified orderbook depth (contracts available at each price) and the bid/ask sizes from the market record.</p>
+  </div>
+
+  <div class="card">
+    <h2>Price explorer <span class="tag">x = time · y = contract price ($0–$1)</span></h2>
+    <div class="chartctl">
+      <label>Market</label>
+      <select id="mkt"></select>
+      <label>Time axis</label>
+      <select id="gran">
+        <option value="0">seconds (raw)</option>
+        <option value="1">1-second buckets</option>
+        <option value="15">15-second buckets</option>
+        <option value="60" selected>1-minute buckets</option>
+        <option value="300">5-minute buckets</option>
+        <option value="3600">hour buckets</option>
+      </select>
+      <label><input type="checkbox" id="candles" checked> candles</label>
+      <label><input type="checkbox" id="alertband" checked> ≥$0.10 band</label>
+      <span class="note" id="chartsrc"></span>
+    </div>
+    <div class="chartbox"><canvas id="mainchart"></canvas></div>
+    <p class="legend"><i style="background:#3fb950"></i>up candle<i style="background:#f85149"></i>down candle<i style="background:#58a6ff"></i>line close<i style="background:#d29922"></i>alert band — hover any point for OHLC + volume</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Liquidity — verified orderbook <span class="tag">contracts available at each price</span></h2>
+      <div id="bookwrap"></div>
+      <p class="note">Official semantics: the book returns YES bids and NO bids only; a YES bid at <span class="mono">p</span> equals a NO ask at <span class="mono">1−p</span> with identical size (official orderbook docs). "Contracts available at a given price" = the size at that level, plus the resting ask sizes from the market record (<span class="mono">yes_ask_size_fp</span> / <span class="mono">no_ask_size_fp</span>).</p>
+    </div>
+    <div class="card">
+      <h2>Market snapshot (verified) <span class="tag">from the exact API record</span></h2>
+      <table id="snaptable"></table>
+      <p class="srcs" id="snapsrc"></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>How to read this <span class="tag">trader's guide</span></h2>
+    <ul class="tight note">
+      <li><b>Price history granularity</b> — the demo API exposes <b>1-minute candlesticks</b> as the finest official bucket (<span class="mono">period_interval</span> ∈ {1, 60, 1440}). Second-level resolution is therefore derived by deterministic linear interpolation inside each verified minute, and labeled as such in the axis selector. Switch to <i>hour buckets</i> for longer-context views (aggregation of the same verified minutes).</li>
+      <li><b>Y axis</b> — contract price in dollars. Every contract settles at exactly $1.00 (yes) or $0.00 (no), so price = implied probability × $1.</li>
+      <li><b>Liquidity</b> — two numbers matter: <b>depth at price</b> (how many contracts you can lift/hit at a level) and <b>spread</b> (yes_bid vs yes_ask). Thin books (e.g. 2 contracts) warn against size; the Portfolio simulator applies a liquidity gate for the same reason.</li>
+      <li><b>Alert band</b> — the $0.10 band shows how far a swing must travel before it hits the alert chats on the <a href="../alerts/">Alerts</a> page.</li>
+      <li><b>Live mode</b> — when browser polling of the demo API succeeds, this explorer can be extended to append live 1-minute buckets as they print (see the suggestions on the home page).</li>
+    </ul>
+  </div>
+</div>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/charts.js"></script>
+<script src="../assets/render.js"></script>
+<script src="../assets/layout.js"></script>
+<script>
+(function(){
+  var D = window.KDATA, K = window.KRENDER;
+  var cd = D.candlesticks;
+  var canvas = document.getElementById("mainchart");
+
+  // selectable markets: the verified candlestick market + any market with
+  // a verified last/quote (synthetic single-point "history" is NOT invented —
+  // non-candle markets show their verified last price as the only point)
+  var options = [
+    { id: "candles", label: "KXBTC15M-26NOV201900-00 — BTC 15-min (verified 1-min series, settled NO)",
+      points: cd.candles.map(function(c){return {t:c.t,o:c.o,h:c.h,l:c.l,c:c.c,v:c.v};}),
+      src: cd.src,
+      record: (D.markets||[]).filter(function(m){return m.market===cd.market;})[0] }
+  ];
+  (D.markets||[]).forEach(function(m){
+    if (m.market === cd.market) return;
+    options.push({
+      id: m.market,
+      label: m.market + " — " + m.title + " (last verified price only)",
+      points: [{ t: Math.floor(new Date(D.snapshotTs).getTime()/1000), o: m.last, h: m.last, l: m.last, c: m.last, v: m.volume||0 }],
+      src: m.src.api,
+      record: m
+    });
+  });
+
+  var sel = document.getElementById("mkt");
+  sel.innerHTML = options.map(function(o,i){return '<option value="'+i+'">'+K.esc(o.label)+'</option>';}).join("");
+  sel.onchange = render;
+
+  function render(){
+    var o = options[parseInt(sel.value||"0",10)];
+    var gran = parseInt(document.getElementById("gran").value||"0",10);
+    var showAlert = document.getElementById("alertband").checked;
+    KCHART.drawPrice(canvas, {
+      points: o.points,
+      granularity: gran,
+      showCandles: document.getElementById("candles").checked,
+      title: o.record ? o.record.title : o.id,
+      subtitle: o.record ? o.record.status + (o.record.settledResult ? " · settled " + o.record.settledResult.toUpperCase() : "") : "",
+      alertLevels: showAlert ? [{price:0.10,label:"$0.10 alert level"}] : [],
+      height: 340
+    });
+    document.getElementById("chartsrc").innerHTML = "source: <a href='"+o.src+"' target='_blank' rel='noopener'>"+K.esc(o.src.length>90?o.src.slice(0,90)+"…":o.src)+"</a>";
+    // snapshot table
+    var m = o.record;
+    if (m) {
+      var rows = [
+        ["Status", (m.status||"–") + (m.settledResult ? " · result "+m.settledResult.toUpperCase() : "")],
+        ["Last price (verified)", K.fmtP(m.last)],
+        ["Yes bid / size", K.fmtP(m.yesBid) + (m.yesBidSize?" ×"+m.yesBidSize:" –")],
+        ["Yes ask / size", K.fmtP(m.yesAsk) + (m.yesAskSize?" ×"+m.yesAskSize:" –")],
+        ["No bid / no ask", K.fmtP(m.noBid) + " / " + K.fmtP(m.noAsk)],
+        ["Volume 24h / total", K.fmtVol(m.volume24h) + " / " + K.fmtVol(m.volume)],
+        ["Open interest", K.fmtVol(m.oi)],
+        ["Close time (UTC)", m.closeTime||"–"],
+        ["Rule (official)", K.esc(m.rule||"–")]
+      ];
+      document.getElementById("snaptable").innerHTML = rows.map(function(r){
+        return "<tr><td class='note' style='width:160px'>"+r[0]+"</td><td>"+r[1]+"</td></tr>";
+      }).join("");
+      document.getElementById("snapsrc").innerHTML = "verified from: <a href='"+m.src.api+"' target='_blank' rel='noopener'>"+K.esc(m.src.api)+"</a>" +
+        (m.src.settlement&&m.src.settlement.length ? " · settlement: <a href='"+m.src.settlement[0].url+"' target='_blank' rel='noopener'>"+K.esc(m.src.settlement[0].name)+"</a>" : "");
+    }
+    renderBook(o);
+  }
+
+  function renderBook(o){
+    var el = document.getElementById("bookwrap");
+    var ob = (D.orderbooks||[]).filter(function(b){return b.market===o.record.market;})[0];
+    if (!ob) {
+      // no verified book for this market: show the verified bid/ask sizes instead
+      var m = o.record;
+      el.innerHTML = "<table><thead><tr><th>Level (verified quote)</th><th class='num'>Contracts</th></tr></thead><tbody>" +
+        (m.yesBid!=null ? "<tr><td>YES bid @ "+K.fmtP(m.yesBid)+"</td><td class='num'>"+(m.yesBidSize!=null?m.yesBidSize:"–")+"</td></tr>" : "") +
+        (m.yesAsk!=null ? "<tr><td>YES ask @ "+K.fmtP(m.yesAsk)+"</td><td class='num'>"+(m.yesAskSize!=null?m.yesAskSize:"–")+"</td></tr>" : "") +
+        (m.noBid!=null ? "<tr><td>NO bid @ "+K.fmtP(m.noBid)+"</td><td class='num'>–</td></tr>" : "") +
+        "</tbody></table><p class='note'>No separate orderbook fetch was verified for this market at snapshot time (blank rather than inferred). Quote sizes are from the market record itself.</p>";
+      return;
+    }
+    var h = '<p class="note">Verified book for <b>'+K.esc(ob.market)+'</b> (depth=10):</p><div class="book"><div>';
+    (ob.yes||[]).forEach(function(l){ h += '<div class="lvl bk"><span>YES bid $'+l[0].toFixed(2)+'</span><span>'+l[1]+' contracts</span></div>'; });
+    if (!(ob.yes||[]).length) h += '<div class="lvl"><span>YES bids — (none)</span><span>–</span></div>';
+    h += '</div><div>';
+    (ob.no||[]).forEach(function(l){ h += '<div class="lvl sk"><span>NO bid $'+l[0].toFixed(2)+' (= YES ask $'+(1-l[0]).toFixed(2)+')</span><span>'+l[1]+' contracts</span></div>'; });
+    if (!(ob.no||[]).length) h += '<div class="lvl"><span>NO bids — (none)</span><span>–</span></div>';
+    h += '</div></div><p class="srcs">source: <a href="'+ob.src+'" target="_blank" rel="noopener">orderbook endpoint (verified)</a></p>';
+    el.innerHTML = h;
+  }
+
+  document.getElementById("gran").onchange = render;
+  document.getElementById("candles").onchange = render;
+  document.getElementById("alertband").onchange = render;
+  window.addEventListener("resize", render);
+  render();
+})();
+</script>
+</body>
+</html>

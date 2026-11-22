@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Findings · Tradebot2</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body data-page="findings">
+<header class="top" id="nav"></header>
+<main>
+
+<h1>Findings &amp; methodology</h1>
+<p class="lead">What the site measures, how each number is produced, and what is still unverified. Live counts are on the home and dashboard pages.</p>
+<h2>Executive summary</h2>
+<div class="card">
+<ul>
+<li><b>Data source.</b> Public, unauthenticated, read-only Kalshi endpoints (see <a href="sources.html">Sources</a>). Market data comes from the production REST host documented by Kalshi; the demo host is also documented and was used for endpoint checks.</li>
+<li><b>Alerts.</b> A market is flagged when its YES last price changes by $0.10 or more between two consecutive collection runs. Each alert links to the API endpoint and the event’s settlement sources.</li>
+<li><b>Cause of a move.</b> Not known. The API does not report causes. Settlement sources are listed as reference links only and are marked unverified as causes.</li>
+<li><b>High-ROI screen.</b> A fixed, transparent rule set: spread ≤ $0.03, ask size ≥ 50 contracts, 24h volume ≥ 100, entry price between $0.05 and $0.95. It is <i>not</i> a trained or validated model. Its ROI column is a gross proxy, (1 − entry) ÷ entry, before fees.</li>
+<li><b>Simulated trades.</b> Paper trades only, 10 contracts each, fees not modelled. Results are for testing the pipeline, not evidence of an edge. Sample size is too small to judge a strategy until several weeks of runs accumulate.</li>
+<li><b>Resolutions.</b> Tracked from the API <code>result</code> field (yes/no) on <code>GET /markets/{ticker}</code>.</li>
+<li><b>Not done.</b> Demo-account portfolio tracking needs API-key credentials that were not supplied in the chat. Second-level price resolution needs a streaming client (see suggestions).</li>
+</ul>
+</div>
+<h2>Verification of this site</h2>
+<div class="card">
+<ul>
+<li>Every endpoint and parameter named on this site was checked against Kalshi’s official docs pages or OpenAPI file; each check is listed on <a href="sources.html">Sources</a>.</li>
+<li>Every market row carries a link to the API endpoint that produced it. Values the API did not report are left blank and marked <span class="unv">unverified</span>.</li>
+<li>Repository irregularities are on <a href="repo-review.html">Repo review</a>.</li>
+</ul>
+</div>
+<h2>Methodology</h2>
+<div class="card">
+<ol>
+<li>Discover series per topic with <code>GET /series</code> (filters <code>category</code> and <code>tags</code>), ranked by <code>volume_fp</code>, top 40 per topic.</li>
+<li>Fetch open events and nested markets with <code>GET /events?series_ticker=…&amp;status=open&amp;with_nested_markets=true</code>.</li>
+<li>Store one snapshot per market per run; compare with the previous snapshot; alert at |Δ last| ≥ 0.10.</li>
+<li>Sample resting depth for the 25 most active markets with <code>GET /markets/{ticker}/orderbook?depth=10</code>.</li>
+<li>Check unresolved markets that have left the open listing with <code>GET /markets/{ticker}</code>, up to 60 per run, and record <code>result</code>.</li>
+<li>Open and close paper trades on the YES bid; settle to $1.00 (YES) or $0.00 (NO).</li>
+</ol>
+</div>
+<p class="note">Scheduled job: GitHub Actions, every 15 minutes (cron <code>*/15 * * * *</code>). GitHub documents that the schedule event can be delayed under high load, that the shortest interval is 5 minutes, and that scheduled workflows run only on the default branch (<a href="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule" target="_blank" rel="noopener">source</a>).</p>
+
+</main>
+<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+</body>
+</html>

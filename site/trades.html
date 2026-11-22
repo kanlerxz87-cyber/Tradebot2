@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simulated trades · Tradebot2</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body data-page="trades">
+<header class="top" id="nav"></header>
+<main>
+
+<h1>Simulated trades &amp; strategy analysis</h1>
+<p class="lead">Automated paper trades on alerts that pass the high-ROI screen. Two strategies: <b>fade_drop</b> (buy YES after a ≥ $0.10 drop) and <b>follow_rise</b> (buy YES after a ≥ $0.10 rise). Each trade has a fixed entry, a ±$0.05 target/stop on the YES bid, and a 48-hour time stop.</p>
+<div class="stale" id="fresh"></div>
+<p class="note" id="trade-assump"></p>
+<div id="trade-body"></div>
+<p class="note">Simulated trades only. No orders are placed and no real money is used. Prices are Kalshi API values at collection time.</p>
+
+</main>
+<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+</body>
+</html>
