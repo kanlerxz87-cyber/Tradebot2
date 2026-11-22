@@ -1,0 +1,11 @@
+{
+  "generated_by": "tools/probe_api.py",
+  "generated_at": null,
+  "environment": "Kalshi demo",
+  "status": "not-yet-run",
+  "note": "This file is written by .github/workflows/probe-api.yml on a GitHub runner, because the build sandbox used for the initial commit has no network route to *.kalshi.co (see flagged.html F-01). Until the first probe run completes, no API-behaviour claim is recorded here.",
+  "rest": {"hosts": [], "records": []},
+  "cors_preflight_signed": null,
+  "unauthenticated_portfolio": null,
+  "websockets": {"unauthenticated": [], "authenticated": []}
+}

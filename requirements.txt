@@ -1,0 +1,6 @@
+# Runtime dependencies for the collector, prober and tools.
+# requests / cryptography: verified against PyPI when written; the CI workflows install these.
+# websockets: used by tools/probe_api.py for the WebSocket handshake probe.
+requests>=2.31.0
+cryptography>=42.0.0
+websockets>=12.0

@@ -1,0 +1,84 @@
+{
+  "Golf": {
+    "series": [
+      {
+        "ticker": "KXPGAMASTERS",
+        "title": "Golfers to Participate in the Masters",
+        "frequency": "one_off",
+        "category": "Sports",
+        "categories": [
+          "Sports"
+        ],
+        "tags": [
+          "Golf"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      },
+      {
+        "ticker": "KXPGATOP10",
+        "title": "PGA Top 10 for All 4 Majors",
+        "frequency": "annual",
+        "category": "Sports",
+        "categories": [
+          "Sports"
+        ],
+        "tags": [
+          "Golf"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      }
+    ]
+  },
+  "Oil & Gas": {
+    "series": [
+      {
+        "ticker": "KXAAAGASD",
+        "title": "US gas price up",
+        "frequency": "daily",
+        "category": "Economics",
+        "categories": [
+          "Economics"
+        ],
+        "tags": [
+          "Oil & Gas",
+          "Oil and energy",
+          "Econ Daily"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      }
+    ]
+  }
+}

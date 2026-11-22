@@ -1,0 +1,313 @@
+{
+  "series": {
+    "Economics": [
+      {
+        "ticker": "KXAAAGASD",
+        "title": "US gas price up",
+        "frequency": "daily",
+        "category": "Economics",
+        "categories": [
+          "Economics"
+        ],
+        "tags": [
+          "Oil & Gas",
+          "Oil and energy",
+          "Econ Daily"
+        ],
+        "settlement_sources": [
+          {
+            "name": "AAA",
+            "url": "https://gasprices.aaa.com/"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      },
+      {
+        "ticker": "KXNDKOIL",
+        "title": "North Dakota crude oil production",
+        "frequency": "daily",
+        "category": "Economics",
+        "categories": [
+          "Economics"
+        ],
+        "tags": [
+          "Oil and energy"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      }
+    ],
+    "Commodities": [],
+    "Elections": [
+      {
+        "ticker": "KXNEXTNATOSECGEN",
+        "title": "Who will be the next Secretary General of NATO?",
+        "frequency": "one_off",
+        "category": "Elections",
+        "categories": [
+          "Elections"
+        ],
+        "tags": [
+          "Leadership races"
+        ],
+        "settlement_sources": [
+          {
+            "name": "North Atlantic Treaty Organization",
+            "url": "https://www.nato.int/"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      },
+      {
+        "ticker": "KXMAYORNYC",
+        "title": "Who will be the next Mayor of New York City?",
+        "frequency": "one_off",
+        "category": "Elections",
+        "categories": [
+          "Elections"
+        ],
+        "tags": [
+          "Mayors & local"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      }
+    ],
+    "Culture": [
+      {
+        "ticker": "KXXBANNEDGROK",
+        "title": "Will Grok be banned this year",
+        "frequency": "one_off",
+        "category": "Culture",
+        "categories": [
+          "Culture"
+        ],
+        "tags": [
+          "AI"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      }
+    ],
+    "Entertainment": [
+      {
+        "ticker": "KXMOVIEGROSS",
+        "title": "Top movie box office this weekend",
+        "frequency": "weekly",
+        "category": "Entertainment",
+        "categories": [
+          "Entertainment"
+        ],
+        "tags": [
+          "Movies"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      }
+    ],
+    "Mentions": [],
+    "Crypto": [
+      {
+        "ticker": "KXBTC15M",
+        "title": "Bitcoin price in 15 minutes",
+        "frequency": "hourly",
+        "category": "Crypto",
+        "categories": [
+          "Crypto"
+        ],
+        "tags": [
+          "BTC",
+          "15 min"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      },
+      {
+        "ticker": "KXETHRANGE",
+        "title": "Ethereum price above/below",
+        "frequency": "hourly",
+        "category": "Crypto",
+        "categories": [
+          "Crypto"
+        ],
+        "tags": [
+          "ETH",
+          "Hourly"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      }
+    ],
+    "Sports": [
+      {
+        "ticker": "KXPGAMASTERS",
+        "title": "Golfers to Participate in the Masters",
+        "frequency": "one_off",
+        "category": "Sports",
+        "categories": [
+          "Sports"
+        ],
+        "tags": [
+          "Golf"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      },
+      {
+        "ticker": "KXPGATOP10",
+        "title": "PGA Top 10 for All 4 Majors",
+        "frequency": "annual",
+        "category": "Sports",
+        "categories": [
+          "Sports"
+        ],
+        "tags": [
+          "Golf"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      },
+      {
+        "ticker": "KXNBAGAME",
+        "title": "NBA game winner",
+        "frequency": "daily",
+        "category": "Sports",
+        "categories": [
+          "Sports"
+        ],
+        "tags": [
+          "Basketball"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      }
+    ],
+    "Politics": [
+      {
+        "ticker": "KXTRUMPTARIFF",
+        "title": "Trump tariff announcement",
+        "frequency": "one_off",
+        "category": "Politics",
+        "categories": [
+          "Politics"
+        ],
+        "tags": [
+          "Trade & tariffs"
+        ],
+        "settlement_sources": [
+          {
+            "name": "Example Source",
+            "url": "https://example.com"
+          }
+        ],
+        "contract_terms_url": "https://assets.kalshi.com/contract_terms/X.pdf",
+        "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/X.pdf",
+        "fee_type": "quadratic",
+        "fee_multiplier": 1,
+        "exchange_index": 0,
+        "last_updated_ts": "2026-11-22T06:47:20.923035Z"
+      }
+    ],
+    "Financials": []
+  }
+}

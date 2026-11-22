@@ -1,0 +1,55 @@
+{
+  "strategies": [
+    {
+      "id": "S1_MOMENTUM",
+      "kind": "momentum",
+      "lookback_points": 6,
+      "min_move": 0.1,
+      "name": "Swing momentum",
+      "rationale": "Large single-window repricings on thin books tend to continue briefly.",
+      "rule": "When the observed price moves >= $0.10 within the lookback window in either direction, buy the side the move points to (YES after an up-move, NO after a down-move).",
+      "size_contracts": 10
+    },
+    {
+      "id": "S2_MEAN_REVERT",
+      "kind": "mean_reversion",
+      "lookback_points": 6,
+      "min_move": 0.1,
+      "name": "Overreaction fade",
+      "rationale": "Sharp spikes on low-volume demo markets often retrace.",
+      "rule": "When the observed price moves >= $0.10 in the window, take the opposite side of the move (buy NO after an up-move, YES after a down-move).",
+      "size_contracts": 10
+    },
+    {
+      "id": "S3_CHEAP_TAIL",
+      "kind": "value",
+      "max_ask": 0.1,
+      "min_open_interest": 1.0,
+      "name": "Cheap-tail value",
+      "rationale": "Long-shot contracts with real liquidity; the payoff is bounded and known.",
+      "rule": "Buy YES only when the best YES ask is <= $0.10 and the market has open interest, so the maximum loss per contract is capped at the price paid.",
+      "size_contracts": 20
+    },
+    {
+      "id": "S4_RICH_FAVOURITE",
+      "kind": "value",
+      "min_bid": 0.9,
+      "name": "Rich favourite fade",
+      "rationale": "Capped upside on the opposite side; tests whether favourites are overpriced.",
+      "rule": "Buy NO when the best YES bid is >= $0.90, i.e. fade a near-certain outcome that is priced at or above $0.90.",
+      "size_contracts": 10
+    },
+    {
+      "id": "S5_LIQUID_MID",
+      "kind": "liquidity",
+      "max_bid": 0.65,
+      "max_spread": 0.04,
+      "min_bid": 0.35,
+      "min_book_contracts": 100.0,
+      "name": "Liquid mid-range",
+      "rationale": "Tradable two-sided markets; avoids paying wide spreads.",
+      "rule": "Buy YES at $0.35-$0.65 only when both sides of the book hold >= 100 contracts and the spread is <= $0.04.",
+      "size_contracts": 10
+    }
+  ]
+}
