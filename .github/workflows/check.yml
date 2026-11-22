@@ -1,0 +1,23 @@
+name: Verify dashboard
+on:
+  pull_request:
+  push:
+    branches: ['arena/**']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test && npm run verify && npm run build
+      - name: Verify collector against official demo API
+        run: npm run collect
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: official-demo-snapshot
+          path: data/snapshot.json

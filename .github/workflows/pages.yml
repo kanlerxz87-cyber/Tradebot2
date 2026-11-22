@@ -1,0 +1,53 @@
+name: Publish dashboard
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: read
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Restore observation history
+        uses: actions/cache/restore@v4
+        with:
+          path: data/snapshot.json
+          key: kalshi-observations-${{ github.run_id }}
+          restore-keys: kalshi-observations-
+      - run: npm test && npm run verify
+      - name: Collect official demo data
+        run: npm run collect
+        continue-on-error: true
+      - name: Retain public observations between runs
+        uses: actions/cache/save@v4
+        with:
+          path: data/snapshot.json
+          key: kalshi-observations-${{ github.run_id }}
+      - run: npm run build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
