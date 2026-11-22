@@ -11,8 +11,8 @@
   const fmt2 = (n) => '$' + Number(n || 0).toFixed(2);
   const fmtPct = (n) => (n || 0).toFixed(1) + '%';
   const timeAgo = (t) => {
-    const d = Math.max(0, Date.now() - t);
-    if (d < 60) return d + 's ago';
+    const d = Math.max(0, Date.now() - t) / 1000;
+    if (d < 60) return Math.floor(d) + 's ago';
     if (d < 3600) return Math.floor(d / 60) + 'm ago';
     return Math.floor(d / 3600) + 'h ago';
   };
