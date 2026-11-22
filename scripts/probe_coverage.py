@@ -99,6 +99,24 @@ def main() -> int:
                  "category": e.get("category"), "title": e.get("title")}
                 for e in events[:2]
             ]
+    # Per-series open events: markets are listed by series_ticker only when the
+    # series really exists; an unknown filter is ignored by the API and returns
+    # the whole book, so counts must be read together with cursor/limit context.
+    per_series: dict[str, object] = {}
+    for series in [str(r.get("ticker")) for r in series_rows[:4]]:
+        status, events_page = get(
+            base, "/events", {"series_ticker": series, "status": "open", "limit": "200", "with_nested_markets": "true"}
+        )
+        events = (events_page or {}).get("events", []) if isinstance(events_page, dict) else []
+        nested = sum(len(e.get("markets") or []) for e in events)
+        per_series[series] = {
+            "events_http": status,
+            "open_events": len(events),
+            "nested_markets": nested,
+            "titles": [e.get("title") for e in events[:2]],
+        }
+    out["golf_series_events"] = per_series
+    print(json.dumps(per_series, indent=1)[:1200])
     out["golf_chain"] = chain
     print(json.dumps(chain, indent=1)[:1200])
 
