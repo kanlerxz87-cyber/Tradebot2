@@ -108,6 +108,16 @@ class KalshiClient:
     def series_list(self, **params: Any) -> list[dict[str, Any]]:
         return self._paged("/series", params, "series", max_pages=40)
 
+    def series_page(self, **params: Any) -> list[dict[str, Any]]:
+        """One page of /series. Discovery uses this: it never re-reads a page
+        that the host returned unfiltered (see collect._server_filters)."""
+        params.setdefault("limit", 200)
+        payload = self.get("/series", params)
+        rows = payload.get("series", []) or []
+        if not rows:
+            return []
+        return rows
+
     def market(self, ticker: str) -> dict[str, Any]:
         return self.get(f"/markets/{ticker}").get("market", {})
 

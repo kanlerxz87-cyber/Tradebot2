@@ -144,9 +144,17 @@
   document.addEventListener('DOMContentLoaded', async () => {
     await load();
     renderMeta(); renderKpis(); renderTable(); renderFeed(); wire();
-    if (state.markets.length) {
-      openChart(rows()[0].ticker);
+    if (!state.markets.length) {
+      const banner = document.createElement('div');
+      banner.className = 'section note';
+      banner.innerHTML = '<strong>No live snapshot committed yet.</strong> Collection runs in GitHub ' +
+        'Actions; this topic fills in on the first cycle. The rules below are what will be applied. ' +
+        'See <a href="../flagged.html#F-01">F-01</a>.';
+      document.querySelector('#topicTables, #marketRows')?.closest('.section')?.before(banner) ||
+        document.querySelector('main').prepend(banner);
+      return;
     }
+    openChart(rows()[0].ticker);
     setInterval(async () => { await load(); renderKpis(); renderTable(); renderFeed(); }, 60000);
   });
 })();

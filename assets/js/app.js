@@ -40,8 +40,13 @@
     const meta = state.meta || {};
     const pill = $('#livePill');
     if (pill) {
-      pill.textContent = (meta.environment || 'demo') + ' · ' + (meta.collected_at ? TB.timeAgo(meta.collected_at) : 'no data');
-      pill.className = 'pill live';
+      if (meta.awaiting_first_live_run || !meta.collected_at) {
+        pill.textContent = 'demo · awaiting first live cycle';
+        pill.className = 'pill';
+      } else {
+        pill.textContent = (meta.environment || 'demo') + ' · ' + TB.timeAgo(meta.collected_at);
+        pill.className = 'pill live';
+      }
     }
     const counts = state.alerts?.counts || {};
     const openMkts = state.markets.length;
@@ -292,6 +297,17 @@
     renderTables();
     wire();
     probeLive();
+    if (!state.markets.length) {
+      const host = document.querySelector('#topicTables');
+      if (host) {
+        host.innerHTML = `<div class="section note"><strong>No live cycle has been committed yet.</strong>
+          Collection runs in GitHub Actions (<code>.github/workflows/collect.yml</code>) because the build
+          sandbox cannot reach <code>*.kalshi.co</code>. The tables fill in automatically on the first run;
+          this page deliberately shows an empty state rather than sample data.
+          See <a href="flagged.html#F-01">F-01</a> for the network evidence.</div>`;
+      }
+      return;
+    }
     if (state.markets.length) {
       const first = state.markets.slice().sort((a, b) => (b.est_volume_24h_dollars || 0) - (a.est_volume_24h_dollars || 0))[0];
       if (first) openChart(first.ticker);

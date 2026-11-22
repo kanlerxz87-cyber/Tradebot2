@@ -65,21 +65,58 @@ def epoch(ts: str | None) -> int | None:
         return None
 
 
+def _server_filters(path: str, params: dict | None, payload: dict, key: str) -> bool:
+    """True when the response looks server-filtered.
+
+    Some hosts answer a filtered /series request with the *unfiltered* first page
+    (the documented docs example for `tags` behaves this way).  When the filter is
+    ignored, paging 40 pages only re-reads the same records, so discovery stops
+    after the first page and records the fact.
+    """
+    rows = payload.get(key) or []
+    if not rows or not params:
+        return True
+    if path == "/series" and "category" in params and params["category"]:
+        want = str(params["category"]).lower()
+        for r in rows[:25]:
+            cats = [str(c).lower() for c in (r.get("categories") or [])]
+            cats.append(str(r.get("category") or "").lower())
+            if want in cats:
+                return True
+        return False
+    if path == "/series" and "tags" in params and params["tags"]:
+        want = str(params["tags"]).lower()
+        for r in rows[:25]:
+            if want in [str(t).lower() for t in (r.get("tags") or [])]:
+                return True
+        return False
+    return True
+
+
 def discover_series(client: KalshiClient, log: dict[str, Any]) -> tuple[list[dict], dict]:
     tag_map: dict[str, list[str]] = {}
+    cached = read_json(os.path.join(DATA, "tags_by_categories.json"), None)
     try:
         tag_map = client.get("/search/tags_by_categories").get("tags_by_categories", {}) or {}
         log["tags_by_categories"] = client.calls[-1]["url"]
+        write_json(os.path.join(DATA, "tags_by_categories.json"),
+                   {"generated_at": utc_now(), "url": client.calls[-1]["url"],
+                    "source": "https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories",
+                    "tags_by_categories": tag_map})
     except Exception as exc:  # noqa: BLE001
         log["warnings"].append(f"tags_by_categories failed: {exc}")
+        if isinstance(cached, dict) and cached.get("tags_by_categories"):
+            tag_map = cached["tags_by_categories"]
+            log["warnings"].append("used the cached category/tag map from the previous cycle")
 
     categories = sorted({c for c in tag_map} | set(TOPIC_CATEGORY_SEED))
     series: dict[str, dict] = {}
+    ignored_filters: list[str] = []
     for cat in categories:
         if not cat or cat.lower().startswith(("test", "harrison")):
             continue
         try:
-            for s in client.series_list(category=cat, include_volume="true"):
+            for s in client.series_page(category=cat, include_volume="true"):
                 s.setdefault("_discovery", []).append({"by": "category", "value": cat,
                                                        "url": f"{client.host}/series?category={cat}"})
                 series.setdefault(s["ticker"], s)
@@ -99,7 +136,7 @@ def discover_series(client: KalshiClient, log: dict[str, Any]) -> tuple[list[dic
                 wanted_tags.update(v for v in rule.values if "&" not in v and len(v) < 40)
     for tag in sorted(wanted_tags):
         try:
-            for s in client.series_list(tags=tag):
+            for s in client.series_page(tags=tag):
                 entry = series.setdefault(s["ticker"], s)
                 entry.setdefault("_discovery", [])
                 if not any(d.get("by") == "tags" and d.get("value") == tag for d in entry["_discovery"]):
@@ -109,6 +146,7 @@ def discover_series(client: KalshiClient, log: dict[str, Any]) -> tuple[list[dic
             log["warnings"].append(f"series tags={tag} failed: {exc}")
 
     log["series_seen"] = len(series)
+    log["series_pages_fetched"] = sum(1 for c in client.calls if "/series?" in c["url"])
     return list(series.values()), tag_map
 
 

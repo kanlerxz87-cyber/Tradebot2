@@ -1,113 +1,56 @@
 {
-  "api_requests": 81,
-  "collected_at": "2026-11-22T07:07:09Z",
-  "duration_seconds": 0.0,
+  "awaiting_first_live_run": true,
+  "collected_at": null,
   "environment": "demo",
-  "host": "fixture://kalshi",
-  "run_log": {
-    "exchange_active": true,
-    "exchange_status_url": "fixture://kalshi/exchange/status",
-    "history_pruned": 0,
-    "open_events": 9,
-    "orderbooks_captured": 10,
-    "series_seen": 12,
-    "started_at": "2026-11-22T07:00:00Z",
-    "tags_by_categories": "fixture://kalshi/search/tags_by_categories",
-    "topic_counts": {
-      "crypto": {
-        "kept": 2,
-        "open_markets": 2
-      },
-      "culture": {
-        "kept": 2,
-        "open_markets": 2
-      },
-      "elections": {
-        "kept": 2,
-        "open_markets": 2
-      },
-      "gas": {
-        "kept": 1,
-        "open_markets": 1
-      },
-      "golf": {
-        "kept": 3,
-        "open_markets": 3
-      }
-    },
-    "trading_active": true,
-    "warnings": []
-  },
-  "tags_by_categories_url": "fixture://kalshi/search/tags_by_categories",
+  "host": "https://external-api.demo.kalshi.co/trade-api/v2",
+  "note": "No live cycle has been committed yet. The collector runs in GitHub Actions (.github/workflows/collect.yml); this file is replaced on its first run. Until then the site shows empty tables rather than sample data.",
   "topics": [
     {
-      "blurb": "Retail gasoline price contracts. Kalshi's gas series are sourced from AAA (https://gasprices.aaa.com) per each series' settlement sources.",
       "id": "gas",
       "name": "Gas prices",
       "rules": [
         "series tag \u2208 {Oil & Gas}",
         "series category \u2208 {Economics | Commodities}, title ~ /gas(oline)?\\s*pric/i"
       ],
-      "series": [
-        "KXAAAGASD"
-      ],
-      "series_matched": 1
+      "series": [],
+      "series_matched": 0
     },
     {
-      "blurb": "Election contracts: US and international elections, nominations, and leadership races, matched on Kalshi's official Elections category and tags.",
       "id": "elections",
       "name": "Elections",
       "rules": [
-        "series category \u2208 {Elections}",
-        "series tag \u2208 {US Elections | International elections | Presidential winner | Senate | House | Governor | Primaries | Nomination race | Leadership races | Referendums | Mayors & local | Election Combos}"
+        "series category \u2208 {Elections}"
       ],
-      "series": [
-        "KXMAYORNYC",
-        "KXNEXTNATOSECGEN"
-      ],
-      "series_matched": 2
+      "series": [],
+      "series_matched": 0
     },
     {
-      "blurb": "Culture & entertainment contracts: Kalshi category `Culture` plus the `Entertainment` and `Mentions` categories that carry pop-culture markets.",
       "id": "culture",
       "name": "Culture",
       "rules": [
-        "series category \u2208 {Culture | Entertainment | Mentions}",
-        "series tag \u2208 {Music | Awards | Movies | Television | People | Video games | Oscars | Grammys | Collectibles | Critics Choice Awards | Reality TV | Music charts | Art | Food}"
+        "series category \u2208 {Culture | Entertainment | Mentions}"
       ],
-      "series": [
-        "KXMOVIEGROSS",
-        "KXXBANNEDGROK"
-      ],
-      "series_matched": 2
+      "series": [],
+      "series_matched": 0
     },
     {
-      "blurb": "Crypto price and milestone contracts: Kalshi category `Crypto` and its asset tags (BTC, ETH, SOL, XRP, DOGE, ...).",
       "id": "crypto",
       "name": "Crypto",
       "rules": [
-        "series category \u2208 {Crypto}",
-        "series tag \u2208 {BTC | ETH | SOL | XRP | DOGE | BNB | HYPE | ZEC | NEAR | Shiba Inu | Crypto | Bitcoin | Ethereum | Solana | Zcash}"
+        "series category \u2208 {Crypto}"
       ],
-      "series": [
-        "KXBTC15M",
-        "KXETHRANGE"
-      ],
-      "series_matched": 2
+      "series": [],
+      "series_matched": 0
     },
     {
-      "blurb": "Golf contracts (PGA, DP World Tour, LIV, majors). Kalshi exposes golf as the `Golf` subcategory tag under category `Sports`.",
       "id": "golf",
       "name": "Golf",
       "rules": [
         "series tag \u2208 {Golf}"
       ],
-      "series": [
-        "KXPGAMASTERS",
-        "KXPGATOP10"
-      ],
-      "series_matched": 2
+      "series": [],
+      "series_matched": 0
     }
   ],
-  "volume_metric_note": "est_volume_24h_dollars = volume_24h_fp (contracts, from the API) x last price in dollars. It is an estimate of traded dollars, not a field returned by Kalshi."
+  "volume_metric_note": "est_volume_24h_dollars = volume_24h_fp (contracts) x last price in dollars; an estimate, not an API field."
 }

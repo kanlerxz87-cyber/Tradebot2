@@ -12,6 +12,12 @@
     try { strat = (await TB.getJSON('data/strategies.json')).strategies || []; } catch (e) {}
     try { pf = await TB.getJSON('data/portfolio.json'); } catch (e) {}
     if (!a) { $('#overall').innerHTML = '<div class="card">No analytics snapshot yet.</div>'; return; }
+    if (!a.generated_at) {
+      $('#overall').innerHTML = '<div class="card"><div class="k">Awaiting first cycle</div>' +
+        '<div class="v" style="font-size:16px">No simulated trades yet</div>' +
+        '<div class="s">The paper engine runs inside the GitHub Actions collector; this page fills in ' +
+        'after the first cycle. The strategy rules below are the ones it will apply.</div></div>';
+    }
 
     const o = a.overall || {};
     const cards = [

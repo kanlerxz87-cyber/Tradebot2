@@ -1,15 +1,17 @@
 name: collect
 
-# The collector must run on a machine with network access to Kalshi. GitHub
-# runners have it; the agent sandbox that builds this repo does not (verified:
-# TLS to *.kalshi.co is closed from the sandbox, see data/verify-api.json).
+# Live collection runs here because the agent build sandbox has no network route
+# to *.kalshi.co (data/verify-api.json records the probe; flagged.html F-01).
 on:
   schedule:
-    - cron: "*/5 * * * *"        # every 5 minutes; GitHub may delay scheduled runs
+    - cron: "*/5 * * * *"        # GitHub may delay scheduled runs; see flagged.html F-12
   workflow_dispatch:
   push:
-    branches: [main]
-    paths-ignore: ["data/**", "**.md"]
+    branches: ["**"]
+    paths:
+      - "collector/**"
+      - "requirements.txt"
+      - ".github/workflows/collect.yml"
 
 permissions:
   contents: write
@@ -21,7 +23,7 @@ concurrency:
 jobs:
   cycle:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -30,22 +32,30 @@ jobs:
           cache: pip
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Run one collection + analysis cycle
+      - name: One collection + analysis cycle
         env:
           KALSHI_DEMO_API_KEY_ID: ${{ secrets.KALSHI_DEMO_API_KEY_ID }}
           KALSHI_DEMO_PRIVATE_KEY: ${{ secrets.KALSHI_DEMO_PRIVATE_KEY }}
         run: python collector/run.py --data-dir data
-      - name: Verify data files
-        run: python tools/verify_data.py --data-dir data
-      - name: Commit refreshed data
+      - name: Verify the data it just wrote
+        run: |
+          python tools/verify_data.py --data-dir data
+          python tools/check_site.py --root . --strict
+      - name: Commit refreshed data back to this branch
         run: |
           git config user.name "tradebot2-collector"
           git config user.email "actions@users.noreply.github.com"
           git add data
           if git diff --cached --quiet; then
             echo "no data change"
-          else
-            git commit -m "data: automated cycle $(date -u +%FT%TZ)"
-            git pull --rebase --autostash origin main
-            git push origin HEAD:main
+            exit 0
           fi
+          git commit -m "data: automated cycle $(date -u +%FT%TZ)"
+          # Rebase onto whatever landed while we were collecting, then retry a few times.
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+              git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 5
+          done
+          echo "push did not succeed after 3 attempts" >&2
+          exit 1

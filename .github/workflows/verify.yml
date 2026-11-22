@@ -30,3 +30,5 @@ jobs:
         run: python tools/verify_data.py --data-dir data --strict-links
       - name: Check the published site (links, pages, required labels)
         run: python tools/check_site.py --root . --strict
+      - name: JavaScript syntax check
+        run: for f in $(find assets js -name '*.js' 2>/dev/null); do node --check "$f" || exit 1; done; echo "js ok"
