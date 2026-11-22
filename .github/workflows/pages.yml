@@ -1,14 +1,16 @@
-# Publishing model for this repository.
+# Single Pages pipeline for this repository.
 #
-# GitHub Pages for this repo is configured as `build_type: legacy`, source
-# `main:/` (verified through the Pages API). Legacy Pages builds the repository
-# root, so the canonical site is served from /index.html at the root; an Actions
-# artifact deploy is ignored while that setting remains. The integration token
-# available here cannot change the setting (PUT /pages -> 403).
+# GitHub Pages for this repo is configured as `build_type: legacy`, source `main:/`
+# (verified through the Pages API: GET /repos/{owner}/{repo}/pages). Legacy Pages
+# builds the repository root, so https://<owner>.github.io/Tradebot2/ serves the
+# committed root files. There is no build step and no artifact upload: everything
+# published must exist in the repo.
 #
-# Therefore this workflow verifies the published contract instead of pretending
-# to deploy: the 12 canonical pages, their assets, the committed data and the
-# archived generations must all pass before a merge is considered safe.
+# This workflow therefore has one job: verify that what legacy Pages will publish
+# is complete and internally consistent. It runs the engine tests, the canonical
+# site checks and the live-dashboard checks. It must never contain a syntax error
+# (a malformed `on:`/`jobs:` block makes GitHub refuse to start the workflow, which
+# is exactly how the previous revision broke publishing).
 name: Verify published site
 
 on:
@@ -21,29 +23,48 @@ permissions:
   contents: read
 
 concurrency:
-  group: "verify-pages"
+  group: verify-pages
   cancel-in-progress: true
 
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
       - name: Install dependencies
         run: pip install -r app/requirements.txt pytest
+
       - name: Engine tests
         run: python -m pytest -q
-      - name: Canonical site: data, required pages and local links
+
+      - name: Canonical site data, required pages and local links
         run: python tools/verify_site.py
-      - name: Archived generations: internal links and sourced rows
+
+      - name: Archived generations internal links and sourced rows
         run: python scripts/check_site.py
+
+      - name: Live dashboard headless tests
+        run: |
+          npm install --no-save --silent jsdom
+          node live/tests/smoke.mjs
+
+      - name: Live dashboard links, assets and fabrication check
+        run: python3 live/tests/check_live.py
+
       - name: Confirm the root is the publish target
         run: |
           test -f index.html
           test -f .nojekyll
-          grep -q 'assets/js/core.js' index.html
-          echo "Legacy Pages publishes main:/ ; root index.html is the entry point."
+          test -f live/index.html
+          grep -q 'live/index.html' index.html
+          echo "Legacy Pages publishes main:/ ; root index.html is the entry point and links the live dashboard."

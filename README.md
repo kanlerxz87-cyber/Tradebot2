@@ -1,5 +1,25 @@
 # Tradebot2
 
+> ### ⚠️ Start here: the verified live dashboard is [`/live/`](live/index.html)
+>
+> This repository accumulated several dashboards from parallel sessions. **Only `/live/` is a verified
+> live dashboard**: it reads the official Kalshi demo API in your browser, links every table row to the
+> exact endpoint behind it, and shows “—” where the API returned nothing.
+>
+> An earlier generation of the root pages showed **fabricated** markets (ticker symbols that do not exist
+> in the API) with invented news “catalysts” and a P&L built on them. That is fully documented, with
+> sources, on [`live/flagged.html`](live/flagged.html) (item F-01). The older pages in `docs/`, `dash/`,
+> `site/`, `pages/` and the root topic files are kept for the audit trail and are not the source of truth.
+>
+> Also fixed in this pass: `.github/workflows/pages.yml` contained a YAML syntax error (an unquoted colon
+> in a step name) which made GitHub refuse to start the workflow — every push produced a failed run with
+> zero jobs. See `COORDINATION.md` § “A2”.
+>
+> **Verified endpoints** (docs.kalshi.com/getting_started/api_environments):
+> demo REST `https://external-api.demo.kalshi.co/trade-api/v2` · demo REST (alt) `https://demo-api.kalshi.co/trade-api/v2`
+> · demo WS `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2` · production REST `https://external-api.kalshi.com/trade-api/v2`.
+> The `trading-api.kalshi.com` documentation URL used further down is **not** in the current official list (flag F-15).
+
 > **Canonical site: https://kanlerxz87-cyber.github.io/Tradebot2/**
 >
 > The published entry point is the root `index.html` (GitHub Pages is configured as

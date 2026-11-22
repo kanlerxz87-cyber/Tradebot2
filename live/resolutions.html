@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resolutions · Tradebot2 Kalshi demo</title>
+<meta name="description" content="How Kalshi demo markets resolved: final YES or NO result, settlement time and the official source.">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body data-page="resolutions">
+<header id="site-head"></header>
+<main class="wrap">
+  <div class="row" id="statusbar" style="margin-bottom:.7rem"></div>
+  <div id="errbox"></div>
+  <div id="truncbox"></div>
+
+  <h1>Resolutions <span class="tag">tracked until each event settles</span></h1>
+  <p class="hint">Every market in the five topics is tracked past its close. Once the exchange finalises it, the final outcome
+    (YES or NO) and settlement timestamp appear here. A market past its close but not yet determined stays in “awaiting result”.</p>
+
+  <section class="grid g4" id="kpis"></section>
+
+  <section class="card">
+    <h2>Awaiting result <span class="tag">closed, not yet finalised</span></h2>
+    <p class="hint">These have passed <span class="mono">close_time</span> but the API has not published a YES/NO result yet.</p>
+    <div id="pending"></div>
+  </section>
+
+  <section class="card">
+    <h2>Resolved <span class="tag">final result from the API</span></h2>
+    <div class="row" style="margin-bottom:.6rem">
+      <input type="search" id="search" placeholder="Filter resolved markets…" aria-label="Filter">
+      <div class="seg" id="resFilter" role="group">
+        <button data-f="all" aria-pressed="true">All</button>
+        <button data-f="yes" aria-pressed="false">YES</button>
+        <button data-f="no" aria-pressed="false">NO</button>
+      </div>
+      <button class="btn" id="csv">Export CSV</button>
+    </div>
+    <div id="resolved"></div>
+  </section>
+  <p class="src" style="margin-top:1rem">Data source: <span class="mono">external-api.demo.kalshi.co/trade-api/v2</span> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-markets">get-markets</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks">candlesticks</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook">orderbook</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-trades">trades</a>.
+    Fields the API does not return are shown as “—”. <a href="verification.html">Full source list</a>.</p>
+</main>
+<footer id="site-foot"></footer>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/charts.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/page-resolutions.js"></script>
+</body>
+</html>

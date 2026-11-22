@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charts &amp; liquidity · Tradebot2 Kalshi demo</title>
+<meta name="description" content="Interactive Kalshi demo price charts (1-minute, 1-hour, 1-day) with order-book liquidity at each price.">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body data-page="liquidity">
+<header id="site-head"></header>
+<main class="wrap">
+  <div class="row" id="statusbar" style="margin-bottom:.7rem"></div>
+  <div id="errbox"></div>
+
+  <h1>Charts &amp; liquidity</h1>
+  <p class="hint">Pick any live market. The chart uses official candlesticks (<span class="mono">period_interval</span> 1, 60 or 1440 minutes)
+    merged with the price snapshots this browser has observed. The ladder on the right lists resting contracts
+    at each price from the official order book.</p>
+
+  <section class="card">
+    <div class="row">
+      <select id="mkt" style="min-width:340px" aria-label="Market"></select>
+      <div class="seg" id="span" role="group" aria-label="Window">
+        <button data-min="15" aria-pressed="false">15 min</button>
+        <button data-min="60" aria-pressed="true">1 hour</button>
+        <button data-min="360" aria-pressed="false">6 hours</button>
+        <button data-min="1440" aria-pressed="false">24 hours</button>
+        <button data-min="4320" aria-pressed="false">3 days</button>
+      </div>
+      <div class="seg" id="iv" role="group" aria-label="Candle interval">
+        <button data-iv="1" aria-pressed="true">1m</button>
+        <button data-iv="60" aria-pressed="false">1h</button>
+        <button data-iv="1440" aria-pressed="false">1d</button>
+      </div>
+      <label class="chk"><input type="checkbox" id="autoChk" checked> auto-refresh</label>
+    </div>
+    <p class="hint" style="margin-top:.4rem">Time axis: <b>seconds/minutes/hours</b> are chosen by the window; the axis labels follow the window length.
+      Price axis: cents of the YES contract (0¢–100¢). Volume bars are contracts traded in each candle.</p>
+  </section>
+
+  <section class="grid" style="grid-template-columns:minmax(0,2fr) minmax(280px,1fr)">
+    <div class="card" style="margin-bottom:0">
+      <div class="spread"><h2 id="chartTitle">Price</h2><span class="pill muted" id="chartMeta"></span></div>
+      <div class="chart-box tall"><canvas id="chart" height="420" aria-label="Price chart"></canvas></div>
+      <div class="chart-legend">
+        <span><i style="background:#0b6b56"></i>close (¢)</span>
+        <span><i style="background:rgba(11,107,86,.25)"></i>volume</span>
+        <span><i style="background:#0a7d4f"></i>▲ alert</span>
+        <span><i style="background:#b3261e"></i>▼ alert</span>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card" style="margin-bottom:0">
+        <h2>Order book</h2>
+        <p class="hint">Contracts available at each price. Shows the returned depth only.</p>
+        <div id="ladder"><div class="t-blank">Choose a market.</div></div>
+        <div id="liqMeta" class="src" style="margin-top:.5rem"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2>Contract</h2>
+        <div id="mktMeta" class="src">—</div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2>Recent trades</h2>
+        <p class="hint">From <span class="mono">GET /markets/trades</span>. Times are exchange timestamps.</p>
+        <div id="trades"><div class="t-blank">—</div></div>
+      </div>
+    </div>
+  </section>
+  <p class="src" style="margin-top:1rem">Data source: <span class="mono">external-api.demo.kalshi.co/trade-api/v2</span> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-markets">get-markets</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks">candlesticks</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook">orderbook</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-trades">trades</a>.
+    Fields the API does not return are shown as “—”. <a href="verification.html">Full source list</a>.</p>
+</main>
+<footer id="site-foot"></footer>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/charts.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/page-liquidity.js"></script>
+</body>
+</html>

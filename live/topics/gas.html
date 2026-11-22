@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gas prices · Tradebot2 Kalshi demo</title>
+<meta name="description" content="Live Kalshi demo markets for one topic, grouped by event.">
+<link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body data-page="topic" data-topic="gas">
+<header id="site-head"></header>
+<main class="wrap">
+  <div class="row" id="statusbar" style="margin-bottom:.7rem"></div>
+  <div id="errbox"></div>
+  <div id="truncbox"></div>
+
+  <h1 id="topicTitle">Gas prices</h1>
+  <p id="topicNote" class="hint">Kalshi category “Commodities” filtered to tag “Oil &amp; Gas”. The API has no retail-gasoline tag, so this topic includes crude and natural-gas contracts too — see flagged F-02.</p>
+
+  <section class="grid g4" id="kpis"></section>
+
+  <section class="card">
+    <h2>Events in this topic <span class="tag">grouped · highest 24h notional first</span></h2>
+    <p class="hint">Each event groups its markets. Resolved events show their final YES/NO result.</p>
+    <div id="events"></div>
+  </section>
+
+  <section class="card">
+    <h2>All markets in this topic</h2>
+    <div class="row" style="margin-bottom:.6rem">
+      <div class="seg" id="statusFilter" role="group" aria-label="Filter by status">
+        <button data-f="live" aria-pressed="true">Live</button>
+        <button data-f="closed" aria-pressed="false">Awaiting result</button>
+        <button data-f="resolved" aria-pressed="false">Resolved</button>
+        <button data-f="all" aria-pressed="false">All</button>
+      </div>
+      <input type="search" id="mSearch" placeholder="Filter markets…" aria-label="Filter markets">
+      <button class="btn" id="mCsv">Export CSV</button>
+    </div>
+    <div id="markets"></div>
+  </section>
+
+  <section class="card">
+    <h2>Series in this topic (from GET /series)</h2>
+    <p class="hint">Every series the API returns for this topic's filter, with its official settlement sources and contract terms.</p>
+    <div id="series"></div>
+  </section>
+  <p class="src" style="margin-top:1rem">Data source: <a href="https://external-api.demo.kalshi.co/trade-api/v2/series?category=Commodities&tags=Oil%20%26%20Gas&include_volume=true">GET /series</a>
+    and <a href="https://external-api.demo.kalshi.co/trade-api/v2/events?status=open&with_nested_markets=true">GET /events</a> on
+    <span class="mono">external-api.demo.kalshi.co</span> · docs: <a href="https://docs.kalshi.com/api-reference/market/get-series-list">get-series-list</a>.
+    Fields not returned by the API are shown as “—”. <a href="../verification.html">Full source list</a>.</p>
+</main>
+<footer id="site-foot"></footer>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/charts.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/page-topic.js"></script>
+</body>
+</html>

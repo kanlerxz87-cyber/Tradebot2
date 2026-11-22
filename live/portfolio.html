@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio &amp; strategies · Tradebot2 Kalshi demo</title>
+<meta name="description" content="Simulated Kalshi demo portfolio: automated strategies, per-trade categorisation, ROI and win-rate analysis.">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body data-page="portfolio">
+<header id="site-head"></header>
+<main class="wrap">
+  <div class="row" id="statusbar" style="margin-bottom:.7rem"></div>
+  <div id="errbox"></div>
+
+  <div class="banner warn">
+    <b>Simulated portfolio — not a Kalshi account.</b> Every trade below is generated locally in this browser at live demo prices,
+    with the official taker fee applied. Connecting your real Kalshi demo-account balance needs signed API keys, which are not
+    included in this repository (see <a href="verification.html#live-account">sources</a> and flagged <b>F-06</b>).
+  </div>
+
+  <div class="spread">
+    <h1>Portfolio &amp; strategy analysis</h1>
+    <div class="row">
+      <label class="chk"><input type="checkbox" id="autoChk"> auto-trade on new alerts</label>
+      <button class="btn" id="scanBtn">Run strategy scan now</button>
+      <button class="btn" id="resetBtn">Reset simulation</button>
+      <button class="btn" id="csvBtn">Export trades CSV</button>
+    </div>
+  </div>
+
+  <section class="grid g4" id="kpis"></section>
+
+  <section class="card">
+    <h2>Equity curve <span class="tag">simulated</span></h2>
+    <p class="hint">Built from the recorded P&amp;L of each closed trade in order. It starts flat at $10,000 and only moves when a trade closes.</p>
+    <div class="chart-box"><canvas id="equity" height="260"></canvas></div>
+  </section>
+
+  <section class="card">
+    <h2>The four strategies</h2>
+    <p class="hint">Each strategy has a written thesis, an entry rule and an exit rule. The table below shows how each one actually performed,
+      so the thesis can be accepted or rejected on evidence rather than belief.</p>
+    <div id="stratTable"></div>
+  </section>
+
+  <section class="grid g2">
+    <div class="card" style="margin-bottom:0">
+      <h2>P&amp;L by category</h2>
+      <div id="byTopic"></div>
+      <h3 style="margin-top:1rem">P&amp;L by side</h3>
+      <div id="bySide"></div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <h2>P&amp;L by entry price band</h2>
+      <div id="byBand"></div>
+      <p class="hint">Where in the price range do the simulated trades actually earn? Cheap-tail and carry bets are structurally different from coin-flip trades.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Open positions</h2>
+    <div id="open"></div>
+  </section>
+
+  <section class="card">
+    <h2>Closed trades</h2>
+    <div id="closed"></div>
+  </section>
+
+  <section class="card">
+    <h2>How to read this</h2>
+    <ul class="tight">
+      <li><b>These are not predictions of live performance.</b> The demo exchange is a test environment; fills are simulated at the quoted price with no slippage.</li>
+      <li><b>Fee-aware.</b> Taker fee per fill = ceil(0.07 × C × P × (1−P)) from the official schedule. Maker fees are not modelled because a simulation cannot know queue position.</li>
+      <li><b>Resolution carry</b> buys contracts already trading ≥85¢. It wins often and small; a single loss can outweigh many wins.</li>
+      <li><b>Cheap tail</b> buys ≤15¢ movers. It loses often and small and relies on rare large wins.</li>
+      <li>Before drawing conclusions, let auto-trade run across several days and read the per-strategy table — not the headline P&amp;L.</li>
+    </ul>
+  </section>
+  <p class="src" style="margin-top:1rem">Data source: <span class="mono">external-api.demo.kalshi.co/trade-api/v2</span> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-markets">get-markets</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks">candlesticks</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook">orderbook</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-trades">trades</a>.
+    Fields the API does not return are shown as “—”. <a href="verification.html">Full source list</a>.</p>
+</main>
+<footer id="site-foot"></footer>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/charts.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/page-portfolio.js"></script>
+</body>
+</html>
