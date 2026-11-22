@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alerts — ≥$0.10 Swings, Two Live Chats — Kalshi Demo Dashboard</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-page="alerts">
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Live Alerting — ≥ $0.10 Swings</h1>
+    <p class="sub">Two scrolling chats, exactly as specified: <b>Chat 1</b> logs <b>every</b> verified price swing ≥ $0.10 in either direction across all tracked events; <b>Chat 2</b> is the selective <b>high-ROI model filter</b> — only swings that pass the transparent reversion model. In <span class="mono">LIVE</span> mode the engine polls the official demo API every 15s from your browser; if that's blocked (CORS/network) it falls back to <span class="mono">REPLAY</span>, re-running the verified historical 1-minute BTC 15-min series so you can see the full alert pipeline end-to-end. No fabricated alerts: replay lines are the exact verified candle/trade data, labeled as such.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Chat 1 — All events ≥ $0.10 <span class="tag">full feed</span></h2>
+      <div class="chathead"><span class="dot" id="dotAll"></span><span class="note">every swing ≥ $0.10 either direction · auto-scrolling · newest at bottom</span></div>
+      <div class="chatbox" id="chat-all" style="height:460px"></div>
+    </div>
+    <div class="card">
+      <h2>Chat 2 — High-ROI model filter <span class="tag">selective</span></h2>
+      <div class="chathead"><span class="dot warn" id="dotRoi"></span><span class="note">only model-approved swings · shows model math inline</span></div>
+      <div class="chatbox" id="chat-roi" style="height:460px"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>How alerts fire <span class="tag">the exact rules</span></h2>
+    <ul class="tight note">
+      <li><b>Observation</b> — each tracked market's <span class="mono">last_price_dollars</span> is sampled on every poll (live) or per replay tick. A swing is <span class="mono">|price_now − price_prev|</span>.</li>
+      <li><b>Threshold</b> — alert when the swing is <b>≥ $0.10 in either direction</b> (both ▲ and ▼). The threshold is the constant <span class="mono">ALERT_THRESHOLD = 0.10</span> in <span class="mono">assets/live.js</span>.</li>
+      <li><b>Chat 1 (all)</b> — receives every threshold-crossing line: time, market, Δ$, price, and the model's verdict.</li>
+      <li><b>Chat 2 (high-ROI)</b> — additionally requires the <b>model pass</b> (below).</li>
+      <li><b>Settlement alerts</b> — when a tracked market finalizes, the exact <span class="mono">result</span> (yes/no) and <span class="mono">settlement_value_dollars</span> from the API are posted, so every tracked event is followed to resolution.</li>
+    </ul>
+    <p class="note"><b>High-ROI model (v1, fully documented):</b> assume a fraction <span class="mono">K = 0.6</span> of a sudden move reverts to the mid. <span class="mono">modelFair = clamp(0.5 + (prevPrice − 0.5) × K, 0.02, 0.98)</span>; <span class="mono">edge = |modelFair − priceAfter|</span>. A swing is "high-ROI" when <span class="mono">edge ≥ $0.05</span> <b>and</b> open interest ≥ 1 contract (liquidity gate). Example from the verified replay: prev $0.34 → after $0.19 (Δ $0.15): modelFair = 0.5 + (0.34−0.5)×0.6 = <b>$0.40</b>, edge = |0.40−0.19| = <b>$0.21</b> ≥ $0.05, OI 200 ≥ 1 → <b>passes to Chat 2</b>. Full spec: <a href="../docs/strategies/">Strategies doc</a>.</p>
+  </div>
+
+  <div class="card">
+    <h2>Cause links for ≥ $0.10 jumps <span class="tag">official sources per market — no guessed news</span></h2>
+    <p class="note">For every market we track, the API returns its <b>official settlement sources</b> (the authoritative data the price resolves against). When a jump fires, the feed attaches these links so a trader can immediately check the likely cause at the source of truth. We deliberately do <b>not</b> guess specific news headlines — anything unverified goes to the <a href="../flagged/">Flagged for Review</a> page instead.</p>
+    <table><thead><tr><th>Market</th><th>Why it can jump ≥ $0.10</th><th>Official source to check</th><th>Verified from</th></tr></thead><tbody>
+      <tr><td class="mono note">KXBTC15M-* / KXETH15M-* / KXSOL15M-* / KXDOGE15M-* / KXHYPE15M-*</td><td>Underlying crypto asset moves within the 15-min window (see verified 0.51→0.19 collapse in the replay)</td><td><a href="https://www.cfbenchmarks.com/" target="_blank" rel="noopener">CF Benchmarks RTI (BRTI/ETHUSD/SOLUSD/DOGEUSD/HYPEUSD)</a></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXBTC15M" target="_blank" rel="noopener">series metadata (verified)</a></td></tr>
+      <tr><td class="mono note">KXBTCD-*</td><td>BTC spot vs the daily threshold at the 3 AM ET fix</td><td><a href="https://www.cfbenchmarks.com/data/indices/BRTI" target="_blank" rel="noopener">CF Benchmarks BRTI</a></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXBTCD&status=open&limit=6" target="_blank" rel="noopener">market rules (verified)</a></td></tr>
+      <tr><td class="mono note">KXAAAGASW-*</td><td>AAA national average gas price release vs the strike ladder</td><td><a href="https://www.aaa.com/gasprices/" target="_blank" rel="noopener">AAA gas prices</a></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXAAAGASW&status=open&limit=6" target="_blank" rel="noopener">market rules (verified)</a></td></tr>
+      <tr><td class="mono note">KXSENMAJ-*</td><td>Senate leadership news / media consensus projections</td><td><a href="https://www.senate.gov/" target="_blank" rel="noopener">U.S. Senate</a></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXSENMAJ&status=open&limit=6" target="_blank" rel="noopener">market rules (verified)</a></td></tr>
+      <tr><td class="mono note">KXGTAONLINE-*</td><td>Rockstar release announcements for GTA VI Online</td><td><a href="https://www.rockstargames.com/" target="_blank" rel="noopener">Rockstar Games</a></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXGTAONLINE&status=open&limit=4" target="_blank" rel="noopener">market rules (verified)</a></td></tr>
+      <tr><td class="mono note">KXNETFLIXRANKSHOWGLOBAL-*</td><td>Tuesday Netflix Top 10 chart publish</td><td><a href="https://www.netflix.com/tudum/top10" target="_blank" rel="noopener">Netflix Top 10</a></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXNETFLIXRANKSHOWGLOBAL&status=open&limit=6" target="_blank" rel="noopener">market rules (verified)</a></td></tr>
+      <tr><td class="mono note">KXPGAMAKECUT-* / KXPRESCUP-*</td><td>Tournament scorecards / match results</td><td><a href="https://www.pgatour.com/" target="_blank" rel="noopener">PGA Tour</a> · <a href="https://www.espn.com" target="_blank" rel="noopener">ESPN</a></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXPGAMAKECUT&limit=8" target="_blank" rel="noopener">series metadata (verified)</a></td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="card">
+    <h2>Live vs replay status <span class="tag">machine-readable</span></h2>
+    <p class="mono note" id="livelog"></p>
+    <p class="note">The site's mode chip (top bar) flips to <b>LIVE · polling demo API</b> as soon as one browser poll succeeds. If Kalshi's API does not send CORS headers for this Pages origin, the chip stays on REPLAY — the flag is recorded on the <a href="../flagged/">Flagged for Review</a> page, and the same engine can be pointed at any origin that does allow cross-origin reads.</p>
+  </div>
+</div>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/charts.js"></script>
+<script src="../assets/render.js"></script>
+<script src="../assets/live.js"></script>
+<script src="../assets/layout.js"></script>
+<script>
+(function(){
+  window.KLIVE.initChats("chat-all","chat-roi");
+  var dotA = document.getElementById("dotAll"), dotR = document.getElementById("dotRoi");
+  var log = document.getElementById("livelog");
+  function tick(){ log.textContent = "mode=" + window.KLIVE.state.mode + " · polls_failed=" + window.KLIVE.state.errors + " · tracked_prices=" + Object.keys(window.KLIVE.state.last).length; }
+  window.onAlert = function(a){
+    dotA.classList.add("on"); setTimeout(function(){dotA.classList.remove("on");},1000);
+    if (a.roi && a.roi.pass){ dotR.classList.add("on"); setTimeout(function(){dotR.classList.remove("on");},1000); }
+  };
+  window.KLIVE.startLive(15000);
+  window.KLIVE.startReplay(2000);
+  setInterval(tick, 5000); tick();
+})();
+</script>
+</body>
+</html>
