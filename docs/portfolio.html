@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio &amp; Strategies — Kalshi Demo Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span>Kalshi Demo Dashboard</span>
+      <span class="badge live">SIMULATED DEMO ACCOUNT</span>
+    </div>
+    <nav>
+      <a href="index.html">Live Dashboard</a>
+      <a href="categories.html">Categories</a>
+      <a href="portfolio.html" class="active">Portfolio &amp; Strategies</a>
+      <a href="flagged.html">Flagged for Review</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="grid-4">
+      <div class="card">
+        <div class="stat-label">Available Cash</div>
+        <div class="stat-value" id="p-cash">$10,000.00</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Total Trades</div>
+        <div class="stat-value" id="p-count">0</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Realized + Unrealized P&amp;L</div>
+        <div class="stat-value" id="p-pnl">$0.00</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Top Strategy</div>
+        <div class="stat-value" id="p-top-strat" style="font-size:1.1rem;">—</div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-bottom:20px;">
+      <h3>Execute Simulated Trade</h3>
+      <div class="controls">
+        <select id="trade-market"></select>
+        <select id="trade-side">
+          <option value="YES">YES</option>
+          <option value="NO">NO</option>
+        </select>
+        <input id="trade-qty" type="number" min="1" value="10" style="width:90px;" />
+        <select id="trade-strategy">
+          <option value="Momentum >= $0.10 Swing">Momentum &ge; $0.10 Swing</option>
+          <option value="Mean Reversion">Mean Reversion</option>
+          <option value="High-ROI Spread Capture">High-ROI Spread Capture</option>
+          <option value="Event Resolution Hold">Event Resolution Hold</option>
+        </select>
+        <button class="primary" id="exec-trade">Execute Simulated Trade</button>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h3>Strategy Performance Breakdown</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Strategy</th>
+              <th>Trades</th>
+              <th>Total P&amp;L ($)</th>
+            </tr>
+          </thead>
+          <tbody id="strategy-body"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Trade History &amp; Categorization</h3>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Ticker</th>
+                <th>Side</th>
+                <th>Qty</th>
+                <th>Entry</th>
+                <th>Strategy</th>
+                <th>P&amp;L</th>
+              </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    let markets = [];
+
+    function renderPortfolio() {
+      const p = KalshiApp.getPortfolio();
+      document.getElementById("p-cash").textContent = `$${p.cash.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+      document.getElementById("p-count").textContent = p.history.length;
+      const totalPnl = p.history.reduce((s, t) => s + (t.pnl || 0), 0);
+      const pnlEl = document.getElementById("p-pnl");
+      pnlEl.textContent = `${totalPnl >= 0 ? "+" : ""}$${totalPnl.toFixed(2)}`;
+      pnlEl.className = `stat-value ${totalPnl >= 0 ? "up" : "down"}`;
+
+      const byStrat = {};
+      for (const t of p.history) {
+        if (!byStrat[t.strategy]) byStrat[t.strategy] = { count: 0, pnl: 0 };
+        byStrat[t.strategy].count++;
+        byStrat[t.strategy].pnl += (t.pnl || 0);
+      }
+      const stratRows = Object.entries(byStrat);
+      stratRows.sort((a, b) => b[1].pnl - a[1].pnl);
+      document.getElementById("p-top-strat").textContent = stratRows[0] ? stratRows[0][0] : "—";
+      document.getElementById("strategy-body").innerHTML = stratRows.map(([name, st]) => `
+        <tr>
+          <td>${name}</td>
+          <td>${st.count}</td>
+          <td class="${st.pnl >= 0 ? "up" : "down"}">${st.pnl >= 0 ? "+" : ""}$${st.pnl.toFixed(2)}</td>
+        </tr>
+      `).join("");
+
+      document.getElementById("history-body").innerHTML = p.history.map(t => `
+        <tr>
+          <td><code>${t.id}</code></td>
+          <td><code>${t.ticker}</code></td>
+          <td><span class="badge ${t.side === "YES" ? "live" : "danger"}">${t.side}</span></td>
+          <td>${t.qty}</td>
+          <td>$${Number(t.entry).toFixed(2)}</td>
+          <td>${t.strategy}</td>
+          <td class="${t.pnl >= 0 ? "up" : "down"}">${t.pnl >= 0 ? "+" : ""}$${Number(t.pnl).toFixed(2)}</td>
+        </tr>
+      `).join("");
+    }
+
+    async function init() {
+      const res = await KalshiApp.fetchMarkets();
+      markets = res.markets;
+      const sel = document.getElementById("trade-market");
+      sel.innerHTML = markets.map((m, i) => `<option value="${i}">${m.topic}: ${m.ticker} ($${m.last_price.toFixed(2)})</option>`).join("");
+      document.getElementById("exec-trade").onclick = () => {
+        const m = markets[sel.value];
+        const side = document.getElementById("trade-side").value;
+        const qty = parseInt(document.getElementById("trade-qty").value || "10", 10);
+        const strat = document.getElementById("trade-strategy").value;
+        if (m && KalshiApp.executeSimulatedTrade(m, side, qty, strat)) {
+          renderPortfolio();
+        }
+      };
+      renderPortfolio();
+    }
+    init();
+  </script>
+</body>
+</html>

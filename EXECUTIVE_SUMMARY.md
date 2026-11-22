@@ -1,75 +1,78 @@
-# Executive Summary — Tradebot2 Kalshi Demo Trading & Live Event Intelligence Dashboard
+# Executive Summary — Tradebot2 Kalshi Demo Live Trading & Intelligence Platform
 
-> **Project Repository:** [`kanlerxz87-cyber/Tradebot2`](https://github.com/kanlerxz87-cyber/Tradebot2)  
+> **Repository:** [`kanlerxz87-cyber/Tradebot2`](https://github.com/kanlerxz87-cyber/Tradebot2)  
 > **Live GitHub Pages Site:** [`https://kanlerxz87-cyber.github.io/Tradebot2/`](https://kanlerxz87-cyber.github.io/Tradebot2/)  
 > **Verified Against Official Sources:** 2026-11-22 (UTC)
 
 ---
 
-## 1. Objective & Scope
+## 1. Objective & Strict 5-Topic Scope
 
-**Tradebot2** is a verified Kalshi Demo API trading dashboard, live alerting system, automated strategy testing workbench, and documentation portal focused strictly on the **highest dollar volume live and recently resolved Kalshi events** across **five dedicated topics only**:
+**Tradebot2** is a verified Kalshi Demo API trading dashboard, real-time `>= $0.10` price-swing alerting terminal, automated strategy simulation workbench, and documentation portal built for the CFTC-regulated Kalshi Designated Contract Market (DCM).
 
-1. **Gas Prices** — National and state retail regular gasoline price contracts (AAA Fuel Prices settlement source).
-2. **Elections** — Major U.S. and international electoral control and presidential outcome contracts.
-3. **Culture** — Major awards (Oscars, Grammys, The Game Awards) and pop-culture milestone contracts.
-4. **Crypto** — High-volume Bitcoin, Ethereum, and cryptocurrency milestone contracts.
-5. **Golf** — PGA Tour tournament winners and Major championship markets (e.g., The Masters, John Deere Classic, The RSM Classic).
+The platform tracks highest dollar volume live and recently resolved contracts strictly across **five separated topics only**:
 
-Topics are strictly separated in both navigation and subpages, while events belonging to the same topic are organized together and tracked from active trading through final **YES / NO** outcome resolution.
+1. **Gas Prices** — U.S. national & state retail regular gasoline price contracts (verified against [AAA Fuel Prices](https://gasprices.aaa.com/?internal=true) & [EIA Gasoline/Diesel](https://www.eia.gov/petroleum/gasdiesel/)).
+2. **Elections** — High-volume U.S. and international presidential and legislative control contracts (verified against Kalshi Elections markets & [FEC](https://www.fec.gov/)).
+3. **Culture** — Major awards (Oscars, Grammys, The Game Awards) and pop-culture milestone contracts (verified against [GRAMMY.com](https://www.grammy.com/live-blog/2026-grammy-awards/), [AMPAS](https://www.oscars.org/), and Kalshi Culture markets).
+4. **Crypto** — High-volume Bitcoin, Ethereum, and cryptocurrency milestone contracts (verified against Kalshi Crypto markets & [CoinGecko](https://www.coingecko.com/)).
+5. **Golf** — PGA Tour tournament winners and Major championships including The Masters, John Deere Classic, and The RSM Classic (verified against [PGA TOUR](https://www.pgatour.com/article/news/latest/2026/11/17/the-rsm-classic-facts-and-figures-sea-island-golf-club-seaside-course-st-simons-island-georgia-2026) & [The Masters](https://www.masters.com/)).
+
+Topics remain strictly separated in navigation and subpages, while events within the same topic are organized together and tracked from active trading through final **YES / NO** outcome resolution (`$1.00` payout to winning side, `$0.00` to losing side).
 
 ---
 
-## 2. Verified Kalshi Demo API Architecture
+## 2. Verified Kalshi Demo API Infrastructure
 
-All API hostnames and endpoints in this repository have been verified line by line against Kalshi's official documentation ([Demo Environment](https://docs.kalshi.com/getting_started/demo_env), [API Environments](https://docs.kalshi.com/getting_started/api_environments), [WebSockets Quick Start](https://docs.kalshi.com/getting_started/quick_start_websockets)):
+Verified line by line against Kalshi's official documentation ([Demo Environment](https://docs.kalshi.com/getting_started/demo_env), [API Environments](https://docs.kalshi.com/getting_started/api_environments), [WebSockets Quick Start](https://docs.kalshi.com/getting_started/quick_start_websockets)):
 
-| Surface | Recommended Demo Host | Also Supported (Legacy Shared) | Official Verification Source |
+| Surface | Recommended Demo Endpoint | Also Supported (Legacy Shared) | Official Verification Source |
 | --- | --- | --- | --- |
 | **REST Trade API** | `https://external-api.demo.kalshi.co/trade-api/v2` | `https://demo-api.kalshi.co/trade-api/v2` | [docs.kalshi.com/getting_started/demo_env](https://docs.kalshi.com/getting_started/demo_env) |
 | **WebSocket API** | `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2` | `wss://demo-api.kalshi.co/trade-api/ws/v2` | [docs.kalshi.com/getting_started/api_environments](https://docs.kalshi.com/getting_started/api_environments) |
 | **User Fill/Order WS** | `wss://user-ws.demo.kalshi.co/trade-api/ws/v2` | — | [docs.kalshi.com/getting_started/api_environments](https://docs.kalshi.com/getting_started/api_environments) |
-| **Demo Web UI** | `https://demo.kalshi.co/` | — | [help.kalshi.com — Demo Account Setup](https://help.kalshi.com/en/articles/13823775-creating-and-using-a-demo-account) |
+| **Demo Web Portal** | `https://demo.kalshi.co/` | — | [help.kalshi.com — Demo Account](https://help.kalshi.com/en/articles/13823775-creating-and-using-a-demo-account) |
 
-### Key Verified Technical Findings
-- **Authentication:** Public market reads (`GET /events`, `GET /markets`, `GET /markets/{ticker}/orderbook`, `GET /markets/trades`, candlesticks) require **no API key**. Trading, portfolio endpoints, and WebSocket streams require signed headers (`KALSHI-ACCESS-KEY`, `KALSHI-ACCESS-TIMESTAMP`, `KALSHI-ACCESS-SIGNATURE`) using **RSA-PSS SHA-256** or **Ed25519** over `timestamp + METHOD + path_without_query_string` ([API Keys Docs](https://docs.kalshi.com/getting_started/api_keys)).
-- **True Liquidity Depth:** `liquidity` and `liquidity_dollars` on `GET /markets` and `GET /events` are **deprecated and return `0`** ([API Changelog](https://docs.kalshi.com/changelog)). Tradebot2 therefore reads real bid/ask contract availability directly from `GET /markets/{ticker}/orderbook` (or batch `GET /markets/orderbooks`) and WebSocket `orderbook_delta`, reconstructing YES asks from NO bids (`1.00 - no_bid_price`) per Kalshi's binary orderbook rules ([Get Market Orderbook](https://docs.kalshi.com/api-reference/market/get-market-orderbook)).
-- **Timeframe Charting:** Kalshi's candlestick REST endpoint supports `period_interval` values of `1` (minute), `60` (hour), and `1440` (day) ([Get Market Candlesticks](https://docs.kalshi.com/api-reference/market/get-market-candlesticks)). Seconds-level X-axis tracking is aggregated live in real time from incoming WebSocket/polling ticks.
-- **Order Execution V2:** Legacy `/portfolio/orders` mutation endpoints carry a **10x write rate-limit cost** compared to V2 event-order endpoints (`POST /portfolio/events/orders`) ([Create Order V2](https://docs.kalshi.com/api-reference/orders/create-order-v2)). Our Python Demo client uses V2 order execution by default.
-- **Resolution & Historical Partitioning:** Live market outcomes transition `active → closed → determined → finalized` with `result` set to `yes`, `no`, or `scalar` and `$1.00` payout per winning contract ([Market Lifecycle](https://docs.kalshi.com/getting_started/market_lifecycle), [Market Settlement](https://docs.kalshi.com/getting_started/market_settlement)). Older settled records move past `market_settled_ts` into `/historical/*` endpoints ([Historical Data](https://docs.kalshi.com/getting_started/historical_data)).
+### Key Verified API Findings
+- **Authentication:** Public market reads (`GET /events`, `GET /markets`, `GET /markets/{ticker}/orderbook`, `GET /markets/trades`, candlesticks) require **no API key**. Trading, portfolio endpoints, and WebSockets require signed headers (`KALSHI-ACCESS-KEY`, `KALSHI-ACCESS-TIMESTAMP`, `KALSHI-ACCESS-SIGNATURE`) signed via **RSA-PSS SHA-256** or **Ed25519** over `timestamp + METHOD + path_without_query` ([API Keys Docs](https://docs.kalshi.com/getting_started/api_keys)).
+- **True Orderbook Liquidity:** `liquidity` and `liquidity_dollars` on `GET /markets` and `GET /events` are **deprecated and return `0`** ([API Changelog](https://docs.kalshi.com/changelog)). Real available contract counts at each price level are fetched from `GET /markets/{ticker}/orderbook` (or batch `GET /markets/orderbooks`) and WebSocket `orderbook_delta`, deriving YES asks from NO bids (`1.00 - no_bid_price`) ([Orderbook Docs](https://docs.kalshi.com/api-reference/market/get-market-orderbook)).
+- **Timeframes & Candlesticks:** Native REST candlesticks support `period_interval` of `1` (minute), `60` (hour), and `1440` (day) ([Candlesticks Docs](https://docs.kalshi.com/api-reference/market/get-market-candlesticks)). Seconds-level X-axis graphing is aggregated live client-side from streaming ticks.
+- **V2 Order Execution:** `POST /trade-api/v2/portfolio/events/orders` (Create Order V2) avoids the **10x write token penalty** on legacy `/portfolio/orders` mutations ([Create Order V2](https://docs.kalshi.com/api-reference/orders/create-order-v2)).
+- **Lifecycle & Historical Partitioning:** Markets transition `active → closed → determined → finalized` with `result` (`yes` / `no` / `scalar`); settled markets older than `market_settled_ts` move to `/historical/*` ([Market Lifecycle](https://docs.kalshi.com/getting_started/market_lifecycle), [Historical Data](https://docs.kalshi.com/getting_started/historical_data)).
 
 ---
 
-## 3. Core Dashboard Capabilities Delivered
+## 3. Core Dashboard & Engineering Modules Delivered
 
-1. **Dual Real-Time Swing Alert Chat Streams (`>= $0.10` Moves):**
-   - **Stream A — All Events Feed:** Real-time scrolling chat alerting every contract price swing `>= $0.10` (up or down) across Gas Prices, Elections, Culture, Crypto, and Golf.
-   - **Stream B — Selective High-ROI Model Feed:** Filtered scrolling chat surfacing only `>= $0.10` swings that pass Tradebot2's transparent **High-ROI Opportunity Score** (combining implied edge vs. fair value, orderbook depth, bid-ask spread tightness, and expected ROI to `$1.00` settlement).
-2. **Interactive Price Chart + Catalyst Event Annotations + Orderbook Liquidity Ladder:**
-   - **X-axis:** Time with instant switching between **Seconds**, **Minutes**, and **Hours** windows.
-   - **Y-axis:** Contract price (`$0.00` to `$1.00`).
-   - **Catalyst Markers:** Any `>= $0.10` jump is annotated directly on the chart with clickable external source/news links explaining the probable driver.
-   - **Liquidity Depth Ladder:** Displays exact available YES and NO contracts at each price level alongside cumulative depth and bid-ask spread.
-3. **Automated Strategy Simulator & Demo Portfolio Tracker:**
-   - Execute manual Demo trades (Buy/Sell YES/NO) or activate automated strategy bots (*Swing Mean-Reversion `>= $0.10`*, *Momentum Breakout*, *Liquidity Imbalance*, *High-ROI Selective Filter*, plus user-created custom strategies).
-   - Track cash balance, open positions, realized/unrealized P&L, equity curve, win rate, and ROI — categorized by topic, strategy type, setup type, and final YES/NO resolution.
-4. **Live Demo REST Connection + Transparent Demo Simulator Mode:**
-   - Connects directly to `https://external-api.demo.kalshi.co/trade-api/v2` (or `https://demo-api.kalshi.co/trade-api/v2`) for public market reads, and supports the companion Python authenticated WebSocket & Demo trading engine (`scripts/kalshi_demo_client.py` + `scripts/strategy_engine.py`).
-   - Because static browsers cannot send custom WebSocket auth headers and Demo markets differ from production, the browser site also runs an explicitly labeled **Interactive Demo Simulator** seeded from verified official Kalshi tickers so every trader workflow works immediately out of the box without disguising simulated ticks as official exchange data.
+1. **Dual Real-Time Scrolling Swing Alert Chats (`>= $0.10` in Either Direction):**
+   - **All Events Stream:** Unfiltered real-time scrolling chat alerting every contract move `>= $0.10` across Gas Prices, Elections, Culture, Crypto, and Golf.
+   - **Selective High-ROI Model Stream:** Filtered scrolling chat surfacing only swings passing Tradebot2's transparent High-ROI scoring model (Score `>= 68/100`, spread `<= $0.05`, depth `>= 150` contracts).
+2. **Interactive Multi-Scale Price Chart + Catalyst Links + Liquidity Depth Ladder:**
+   - **X-Axis:** Time with instant toggles between **Seconds**, **Minutes**, and **Hours**.
+   - **Y-Axis:** Contract price (`$0.00–$1.00`).
+   - **Catalyst Annotations:** `>= $0.10` jumps are marked directly on the chart with clickable external website links explaining the probable cause.
+   - **Orderbook Liquidity Depth:** Displays available YES and NO contracts at each price level; clicking any price pre-fills the Demo trade ticket.
+3. **Automated Simulated Strategies & Demo Portfolio Performance:**
+   - Supports manual Demo trades and automated strategy execution (*Swing Mean-Reversion `>= $0.10`*, *Momentum Breakout*, *Selective High-ROI Value Filter*, *Orderbook Liquidity Imbalance*, plus custom user-defined strategies).
+   - Tracks cash balance, equity curve, realized/unrealized P&L, win rate, ROI, and trade categorization by topic, strategy type, and final **YES / NO** resolution.
+4. **Python Kalshi Demo Client & Automated Site Verifier (`scripts/`):**
+   - `scripts/kalshi_demo_client.py` (official RSA-PSS/Ed25519 request signing, Demo REST, V2 orders, authenticated WebSocket swing monitor).
+   - `scripts/strategy_engine.py` (reproducible 5-topic multi-strategy backtester).
+   - `scripts/verify_site.py` (JSON schema, 5-topic enforcement, official `https://` source check, and zero-broken-link validator).
 
 ---
 
 ## 4. Suggestions to Make the Site Even More Live & Interactive
 
-1. **Deploy a Lightweight WebSocket-to-SSE Relay (Cloudflare Worker / FastAPI / Fly.io):** Bridges Kalshi's header-authenticated `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2` to browser `EventSource` or token-authenticated WebSockets with sub-second `ticker`, `orderbook_delta`, and `market_lifecycle_v2` updates while keeping RSA/Ed25519 private keys off the browser.
-2. **Automated News-to-Tick Catalyst Matching:** Pair `>= $0.10` swing detection with live RSS/Webhook feeds (AAA daily fuel updates, AP/Reuters Election alerts, PGA Tour ShotLink/leaderboard JSON, CoinDesk/exchange price feeds, official Awards announcements) to auto-attach timestamped news links within seconds of a price jump.
-3. **One-Click Orderbook Ladder Execution & Hotkeys:** Allow traders to click any price level in the YES/NO liquidity ladder to pre-populate a limit order at that exact cent with instant fee & max-payout calculation.
-4. **Push & Webhook Alerts (Browser Notifications, Slack, Discord, Telegram):** Deliver instant alerts whenever a Selective High-ROI `>= $0.10` swing triggers or a tracked position settles `YES` or `NO`.
-5. **Walk-Forward Strategy Replay Mode:** Replay recorded WebSocket `orderbook_delta` + `trade` captures at 1x–20x speed to benchmark automated strategies against realistic historical fills and slippage before running live in the Kalshi Demo account.
-6. **Multi-Outcome Event Comparison Overlay:** Plot the top 3–4 competing contracts inside a multi-outcome event (e.g., Presidential candidates, Masters leaders, Gas price thresholds) on a single normalized `$0.00–$1.00` chart so arbitrage and sum-of-probabilities dislocations stand out immediately.
+1. **Authenticated WebSocket-to-SSE Relay:** Bridge `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2` and `wss://user-ws.demo.kalshi.co/trade-api/ws/v2` via a lightweight server relay so browsers receive sub-second ticks and fills without exposing private keys.
+2. **Automated News-to-Tick Catalyst Matching:** Auto-link timestamped AAA, AP/Reuters, PGA Tour, CoinDesk, and official Awards feeds to every `>= $0.10` swing within seconds.
+3. **Multi-Outcome Probability Overlay Charts:** Compare competing contracts inside a single event via `GET /series/{series_ticker}/events/{ticker}/candlesticks`.
+4. **Batch Orderbook Liquidity Heatmap:** Monitor 25–100 contracts in a single `GET /markets/orderbooks?tickers=...` call.
+5. **Push / Discord / Slack Alert Webhooks:** Trigger notifications on Selective High-ROI swings and `market_lifecycle_v2` `determined` / `settled` transitions.
+6. **Historical Replay Walk-Forward Mode:** Replay settled markets across `GET /historical/cutoff` at 1x–20x speed before deploying strategies live.
 
 ---
 
-## 5. Governance & Flagged Irregularities
+## 5. Verification & Flagged Irregularities
 
-Every irregularity, deprecated API field, browser limitation, and blank unverified field is tracked in [`VERIFICATION_REPORT.md`](VERIFICATION_REPORT.md) and published on the live site's **[Flagged for Review](pages/flagged-for-review.html)** page so reviewers can inspect every item directly with official source links.
+Every unverified metric, deprecated API field, and browser/sandbox constraint is left blank where unconfirmed and published transparently on **[Flagged for Review](pages/flagged-for-review.html)** (plus [`VERIFICATION_REPORT.md`](VERIFICATION_REPORT.md), [`review.html`](review.html), and [`docs/flagged.html`](docs/flagged.html)).
