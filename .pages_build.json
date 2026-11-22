@@ -1,0 +1,28 @@
+{
+ "generated_from": "docs/",
+ "files": [
+  "data/alerts.json",
+  "data/backtest.json",
+  "data/candles.json",
+  "data/markets.json",
+  "data/sources.json",
+  "data/summary.json",
+  "events.html",
+  "flagged.html",
+  "index.html",
+  "js/home.js",
+  "js/live.js",
+  "js/shell.js",
+  "js/topic.js",
+  "strategies.html",
+  "styles.css",
+  "suggestions.html",
+  "summary.html",
+  "topic-crypto.html",
+  "topic-culture.html",
+  "topic-elections.html",
+  "topic-gas.html",
+  "topic-golf.html",
+  "verification.html"
+ ]
+}
