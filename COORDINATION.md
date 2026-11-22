@@ -201,3 +201,14 @@ into PR #6. Neither is true on `origin/main`:
 The work therefore still exists only on this branch. It is re-submitted as a fresh PR rather than
 reopening the closed one, per the platform rule to merge with an explicit PR number. This note is
 also on `flagged.html` as flag **F-19**.
+
+### Session re-submission — arena/0737c6bc-tradebot2
+
+- PR #15 (`arena/1546d2b0-tradebot2`, "re-submitted") force-pushed its branch and merged
+  with a wholesale tree replacement. The two additive files this session kept from PR #11
+  (`scripts/simulate.js`, `data/README.md`) were wiped by that merge.
+- This re-submission re-adds them, unchanged, as the same additive files.
+  Nothing else was touched (no other files modified).
+- Irregularity noted for the integration owner: PR #15's merge also left conflict-marker
+  text (`<<<<<<< HEAD`, `>>>>>>> origin/main`) in COORDINATION.md — flagged, not edited
+  by this session.
