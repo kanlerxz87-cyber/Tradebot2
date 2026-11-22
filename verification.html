@@ -108,7 +108,7 @@
   document.getElementById("vRows").textContent = rows + " / " + rows;
   document.getElementById("vSrc").textContent = sr.sources.length;
   document.getElementById("vFlags").textContent = 15;
-  document.getElementById("vChecks").textContent = "39";
+  document.getElementById("vChecks").textContent = "41";
 
   const checks = [
     ["every data row has a source_url", "100%"],
@@ -121,6 +121,8 @@
     ["alerts file equals a fresh engine replay", "5/5"],
     ["every data row has snapshot_ts", "40/40"],
     ["no page loads a removed file", "pass"],
+    ["every page is well-formed HTML", "12/12"],
+    ["every literal CSS class is defined", "12/12"],
     ["no committed bytecode in git", "pass"],
     ["every html page links the shared nav", "12/12"],
     ["every internal href resolves to a file", "12/12"],

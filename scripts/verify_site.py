@@ -171,6 +171,63 @@ def check_links() -> None:
     check("no page loads a removed file", not dead, str(dead))
 
 
+def check_markup() -> None:
+    """HTML well-formedness and stylesheet coverage.
+
+    Catches the mistakes that a link check cannot see: an unclosed tag, or a
+    class the JavaScript emits but the stylesheet never defines (which renders as
+    unstyled text and looks like a layout bug).
+    """
+    from html.parser import HTMLParser
+
+    void = {"area", "base", "br", "col", "embed", "hr", "img", "input",
+            "link", "meta", "source", "track", "wbr"}
+
+    class Balancer(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__(convert_charrefs=True)
+            self.stack: list[tuple[str, tuple[int, int]]] = []
+            self.errors: list[str] = []
+
+        def handle_starttag(self, tag, attrs):
+            if tag in ("script", "style"):
+                self.skip = True
+                return
+            if tag not in void:
+                self.stack.append((tag, self.getpos()))
+
+        def handle_endtag(self, tag):
+            if tag in ("script", "style"):
+                return
+            if tag in void or not self.stack:
+                return
+            opened, pos = self.stack.pop()
+            if opened != tag:
+                self.errors.append(f"</{tag}> closes <{opened}> from {pos}")
+
+    css = (DOCS / "styles.css").read_text(encoding="utf-8")
+    defined = set(re.findall(r"\.([a-zA-Z][\w-]*)", css))
+
+    bad_markup, unknown_classes = [], []
+    for page in html_files():
+        text = page.read_text(encoding="utf-8")
+        parser = Balancer()
+        parser.feed(text)
+        leftover = [t for t, _ in parser.stack if t not in ("html", "body")]
+        if parser.errors or leftover:
+            bad_markup.append(f"{page.name}:{parser.errors[:1] or leftover[:1]}")
+
+        body = re.sub(r"<script.*?</script>", "", text, flags=re.S)
+        for attr in re.findall(r'class="([^"]*)"', body):
+            for token in attr.split():
+                if "${" in token or token in ("===", "=="):
+                    continue
+                if token not in defined:
+                    unknown_classes.append(f"{page.name}:{token}")
+    check("every page is well-formed HTML", not bad_markup, str(bad_markup[:3]))
+    check("every literal class has a stylesheet rule", not unknown_classes, str(unknown_classes[:4]))
+
+
 def check_claims() -> None:
     pages = html_files()
     bad_balance = []
@@ -240,6 +297,7 @@ def check_root_copy() -> None:
 def main() -> int:
     check_data()
     check_root_copy()
+    check_markup()
     check_links()
     check_claims()
     check_engine()
