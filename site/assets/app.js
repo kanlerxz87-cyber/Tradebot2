@@ -4,7 +4,7 @@
   "use strict";
 
   var NAV = [
-    ["index.html", "Home"], ["dashboard.html", "Live dashboard"],
+    ["../index.html", "Main site"], ["index.html", "Monitor home"], ["dashboard.html", "Live dashboard"],
     ["gas.html", "Gas"], ["elections.html", "Elections"], ["culture.html", "Culture"],
     ["crypto.html", "Crypto"], ["golf.html", "Golf"],
     ["chart.html", "Price chart & liquidity"], ["resolved.html", "Resolved"],
