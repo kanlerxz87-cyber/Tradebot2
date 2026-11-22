@@ -1,0 +1,166 @@
+{
+ "snapshot_ts": "2026-11-22T07:28:00Z",
+ "sources": [
+  {
+   "fact_id": "api-environments",
+   "claim": "REST and WebSocket base URLs for production and demo",
+   "url": "https://docs.kalshi.com/getting_started/api_environments.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "demo-environment",
+   "claim": "Demo environment uses mock funds; demo prices may diverge from production",
+   "url": "https://docs.kalshi.com/getting_started/demo_env.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "ws-quickstart",
+   "claim": "WebSocket handshake headers and the signed path /trade-api/ws/v2",
+   "url": "https://docs.kalshi.com/getting_started/quick_start_websockets.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "ws-connection",
+   "claim": "WebSocket connection requires authentication even for public channels",
+   "url": "https://docs.kalshi.com/websockets/websocket-connection.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "orderbook",
+   "claim": "Order book returns bids only; best YES ask = 1 - best NO bid",
+   "url": "https://docs.kalshi.com/getting_started/orderbook_responses.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "candlesticks",
+   "claim": "Candlesticks endpoint, period_interval 1/60/1440, 5000-period cap",
+   "url": "https://docs.kalshi.com/api-reference/market/get-market-candlesticks.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "market-lifecycle",
+   "claim": "Market statuses and the filters that map to them",
+   "url": "https://docs.kalshi.com/getting_started/market_lifecycle.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "order-v2",
+   "claim": "V2 order endpoint replaces the removed legacy order endpoints",
+   "url": "https://docs.kalshi.com/api-reference/orders/create-order-v2.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "order-direction",
+   "claim": "outcome_side/book_side replace legacy action/side; bid == yes",
+   "url": "https://docs.kalshi.com/getting_started/order_direction.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "balance",
+   "claim": "Balance endpoint and its separate rate-limit bucket",
+   "url": "https://docs.kalshi.com/api-reference/portfolio/get-balance.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "rate-limits",
+   "claim": "Token buckets, X-RateLimit headers, 429 has no Retry-After",
+   "url": "https://docs.kalshi.com/getting_started/rate_limits.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "fixed-point",
+   "claim": "Fixed-point conventions and price_ranges as tick source of truth",
+   "url": "https://docs.kalshi.com/getting_started/fixed_point_migration.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "get-events",
+   "claim": "GET /events parameters including with_nested_markets and status",
+   "url": "https://docs.kalshi.com/api-reference/events/get-events.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "get-market",
+   "claim": "Market object schema including result and settlement fields",
+   "url": "https://docs.kalshi.com/api-reference/markets/get-market.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "get-trades",
+   "claim": "Public trades endpoint and Trade schema",
+   "url": "https://docs.kalshi.com/api-reference/market/get-trades.md",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "llms-index",
+   "claim": "Documentation index used to enumerate every endpoint page",
+   "url": "https://docs.kalshi.com/llms.txt",
+   "kind": "official-docs",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "demo-series-gas",
+   "claim": "Gas-price series are Economics + tag Oil and energy, AAA settlement",
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Economics&tags=Oil+and+energy&limit=3",
+   "kind": "official-api",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "demo-series-golf",
+   "claim": "Golf series are Sports + tag Golf",
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Sports&tags=Golf&limit=3",
+   "kind": "official-api",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "demo-series-elections",
+   "claim": "Elections category contents",
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections&limit=2",
+   "kind": "official-api",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "demo-series-culture",
+   "claim": "Culture category contents",
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Culture&limit=2",
+   "kind": "official-api",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "demo-series-crypto",
+   "claim": "Crypto category contents",
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Crypto&limit=20",
+   "kind": "official-api",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "demo-series-bad-category",
+   "claim": "category=Gas and category=Golf return null series",
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Golf&limit=2",
+   "kind": "official-api",
+   "checked": "2026-11-22"
+  },
+  {
+   "fact_id": "kalshi-site-market",
+   "claim": "Public market page for a series (human-readable odds page)",
+   "url": "https://kalshi.com/markets/kxaaagasd/kxaaagasd-26nov22",
+   "kind": "official-site",
+   "checked": "2026-11-22"
+  }
+ ]
+}

@@ -1,0 +1,706 @@
+{
+ "snapshot_ts": "2026-11-22T07:28:00Z",
+ "demo_base": "https://external-api.demo.kalshi.co/trade-api/v2",
+ "counts": {
+  "series": 21,
+  "markets": 6,
+  "resolved": 8,
+  "orderbooks": 1,
+  "gaps": 5
+ },
+ "rows": [
+  {
+   "row_type": "series",
+   "topic": "gas",
+   "ticker": "KXAAAGASD",
+   "title": "US gas prices tomorrow",
+   "category": "Economics",
+   "tags": [
+    "Oil and energy",
+    "Econ Daily"
+   ],
+   "frequency": "daily",
+   "settlement_source": "AAA",
+   "settlement_url": "https://gasprices.aaa.com/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=open&series_ticker=KXAAAGASD&limit=6",
+   "note": "Market rules: 'average regular gas prices for United States ... according to AAA'.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "gas",
+   "ticker": "KXAAAGASDUT",
+   "title": "Utah gas price",
+   "category": "Economics",
+   "tags": [
+    "Oil and energy",
+    "Econ Daily"
+   ],
+   "frequency": "daily",
+   "settlement_source": "AAA",
+   "settlement_url": "https://gasprices.aaa.com/?state=UT",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Economics&tags=Oil+and+energy&limit=3",
+   "note": "Category is Economics, not 'Gas'.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "gas",
+   "ticker": "KXAAAGASCDNH",
+   "title": "New Hampshire gas price",
+   "category": "Economics",
+   "tags": [
+    "Oil and energy",
+    "Econ Daily"
+   ],
+   "frequency": "daily",
+   "settlement_source": "AAA",
+   "settlement_url": "https://gasprices.aaa.com/?state=NH",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Economics&tags=Oil+and+energy&limit=3",
+   "note": "Same family, state-level daily strike ladder.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "gas",
+   "ticker": "KXAAAGASMIN",
+   "title": "US lowest gas price yearly",
+   "category": "Economics",
+   "tags": [
+    "Oil & Gas",
+    "Oil and energy"
+   ],
+   "frequency": "annual",
+   "settlement_source": "AAA",
+   "settlement_url": "https://gasprices.aaa.com/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Economics&tags=Oil+and+energy&limit=3",
+   "note": "Annual min/max ladder, same AAA settlement source.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "gas",
+   "ticker": "KXAAAGASM",
+   "title": "US gas price (monthly)",
+   "category": "Economics",
+   "tags": [
+    "Oil and energy"
+   ],
+   "frequency": "monthly",
+   "settlement_source": "AAA",
+   "settlement_url": "https://gasprices.aaa.com/",
+   "source_url": "https://kalshi.com/docs/kalshi-fee-schedule.pdf",
+   "note": "Named on the official fee schedule with maker/taker multiplier 1.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "elections",
+   "ticker": "PRESPARTYMN",
+   "title": "Minnesota presidential winner",
+   "category": "Elections",
+   "tags": [
+    "US Elections"
+   ],
+   "frequency": "custom",
+   "settlement_source": "Library of Congress",
+   "settlement_url": "https://www.congress.gov/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections&limit=2",
+   "note": "Presidential party-winner family.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "elections",
+   "ticker": "KXSENATEID",
+   "title": "Who will win the Senate race in Idaho?",
+   "category": "Elections",
+   "tags": [
+    "Senate"
+   ],
+   "frequency": "one_off",
+   "settlement_source": "United States Congress",
+   "settlement_url": "https://www.congress.gov/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections&limit=2",
+   "note": "Senate race, one-off frequency.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "elections",
+   "ticker": "KXGOVHINOMR",
+   "title": "Hawaii Governor Republican nominee",
+   "category": "Elections",
+   "tags": [
+    "Primaries"
+   ],
+   "frequency": "one_off",
+   "settlement_source": "Republican Party",
+   "settlement_url": "https://gop.com/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections&limit=2",
+   "note": "Primary nomination market.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "culture",
+   "ticker": "KXXBANNEDMURRAYHILLGUY1",
+   "title": "Will @MurrayHillGuy1 get banned from X this year?",
+   "category": "Culture",
+   "tags": [],
+   "frequency": "one_off",
+   "settlement_source": "AP / Reuters / Bloomberg / CNN (23 listed)",
+   "settlement_url": "https://apnews.com/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Culture&limit=2",
+   "note": "Settlement source list includes google.com/search entries - flagged.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "culture",
+   "ticker": "KXXBANNEDGROK",
+   "title": "Will Grok be banned this year",
+   "category": "Culture",
+   "tags": [
+    "AI"
+   ],
+   "frequency": "one_off",
+   "settlement_source": "AP / Reuters / Bloomberg / CNN (23 listed)",
+   "settlement_url": "https://apnews.com/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Culture&limit=2",
+   "note": "Same source list; 0 open markets at snapshot time.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "crypto",
+   "ticker": "KXXRPMAXM",
+   "title": "XRP max monthly",
+   "category": "Crypto",
+   "tags": [
+    "Crypto",
+    "XRP"
+   ],
+   "frequency": "custom",
+   "settlement_source": "CF Benchmarks",
+   "settlement_url": "https://www.cfbenchmarks.com/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Crypto&limit=2",
+   "note": "Monthly maximum ladder.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "crypto",
+   "ticker": "KXBTCHITBY",
+   "title": "Bitcoin above a price by a date",
+   "category": "Crypto",
+   "tags": [
+    "BTC"
+   ],
+   "frequency": "custom",
+   "settlement_source": "CF Benchmarks BRTI",
+   "settlement_url": "https://www.cfbenchmarks.com/data/indices/BRTI",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Crypto&limit=2",
+   "note": "The BRTI index is the same source used by the KXBTCD hourly markets.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "crypto",
+   "ticker": "KXBNBMAXMON",
+   "title": "BNB Max Monthly",
+   "category": "Crypto",
+   "tags": [
+    "BNB",
+    "Crypto"
+   ],
+   "frequency": "monthly",
+   "settlement_source": "CF Benchmarks",
+   "settlement_url": "https://www.cfbenchmarks.com/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Crypto&limit=2",
+   "note": "",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "crypto",
+   "ticker": "KXNEAR15M",
+   "title": "NEAR 15m",
+   "category": "Crypto",
+   "tags": [
+    "15 min",
+    "NEAR"
+   ],
+   "frequency": "fifteen_min",
+   "settlement_source": "CF Benchmarks",
+   "settlement_url": "https://www.cfbenchmarks.com/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Crypto&limit=2",
+   "note": "15-minute cycle: the tightest time window on the platform.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "crypto",
+   "ticker": "KXSOL26500",
+   "title": "Sol above 500 in 2026",
+   "category": "Crypto",
+   "tags": [
+    "Crypto",
+    "Solana"
+   ],
+   "frequency": "one_off",
+   "settlement_source": "CF Benchmarks",
+   "settlement_url": "https://www.cfbenchmarks.com/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Crypto&limit=2",
+   "note": "",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "crypto",
+   "ticker": "KXFDVLINEA",
+   "title": "Linea FDV",
+   "category": "Crypto",
+   "tags": [
+    "Pre-Market"
+   ],
+   "frequency": "one_off",
+   "settlement_source": "CoinGecko",
+   "settlement_url": "https://www.coingecko.com",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Crypto&limit=2",
+   "note": "Only crypto series in the sample settled from CoinGecko rather than CF Benchmarks.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "golf",
+   "ticker": "KXPGAROUNDLOW",
+   "title": "lowest round score",
+   "category": "Sports",
+   "tags": [
+    "Golf"
+   ],
+   "frequency": "custom",
+   "settlement_source": "the Governing League (PGA Tour)",
+   "settlement_url": "https://www.pgatour.com/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Sports&tags=Golf&limit=3",
+   "note": "Per-round strike ladder; resolved example captured below.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "golf",
+   "ticker": "KXPGAWINMARGIN",
+   "title": "PGA Win Margin",
+   "category": "Sports",
+   "tags": [
+    "Golf"
+   ],
+   "frequency": "custom",
+   "settlement_source": "ESPN / Fox Sports / PGA Tour / Golf Channel",
+   "settlement_url": "https://www.espn.com",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Sports&tags=Golf&limit=3",
+   "note": "0 open markets at snapshot time.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "golf",
+   "ticker": "KXPGAMAJORTOP10",
+   "title": "PGA Top 10 for All 4 Majors",
+   "category": "Sports",
+   "tags": [
+    "Golf"
+   ],
+   "frequency": "annual",
+   "settlement_source": "WSJ / ESPN / PGA Tour / Fox Sports",
+   "settlement_url": "https://www.wsj.com/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Sports&tags=Golf&limit=3",
+   "note": "Season-long ladder.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "golf",
+   "ticker": "KXPGAEAGLE",
+   "title": "Player to Record an Eagle in Round",
+   "category": "Sports",
+   "tags": [
+    "Golf"
+   ],
+   "frequency": "custom",
+   "settlement_source": "Fox Sports / ESPN / PGA Tour",
+   "settlement_url": "https://www.foxsports.com",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Sports&tags=Golf&limit=3",
+   "note": "",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "series",
+   "topic": "golf",
+   "ticker": "KXDPWTTOP5",
+   "title": "DPWT Top 5 Finisher",
+   "category": "Sports",
+   "tags": [
+    "Golf"
+   ],
+   "frequency": "custom",
+   "settlement_source": "DP World Tour",
+   "settlement_url": "https://www.europeantour.com/dpworld-tour/schedule/",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Sports&tags=Golf&limit=3",
+   "note": "European tour coverage sits in the same Golf tag.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "market",
+   "topic": "gas",
+   "ticker": "KXAAAGASD-28SEP16-3.5",
+   "event_ticker": "KXAAAGASD-28SEP16",
+   "title": "Will average gas prices be above $3.5?",
+   "status": "active",
+   "yes_bid": "0.4100",
+   "yes_ask": "1.0000",
+   "no_bid": "0.0000",
+   "no_ask": "0.5900",
+   "last_price": "0.4100",
+   "previous_price": "0.4100",
+   "volume": "8.16",
+   "volume_24h": "0.00",
+   "open_interest": "5.02",
+   "yes_bid_size": "78.00",
+   "close_time": "2028-09-16T13:59:00Z",
+   "result": "",
+   "rules": "If average regular gas prices for United States are strictly greater than $3.5 on Sep 16, 2028 according to AAA, then the market resolves to Yes.",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=open&series_ticker=KXAAAGASD&limit=6",
+   "note": "Derived YES ask from no_bid 0.00 would be 1.0000 - same as the quoted yes_ask.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "market",
+   "topic": "gas",
+   "ticker": "KXAAAGASD-28SEP16-2.5",
+   "event_ticker": "KXAAAGASD-28SEP16",
+   "title": "Will average gas prices be above $2.5?",
+   "status": "active",
+   "yes_bid": "0.3500",
+   "yes_ask": "1.0000",
+   "no_bid": "0.0000",
+   "no_ask": "0.6500",
+   "last_price": "0.3500",
+   "previous_price": "0.3500",
+   "volume": "12.98",
+   "volume_24h": "0.00",
+   "open_interest": "9.84",
+   "yes_bid_size": "90.18",
+   "close_time": "2028-09-16T13:59:00Z",
+   "result": "",
+   "rules": "If average regular gas prices for United States are strictly greater than $2.5 on Sep 16, 2028 according to AAA, then the market resolves to Yes.",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=open&series_ticker=KXAAAGASD&limit=6",
+   "note": "",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "market",
+   "topic": "gas",
+   "ticker": "KXAAAGASD-28SEP16-3",
+   "event_ticker": "KXAAAGASD-28SEP16",
+   "title": "Will average gas prices be above $3?",
+   "status": "active",
+   "yes_bid": "0.0000",
+   "yes_ask": "1.0000",
+   "no_bid": "0.0000",
+   "no_ask": "1.0000",
+   "last_price": "0.9000",
+   "previous_price": "0.9000",
+   "volume": "3.17",
+   "volume_24h": "0.00",
+   "open_interest": "0.03",
+   "yes_bid_size": "0.00",
+   "close_time": "2028-09-16T13:59:00Z",
+   "result": "",
+   "rules": "If average regular gas prices for United States are strictly greater than $3 on Sep 16, 2028 according to AAA, then the market resolves to Yes.",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=open&series_ticker=KXAAAGASD&limit=6",
+   "note": "One-sided book: last trade 0.90 but no bid and no offer - unquotable right now.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "market",
+   "topic": "crypto",
+   "ticker": "KXBTCD-26NOV2203-T66799.99",
+   "event_ticker": "KXBTCD-26NOV2203",
+   "title": "Bitcoin price on Nov 22, 2026? ($66,800 or above)",
+   "status": "active",
+   "yes_bid": "0.0000",
+   "yes_ask": "0.0000",
+   "no_bid": "1.0000",
+   "no_ask": "1.0000",
+   "last_price": "0.0000",
+   "previous_price": "0.0000",
+   "volume": "0.00",
+   "volume_24h": "0.00",
+   "open_interest": "0.00",
+   "yes_bid_size": "0.00",
+   "close_time": "2026-11-22T08:00:00Z",
+   "result": "",
+   "rules": "If the simple average of the sixty seconds of CF Benchmarks' Bitcoin Real-Time Index (BRTI) before 3 AM EST is above 66799.99 at 3 AM EST on Nov 22, 2026, then the market resolves to Yes.",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=open&series_ticker=KXBTCD&limit=2",
+   "note": "Exchange shard 2. No trades yet: every price field is 0.0000.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "market",
+   "topic": "crypto",
+   "ticker": "KXBTCD-26NOV2203-T66699.99",
+   "event_ticker": "KXBTCD-26NOV2203",
+   "title": "Bitcoin price on Nov 22, 2026? ($66,700 or above)",
+   "status": "active",
+   "yes_bid": "0.0000",
+   "yes_ask": "0.0000",
+   "no_bid": "1.0000",
+   "no_ask": "1.0000",
+   "last_price": "0.0000",
+   "previous_price": "0.0000",
+   "volume": "0.00",
+   "volume_24h": "0.00",
+   "open_interest": "0.00",
+   "yes_bid_size": "0.00",
+   "close_time": "2026-11-22T08:00:00Z",
+   "result": "",
+   "rules": "Same BRTI rule with a 66699.99 strike at 3 AM EST on Nov 22, 2026.",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=open&series_ticker=KXBTCD&limit=2",
+   "note": "Adjacent strike of the same event; used to show ladder structure.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "market",
+   "topic": null,
+   "ticker": "KXELONMARS-99",
+   "event_ticker": "KXELONMARS-99",
+   "title": "Will Elon Musk visit Mars before Aug 1, 2099?",
+   "status": "active",
+   "yes_bid": "0.1400",
+   "yes_ask": "1.0000",
+   "no_bid": "0.0000",
+   "no_ask": "0.8600",
+   "last_price": "0.3000",
+   "previous_price": "0.1400",
+   "volume": "14150.08",
+   "volume_24h": "6.15",
+   "open_interest": "12774.79",
+   "yes_bid_size": "2718.76",
+   "close_time": "2099-08-01T04:59:00Z",
+   "result": "",
+   "rules": "If Elon Musk visits Mars before the earlier of his death or Aug 1, 2099, then the market resolves to Yes.",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXELONMARS-99",
+   "note": "Official category is Politics - NOT one of the five tracked topics. Used here only as the worked example of the alert + liquidity machinery because it is the one live market on the demo exchange that actually traded through a >= $0.10 move.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "resolved",
+   "topic": "crypto",
+   "ticker": "KXBTCD-26NOV2201-T66799.99",
+   "event_ticker": "KXBTCD-26NOV2201",
+   "title": "Bitcoin price at 1 AM EST on Nov 22, 2026 ($66,800 or above)",
+   "status": "finalized",
+   "result": "no",
+   "settlement_value": "0.0000",
+   "settlement_ts": "2026-11-22T06:24:47Z",
+   "close_time": "2026-11-22T06:00:00Z",
+   "volume": "0.00",
+   "open_interest": "0.00",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=settled&series_ticker=KXBTCD&limit=5",
+   "note": "Settled from the average of 60 BRTI prints in the final minute.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "resolved",
+   "topic": "crypto",
+   "ticker": "KXBTCD-26NOV2201-T66699.99",
+   "event_ticker": "KXBTCD-26NOV2201",
+   "title": "Bitcoin price at 1 AM EST on Nov 22, 2026 ($66,700 or above)",
+   "status": "finalized",
+   "result": "no",
+   "settlement_value": "0.0000",
+   "settlement_ts": "2026-11-22T06:24:47Z",
+   "close_time": "2026-11-22T06:00:00Z",
+   "volume": "0.00",
+   "open_interest": "0.00",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=settled&series_ticker=KXBTCD&limit=5",
+   "note": "Same event, lower strike, same NO outcome.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "resolved",
+   "topic": "crypto",
+   "ticker": "KXBTCD-26NOV2201-T66599.99",
+   "event_ticker": "KXBTCD-26NOV2201",
+   "title": "Bitcoin price at 1 AM EST on Nov 22, 2026 ($66,600 or above)",
+   "status": "finalized",
+   "result": "no",
+   "settlement_value": "0.0000",
+   "settlement_ts": "2026-11-22T06:24:47Z",
+   "close_time": "2026-11-22T06:00:00Z",
+   "volume": "0.00",
+   "open_interest": "0.00",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=settled&series_ticker=KXBTCD&limit=5",
+   "note": "",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "resolved",
+   "topic": "crypto",
+   "ticker": "KXBTCD-26NOV2201-T66499.99",
+   "event_ticker": "KXBTCD-26NOV2201",
+   "title": "Bitcoin price at 1 AM EST on Nov 22, 2026 ($66,500 or above)",
+   "status": "finalized",
+   "result": "no",
+   "settlement_value": "0.0000",
+   "settlement_ts": "2026-11-22T06:24:47Z",
+   "close_time": "2026-11-22T06:00:00Z",
+   "volume": "0.00",
+   "open_interest": "0.00",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=settled&series_ticker=KXBTCD&limit=5",
+   "note": "Four strikes captured; all four resolved NO.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "resolved",
+   "topic": "golf",
+   "ticker": "KXPGAROUNDLOW-THOC26R3-67",
+   "event_ticker": "KXPGAROUNDLOW-THOC26R3",
+   "title": "Will the lowest round score of Round 3 be under 67.5?",
+   "status": "finalized",
+   "result": "yes",
+   "settlement_value": "1.0000",
+   "settlement_ts": "2026-07-19T02:19:08Z",
+   "close_time": "2026-07-19T02:11:13Z",
+   "volume": "0.00",
+   "open_interest": "0.00",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?status=settled&with_nested_markets=true&limit=1&series_ticker=KXPGAROUNDLOW",
+   "note": "2026 Open Championship, Round 3. Zero recorded volume on the demo exchange.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "resolved",
+   "topic": "golf",
+   "ticker": "KXPGAROUNDLOW-THOC26R3-66",
+   "event_ticker": "KXPGAROUNDLOW-THOC26R3",
+   "title": "Will the lowest round score of Round 3 be under 66.5?",
+   "status": "finalized",
+   "result": "yes",
+   "settlement_value": "1.0000",
+   "settlement_ts": "2026-07-19T02:19:08Z",
+   "close_time": "2026-07-19T02:11:13Z",
+   "volume": "0.00",
+   "open_interest": "0.00",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?status=settled&with_nested_markets=true&limit=1&series_ticker=KXPGAROUNDLOW",
+   "note": "Strike ladder resolves together when the score clears every threshold.",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "resolved",
+   "topic": "golf",
+   "ticker": "KXPGAROUNDLOW-THOC26R3-65",
+   "event_ticker": "KXPGAROUNDLOW-THOC26R3",
+   "title": "Will the lowest round score of Round 3 be under 65.5?",
+   "status": "finalized",
+   "result": "yes",
+   "settlement_value": "1.0000",
+   "settlement_ts": "2026-07-19T02:19:08Z",
+   "close_time": "2026-07-19T02:11:13Z",
+   "volume": "0.00",
+   "open_interest": "0.00",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?status=settled&with_nested_markets=true&limit=1&series_ticker=KXPGAROUNDLOW",
+   "note": "",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "resolved",
+   "topic": "golf",
+   "ticker": "KXPGAROUNDLOW-THOC26R3-64",
+   "event_ticker": "KXPGAROUNDLOW-THOC26R3",
+   "title": "Will the lowest round score of Round 3 be under 64.5?",
+   "status": "finalized",
+   "result": "yes",
+   "settlement_value": "1.0000",
+   "settlement_ts": "2026-07-19T02:19:08Z",
+   "close_time": "2026-07-19T02:11:13Z",
+   "volume": "0.00",
+   "open_interest": "0.00",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?status=settled&with_nested_markets=true&limit=1&series_ticker=KXPGAROUNDLOW",
+   "note": "",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "gap",
+   "query": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=open&series_ticker=KXPGAWINMARGIN&limit=2",
+   "returned": "{\"cursor\": \"\", \"markets\": []}",
+   "meaning": "Zero open golf markets on the demo exchange at snapshot time, although the Golf series exist. The Golf page therefore shows the series catalogue and real settled outcomes, and no live prices.",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=open&series_ticker=KXPGAWINMARGIN&limit=2",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "gap",
+   "query": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Golf&limit=2",
+   "returned": "{\"series\": null}",
+   "meaning": "Category 'Golf' does not exist. Golf is category Sports + tag Golf.",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Golf&limit=2",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "gap",
+   "query": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Gas&limit=2",
+   "returned": "{\"series\": null}",
+   "meaning": "Category 'Gas' does not exist. Gas prices are category Economics + tag Oil and energy.",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Gas&limit=2",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "gap",
+   "query": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=open&series_ticker=KXXBANNEDGROK&limit=1",
+   "returned": "{\"markets\": []}",
+   "meaning": "Culture series KXXBANNEDGROK has no open markets right now.",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets?status=open&series_ticker=KXXBANNEDGROK&limit=1",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  },
+  {
+   "row_type": "gap",
+   "query": "https://external-api.demo.kalshi.co/trade-api/v2/series/KXAAAGASD/markets/KXAAAGASD-28SEP16-3.5/candlesticks?start_ts=1795132800&end_ts=1795305600&period_interval=60",
+   "returned": "{\"candlesticks\": [], \"ticker\": \"KXAAAGASD-28SEP16-3.5\"}",
+   "meaning": "Gas markets have no trades in that window, so no candles exist. Chart pages fall back to the live browser feed instead of drawing a fake line.",
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/series/KXAAAGASD/markets/KXAAAGASD-28SEP16-3.5/candlesticks?start_ts=1795132800&end_ts=1795305600&period_interval=60",
+   "snapshot_ts": "2026-11-22T07:28:00Z"
+  }
+ ],
+ "orderbooks": [
+  {
+   "ticker": "KXELONMARS-99",
+   "topic": null,
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXELONMARS-99/orderbook?depth=10",
+   "yes_dollars": [
+    [
+     "0.0100",
+     "11285.32"
+    ],
+    [
+     "0.0600",
+     "0.99"
+    ],
+    [
+     "0.1000",
+     "1002.00"
+    ],
+    [
+     "0.1100",
+     "91.49"
+    ],
+    [
+     "0.1400",
+     "2718.76"
+    ]
+   ],
+   "no_dollars": [],
+   "note": "Bids only, ascending, best bid last (0.14). No NO bids, so the derived YES ask is 1.00 - the visible bid ladder is the entire tradeable side."
+  }
+ ]
+}
