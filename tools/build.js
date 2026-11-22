@@ -25,8 +25,8 @@ const snapshot = {
   series: D.series,
   demoSiteHighlights: D.demoSiteHighlights
 };
-fs.writeFileSync(path.join(ROOT, "data", "snapshot.json"), JSON.stringify(snapshot, null, 2));
-console.log("wrote data/snapshot.json (" + D.markets.length + " markets)");
+fs.writeFileSync(path.join(ROOT, "data", "snapshot-main.json"), JSON.stringify(snapshot, null, 2));
+console.log("wrote data/snapshot-main.json (" + D.markets.length + " markets)");
 
 /* ---------- 2) topic pages ---------- */
 require(path.join(__dirname, "gen-topics.js"));

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Method, formulas &amp; sources — Kalshi demo | Tradebot2</title>
+  <meta name="description" content="How the Kalshi demo dashboard collects data, classifies topics, detects $0.10 swings, scores opportunities, simulates trades and verifies every source.">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232fe3b0'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-size='17' font-weight='bold' fill='%23041016'%3EK%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="method">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">K</span><span class="brand-text"><strong>Tradebot2</strong><span>Kalshi demo terminal</span></span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html" data-nav="home">Overview</a>
+        <a href="dashboard.html" data-nav="dashboard">Dashboard</a>
+        <span class="nav-sep"></span>
+        <a href="gas-prices.html" data-nav="gas">Gas</a>
+        <a href="elections.html" data-nav="elections">Elections</a>
+        <a href="culture.html" data-nav="culture">Culture</a>
+        <a href="crypto.html" data-nav="crypto">Crypto</a>
+        <a href="golf.html" data-nav="golf">Golf</a>
+        <span class="nav-sep"></span>
+        <a href="portfolio.html" data-nav="portfolio">Portfolio</a>
+        <a href="executive-summary.html" data-nav="summary">Summary</a>
+        <a href="methodology.html" data-nav="method">Method</a>
+        <a href="flagged.html" data-nav="flagged">Flagged</a>
+        <a href="suggestions.html" data-nav="suggestions">Ideas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap-narrow page prose">
+    <div class="eyebrow">Methodology · verified 22 November 2026</div>
+    <h1>Method, formulas and sources</h1>
+    <p class="lede">The rule for this project is simple: every observable value comes from an official Kalshi endpoint, every derived number has a published formula, and anything that cannot be confirmed is blank and flagged. This page documents the whole chain so it can be checked line by line.</p>
+
+    <h2 id="sources">1. Data sources</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Source</th><th>Used for</th><th>Auth</th><th>Official page</th></tr></thead>
+        <tbody>
+          <tr><td>Demo REST Trade API</td><td>Exchange status, markets, events, series, orderbooks, trades, candlesticks</td><td>None for public reads</td><td><a href="https://docs.kalshi.com/getting_started/quick_start_market_data.md" target="_blank" rel="noopener">Market-data quick start ↗</a></td></tr>
+          <tr><td><code>GET /exchange/status</code></td><td>Exchange and trading availability shown in the snapshot</td><td>None</td><td><a href="https://docs.kalshi.com/api-reference/exchange/get-exchange-status" target="_blank" rel="noopener">Reference ↗</a></td></tr>
+          <tr><td><code>GET /markets</code></td><td>Open and settled markets, quotes, volume, open interest, result</td><td>None</td><td><a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">Reference ↗</a></td></tr>
+          <tr><td><code>GET /events</code> and <code>GET /series/{{ticker}}</code></td><td>Category, event title, series title, settlement sources</td><td>None</td><td><a href="https://docs.kalshi.com/api-reference/market/get-series-list.md" target="_blank" rel="noopener">Series reference ↗</a></td></tr>
+          <tr><td><code>GET /markets/{{ticker}}/orderbook</code></td><td>Best bid/ask, spread, contracts at each price</td><td>None</td><td><a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook.md" target="_blank" rel="noopener">Reference ↗</a></td></tr>
+          <tr><td><code>GET /series/{{series}}/markets/{{ticker}}/candlesticks</code></td><td>OHLC, volume and open interest history</td><td>None</td><td><a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks.md" target="_blank" rel="noopener">Reference ↗</a></td></tr>
+          <tr><td><code>GET /portfolio/*</code>, <code>POST /portfolio/events/orders</code></td><td>Demo balance, positions, orders (local server only)</td><td>Signed API key</td><td><a href="https://docs.kalshi.com/getting_started/api_keys.md" target="_blank" rel="noopener">API keys ↗</a> · <a href="https://docs.kalshi.com/api-reference/orders/create-order-v2" target="_blank" rel="noopener">Create Order V2 ↗</a></td></tr>
+          <tr><td>WebSocket API</td><td>Not used by the static page; documented for the local server path</td><td>Signed handshake</td><td><a href="https://docs.kalshi.com/getting_started/quick_start_websockets.md" target="_blank" rel="noopener">WebSocket quick start ↗</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small">The API base is <code data-api-base>https://external-api.demo.kalshi.co/trade-api/v2</code> for the demo environment. The alternate demo host <code>https://demo-api.kalshi.co/trade-api/v2</code> is also officially supported and probed in CI; the site uses the recommended <code>external-api</code> host. Production hosts are never called by this project.</p>
+
+    <h2 id="pipeline">2. Collection pipeline</h2>
+    <ol>
+      <li>Page through <code>GET /markets?status=open</code> and <code>GET /markets?status=settled&amp;min_settled_ts=…</code> (last 30 days), de-duplicating by ticker. Multivariate <code>KXMVE*</code> markets are excluded from the five topics.</li>
+      <li>Index events (open + settled) and fetch series metadata for open series. The series response supplies the official category, title and named settlement sources.</li>
+      <li>Classify each market (section 4). Markets outside the five topics are dropped.</li>
+      <li>Select the top eight open markets per topic by 24h contract volume, plus the top two by open interest. Every selected market gets a 10-level orderbook and 1-minute (8–12h) plus 1-hour (7d) candles.</li>
+      <li>Derive ≥ $0.10 historical swings from consecutive 1-minute closes for the alert seed, and run the candle backtest.</li>
+      <li>Write <code>data/snapshot.json</code>, <code>data/backtest.json</code> and <code>data/probe.json</code>. CI validates the schema and sources before the artifact is accepted.</li>
+    </ol>
+    <p class="small muted">Snapshot generated <span data-snapshot-time>—</span> · age at view <span data-snapshot-age>—</span>. The live dashboard polls the API directly and is not limited by this snapshot.</p>
+
+    <h2 id="fields">3. Field dictionary</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Field</th><th>Meaning</th><th>Official or computed</th></tr></thead>
+        <tbody>
+          <tr><td><code>prices.yes_bid</code> / <code>yes_ask</code></td><td>Best YES bid and ask in dollars</td><td>Official (<code>yes_bid_dollars</code>, <code>yes_ask_dollars</code>)</td></tr>
+          <tr><td><code>prices.mid</code></td><td>(Yes bid + Yes ask) / 2 only when the book is two-sided and ≤ 25¢ wide; otherwise the last trade, else blank</td><td>Computed, basis shown</td></tr>
+          <tr><td><code>volume.last_24h_contracts</code></td><td>Contracts traded in the last 24 hours</td><td>Official (<code>volume_24h_fp</code>)</td></tr>
+          <tr><td><code>volume.open_interest_contracts</code></td><td>Open contracts</td><td>Official (<code>open_interest_fp</code>)</td></tr>
+          <tr><td><code>volume.notional_24h_est</code></td><td>24h contracts × mid price in dollars</td><td>Computed estimate — not an official Kalshi field</td></tr>
+          <tr><td><code>liquidity.*</code></td><td>Best bid/ask, spread, contracts at the touch, level ladders</td><td>Official orderbook; ask implied as 1 − opposite bid</td></tr>
+          <tr><td><code>result</code></td><td>Final YES/NO result of a settled market</td><td>Official (<code>result</code>); blank until settled</td></tr>
+          <tr><td><code>candles["1m"]</code></td><td><code>[end_period_ts, price_close, yes_bid_close, yes_ask_close, volume, open_interest]</code></td><td>Official candles, compacted; nulls preserved</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The dashboard never replaces a missing value with zero. “—” means the API did not provide a usable value; zero means the API returned zero.</p>
+
+    <h2 id="classification">4. Topic classification</h2>
+    <p>Kalshi’s category taxonomy does not match the five requested topics: Crypto and Culture are official categories, while golf sits inside Sports and gas prices inside broader economics/weather categories. Classification therefore combines three signals, in this order:</p>
+    <ol>
+      <li><strong>Strong series-ticker prefixes</strong> (for example <code>KXAAAGASW</code>, <code>KXPGATOUR</code>, <code>KXPRES</code>).</li>
+      <li><strong>Official category</strong>, trusted only for Crypto and Culture, where the category is exact.</li>
+      <li><strong>Narrow keyword rules with word boundaries and explicit vetoes</strong> (for example, “Las Vegas” vetoes gas prices; “Netherlands” cannot match “ETH”).</li>
+    </ol>
+    <p>Regression tests include negative cases: “Netherlands” is not crypto, “Liga MX” is not golf, “Las Vegas” is not gas prices, and a weather market is not in scope. A market that matches nothing is excluded rather than assigned to the closest topic.</p>
+    <p class="small">Rules live in <code>app/topics.py</code>; tests in <code>tests/test_topics.py</code>.</p>
+
+    <h2 id="alerts">5. Swing alert definition</h2>
+    <blockquote>An alert fires when the observed contract price changes by <strong>at least $0.10</strong> from the previous observation, in either direction.</blockquote>
+    <ul>
+      <li><strong>Price:</strong> YES midpoint when both sides of the book exist, are not crossed and the spread is ≤ 25¢; otherwise the last traded YES price, labelled <code>last</code>, or blank. A 1¢/99¢ book is not treated as a 50¢ market: that midpoint is not executable and would generate false ≥ $0.10 alerts.</li>
+      <li><strong>Threshold edge:</strong> a move of exactly $0.10 fires; $0.0999 does not. Unit tests cover both.</li>
+      <li><strong>First observation:</strong> establishes a baseline and cannot alert.</li>
+      <li><strong>Deduplication:</strong> identical observations are fingerprinted and ignored, so polling twice does not create a second alert.</li>
+      <li><strong>Seed history:</strong> alerts derived from consecutive 1-minute candle closes are labelled “history” and never presented as live.</li>
+      <li><strong>Polling cadence:</strong> 5 seconds while visible, 30 seconds in a hidden tab. This is polling, not streaming; the WebSocket alternative requires authentication.</li>
+    </ul>
+
+    <h2 id="model">6. High-ROI model</h2>
+    <p>The model is a transparent heuristic, not a calibrated probability forecast. It never hides its inputs. For each market and strategy:</p>
+    <ol>
+      <li><strong>Model probability.</strong> Start at the market mid. Momentum adds <code>0.25 × tanh(Δ/0.20)</code> in the direction of the move; mean reversion subtracts <code>0.18 × tanh(Δ/0.20)</code>; favourite drift adds <code>+0.10</code> for a ≥ $0.85 favourite within 24h of close. Result is clamped to [0.01, 0.99].</li>
+      <li><strong>Edge and ROI.</strong> Edge = model probability − entry price. Estimated ROI = (edge − fee per contract) / entry price. Entry is the ask for YES, or 1 − best YES bid for NO.</li>
+      <li><strong>Score (0–100).</strong> 40% edge component (ROI/25%, capped), 20% depth (log scale, 100 contracts ≈ full marks), 15% spread (tighter is better), 15% 24h volume, 10% time to close (with a penalty inside the last hour).</li>
+      <li><strong>Feed thresholds.</strong> The Python model qualifies at score ≥ 55 and estimated ROI ≥ 5%. The dashboard additionally requires score ≥ 65 and throttles new model picks to one per 30 seconds.</li>
+    </ol>
+    <p><strong>Fees.</strong> The general trading fee is quadratic: <code>0.07 × contracts × price × (1 − price)</code>, rounded up to $0.000001 per fill. The official fee-rounding page’s worked example (price $0.055 → $0.00363825) reproduces this formula exactly. Maker rebates, fee multipliers and series-specific fee types are <em>not</em> modelled.</p>
+    <p class="small">Implementation: <code>app/strategies.py</code> and <code>assets/js/core.js</code>, with shared scoring weights. The Python and browser paths are intentionally similar but are not byte-identical; the Python backtest is the reference for published performance.</p>
+
+    <h2 id="ranking">7. “Highest dollar amount” ranking</h2>
+    <p>The API exposes contract volume and open interest, not dollar volume. The dashboard therefore ranks by a <strong>computed notional estimate</strong>: 24h contracts × current mid price. Official contract counts are displayed next to it, and the column header says “est.” This is the only defensible interpretation available from the public fields; it is not an exchange-reported dollar figure.</p>
+
+    <h2 id="paper">8. Simulated trading and backtest assumptions</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Assumption</th><th>Value used</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Starting cash</td><td>$10,000 per strategy sleeve</td><td>Simulation choice</td></tr>
+          <tr><td>Entry</td><td>Pay the ask (YES) or 1 − best YES bid (NO)</td><td>Conservative vs. mid</td></tr>
+          <tr><td>Exit</td><td>Receive the bid; +$0.15 take profit, −$0.10 stop, 24h time stop in the backtest</td><td>Simulation rule</td></tr>
+          <tr><td>Fees</td><td>Quadratic taker fee, rounded up to 1e-6</td><td>Official formula</td></tr>
+          <tr><td>Settlement</td><td>$1 per winning contract, $0 otherwise; <strong>no settlement fee modelled</strong></td><td>Assumption — flagged</td></tr>
+          <tr><td>Size</td><td>2% of sleeve at risk, ≤ 25% of visible depth, ≤ 25% of cash, ≤ 250 contracts</td><td>Simulation rule</td></tr>
+          <tr><td>Backtest fills</td><td>At the close of the candle in which the move completed; no latency, queue or impact</td><td>Limitation — flagged</td></tr>
+          <tr><td>Partial fills</td><td>Not simulated beyond the depth cap</td><td>Limitation — flagged</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The backtest covers the 1-minute candles collected for the tracked markets (roughly 8–12 hours per market at snapshot time). It is a short window and is presented as a comparison tool, not evidence of durable edge. A walk-forward test on longer history is on the roadmap.</p>
+
+    <h2 id="verification">9. Verification performed</h2>
+    <ul>
+      <li><strong>Docs:</strong> every endpoint and auth rule used here is linked in section 1 and was read on 22 Nov 2026.</li>
+      <li><strong>Live responses:</strong> the snapshot is produced from live demo API responses; exchange status, market fields, orderbooks and candles are stored verbatim (compacted) and linked from every row.</li>
+      <li><strong>Unit and contract tests:</strong> 47 tests cover thresholds (0.0999 vs 0.10), direction, dedupe, candle seeding, the official fee example, model gates, paper settlement, analytics and Ed25519/RSA-PSS signature verification.</li>
+      <li><strong>Browser probes:</strong> CI measures the CORS response headers and an unauthenticated WebSocket handshake; results are published in <code>data/probe.json</code>, not asserted from memory.</li>
+      <li><strong>Site checks:</strong> <code>tools/verify_site.py</code> fails on broken local links, missing official source links, unknown topics, out-of-range prices, invalid results and unfinished-scaffolding markers.</li>
+      <li><strong>Human-review path:</strong> unresolved items are published with sources on the <a href="flagged.html">Flagged for Review</a> page.</li>
+    </ul>
+    <div class="note info">
+      <strong>Reproduce locally.</strong>
+      <pre class="small mono" style="white-space:pre-wrap; margin:8px 0 0">python3 -m pip install -r app/requirements.txt pytest
+python3 -m pytest -q
+python3 tools/verify_site.py
+python3 tools/build_snapshot.py      # needs network access to the demo API
+python3 -m app.server                # optional local live server</pre>
+    </div>
+
+    <h2 id="corrections">10. Corrections and known issues</h2>
+    <ul>
+      <li><strong>Candlestick path (corrected).</strong> An earlier session’s dossier listed <code>/markets/{{ticker}}/candlesticks</code>. The official current reference requires the series ticker: <code>/series/{{series_ticker}}/markets/{{ticker}}/candlesticks</code>. The engine uses the documented path and records an error if a series ticker is unavailable.</li>
+      <li><strong>Published-site source (corrected).</strong> The repository’s Pages configuration is a legacy build of <code>main:/</code>, so the earlier Actions deployment of <code>docs/</code> was not what the live URL served. The canonical site now lives at the repository root; <a href="docs/index.html">docs/</a> remains as the session archive.</li>
+      <li><strong>Zero quotes and wide books (clarified).</strong> Earlier tables showed 0.00 for many markets. That can be a genuine one-sided or untouched market, but it must never be confused with a midpoint. A wide two-sided book is also excluded from the alert price. This build labels the price basis and leaves unavailable values blank.</li>
+      <li><strong>Authenticated execution (unverified).</strong> No demo key was available in the build environment. Signing is unit-tested; no signed request has been executed. See <a href="flagged.html#F-01">F-01</a>.</li>
+      <li><strong>WebSocket (blocked for static).</strong> The official API requires a signed handshake even for public channels; a static page cannot hold a key. See <a href="flagged.html#F-02">F-02</a>.</li>
+    </ul>
+
+    <h2 id="scope">11. Scope statement</h2>
+    <p>This is a demo-environment research tool. It is not connected to production Kalshi, does not place orders from the published site, does not provide investment advice, and does not claim predictive accuracy. Market data can be delayed or cached by the exchange, demo markets can be thin or synthetic, and any strategy result shown here is a simulation.</p>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="cols">
+        <div><strong style="color:var(--text)">Tradebot2</strong><div class="small">Kalshi demo market intelligence.</div></div>
+        <div class="small-link-row"><a href="dashboard.html">Dashboard</a><a href="portfolio.html">Portfolio</a><a href="executive-summary.html">Executive summary</a><a href="flagged.html">Flagged for review</a><a href="docs/index.html">Session archive</a></div>
+      </div>
+      <p class="fine">Demo environment only. Not financial advice. © <span data-year>2026</span> Tradebot2.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/live.js"></script>
+  <script src="assets/js/pages.js"></script>
+</body>
+</html>

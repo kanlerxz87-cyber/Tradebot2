@@ -1,0 +1,96 @@
+name: Collect Kalshi demo data
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Daily proof that the public demo API is still reachable and that the
+    # published CORS/WebSocket probe results still hold.
+    - cron: "17 9 * * *"
+  push:
+    branches: [main, "arena/**"]
+    paths:
+      - "app/**"
+      - "tools/**"
+      - ".github/workflows/data.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kalshi-data
+  cancel-in-progress: true
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r app/requirements.txt
+      - name: Collect snapshot, backtest and probes
+        run: python tools/build_snapshot.py --out data
+      - name: Validate snapshot schema and source links
+        run: |
+          python - <<'PY'
+          import json, sys
+          from urllib.parse import urlparse
+          snap = json.load(open("data/snapshot.json"))
+          assert snap["stats"]["open_markets_in_scope"] > 0, "no in-scope markets"
+          assert {t["key"] for t in snap["topics"]} == {"gas_prices","elections","culture","crypto","golf"}
+          for m in snap["markets"]:
+              assert m["links"]["market_api"].startswith("https://"), m["ticker"]
+              assert urlparse(m["links"]["market_api"]).netloc in {
+                  "demo-api.kalshi.co","external-api.demo.kalshi.co"}, m["ticker"]
+          for r in snap["resolutions"]:
+              assert r["result"] in {"yes","no"}, r
+          bt = json.load(open("data/backtest.json"))
+          assert bt["portfolio"]["analytics"]["closed_trades"] >= 0
+          probe = json.load(open("data/probe.json"))
+          print("CORS public read allowed:", probe["cors_public_read_allowed"])
+          for w in probe["ws"]["results"]:
+              print("WS", w["url"], "upgraded=", w.get("upgraded"), w.get("error",""))
+          print("OK", snap["stats"])
+          PY
+      - name: Upload data artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kalshi-data
+          path: data/
+          retention-days: 14
+      - name: Commit refreshed snapshot to this branch
+        run: |
+          git add -A data
+          if git diff --cached --quiet; then
+            echo "no data changes"
+            exit 0
+          fi
+          git config user.name "arena-agent"
+          git config user.email "297053741+arena-agent@users.noreply.github.com"
+          git commit -m "data: refresh Kalshi demo snapshot [skip ci]"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "pushed $(git rev-parse --short HEAD)"
+      - name: Job summary
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          snap=json.load(open("data/snapshot.json")); probe=json.load(open("data/probe.json"))
+          print("## Kalshi demo snapshot\n")
+          print(f"- Generated: `{snap['generated_at']}`")
+          print(f"- Open markets in scope: **{snap['stats']['open_markets_in_scope']}** of {snap['stats']['open_markets_total']}")
+          print(f"- Tracked markets: **{snap['stats']['tracked_markets']}**")
+          print(f"- Resolutions (30d): **{snap['stats']['resolutions']}**")
+          print(f"- CORS public browser reads allowed: **{probe['cors_public_read_allowed']}**")
+          for w in probe['ws']['results']:
+              print(f"- WS `{w['url']}` upgraded={w.get('upgraded')} {w.get('error','')}")
+          print("\n| Topic | Open | Tracked | 24h volume (contracts) | Resolved 30d |")
+          print("|---|---|---|---|---|")
+          for t in snap['topics']:
+              print(f"| {t['label']} | {t['open_markets']} | {t['tracked_markets']} | {t['volume_24h_contracts']:.0f} | {t['resolved_markets_30d']} |")
+          print(f"\nCollector errors: **{snap['meta']['error_count']}**")
+          PY

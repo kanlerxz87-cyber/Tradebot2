@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Executive summary — Kalshi demo dashboard | Tradebot2</title>
+  <meta name="description" content="Executive summary of the Kalshi demo dashboard: scope, verified API facts, live alerting design, model performance, limitations and next steps.">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232fe3b0'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-size='17' font-weight='bold' fill='%23041016'%3EK%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="summary">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">K</span><span class="brand-text"><strong>Tradebot2</strong><span>Kalshi demo terminal</span></span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html" data-nav="home">Overview</a>
+        <a href="dashboard.html" data-nav="dashboard">Dashboard</a>
+        <span class="nav-sep"></span>
+        <a href="gas-prices.html" data-nav="gas">Gas</a>
+        <a href="elections.html" data-nav="elections">Elections</a>
+        <a href="culture.html" data-nav="culture">Culture</a>
+        <a href="crypto.html" data-nav="crypto">Crypto</a>
+        <a href="golf.html" data-nav="golf">Golf</a>
+        <span class="nav-sep"></span>
+        <a href="portfolio.html" data-nav="portfolio">Portfolio</a>
+        <a href="executive-summary.html" data-nav="summary">Summary</a>
+        <a href="methodology.html" data-nav="method">Method</a>
+        <a href="flagged.html" data-nav="flagged">Flagged</a>
+        <a href="suggestions.html" data-nav="suggestions">Ideas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap-narrow page prose">
+    <div class="eyebrow">Executive summary · 22 November 2026</div>
+    <h1>Kalshi demo dashboard: what it does, what is verified, and what is not</h1>
+    <p class="lede" style="font-size:16px">A live market-intelligence terminal for five topics — gas prices, elections, culture, crypto and golf — built only on Kalshi’s official public demo API. It alerts on ≥ $0.10 contract swings, keeps a transparent high-ROI model feed, charts price and liquidity, follows events to their official YES/NO resolution and runs autonomous simulated trades so the strategies can be judged on results.</p>
+    <div class="statusbar" style="margin:16px 0 6px">
+      <span class="badge green">Snapshot verified</span>
+      <span class="badge neutral">Generated <span data-snapshot-time>—</span></span>
+      <span class="badge neutral">Demo environment</span>
+      <span class="badge warn">Real trading unverified</span>
+    </div>
+
+    <section class="kpi-row" style="margin:22px 0 8px">
+      <div class="card kpi-card kpi"><div class="label">Tracked markets</div><div class="value" data-stat="tracked">—</div><div class="foot">five topics</div></div>
+      <div class="card kpi-card kpi"><div class="label">In-scope open</div><div class="value" data-stat="open_scope">—</div><div class="foot">of <span data-stat="open_total">—</span> demo markets</div></div>
+      <div class="card kpi-card kpi"><div class="label">Resolved (30d)</div><div class="value" data-stat="resolutions">—</div><div class="foot">YES / NO logged</div></div>
+      <div class="card kpi-card kpi"><div class="label">Seeded swings</div><div class="value" data-stat="alerts_seed">—</div><div class="foot">≥ $0.10 from candles</div></div>
+      <div class="card kpi-card kpi"><div class="label">Backtest P&amp;L</div><div class="value" data-stat="backtest_pnl">—</div><div class="foot"><span data-stat="backtest_trades">—</span> trades</div></div>
+    </section>
+
+    <h2>1. What was delivered</h2>
+    <ul>
+      <li><strong>Live dashboard</strong> (<a href="dashboard.html">dashboard.html</a>): browser polling of the public demo API every 5 seconds, a ≥ $0.10 swing detector, two scrolling feeds (all alerts vs. model-selected high-ROI opportunities), 30-second-to-24-hour charts, an orderbook ladder with contracts at each price, and automatic paper trading.</li>
+      <li><strong>Five topic pages</strong> (<a href="gas-prices.html">gas</a>, <a href="elections.html">elections</a>, <a href="culture.html">culture</a>, <a href="crypto.html">crypto</a>, <a href="golf.html">golf</a>): every tracked market in a source-linked table, recent swings, settlement sources and a resolution log.</li>
+      <li><strong>Portfolio and strategy analytics</strong> (<a href="portfolio.html">portfolio.html</a>): per-strategy sleeves, realised equity, win rate, expectancy, drawdown, attribution by strategy/topic/price bucket, a trade log, CSV export and a separate candle backtest.</li>
+      <li><strong>Python engine</strong>: REST client with Ed25519 and RSA-PSS request signing, collector, classifier, detector, scoring model, paper broker, analytics, optional FastAPI live server. Forty-seven unit and contract tests, including the official fee example and threshold edges.</li>
+      <li><strong>Verification pipeline</strong>: CI collects the demo snapshot, runs a browser-CORS probe and an unauthenticated WebSocket probe, runs the tests and a link/data verifier. Raw probe output is published as <a href="data/probe.json">data/probe.json</a>.</li>
+    </ul>
+
+    <h2>2. Verified facts (and their sources)</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Fact</th><th>What was verified</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td>Demo REST base</td><td><code>https://external-api.demo.kalshi.co/trade-api/v2</code> (recommended; <code>demo-api.kalshi.co</code> also supported)</td><td><a href="https://docs.kalshi.com/getting_started/api_environments.md" target="_blank" rel="noopener">Official environments page ↗</a></td></tr>
+          <tr><td>Demo WebSocket</td><td><code>wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2</code>; requires a signed handshake even for public channels</td><td><a href="https://docs.kalshi.com/getting_started/quick_start_websockets.md" target="_blank" rel="noopener">Official WebSocket quick start ↗</a></td></tr>
+          <tr><td>Public market data</td><td>Markets, orderbook, trades and candlesticks are readable without an API key</td><td><a href="https://docs.kalshi.com/getting_started/quick_start_market_data.md" target="_blank" rel="noopener">Official market-data quick start ↗</a></td></tr>
+          <tr><td>Price semantics</td><td>Binary YES/NO; quotes and payouts are in dollars per contract; current payloads use <code>*_dollars</code> and <code>*_fp</code> fixed-point fields</td><td><a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">Get Markets ↗</a> · <a href="https://docs.kalshi.com/getting_started/fixed_point_migration.md" target="_blank" rel="noopener">fixed-point migration ↗</a></td></tr>
+          <tr><td>Orderbook shape</td><td>Returns YES bids and NO bids only; the YES ask is implied by the best NO bid at 1 − price</td><td><a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook.md" target="_blank" rel="noopener">Get Market Orderbook ↗</a></td></tr>
+          <tr><td>Candlestick granularity</td><td>Periods are 1, 60 or 1440 minutes; the path includes the series ticker: <code>/series/{series}/markets/{ticker}/candlesticks</code></td><td><a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks.md" target="_blank" rel="noopener">Get Market Candlesticks ↗</a></td></tr>
+          <tr><td>Fees</td><td>General quadratic fee = 0.07 × contracts × price × (1 − price); the official worked example reproduces $0.00363825 at $0.055</td><td><a href="https://docs.kalshi.com/getting_started/fee_rounding.md" target="_blank" rel="noopener">Fee rounding ↗</a></td></tr>
+          <tr><td>Request signing</td><td><code>base64(sign(timestamp_ms + METHOD + path_without_query))</code>; Ed25519 or RSA-PSS/SHA-256; 30-second timestamp tolerance</td><td><a href="https://docs.kalshi.com/getting_started/api_keys.md" target="_blank" rel="noopener">API keys ↗</a></td></tr>
+          <tr><td>Browser CORS</td><td><span data-stat="probe_cors">—</span> for the public read endpoints, measured on a GitHub Actions runner (<span data-stat="probe_time">—</span>)</td><td><a href="data/probe.json">Raw probe output ↗</a></td></tr>
+          <tr><td>WebSocket without a key</td><td><span data-stat="probe_ws">—</span> — consistent with the official authentication requirement</td><td><a href="data/probe.json">Raw probe output ↗</a> · <a href="https://docs.kalshi.com/getting_started/quick_start_websockets.md" target="_blank" rel="noopener">docs ↗</a></td></tr>
+          <tr><td>Demo caveat</td><td>“The price and behavior of markets in the demo environment may not be reflective of those in real markets.”</td><td><a href="https://docs.kalshi.com/getting_started/demo_env.md" target="_blank" rel="noopener">Test in the demo environment ↗</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>3. What the demo data shows</h2>
+    <p>As of the verified snapshot (<span data-snapshot-time>—</span>), the demo API returned <strong data-stat="open_total">—</strong> open markets, of which <strong data-stat="open_scope">—</strong> fell inside the five requested topics. The dashboard tracks <strong data-stat="tracked">—</strong> of them — the top eight per topic by 24-hour volume, plus the top two by open interest — and has logged <strong data-stat="resolutions">—</strong> settled markets in the last 30 days. The largest tracked market by computed 24h notional is <strong data-stat="top_market">—</strong> (<span data-stat="top_market_topic">—</span>) at <span data-stat="top_market_price">—</span>, with <span data-stat="top_market_volume">—</span> contracts traded in 24 hours and a notional estimate of <span data-stat="top_market_notional">—</span>.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Topic</th><th class="num">Open</th><th class="num">Tracked</th><th class="num">24h volume (contracts)</th><th class="num">Open interest</th><th class="num">Resolved 30d</th></tr></thead>
+        <tbody>
+          <tr><td><a href="gas-prices.html">Gas prices</a></td><td class="num" data-stat="gas_prices_open">—</td><td class="num" data-stat="gas_prices_tracked">—</td><td class="num" data-stat="gas_prices_volume">—</td><td class="num" data-stat="gas_prices_oi">—</td><td class="num" data-stat="gas_prices_resolved">—</td></tr>
+          <tr><td><a href="elections.html">Elections</a></td><td class="num" data-stat="elections_open">—</td><td class="num" data-stat="elections_tracked">—</td><td class="num" data-stat="elections_volume">—</td><td class="num" data-stat="elections_oi">—</td><td class="num" data-stat="elections_resolved">—</td></tr>
+          <tr><td><a href="culture.html">Culture</a></td><td class="num" data-stat="culture_open">—</td><td class="num" data-stat="culture_tracked">—</td><td class="num" data-stat="culture_volume">—</td><td class="num" data-stat="culture_oi">—</td><td class="num" data-stat="culture_resolved">—</td></tr>
+          <tr><td><a href="crypto.html">Crypto</a></td><td class="num" data-stat="crypto_open">—</td><td class="num" data-stat="crypto_tracked">—</td><td class="num" data-stat="crypto_volume">—</td><td class="num" data-stat="crypto_oi">—</td><td class="num" data-stat="crypto_resolved">—</td></tr>
+          <tr><td><a href="golf.html">Golf</a></td><td class="num" data-stat="golf_open">—</td><td class="num" data-stat="golf_tracked">—</td><td class="num" data-stat="golf_volume">—</td><td class="num" data-stat="golf_oi">—</td><td class="num" data-stat="golf_resolved">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note warn"><strong>Read this before drawing conclusions.</strong> The demo catalog is not production: coverage is sparse (Culture and Golf can have only a handful of series, sometimes none), liquidity is thin, and Kalshi explicitly warns that demo prices may not reflect real markets. Counts above are observations from one snapshot, not a claim about the exchange’s full catalog.</div>
+
+    <h2>4. How it works</h2>
+    <ol>
+      <li><strong>Collect.</strong> CI pages through open and recently settled demo markets, joins event/series metadata, classifies each market into one of the five topics, and enriches the selected markets with orderbooks and 1-minute/1-hour candles.</li>
+      <li><strong>Detect.</strong> Prices are the YES mid only when the book is two-sided and no wider than 25¢; otherwise the last trade is used and labelled, or the cell shows a dash. A move of ≥ $0.10 from the previous observation fires an alert. The same detector runs in Python and in the browser.</li>
+      <li><strong>Score.</strong> Each alert is evaluated by three transparent heuristics (momentum, mean reversion, favourite drift). Entry, model probability, edge, estimated ROI, spread, depth, volume and time-to-close determine a 0–100 score. Only scores ≥ 55 with estimated ROI ≥ 5% enter the high-ROI feed (the dashboard applies an additional ≥ 65 floor and a 30-second throttle).</li>
+      <li><strong>Trade (simulated).</strong> A paper broker opens a position at the ask, caps size by risk, visible depth and cash, applies the quadratic fee, exits at +$0.15/−$0.10, and settles at the official YES/NO result.</li>
+      <li><strong>Verify.</strong> Every table row links to its API record; the snapshot schema and links are checked in CI; CORS and WebSocket behaviour are measured rather than assumed; unconfirmed values are blank and flagged.</li>
+    </ol>
+
+    <h2>5. Model performance — and what it means</h2>
+    <p>The CI backtest over real candles closed <strong data-stat="backtest_trades">—</strong> trades across <strong data-stat="backtest_markets">—</strong> markets with <strong data-stat="backtest_win">—</strong> wins and a P&amp;L of <strong data-stat="backtest_pnl">—</strong>. That number is a simulation with explicit limitations: candle-close fills, no latency, no queue position, no market impact, and no settlement fee. It is useful for comparing strategies against each other, not for predicting live returns. The live paper portfolio is the second, independent read, and it starts empty in each browser.</p>
+    <p><a href="portfolio.html">See the full attribution and limitations →</a></p>
+
+    <h2>6. Key decisions</h2>
+    <ul>
+      <li><strong>Static site + direct public reads.</strong> GitHub Pages cannot hold a server or an API secret. Public market data is read directly by the browser; a CI probe measures whether the exchange permits it and the page falls back to the verified snapshot with an explicit warning if it does not.</li>
+      <li><strong>No order execution on the published site.</strong> Signed requests require a private key and browser preflights do not allow Kalshi’s auth headers. Execution is therefore local-only, opt-in and disabled by default.</li>
+      <li><strong>Root-level publish.</strong> The repository’s Pages site is configured as a legacy build from <code>main:/</code>; a prior artifact deploy of <code>docs/</code> reported success but the live URL served <code>README.md</code>. The canonical site therefore lives at the repository root, and the earlier analysis is preserved at <a href="docs/index.html">docs/</a>.</li>
+      <li><strong>Transparent model, not a black box.</strong> Every score can be recomputed from the published inputs and formulas. No accuracy claim is made.</li>
+    </ul>
+
+    <h2>7. Risks, limitations and open items</h2>
+    <ul>
+      <li><strong>Real demo-account trading is unverified</strong> because no demo API key was supplied. The signing code is unit-tested, but no signed request was executed against the live demo API.</li>
+      <li><strong>WebSocket streaming is unavailable to a static page</strong> without exposing a key; the dashboard polls every 5 seconds instead. A local backend can add authenticated streaming.</li>
+      <li><strong>CORS is measured, not guaranteed</strong> for every visitor’s network; failures are surfaced, never hidden.</li>
+      <li><strong>News context is a search link, not causal evidence.</strong> The dashboard does not claim that a headline caused a move.</li>
+      <li><strong>Notional and seeded moves are computed</strong> from official contracts and prices and are labelled as estimates.</li>
+      <li><strong>Demo coverage is sparse and can change</strong>; empty topic tables are reported as coverage gaps.</li>
+    </ul>
+    <p><a href="flagged.html">Every flagged item, with evidence and sources →</a></p>
+
+    <h2>8. Recommended next steps</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Priority</th><th>Action</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge down">P0</span></td><td>Supply demo API credentials to the local server and run one signed balance read and one $1 demo order, then record the response.</td><td>Closes the only major unverified area: authenticated portfolio and execution.</td></tr>
+          <tr><td><span class="badge down">P0</span></td><td>Add a server-side authenticated WebSocket consumer for ticker/trade/orderbook_delta and stream alerts over SSE.</td><td>Turns 5-second polling into event-driven alerts without exposing keys.</td></tr>
+          <tr><td><span class="badge warn">P1</span></td><td>Timestamp-aligned news ingestion (official settlement sources + a licensed news API) attached to each swing.</td><td>Lets a trader see context without the site implying causation.</td></tr>
+          <tr><td><span class="badge warn">P1</span></td><td>Walk-forward evaluation of the three strategies on longer candle history, with fees and slippage sensitivity.</td><td>Separates a lucky window from a repeatable edge.</td></tr>
+          <tr><td><span class="badge blue">P2</span></td><td>Watchlists, browser notifications, keyboard shortcuts and a mobile-first focus mode.</td><td>Reduces the time from alert to decision on a phone.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>9. Sources</h2>
+    <ul class="small">
+      <li><a href="https://docs.kalshi.com/getting_started/api_environments.md" target="_blank" rel="noopener">API environments and endpoints</a></li>
+      <li><a href="https://docs.kalshi.com/getting_started/demo_env.md" target="_blank" rel="noopener">Test in the demo environment</a></li>
+      <li><a href="https://docs.kalshi.com/getting_started/quick_start_market_data.md" target="_blank" rel="noopener">Quick start: market data</a></li>
+      <li><a href="https://docs.kalshi.com/getting_started/quick_start_websockets.md" target="_blank" rel="noopener">Quick start: WebSockets</a></li>
+      <li><a href="https://docs.kalshi.com/getting_started/api_keys.md" target="_blank" rel="noopener">API keys and request signing</a></li>
+      <li><a href="https://docs.kalshi.com/getting_started/fee_rounding.md" target="_blank" rel="noopener">Fee rounding (and the quadratic fee example)</a></li>
+      <li><a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">Get Markets</a></li>
+      <li><a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook.md" target="_blank" rel="noopener">Get Market Orderbook</a></li>
+      <li><a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks.md" target="_blank" rel="noopener">Get Market Candlesticks</a></li>
+      <li><a href="https://docs.kalshi.com/api-reference/orders/create-order-v2" target="_blank" rel="noopener">Create Order (V2)</a></li>
+      <li><a href="data/probe.json">Raw CORS / WebSocket probe output</a> · <a href="data/snapshot.json">Raw market snapshot</a></li>
+    </ul>
+    <p class="small muted">Generated from the verified snapshot; every live figure is loaded at page view. Nothing on this page is financial advice.</p>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="cols">
+        <div><strong style="color:var(--text)">Tradebot2</strong><div class="small">Kalshi demo market intelligence.</div></div>
+        <div class="small-link-row"><a href="dashboard.html">Dashboard</a><a href="portfolio.html">Portfolio</a><a href="methodology.html">Method &amp; sources</a><a href="flagged.html">Flagged for review</a><a href="docs/index.html">Session archive</a></div>
+      </div>
+      <p class="fine">Demo environment only. Not financial advice. © <span data-year>2026</span> Tradebot2.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/live.js"></script>
+  <script src="assets/js/pages.js"></script>
+</body>
+</html>

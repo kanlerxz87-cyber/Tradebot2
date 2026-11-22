@@ -1,106 +1,49 @@
-# Single Pages pipeline for this repo. Only one Pages deployment can exist, so this file
-# builds the whole published site in one artifact:
-#   /            <- repo root: the source-linked dashboard (index.html, topics/, performance,
-#                   resolutions, requirements, sources, flagged) plus every earlier root page
-#                   (gas-prices.html, elections.html, ..., EXECUTIVE_SUMMARY.md)
-#   /monitor/    <- site/            (live monitor: alerts, topic pages, charts, trades)
-#   /dash/       <- dash/            (session-arena-93ec9646 full-spec dashboard)
-#   /docs/       <- docs/            (earliest sessions' dashboard, kept verbatim)
-# Data under site/data is generated at build time and never committed.
-name: Deploy Kalshi Demo Dashboard to GitHub Pages
+# Publishing model for this repository.
+#
+# GitHub Pages for this repo is configured as `build_type: legacy`, source
+# `main:/` (verified through the Pages API). Legacy Pages builds the repository
+# root, so the canonical site is served from /index.html at the root; an Actions
+# artifact deploy is ignored while that setting remains. The integration token
+# available here cannot change the setting (PUT /pages -> 403).
+#
+# Therefore this workflow verifies the published contract instead of pretending
+# to deploy: the 12 canonical pages, their assets, the committed data and the
+# archived generations must all pass before a merge is considered safe.
+name: Verify published site
 
 on:
   push:
-    branches: ["main"]
+    branches: [main, "arena/**"]
+  pull_request:
   workflow_dispatch:
-  schedule:
-    - cron: "*/15 * * * *"
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "verify-pages"
+  cancel-in-progress: true
 
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Check out
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Restore collector state (history, alerts, paper trades)
-        uses: actions/cache/restore@v4
-        with:
-          path: state
-          key: kalshi-state-${{ github.run_id }}
-          restore-keys: |
-            kalshi-state-
-
-      - name: Collect public Kalshi data for the monitor
-        run: python3 scripts/kalshi_collector.py
-
-      - name: Check monitor site (links, sourced rows, data source fields)
-        run: python3 scripts/check_site.py
-
-      - name: Assemble Pages artifact (root dashboard + earlier pages + /monitor)
+      - name: Install dependencies
+        run: pip install -r app/requirements.txt pytest
+      - name: Engine tests
+        run: python -m pytest -q
+      - name: Canonical site: data, required pages and local links
+        run: python tools/verify_site.py
+      - name: Archived generations: internal links and sourced rows
+        run: python scripts/check_site.py
+      - name: Confirm the root is the publish target
         run: |
-          rm -rf _site
-          mkdir -p _site/monitor _site/docs _site/dash
-          # Root: this branch's source-linked dashboard and every earlier root page.
-          # tar (not rsync) because rsync is not guaranteed on the runner image.
-          tar -cf - --exclude='./.git' --exclude='./_site' --exclude='./site' \
-                   --exclude='./.github' --exclude='*/__pycache__' --exclude='./state' \
-                   --exclude='./collector' --exclude='./tests' --exclude='./tools' \
-                   --exclude='./scripts' --exclude='./requirements.txt' --exclude='./.gitignore' \
-                   . | tar -xf - -C _site/
-          # Earlier dashboard (kept verbatim) at /docs/
-          cp -r docs/. _site/docs/
-          # Parallel session's monitor at /monitor/
-          cp -r site/. _site/monitor/
-          cp -r dash/. _site/dash/   # session-arena-93ec9646 dashboard (logged in COORDINATION.md)
-          ls -la _site | head -40
-
-      - name: Check assembled site links
-        run: SITE_DIR=_site/monitor python3 scripts/check_site.py --links-only-root _site
-
-      - name: Check the root dashboard (links, required pages, data integrity)
-        run: |
-          python3 tools/check_site.py --root . --published
-          python3 tools/check_site.py --root _site --strict
-          python3 tools/verify_data.py --data-dir _site/data
-
-      - name: Save collector state
-        if: success()
-        uses: actions/cache/save@v4
-        with:
-          path: state
-          key: kalshi-state-${{ github.run_id }}
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-
-  deploy:
-    if: github.ref == 'refs/heads/main'
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          test -f index.html
+          test -f .nojekyll
+          grep -q 'assets/js/core.js' index.html
+          echo "Legacy Pages publishes main:/ ; root index.html is the entry point."

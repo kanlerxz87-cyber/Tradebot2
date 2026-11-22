@@ -1,3 +1,9 @@
+> **Archive — session b1cd545f.** This document is retained for review. It is superseded by
+> [`executive-summary.html`](executive-summary.html), which separates verified facts, snapshot
+> observations and unverified items. Performance figures in this document are illustrative unless a
+> source is shown; no Kalshi demo credentials were available to verify a live account. See
+> [`flagged.html`](flagged.html).
+
 # Kalshi Tradebot2: Executive Summary & System Specification
 
 ## 1. Project Overview & Mission
