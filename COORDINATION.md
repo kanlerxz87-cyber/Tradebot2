@@ -330,7 +330,10 @@ rebuild is kept as an archived generation; the published pipeline is untouched e
 | [#26](https://github.com/kanlerxz87-cyber/Tradebot2/pull/26) | Collector scanned only the first ~2,000 of ~8,200 open markets (200-row pages × 10) — culture and golf were invisible | `e628df0` | merged |
 | [#27](https://github.com/kanlerxz87-cyber/Tradebot2/pull/27) · [#29](https://github.com/kanlerxz87-cyber/Tradebot2/pull/29) · [#30](https://github.com/kanlerxz87-cyber/Tradebot2/pull/30) | Coverage probe (`scripts/probe_coverage.py`, `data/…`/`probe/coverage.json`): one known series per topic, the golf chain, per-series open events | — | merged |
 | [#28](https://github.com/kanlerxz87-cyber/Tradebot2/pull/28) | Golf/gas series enumerated from the official `category`/`tags` filters instead of guessed tickers | — | merged |
-| [#31](https://github.com/kanlerxz87-cyber/Tradebot2/pull/31) · [#32](https://github.com/kanlerxz87-cyber/Tradebot2/pull/32) | Golf coverage gap published as an evidenced statement (F-13) + invented `KXPGATOUR`/`KXLPGATOUR` tickers replaced with the verified ones | `e4ae092` | merged |
+| [#31](https://github.com/kanlerxz87-cyber/Tradebot2/pull/31) · [#32](https://github.com/kanlerxz87-cyber/Tradebot2/pull/32) | Golf coverage gap published as an evidenced statement (F-13) + invented `KXPGATOUR`/`KXLPGATOUR` series tickers replaced with the verified ones | `e4ae092` | merged |
+| [#33](https://github.com/kanlerxz87-cyber/Tradebot2/pull/33) | This board: PR record, Pages build, live checks | `135025c` | merged |
+| [#34](https://github.com/kanlerxz87-cyber/Tradebot2/pull/34) | Golf **event families** (`KXPGATOUR*`, `KXPGAMAKECUT*`, `KXLPGA*`, `KXPGA*`) added to the classifier — the fix that actually populated golf | `0573257` | merged |
+| [#36](https://github.com/kanlerxz87-cyber/Tradebot2/pull/36) | Golf page/F-13 corrected from “measured gap” to “fixed”, with the resulting counts | this commit | merged |
 
 **Pages:** GitHub Pages is `build_type: legacy` from `main:/`. The build for `e4ae092` reports `status: built`
 (`gh api repos/…/pages/builds`). Live checks after that build:
@@ -338,8 +341,8 @@ rebuild is kept as an archived generation; the published pipeline is untouched e
 * `gas-prices.html` — **139 open gas markets, 25 tracked**, real contracts (`KXAAAGASM-26DEC31-3.30` at `$0.70` last,
   `KXAAAGASW-26NOV23-3.6400` at `$0.84` last, WTI strikes), every row carrying an `API ↗` and `Kalshi ↗` link, snapshot
   `Nov 22, 03:11 AM`. Before this session the same page read “no open gas prices markets”.
-* `golf.html` — empty board, now stating the measurement: 134 golf series in the catalogue, **0 open events** for the four
-  largest, evidence in `data/coverage.json`, flag **F-13**.
+* `golf.html` — **261 open golf markets, 27 selected**, 24h volume 751,4k contracts, real tournaments (The RSM Classic,
+  CME Group Tour Championship, Masters 2027). It was empty before #34; the cause and the fix are on **F-13**.
 * `flagged.html` — carries F-01 … F-13, including the corrected CORS statement and the fabricated-ticker evidence.
 * `index.html` — the landing page from #24 pointing at `/live/`; the gate now checks it and `live/index.html` together.
 
@@ -350,10 +353,12 @@ next to its series ticker and cursor state.
 ### Open items for the owner
 
 1. **Demo credentials** (F-01): balance, positions and order placement stay unverified until keys are supplied.
-2. **Which front end is canonical.** `main:/index.html` is now a landing page for `/live/`, while the flat root topic pages
+2. **Snapshot breadth.** After the fixes the published snapshot holds gas 139 open (25 tracked) · elections 164 (27) ·
+   culture 117 (25) · crypto 39,423 (27) · golf 407 (27) — 131 tracked rows and 28,148 resolutions.
+3. **Which front end is canonical.** `main:/index.html` is now a landing page for `/live/`, while the flat root topic pages
    (`gas-prices.html` … `golf.html`) are the ones this session verified and populated. Both are published; a later integration
    pass should collapse them into one entry point.
-3. **`snapshot.json` is 12.7 MB** (21k resolutions). It loads, but trimming the resolution history to the tracked series would
+4. **`snapshot.json` is 12.7 MB** (21k resolutions). It loads, but trimming the resolution history to the tracked series would
    make the demo snappier.
 
 ---

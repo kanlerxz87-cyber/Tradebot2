@@ -124,12 +124,18 @@
                 <td>Closed by supplementing paginated discovery with targeted <code>series_ticker</code> queries across all 5 topics.</td>
               </tr>
               <tr id="F-13">
-                <td class="mono">F-13</td><td><span class="badge neutral">Observed</span></td>
-                <td><strong>Golf coverage spans 134 catalog series under <code>category=Sports&amp;tags=Golf</code>, with active liquidity concentrated in tournament winner/top-10 series.</strong>
-                  <code>GET /series/KXPGATOUR</code>, <code>GET /series/KXLPGATOUR</code>, and <code>GET /series/KXPGATOP10</code> are official Sports/Golf series with open markets (<span data-stat="golf_open">—</span> open, <span data-stat="golf_tracked">—</span> tracked), while many seasonal series (<code>KXMASTERS</code>, <code>KXGOLFMAJORS</code>) have 0 open events out of season.</td>
+                <td class="mono">F-13</td><td><span class="badge green">Fixed</span></td>
+                <td><strong>Golf rendered empty while hundreds of open golf markets existed.</strong> The tournament markets use event
+                  families (<code>KXPGATOUR-THRC26-…</code>, <code>KXPGAMAKECUT-…</code>, <code>KXLPGATOUR-…</code>) whose titles are player
+                  names (“The RSM Classic: Michael Thorbjornsen wins”), so keyword rules could not reach them. The collector now matches
+                  those families; golf tracks 407 open in scope / 27 selected. An intermediate claim that <code>KXPGATOUR</code> was not a
+                  real series ticker was wrong and is retracted: <code>GET /series/KXPGATOUR</code> returns 200 (<code>Sports</code>, tags
+                  <code>Golf</code>, “PGA Tour”).</td>
                 <td><span class="badge green">Verified</span></td>
-                <td><a href="data/coverage.json">data/coverage.json</a> · <a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXPGATOUR" target="_blank" rel="noopener">GET /series/KXPGATOUR ↗</a> · <a href="https://docs.kalshi.com/api-reference/market/get-series-list.md" target="_blank" rel="noopener">Get Series List ↗</a></td>
-                <td>Collector queries both the official <code>category=Sports&amp;tags=Golf</code> series list and active tournament series (<code>KXPGATOUR</code>, <code>KXLPGATOUR</code>, <code>KXPGATOP10</code>, <code>KXPRESCUP</code>).</td>
+                <td><a href="data/coverage.json">data/coverage.json</a> · <code>app/topics.py</code> (<code>EVENT_FAMILY_PREFIXES</code>) ·
+                  <a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXPGATOUR" target="_blank" rel="noopener">GET /series/KXPGATOUR ↗</a> ·
+                  <a href="https://docs.kalshi.com/api-reference/market/get-series-list.md" target="_blank" rel="noopener">Get Series List ↗</a></td>
+                <td>Done. The coverage probe (<code>scripts/probe_coverage.py</code>) reports an empty topic before the board silently goes blank again.</td>
               </tr>
               <tr id="F-10">
                 <td class="mono">F-10</td><td><span class="badge warn">Medium</span></td>
