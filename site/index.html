@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kalshi live dashboard · Tradebot2</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body data-page="home">
+<header class="top" id="nav"></header>
+<main>
+
+<h1>Kalshi live dashboard</h1>
+<p class="lead">Live tracking of Kalshi event contracts in five topics: gas prices, elections, culture, crypto and golf.
+Alerts fire when a YES price moves $0.10 or more between two collection runs. Every number links to the Kalshi API endpoint it came from.</p>
+<div class="stale" id="fresh"></div>
+<div class="kpis" id="kpis"></div>
+<div class="tiles">
+  <a class="tile" href="dashboard.html"><b>Live dashboard</b><br><small>Two live alert chats: all events, and high-ROI screen passes.</small></a>
+  <a class="tile" href="gas.html"><b>Gas prices</b><br><small>Kalshi tag “Oil &amp; Gas”. See flagged mapping note.</small></a>
+  <a class="tile" href="elections.html"><b>Elections</b><br><small>Kalshi category “Elections”.</small></a>
+  <a class="tile" href="culture.html"><b>Culture</b><br><small>Mapped to Kalshi category “Entertainment” (inference, flagged).</small></a>
+  <a class="tile" href="crypto.html"><b>Crypto</b><br><small>Kalshi category “Crypto”.</small></a>
+  <a class="tile" href="golf.html"><b>Golf</b><br><small>Kalshi category “Sports”, tag “Golf”.</small></a>
+  <a class="tile" href="chart.html"><b>Price chart &amp; liquidity</b><br><small>YES price over time, plus resting order depth.</small></a>
+  <a class="tile" href="trades.html"><b>Simulated trades</b><br><small>Two rule-based paper strategies, categorised by topic.</small></a>
+  <a class="tile" href="resolved.html"><b>Resolved markets</b><br><small>Final result YES or NO, from the API.</small></a>
+</div>
+<h2>Executive summary</h2>
+<div class="card">
+<p>The site is a read-only monitor of Kalshi’s public market data. It does not hold a trading account and cannot place real orders. The live data pipeline runs on a 15-minute schedule (GitHub Actions) and publishes static JSON to this site.</p>
+<p>Key limits: (1) price moves are measured between scheduled runs, so “sudden” means between two snapshots, not per second; (2) the API does not say what caused a move, so cause links are reference sources only and are marked unverified; (3) the high-ROI filter is a fixed rule set, not a validated model; (4) the demo-account portfolio is not connected because it needs API-key credentials that were not provided in the chat.</p>
+<p><a href="findings.html">Full findings &amp; methodology →</a> · <a href="flagged.html">Flagged for Review →</a></p>
+</div>
+
+</main>
+<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+</body>
+</html>
