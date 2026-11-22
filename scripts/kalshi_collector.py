@@ -29,8 +29,10 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-BASE = os.environ.get("KALSHI_BASE", "https://external-api.kalshi.com/trade-api/v2").rstrip("/")
-STATE_PATH = os.environ.get("STATE_PATH", "state/state.json")
+# Demo is the default. The state file is intentionally separate from the legacy
+# production-default state so prices and paper positions cannot cross environments.
+BASE = os.environ.get("KALSHI_BASE", "https://external-api.demo.kalshi.co/trade-api/v2").rstrip("/")
+STATE_PATH = os.environ.get("STATE_PATH", "state/demo-state.json")
 OUT_DIR = os.environ.get("OUT_DIR", "site/data")
 REQ_DELAY = float(os.environ.get("REQ_DELAY", "0.25"))
 MAX_SERIES_PER_TOPIC = int(os.environ.get("MAX_SERIES_PER_TOPIC", "40"))
@@ -128,9 +130,15 @@ def api_get(path, params=None, retries=4):
 def load_state():
     if os.path.exists(STATE_PATH):
         with open(STATE_PATH, encoding="utf-8") as f:
-            return json.load(f)
-    return {"history": {}, "markets": {}, "alerts": [], "processed_alerts": [],
-            "trades": [], "runs": 0, "first_run": None}
+            state = json.load(f)
+        if state.get("api_base") != BASE:
+            raise ValueError(
+                "Collector state has an unknown or different API base; use a separate "
+                "STATE_PATH rather than mixing environments. Existing state was not modified."
+            )
+        return state
+    return {"api_base": BASE, "history": {}, "markets": {}, "alerts": [],
+            "processed_alerts": [], "trades": [], "runs": 0, "first_run": None}
 
 
 def save_json(path, data):
@@ -247,7 +255,8 @@ def main():
                               for x in ev.get("settlement_sources", []) if x.get("url")]
                 for mk in ev.get("markets", []):
                     t = mk.get("ticker")
-                    if not t or t in live:
+                    # An open event can include closed, settled or paused children.
+                    if not t or t in live or mk.get("status") != "active":
                         continue
                     live[t] = {
                         "ticker": t,
@@ -327,18 +336,20 @@ def main():
 
     # ---- 3. Remember markets, check resolutions ----------------------------
     for t, m in live.items():
-        state["markets"][t] = {k: m[k] for k in (
+        rec = state["markets"].setdefault(t, {})
+        rec.update({k: m[k] for k in (
             "ticker", "topic", "topic_label", "series_ticker", "event_ticker", "event_title",
-            "title", "yes_sub_title", "close_time", "settlement_sources", "source_url")}
-        state["markets"][t]["last_seen"] = ts
-        state["markets"][t]["result"] = state["markets"][t].get("result")
-        state["markets"][t]["resolved"] = state["markets"][t].get("resolved", False)
+            "title", "yes_sub_title", "close_time", "settlement_sources", "source_url")})
+        rec["last_seen"] = ts
+        rec.setdefault("resolved", False)
 
-    checks = 0
-    for t, rec in state["markets"].items():
-        if t in live or rec.get("resolved") or checks >= MAX_RESOLUTION_CHECKS:
-            continue
-        checks += 1
+    # Check least-recently attempted markets first, so a long pending backlog
+    # cannot permanently starve newer records when the per-run cap is reached.
+    pending = [(t, rec) for t, rec in state["markets"].items()
+               if t not in live and not rec.get("resolved")]
+    pending.sort(key=lambda item: (item[1].get("api_status_checked_at", ""), item[0]))
+    for t, rec in pending[:MAX_RESOLUTION_CHECKS]:
+        rec["api_status_checked_at"] = ts
         try:
             body, url = api_get(f"/markets/{t}")
         except Exception as e:
@@ -351,10 +362,14 @@ def main():
         rec["status"] = mk.get("status")
         rec["api_status_checked_at"] = ts
         rec["api_source_url"] = url
-        if mk.get("result") in ("yes", "no"):
+        # Determined results can still be disputed or amended. Only finalize
+        # paper positions once settlement has completed.
+        if mk.get("status") == "finalized" and mk.get("result") in ("yes", "no"):
             rec["result"] = mk["result"]
             rec["resolved"] = True
-            rec["resolved_at"] = ts
+            # The observation time is not the exchange's settlement time.
+            rec["resolved_at"] = mk.get("settlement_ts")
+            rec["resolution_observed_at"] = ts
             rec["settlement_value"] = num(mk.get("settlement_value_dollars"))
             rec["last_before_resolution"] = (state["history"].get(t) or [[None, None]])[-1][1]
     # ---- 4. Paper trades (simulated) --------------------------------------
@@ -447,7 +462,7 @@ def main():
         })
     resolved_out = [
         {"ticker": t, **{k: r.get(k) for k in ("topic", "topic_label", "title", "event_title", "result",
-                                              "resolved_at", "settlement_value", "last_before_resolution",
+                                              "resolved_at", "resolution_observed_at", "settlement_value", "last_before_resolution",
                                               "close_time", "source_url", "api_source_url")}}
         for t, r in state["markets"].items() if r.get("resolved")
     ]
