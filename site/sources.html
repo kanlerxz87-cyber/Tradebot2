@@ -3,21 +3,85 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sources · Tradebot2</title>
+<title>Sources · Kalshi Demo Desk</title>
+<meta name="description" content="Official Kalshi pages and live endpoints used, with what was verified.">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/app.js" defer></script>
 </head>
-<body data-page="sources">
+<body>
 <header class="top" id="nav"></header>
 <main>
 
-<h1>Sources &amp; verification log</h1>
-<p class="lead">Official pages and endpoints used, and what was checked on each. “Verified (live)” means the response was retrieved on the check date. Pages linked but not reviewed are marked as such.</p>
-<table class="sourced"><thead><tr><th>Official source</th><th>What was verified</th><th>Checked</th><th>Status</th></tr></thead><tbody><tr><td><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener">https://docs.kalshi.com/getting_started/demo_env</a></td><td>Demo REST host https://external-api.demo.kalshi.co/trade-api/v2 (also https://demo-api.kalshi.co/trade-api/v2); WebSocket wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2 and wss://demo-api.kalshi.co/trade-api/ws/v2. Doc also says demo prices may not reflect real markets.</td><td>2026-11-22</td><td>Verified</td></tr><tr><td><a href="https://docs.kalshi.com/welcome" target="_blank" rel="noopener">https://docs.kalshi.com/welcome</a></td><td>API families (Predictions, Perps); Developer Agreement link.</td><td>2026-11-22</td><td>Verified (agreement itself not reviewed)</td></tr><tr><td><a href="https://docs.kalshi.com/openapi.yaml" target="_blank" rel="noopener">https://docs.kalshi.com/openapi.yaml</a></td><td>Server list (production external-api.kalshi.com and api.elections.kalshi.com; demo hosts); GET /exchange/status; candlestick period values 1, 60, 1440; security scheme names.</td><td>2026-11-22</td><td>Verified</td></tr><tr><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/exchange/status" target="_blank" rel="noopener">https://external-api.demo.kalshi.co/trade-api/v2/exchange/status</a></td><td>Live response at check time: exchange_active true, trading_active true.</td><td>2026-11-22</td><td>Verified (live)</td></tr><tr><td><a href="https://docs.kalshi.com/api-reference/events/get-events" target="_blank" rel="noopener">https://docs.kalshi.com/api-reference/events/get-events</a></td><td>GET /events parameters: limit (max 200), cursor, with_nested_markets, status (unopened/open/closed/settled), series_ticker, min_updated_ts.</td><td>2026-11-22</td><td>Verified</td></tr><tr><td><a href="https://docs.kalshi.com/api-reference/market/get-series-list" target="_blank" rel="noopener">https://docs.kalshi.com/api-reference/market/get-series-list</a></td><td>GET /series parameters: category (exact, case-sensitive), tags, include_volume, min_updated_ts.</td><td>2026-11-22</td><td>Verified</td></tr><tr><td><a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook" target="_blank" rel="noopener">https://docs.kalshi.com/api-reference/market/get-market-orderbook</a></td><td>GET /markets/{ticker}/orderbook: depth 0–100; orderbook_fp.yes_dollars and no_dollars arrays.</td><td>2026-11-22</td><td>Verified</td></tr><tr><td><a href="https://docs.kalshi.com/api-reference/market/get-markets" target="_blank" rel="noopener">https://docs.kalshi.com/api-reference/market/get-markets</a></td><td>Market object fields (yes_bid_dollars, yes_ask_dollars, last_price_dollars, volume_fp, volume_24h_fp, result, etc.). Doc example values are placeholders.</td><td>2026-11-22</td><td>Verified (field names); example values not used</td></tr><tr><td><a href="https://docs.kalshi.com/getting_started/rate_limits" target="_blank" rel="noopener">https://docs.kalshi.com/getting_started/rate_limits</a></td><td>Token-based limits; unauthenticated requests have separate limits (numbers not stated on this page).</td><td>2026-11-22</td><td>Partly verified: numbers unverified</td></tr><tr><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories" target="_blank" rel="noopener">tags_by_categories (demo host)</a></td><td>Official category/tag taxonomy: Sports→Golf; Commodities→Oil &amp; Gas; Elections; Crypto; Entertainment (no ‘Culture’).</td><td>2026-11-22</td><td>Verified</td></tr><tr><td><a href="https://external-api.kalshi.com/trade-api/v2/series?category=Sports&amp;tags=Golf" target="_blank" rel="noopener">series?category=Sports&amp;tags=Golf</a></td><td>Production response lists golf series (e.g. KXPGAGOLFERSCORE, KXPGA).</td><td>2026-11-22</td><td>Verified (live)</td></tr><tr><td><a href="https://external-api.kalshi.com/trade-api/v2/series?category=Commodities&amp;tags=Oil%20%26%20Gas" target="_blank" rel="noopener">series?category=Commodities&amp;tags=Oil &amp; Gas</a></td><td>Production response lists series tagged Oil &amp; Gas (e.g. KXNATGASW, KXWTIMIN).</td><td>2026-11-22</td><td>Verified (live)</td></tr><tr><td><a href="https://external-api.kalshi.com/trade-api/v2/events?limit=3&amp;status=open&amp;with_nested_markets=true" target="_blank" rel="noopener">events (production sample)</a></td><td>Open events with nested markets, including title, category, settlement sources, prices and sizes.</td><td>2026-11-22</td><td>Verified (live)</td></tr><tr><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/events?limit=5&amp;status=open&amp;with_nested_markets=true" target="_blank" rel="noopener">events (demo sample)</a></td><td>Demo events with nested markets. Demo data shows test-style markets (e.g. ‘demo strike’).</td><td>2026-11-22</td><td>Verified (live, demo)</td></tr><tr><td><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site</a></td><td>Pages publishing sources (branch or GitHub Actions); commits made with GITHUB_TOKEN do not trigger a Pages build.</td><td>2026-11-22</td><td>Verified</td></tr><tr><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2" target="_blank" rel="noopener">https://github.com/kanlerxz87-cyber/Tradebot2</a></td><td>Repository metadata via gh API: default branch main; Pages enabled (legacy, main /); admin permission for session.</td><td>2026-11-22</td><td>Verified</td></tr></tbody></table>
-<h2>Linked but not reviewed</h2>
-<p class="note"><a href="https://kalshi.com/developer-agreement" target="_blank" rel="noopener">Kalshi Developer Agreement</a> and <a href="https://help.kalshi.com/" target="_blank" rel="noopener">Kalshi Help center</a> are linked from Kalshi’s docs. They were not reviewed in this session.</p>
+<h1>Sources & verification log</h1>
+<p class="lead">Official pages and live endpoints relied on, what was checked on each, and when. Items that were linked but not
+reviewed are listed as such. “Live” means a response was retrieved and inspected on the check date.</p>
+<div class="table-wrap"><table class="sourced">
+<thead><tr><th>Source</th><th>What was verified</th><th>Checked</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener noreferrer">docs.kalshi.com · Demo environment</a></td>
+<td>Demo REST root <code>https://external-api.demo.kalshi.co/trade-api/v2</code>; also supported <code>https://demo-api.kalshi.co/trade-api/v2</code>.
+Demo WS <code>wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2</code>; also supported <code>wss://demo-api.kalshi.co/trade-api/ws/v2</code>.
+Demo uses mock funds, credentials are not shared with production, and demo prices “may not be reflective of those in real markets”.</td>
+<td>2026-11-22</td><td>Verified</td></tr>
+<tr><td><a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener noreferrer">docs.kalshi.com · API environments</a></td>
+<td>Production REST <code>external-api.kalshi.com</code> / <code>api.elections.kalshi.com</code>; demo REST hosts; WS hosts; dedicated user WS hosts
+<code>user-ws.demo.kalshi.co</code>. Note that <code>trading-api.kalshi.com</code> is <b>not</b> listed as a Trade API host.</td>
+<td>2026-11-22</td><td>Verified</td></tr>
+<tr><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/exchange/status" target="_blank" rel="noopener noreferrer">GET /exchange/status (demo, live)</a></td>
+<td><code>exchange_active: true</code>, <code>trading_active: true</code>, exchange indexes 0–3 active.</td>
+<td>2026-11-22</td><td>Verified (live)</td></tr>
+<tr><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories" target="_blank" rel="noopener noreferrer">GET /search/tags_by_categories (demo, live)</a></td>
+<td>Official taxonomy: Sports → Golf; Commodities → “Oil &amp; Gas”; Elections; Crypto; Entertainment. No “Culture” category and no
+gasoline-specific category.</td><td>2026-11-22</td><td>Verified (live)</td></tr>
+<tr><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/series?category=Crypto&amp;include_volume=true&amp;limit=200" target="_blank" rel="noopener noreferrer">GET /series?category=Crypto (demo, live)</a></td>
+<td>Series catalog with <code>volume_fp</code>, tags and fee fields; 321 crypto series returned at check time.</td>
+<td>2026-11-22</td><td>Verified (live)</td></tr>
+<tr><td><a href="https://docs.kalshi.com/api-reference/events/get-events" target="_blank" rel="noopener noreferrer">docs.kalshi.com · Get Events</a></td>
+<td>Parameters <code>limit</code> (max 200), <code>cursor</code>, <code>status</code> (unopened/open/closed/settled),
+<code>with_nested_markets</code>, <code>series_ticker</code>, <code>tickers</code>, <code>min_close_ts</code>, <code>min_updated_ts</code>;
+market object field names (<code>yes_bid_dollars</code>, <code>last_price_dollars</code>, <code>volume_24h_fp</code>, <code>result</code>…).</td>
+<td>2026-11-22</td><td>Verified</td></tr>
+<tr><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/events?limit=2&amp;status=open&amp;with_nested_markets=true" target="_blank" rel="noopener noreferrer">GET /events (demo, live)</a></td>
+<td>Open events with nested markets and settlement sources; used as the collector's source URL for event rows.</td>
+<td>2026-11-22</td><td>Verified (live)</td></tr>
+<tr><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets/KXAAAGASW-26NOV23-3.8400" target="_blank" rel="noopener noreferrer">GET /markets/{ticker} (demo, live)</a></td>
+<td>Single market object: <code>last_price_dollars</code>, bid/ask and sizes, <code>volume_fp</code>, <code>volume_24h_fp</code>,
+<code>open_interest_fp</code>, <code>status</code>, <code>result</code>, rules text.</td><td>2026-11-22</td><td>Verified (live)</td></tr>
+<tr><td><a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook" target="_blank" rel="noopener noreferrer">docs.kalshi.com · Get Market Orderbook</a></td>
+<td>Path <code>GET /markets/{ticker}/orderbook</code>, <code>depth</code> 0–100; response <code>orderbook_fp.yes_dollars</code> and
+<code>no_dollars</code> as [price, contracts] levels. Confirmed live on the demo host.</td><td>2026-11-22</td><td>Verified</td></tr>
+<tr><td><a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks" target="_blank" rel="noopener noreferrer">docs.kalshi.com · Get Market Candlesticks</a></td>
+<td>Path <code>GET /series/{series_ticker}/markets/{ticker}/candlesticks</code>; required <code>start_ts</code>, <code>end_ts</code>,
+<code>period_interval</code> ∈ {1, 60, 1440} minutes; OHLC fields with <code>_dollars</code> suffix, plus volume and open interest.
+Confirmed live: 60 1-minute candles returned for a 1-hour window.</td><td>2026-11-22</td><td>Verified</td></tr>
+<tr><td><a href="https://docs.kalshi.com/api-reference/market/get-trades" target="_blank" rel="noopener noreferrer">docs.kalshi.com · Get Trades</a></td>
+<td>Path <code>GET /markets/trades</code>; <code>limit</code> ≤ 1000, <code>ticker</code>, <code>min_ts</code>, <code>max_ts</code>;
+fields <code>created_time</code> (sub-second), <code>yes_price_dollars</code>, <code>count_fp</code>, <code>taker_side</code>.
+Confirmed live: 200 prints returned for one market.</td><td>2026-11-22</td><td>Verified</td></tr>
+<tr><td><a href="https://docs.kalshi.com/getting_started/rate_limits" target="_blank" rel="noopener noreferrer">docs.kalshi.com · Rate limits</a></td>
+<td>Token-bucket limits for authenticated tiers; the page states unauthenticated public requests have separate limits and to back
+off on 429, without publishing the numbers.</td><td>2026-11-22</td><td>Partly verified (numbers not published)</td></tr>
+<tr><td><a href="https://docs.kalshi.com/getting_started/quick_start_websockets" target="_blank" rel="noopener noreferrer">docs.kalshi.com · WebSockets quick start</a></td>
+<td>Documented WebSocket channel approach for a tick-level feed. Not implemented here (static site, no server).</td>
+<td>2026-11-22</td><td>Linked, not implemented</td></tr>
+<tr><td><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener noreferrer">GitHub Docs · Pages publishing source</a></td>
+<td>Pages can publish from a branch or from a GitHub Actions workflow; used to publish this site from an Actions artifact.</td>
+<td>2026-11-22</td><td>Verified</td></tr>
+<tr><td><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule" target="_blank" rel="noopener noreferrer">GitHub Docs · schedule event</a></td>
+<td>Scheduled workflows use cron, run on the default branch, can be delayed under load; GitHub states the shortest interval is
+5 minutes.</td><td>2026-11-22</td><td>Verified</td></tr>
+<tr><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?limit=1" target="_blank" rel="noopener noreferrer">GET /markets (demo, live) — CORS check</a></td>
+<td>Response headers carried <code>content-type: application/json</code> but <b>no</b> <code>Access-Control-Allow-Origin</code>
+(or <code>-Methods</code>/<code>-Headers</code>) on a GET with an Origin header and on an OPTIONS preflight. A browser therefore cannot
+read this API cross-origin. Recorded in <code>data/verification.json</code>.</td><td>2026-11-22</td><td>Verified (absence)</td></tr>
+<tr><td><a href="https://www.cftc.gov/filings/contractlistings/kalshiexchange" target="_blank" rel="noopener noreferrer">CFTC · Kalshi contract listings</a></td>
+<td>Linked from the repository README as the regulation reference. Not reviewed in this session.</td><td>—</td><td>Linked, not reviewed</td></tr>
+</tbody></table></div>
+<p class="note">An item marked “verified” means the linked page or endpoint said so on 2026-11-22. It does not mean every value on
+the site was re-checked by hand; market values are re-read from the API on every build, and every row links to its endpoint so
+you can re-check any value yourself.</p>
 
 </main>
-<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
 </body>
 </html>

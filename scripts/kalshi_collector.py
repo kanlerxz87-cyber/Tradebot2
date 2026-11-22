@@ -149,10 +149,14 @@ def load_state():
             "trades": [], "runs": 0, "first_run": None}
 
 
-def save_json(path, data):
+def save_json(path, data, compact=False):
+    """Write JSON. Large data files are compact so a Pages load stays small."""
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=1, sort_keys=False)
+        if compact:
+            json.dump(data, f, separators=(",", ":"), sort_keys=False)
+        else:
+            json.dump(data, f, indent=1, sort_keys=False)
 
 
 def discover_series(topic_key, cfg, errors):
@@ -634,15 +638,15 @@ def main():
         e["dollar_volume_24h_computed"] = round(e["dollar_volume_24h_computed"], 2)
         e["open_interest"] = round(e["open_interest"], 2)
 
-    save_json(os.path.join(OUT_DIR, "markets.json"), {"generated_at": ts, "markets": markets_out})
+    save_json(os.path.join(OUT_DIR, "markets.json"), {"generated_at": ts, "markets": markets_out}, compact=True)
     save_json(os.path.join(OUT_DIR, "events.json"), {"generated_at": ts, "events": events_out,
         "rank_note": "Ranked by dollar_volume_24h_computed = sum over the event's published markets of "
-                     "volume_24h_fp x last_price_dollars. Both inputs are API fields; the product is computed here."})
-    save_json(os.path.join(OUT_DIR, "candles.json"), candles_out)
-    save_json(os.path.join(OUT_DIR, "ticks.json"), ticks_out)
+                     "volume_24h_fp x last_price_dollars. Both inputs are API fields; the product is computed here."}, compact=True)
+    save_json(os.path.join(OUT_DIR, "candles.json"), candles_out, compact=True)
+    save_json(os.path.join(OUT_DIR, "ticks.json"), ticks_out, compact=True)
     save_json(os.path.join(OUT_DIR, "alerts.json"), {"generated_at": ts, "threshold": ALERT_THRESHOLD, "alerts": alerts_out})
-    save_json(os.path.join(OUT_DIR, "history.json"), {"generated_at": ts, "series": history_out})
-    save_json(os.path.join(OUT_DIR, "orderbooks.json"), {"generated_at": ts, "books": books})
+    save_json(os.path.join(OUT_DIR, "history.json"), {"generated_at": ts, "series": history_out}, compact=True)
+    save_json(os.path.join(OUT_DIR, "orderbooks.json"), {"generated_at": ts, "books": books}, compact=True)
     save_json(os.path.join(OUT_DIR, "resolved.json"), {"generated_at": ts, "resolved": resolved_out})
     save_json(os.path.join(OUT_DIR, "trades.json"), trades_out)
     save_json(os.path.join(OUT_DIR, "meta.json"), meta)

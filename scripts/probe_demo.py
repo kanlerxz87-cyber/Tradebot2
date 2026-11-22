@@ -105,6 +105,18 @@ def main():
             time.sleep(0.3)
         out["events"][key] = {"events": ev_rows, "count": len(ev_rows)}
 
+    # 3b. Ticker existence checks for values quoted by older hand-written pages.
+    # These are candidate tickers taken from js/data.js and docs/js/data.js.
+    ticker_checks = {}
+    for t in ("PRES-24-DJT", "GAS-24DEC-3.15", "BTC-24DEC-100K", "OSCAR-BESTPIC-25",
+              "MASTERS-25-SCHEFFLER", "BTC-ETF-NET10B", "KXAAAGASW-26NOV23-3.8400"):
+        r = get(f"/markets/{t}")
+        ticker_checks[t] = {"url": r.get("url"), "status": r.get("status"),
+                            "found": bool((r.get("body") or {}).get("market")),
+                            "error": (r.get("error") or "")[:120]}
+        time.sleep(0.3)
+    out["ticker_checks"] = ticker_checks
+
     # 4. Pick the busiest market overall and sample orderbook / candles / trades / CORS
     best = None
     for key, blob in out["events"].items():
@@ -147,6 +159,7 @@ def main():
     print("series counts:", {k: v["series_count"] for k, v in out["topics"].items()})
     print("open events:", {k: v["count"] for k, v in out["events"].items()})
     print("cors:", out["cors"])
+    print("ticker checks:", {k: (v["status"], v["found"]) for k, v in out.get("ticker_checks", {}).items()})
     print("errors:", len(out["errors"]))
     return 0
 

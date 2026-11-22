@@ -3,20 +3,79 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Flagged for Review · Tradebot2</title>
+<title>Flagged for review · Kalshi Demo Desk</title>
+<meta name="description" content="Unverified items and approximations, with sources.">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/app.js" defer></script>
 </head>
-<body data-page="flagged">
+<body>
 <header class="top" id="nav"></header>
 <main>
 
-<h1>Flagged for Review</h1>
-<p class="lead">Items the agent could not verify or decided on its own. They do not block the site. Each has a source link so you can review it and request changes.</p>
-<p class="stale" style="display:block;background:#fdf1d8">Unverified and flagged items are not hidden from the data tables. Their cells are blank and marked “unverified”.</p>
-<table class="sourced"><thead><tr><th>#</th><th>Item</th><th>Source</th><th>Status</th></tr></thead><tbody><tr><td>F1</td><td>Every alert’s cause is UNVERIFIED. The API does not report causes. Reference links are settlement sources, not proof of a cause.</td><td><a href="https://docs.kalshi.com/api-reference/events/get-events" target="_blank" rel="noopener">Get Events (settlement_sources)</a></td><td>Open</td></tr><tr><td>F2</td><td>Culture topic uses category “Entertainment” as the closest match. There is no “Culture” category in the verified taxonomy.</td><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories" target="_blank" rel="noopener">tags_by_categories</a></td><td>Open</td></tr><tr><td>F3</td><td>Gas topic uses tag “Oil &amp; Gas”. It can include oil, natural-gas and heating-oil contracts, not only retail gasoline prices.</td><td><a href="https://external-api.kalshi.com/trade-api/v2/series?category=Commodities&amp;tags=Oil%20%26%20Gas" target="_blank" rel="noopener">series (Oil &amp;amp; Gas)</a></td><td>Open</td></tr><tr><td>F4</td><td>High-ROI screen is a rule set, not a validated model. Thresholds (spread 0.03, ask size 50, 24h volume 100, entry 0.05–0.95) were chosen by the agent and are not backtested.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/scripts/kalshi_collector.py" target="_blank" rel="noopener">scripts/kalshi_collector.py (internal)</a></td><td>Open</td></tr><tr><td>F5</td><td>Paper trades ignore fees, slippage and queue position. Kalshi’s fee schedule is per series (fee_type, fee_multiplier) and is not modelled.</td><td><a href="https://external-api.kalshi.com/trade-api/v2/series?category=Sports&amp;tags=Golf" target="_blank" rel="noopener">series fee fields</a></td><td>Open</td></tr><tr><td>F6</td><td>Demo-account portfolio tracking is NOT connected. It needs API-key credentials (the OpenAPI file defines security schemes kalshiAccessKey, kalshiAccessSignature and kalshiAccessTimestamp). Credentials must not be pasted in chat; they should be stored as encrypted repository secrets.</td><td><a href="https://docs.kalshi.com/openapi.yaml" target="_blank" rel="noopener">openapi.yaml security schemes</a></td><td>Blocked: needs secrets</td></tr><tr><td>F7</td><td>“Seconds” resolution is not available. Snapshots are taken about every 15 minutes, so the chart’s second labels show snapshot times only.</td><td><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule" target="_blank" rel="noopener">GitHub schedule event docs</a></td><td>Open</td></tr><tr><td>F8</td><td>Production vs demo: the brief names demo endpoints, but “highest dollar amount live events on Kalshi” implies production. The collector reads production; demo prices may not match real markets.</td><td><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener">Demo environment</a></td><td>Open (decision for review)</td></tr><tr><td>F9</td><td>Market status enum inconsistency (see Repo review R8). Resolution uses result.</td><td><a href="https://docs.kalshi.com/api-reference/market/get-markets" target="_blank" rel="noopener">Get Markets</a></td><td>Open</td></tr><tr><td>F10</td><td>Unauthenticated rate-limit numbers are not published on the rate-limit page.</td><td><a href="https://docs.kalshi.com/getting_started/rate_limits" target="_blank" rel="noopener">Rate limits</a></td><td>Open</td></tr><tr><td>F11</td><td>Repo irregularities R1–R12 are listed on the Repo review page.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2" target="_blank" rel="noopener">GitHub repo</a></td><td>Open</td></tr><tr><td>F13</td><td>The scheduled job’s first successful run and Pages deploy were not yet observed when this page was written. Status is recorded in COORDINATION.md.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions" target="_blank" rel="noopener">GitHub Actions runs</a></td><td>Open</td></tr><tr><td>F12</td><td>GitHub disables scheduled workflows in a public repository after 60 days with no repository activity. The site will stop updating unless someone pushes a commit or re-enables the workflow.</td><td><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule" target="_blank" rel="noopener">schedule event docs</a></td><td>Open</td></tr><tr><td>F14</td><td>Other sessions’ data (docs/data/verified-markets.json) lists 0.00 / 0 for prices, sizes, volume and open interest on active markets. A zero is a fill-in, not a verified value. Owner review needed.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/docs/data/verified-markets.json" target="_blank" rel="noopener">docs/data/verified-markets.json</a></td><td>Open (not edited by this session)</td></tr><tr><td>F15</td><td>README and COORDINATION name trading-api.kalshi.com as the production REST host. It is not in Kalshi’s OpenAPI server list (external-api.kalshi.com and api.elections.kalshi.com). Unverified.</td><td><a href="https://docs.kalshi.com/openapi.yaml" target="_blank" rel="noopener">openapi.yaml servers</a></td><td>Open</td></tr><tr><td>F16</td><td>README makes capability claims with no code or source in the repo: tick-stream ingestion, a $10,000 simulated demo account, an EV ≥ +18% ROI model, and verified news-catalyst pins. Treat as unverified.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/README.md" target="_blank" rel="noopener">README.md</a></td><td>Open</td></tr><tr><td>F17</td><td>Gas prices are mapped to Energy/EIA and golf to Sports in the other board. The verified Kalshi tags are Oil &amp; Gas (Commodities) and Golf (Sports); the EIA link is not a Kalshi category.</td><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories" target="_blank" rel="noopener">tags_by_categories</a></td><td>Open</td></tr><tr><td>F18</td><td>Integration fix: docs/index.html linked to EXECUTIVE_SUMMARY.md, which is not published. Changed to executive-summary.md (published in docs/). Logged in COORDINATION.md.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/COORDINATION.md" target="_blank" rel="noopener">COORDINATION.md</a></td><td>Fixed, logged</td></tr></tbody></table>
+<h1>Flagged for review</h1>
+<p class="lead">Everything the agent could not verify, had to approximate, or chose to change. None of it blocks the site.
+Every item names what would settle it.</p>
+<div class="table-wrap"><table class="sourced">
+<thead><tr><th>#</th><th>Item</th><th>Status</th><th>What would settle it</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>F1</td><td><b>Demo-account portfolio is not connected.</b> Balance, positions and fills from the Kalshi demo account are
+not shown; the portfolio on this site is a paper simulation.</td><td>Blocked — needs secrets</td>
+<td>Add a demo API key id and RSA private key as encrypted repository secrets and enable the signed-request job.</td>
+<td><a href="https://docs.kalshi.com/getting_started/api_keys" target="_blank" rel="noopener noreferrer">API keys</a></td></tr>
+<tr><td>F2</td><td><b>No browser CORS on the Kalshi API.</b> A GET and an OPTIONS preflight from an allowed origin returned no
+<code>Access-Control-Allow-Origin</code> header on 2026-11-22, so the page cannot poll Kalshi directly and “live” means the
+scheduled rebuild cadence.</td><td>Open</td>
+<td>A server-side WebSocket worker (or Kalshi enabling CORS) would give true real-time updates.</td>
+<td><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?limit=1" target="_blank" rel="noopener noreferrer">GET /markets headers</a></td></tr>
+<tr><td>F3</td><td><b>Demo prices are simulated.</b> Kalshi states demo prices and behaviour may not reflect real markets, so
+nothing here is evidence about production odds or liquidity.</td><td>Documented limit</td>
+<td>Run the same collector against the production host (<code>KALSHI_BASE</code> switch already exists) and label the site accordingly.</td>
+<td><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener noreferrer">Demo environment</a></td></tr>
+<tr><td>F4</td><td><b>“Culture” is mapped to Kalshi's “Entertainment” category</b> and <b>“Gas prices” to the “Oil &amp; Gas” tag</b>
+under Commodities. Neither is an exact topic in Kalshi's taxonomy, so these pages include adjacent markets (e.g. crude oil, TV
+awards).</td><td>Approximation</td><td>Choose different filters, or accept the mapping and keep the note on each page.</td>
+<td><a href="https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories" target="_blank" rel="noopener noreferrer">tags_by_categories</a></td></tr>
+<tr><td>F5</td><td><b>High-ROI filter is a rule set, not a validated model.</b> Thresholds (spread $0.03, 50 contracts at the ask,
+24h volume 100, entry $0.05–$0.95) were chosen by the agent and are not backtested. Its "ROI" is a gross proxy before fees.</td>
+<td>Unvalidated</td><td>Backtest on accumulated alerts and report confidence intervals, or replace with a documented model.</td>
+<td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/scripts/kalshi_collector.py" target="_blank" rel="noopener noreferrer">collector source</a></td></tr>
+<tr><td>F6</td><td><b>Paper trades ignore fees, slippage and queue position.</b> Kalshi's fee schedule is per series
+(<code>fee_type</code>, <code>fee_multiplier</code>) and is not modelled.</td><td>Open</td>
+<td>Apply the per-series fee schedule to each fill and re-run.</td>
+<td><a href="https://docs.kalshi.com/getting_started/fees" target="_blank" rel="noopener noreferrer">Fees (documented by Kalshi)</a></td></tr>
+<tr><td>F7</td><td><b>Cause of a price move is never claimed.</b> The API does not report causes; the reference links on alerts are
+the event's settlement sources.</td><td>Documented limit</td>
+<td>Pair moves with timestamped news from a named source and still label causation as unproven.</td>
+<td><a href="https://docs.kalshi.com/api-reference/events/get-events" target="_blank" rel="noopener noreferrer">Get Events</a></td></tr>
+<tr><td>F8</td><td><b>Alert latency equals the collector cadence.</b> Default is every 10 minutes; GitHub documents that scheduled
+runs can be delayed and are disabled after 60 days of repository inactivity.</td><td>Documented limit</td>
+<td>A dedicated worker for sub-minute detection; keep the scheduled run as a backstop.</td>
+<td><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule" target="_blank" rel="noopener noreferrer">schedule docs</a></td></tr>
+<tr><td>F9</td><td><b>Hand-written “live” data inherited from earlier builds.</b> Tickers, catalysts and portfolio metrics in the
+root pages and <code>docs/</code> were not API output. They are no longer published, but the files remain in the repository.</td>
+<td>Needs review</td><td>Delete or clearly mark those directories, or keep them as archived examples.</td>
+<td><a href="https://github.com/kanlerxz87-cyber/Tradebot2" target="_blank" rel="noopener noreferrer">repository</a></td></tr>
+<tr><td>F10</td><td><b>Files listed as delivered in COORDINATION.md are missing</b> from the tree
+(<code>kalshi_demo_client.py</code>, <code>strategy_engine.py</code>, <code>verify_site.py</code>, <code>requirements.txt</code>).</td>
+<td>Needs review</td><td>Restore from commit <code>6d98549</code> if the authenticated client is wanted.</td>
+<td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/commit/6d98549" target="_blank" rel="noopener noreferrer">commit 6d98549</a></td></tr>
+<tr><td>F11</td><td><b>Candles and the trade tape cover only the most active markets</b> (12 each by default) to stay inside public
+rate limits; other markets show collection-run snapshots.</td><td>Documented limit</td>
+<td>Fetch candles lazily per selected market through a small proxy.</td>
+<td><a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks" target="_blank" rel="noopener noreferrer">Candlesticks</a></td></tr>
+<tr><td>F12</td><td><b>Unauthenticated rate limits are not published.</b> The collector backs off on 429 but cannot size its request
+budget against a published number.</td><td>Unverified</td><td>Ask Kalshi support, or measure empirically over a long run.</td>
+<td><a href="https://docs.kalshi.com/getting_started/rate_limits" target="_blank" rel="noopener noreferrer">Rate limits</a></td></tr>
+<tr><td>F13</td><td><b>Markets with no 24h trade show last price 0 in the API.</b> The site renders “no trade” rather than $0.00 to
+avoid implying a price.</td><td>Handled</td><td>None; this is a display decision, documented on the Markets page.</td>
+<td><a href="https://docs.kalshi.com/api-reference/market/get-markets" target="_blank" rel="noopener noreferrer">Get Markets</a></td></tr>
+<tr><td>F14</td><td><b>Resolution timestamps are “first seen by this collector”,</b> not the exchange's official settlement time;
+the API's <code>settlement_ts</code> is shown only when returned.</td><td>Documented limit</td>
+<td>Read <code>settlement_ts</code> and <code>settlement_value_dollars</code> where present.</td>
+<td><a href="https://docs.kalshi.com/api-reference/market/get-market" target="_blank" rel="noopener noreferrer">Get Market</a></td></tr>
+</tbody></table></div>
 
 </main>
-<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
 </body>
 </html>

@@ -1,17 +1,24 @@
-# Single Pages pipeline for this repo. Only one Pages deployment can exist, so this file
-# builds the whole published site in one artifact:
-#   /            <- docs/            (existing Kalshi Demo Dashboard, unchanged)
-#   /monitor/    <- site/            (live monitor: alerts, topic pages, charts, trades)
-#   /dash/       <- dash/            (session-arena-93ec9646 full-spec dashboard)
-# Collected data (site/data) is generated at build time and never committed.
-name: Deploy Kalshi Demo Dashboard to GitHub Pages
+# One Pages pipeline for this repository.
+#
+# Published artifact (single site, built from site/):
+#   /                 <- site/   (canonical Kalshi DEMO desk)
+#
+# The collector writes site/data/*.json at build time and those files are never
+# committed. GitHub Pages is configured with build_type "workflow", so this
+# artifact is what visitors see at https://kanlerxz87-cyber.github.io/Tradebot2/ .
+#
+# Earlier builds (docs/, dash/, the flat root pages) are kept in the repository
+# for review but are no longer published; see site/repo-review.html (R1, R2, R5).
+name: Build and deploy Kalshi Demo Desk
 
 on:
   push:
     branches: ["main"]
   workflow_dispatch:
   schedule:
-    - cron: "*/15 * * * *"
+    # Collect + republish the demo data. GitHub documents a 5-minute minimum for
+    # scheduled workflows and that runs can be delayed under load.
+    - cron: "*/10 * * * *"
 
 permissions:
   contents: read
@@ -42,23 +49,26 @@ jobs:
           restore-keys: |
             kalshi-state-
 
-      - name: Collect public Kalshi data for the monitor
+      - name: Collect public Kalshi DEMO data
+        env:
+          # Explicit: the site is a demo-environment tracker.
+          KALSHI_BASE: https://external-api.demo.kalshi.co/trade-api/v2
+          STATE_PATH: state/state.json
+          OUT_DIR: site/data
         run: python3 scripts/kalshi_collector.py
 
-      - name: Check monitor site (links, sourced rows, data source fields)
+      - name: Check site (internal links, sourced rows, data records)
         run: python3 scripts/check_site.py
 
-      - name: Assemble Pages artifact (docs at root, monitor at /monitor/)
+      - name: Assemble Pages artifact
         run: |
           rm -rf _site
-          mkdir -p _site/monitor
-          cp -r docs/. _site/
-          cp -r site/. _site/monitor/
-          cp -r dash/. _site/dash/   # session-arena-93ec9646 dashboard (logged in COORDINATION.md)
-          ls -la _site _site/monitor | head -60
+          mkdir -p _site
+          cp -r site/. _site/
+          ls -la _site | head -40
 
       - name: Check assembled site links
-        run: SITE_DIR=_site/monitor python3 scripts/check_site.py --links-only-root _site
+        run: python3 scripts/check_site.py --links-only-root _site
 
       - name: Save collector state
         if: success()

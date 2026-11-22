@@ -6,6 +6,11 @@ name: Probe Kalshi demo API (read-only)
 
 on:
   workflow_dispatch:
+    inputs:
+      collect:
+        description: "Also run the full collector (slow, ~5 min)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -44,6 +49,7 @@ jobs:
           done
 
       - name: Collect real demo data (for local verification)
+        if: ${{ inputs.collect }}
         env:
           KALSHI_BASE: https://external-api.demo.kalshi.co/trade-api/v2
           OUT_DIR: probe/site-data
@@ -51,6 +57,7 @@ jobs:
         run: python3 scripts/kalshi_collector.py
 
       - name: Summarise collected data
+        if: ${{ inputs.collect }}
         run: |
           python3 - <<'PY'
           import json

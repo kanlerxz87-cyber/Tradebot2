@@ -2,8 +2,8 @@
 
 > **Repository:** `kanlerxz87-cyber/Tradebot2`  
 > **GitHub Pages URL:** `https://kanlerxz87-cyber.github.io/Tradebot2/` (deployed from `main` `/`)  
-> **Integrated Sessions:** `arena/a5878007-tradebot2`, `arena/7a21cbd2-tradebot2`, `arena/b1cd545f-tradebot2`, `arena/9a725a07-tradebot2`, `arena/93ec9646-tradebot2`, and `arena/4f9ce955-tradebot2`  
-> **Last Updated:** 2026-11-22 (UTC)
+> **Integrated Sessions:** `arena/a5878007-tradebot2`, `arena/7a21cbd2-tradebot2`, `arena/b1cd545f-tradebot2`, `arena/9a725a07-tradebot2`, `arena/93ec9646-tradebot2`, `arena/4f9ce955-tradebot2`, and **`arena/4196d9d6-tradebot2` (final integration session)**  
+> **Last Updated:** 2026-11-22 (UTC) — see the `arena/4196d9d6` section at the bottom for the current state of publishing.
 
 Statuses: `unclaimed` | `in progress` | `done` | `needs review`
 
@@ -179,3 +179,70 @@ timestamps years after close on some markets.
   Per the pre-existing irregularity recorded above, the live URL currently keeps the legacy build;
   switching Pages to GitHub Actions source is a manual repo-settings step owned by the integration
   session (HTTP 403 from this token), unchanged by this PR.
+
+---
+
+## Session `arena/4196d9d6` — branch `arena/4196d9d6-tradebot2` (FINAL INTEGRATION SESSION)
+
+Runtime note: this session works only on `arena/4196d9d6-tradebot2` (branched from `19ca09c`, merged with `origin/main` at
+`a93f745`). Per the board's rule that shared outputs are changed only by an integration session, this session claims the shared
+files listed below. Claims from other sessions are respected: no other session's content was deleted; `docs/`, `dash/`, the flat
+root pages and `site/` are all still in the tree.
+
+| Task ID | Task | Status | Owner | File scope |
+|---|---|---|---|---|
+| `I1-site-consolidation` | Publish one canonical demo desk at the Pages root; retire `docs/`, `dash/` and the flat root pages from publishing | `done` | `arena/4196d9d6` | `site/` (all), `tools/build_pages.py`, `.github/workflows/pages.yml`, `.gitignore` |
+| `I2-demo-data-pipeline` | Collector reads the **demo** host by default; real candlesticks + trade tape; event-dollar ranking; active-market trim; paper portfolio block | `done` | `arena/4196d9d6` | `scripts/kalshi_collector.py` |
+| `I3-verification` | Line-by-line verification against official Kalshi docs and live demo endpoints; CORS check; ticker existence checks | `done` | `arena/4196d9d6` | `scripts/probe_demo.py`, `data/verification.json`, `site/sources.html`, `site/flagged.html`, `site/repo-review.html` |
+| `I4-docs` | Executive summary, README and coordination corrected to match what actually runs | `done` | `arena/4196d9d6` | `EXECUTIVE_SUMMARY.md`, `README.md`, `site/executive-summary.html`, `COORDINATION.md` |
+| `I5-deploy` | Pages switched to `build_type: workflow`; deploy confirmed live; PR recorded | `in progress` | `arena/4196d9d6` | `.github/workflows/pages.yml`, `COORDINATION.md` |
+
+### What changed (summary)
+
+* **Canonical site = `site/` at `/`.** The storefront that visitors land on is now the honest, API-driven monitor. `docs/`
+  (published at `/` until now), `dash/` (published at `/dash/`) and the flat root pages are **not published** any more; they stay
+  in the repository for review and are described on `/repo-review.html` (R1, R2, R7).
+* **Demo-first collector.** `KALSHI_BASE` now defaults to `https://external-api.demo.kalshi.co/trade-api/v2` and
+  `pages.yml` sets it explicitly. It previously read **production** while the site was branded as a demo tracker (R3).
+* **New data**: 1-minute/1-hour candlesticks, the sub-second trade tape, an event-level `$` ranking, an active-market trim (with
+  omitted counts published), and a paper-portfolio summary. All new files carry the exact endpoint URL used.
+* **UI**: two scrolling chats, seconds/minutes/hours charts with alert markers, order-book ladder with cumulative depth,
+  per-topic pages with events grouped, portfolio/strategy analysis, resolved-events table, executive summary, sources,
+  repo review, suggestions, flagged-for-review.
+* **Pages config**: `gh api repos/…/pages` reported `build_type: legacy` (a branch build from `main` at `/`) while `pages.yml`
+  was deploying an Actions artifact — two builds racing for the same URL (R5). Switched to `build_type: workflow`.
+
+### Verification performed (2026-11-22)
+
+Official pages read and live endpoints exercised (details + links on `/sources.html`):
+
+`docs.kalshi.com/getting_started/demo_env`, `/api_environments`, `/rate_limits`, `/quick_start_websockets`,
+`/api-reference/events/get-events`, `/api-reference/market/get-market-candlesticks`, `/api-reference/market/get-trades`,
+`/api-reference/market/get-market-orderbook`, `/api-reference/market/get-markets`,
+`GET /exchange/status`, `GET /search/tags_by_categories`, `GET /series?category=Crypto`, `GET /events`,
+`GET /markets/{ticker}`, `GET /markets/{ticker}/orderbook`, candlesticks and trades — all on the **demo** host.
+
+Findings: demo host live (`exchange_active`/`trading_active` true); 18,298 open markets across the five filters; taxonomy
+confirms Sports→Golf, Commodities→“Oil & Gas”, Elections, Crypto, Entertainment (no “Culture”); **no
+`Access-Control-Allow-Origin`** header on GET or OPTIONS → no browser polling; candle/tape endpoints return the documented
+shapes. Ticker existence checks for values quoted by the old hand-written pages are recorded in `data/verification.json`.
+
+Checks run before merge: `python3 scripts/check_site.py` (18 pages: internal links, source link on every static table row, source
+URL in every data record), `node --check` on every JS file, `python3 -m py_compile` on every script, and a DOM smoke test of the
+rendered pages against a real collected snapshot.
+
+### Irregularities and unverified items
+
+* Repository irregularities **R1–R10** → `/repo-review.html`.
+* Unverified / approximated items **F1–F14** → `/flagged.html`.
+* Files listed as delivered by an earlier session but missing from the tree
+  (`scripts/kalshi_demo_client.py`, `strategy_engine.py`, `verify_site.py`, `requirements.txt`) — flagged as R8/F10. They exist in
+  commit `6d98549`; they were **not** restored (the authenticated client needs keys, and the strategy engine used random price
+  paths). Restoring them needs a decision from the user.
+
+### PR / deploy record
+
+* PR: _(filled in after merge)_
+* Merge commit: _(filled in after merge)_
+* Pages build/deploy run: _(filled in after deploy)_
+* Live URL check: _(filled in after deploy)_

@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kalshi live dashboard · Tradebot2</title>
+<title>Kalshi demo live desk · Kalshi Demo Desk</title>
+<meta name="description" content="Live Kalshi demo events in gas prices, elections, culture, crypto and golf with $0.10 swing alerts.">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/app.js" defer></script>
 </head>
@@ -11,30 +12,50 @@
 <header class="top" id="nav"></header>
 <main>
 
-<h1>Kalshi live dashboard</h1>
-<p class="lead">Live tracking of Kalshi event contracts in five topics: gas prices, elections, culture, crypto and golf.
-Alerts fire when a YES price moves $0.10 or more between two collection runs. Every number links to the Kalshi API endpoint it came from.</p>
-<div class="stale" id="fresh"></div>
+<h1>Kalshi demo live desk</h1>
+<p class="lead">Highest-dollar live events on the Kalshi demo exchange across <b>gas prices, elections, culture, crypto and golf</b>,
+with $0.10 swing alerts, contract-price charts, order-book liquidity, paper-trade performance and resolution tracking.
+Every value links to the official Kalshi endpoint that returned it.</p>
+<div class="freshness" id="fresh"></div>
 <div class="kpis" id="kpis"></div>
-<div class="tiles">
-  <a class="tile" href="dashboard.html"><b>Live dashboard</b><br><small>Two live alert chats: all events, and high-ROI screen passes.</small></a>
-  <a class="tile" href="gas.html"><b>Gas prices</b><br><small>Kalshi tag “Oil &amp; Gas”. See flagged mapping note.</small></a>
-  <a class="tile" href="elections.html"><b>Elections</b><br><small>Kalshi category “Elections”.</small></a>
-  <a class="tile" href="culture.html"><b>Culture</b><br><small>Mapped to Kalshi category “Entertainment” (inference, flagged).</small></a>
-  <a class="tile" href="crypto.html"><b>Crypto</b><br><small>Kalshi category “Crypto”.</small></a>
-  <a class="tile" href="golf.html"><b>Golf</b><br><small>Kalshi category “Sports”, tag “Golf”.</small></a>
-  <a class="tile" href="chart.html"><b>Price chart &amp; liquidity</b><br><small>YES price over time, plus resting order depth.</small></a>
-  <a class="tile" href="trades.html"><b>Simulated trades</b><br><small>Two rule-based paper strategies, categorised by topic.</small></a>
-  <a class="tile" href="resolved.html"><b>Resolved markets</b><br><small>Final result YES or NO, from the API.</small></a>
-</div>
-<h2>Executive summary</h2>
-<div class="card">
-<p>The site is a read-only monitor of Kalshi’s public market data. It does not hold a trading account and cannot place real orders. The live data pipeline runs on a 15-minute schedule (GitHub Actions) and publishes static JSON to this site.</p>
-<p>Key limits: (1) price moves are measured between scheduled runs, so “sudden” means between two snapshots, not per second; (2) the API does not say what caused a move, so cause links are reference sources only and are marked unverified; (3) the high-ROI filter is a fixed rule set, not a validated model; (4) the demo-account portfolio is not connected because it needs API-key credentials that were not provided in the chat.</p>
-<p><a href="findings.html">Full findings &amp; methodology →</a> · <a href="flagged.html">Flagged for Review →</a></p>
+<p class="note" id="coverage-note"></p>
+
+<h2>Highest-dollar live events</h2>
+<p class="note">Ranked by <b>24h dollar notional (computed)</b> = Σ over the event's published markets of
+<code>volume_24h_fp × last_price_dollars</code>. Both inputs are API fields; the product is arithmetic here, not an API field.
+"24h contracts" is the raw API volume. Events with no traded notional sort below traded events.</p>
+<div class="table-wrap"><table class="sourced">
+<thead><tr><th class="num">#</th><th>Event</th><th>Topic</th><th class="num">24h contracts</th>
+<th class="num">24h $ (computed)</th><th class="num">Open interest</th><th>Closes</th><th>Source</th></tr></thead>
+<tbody id="top-events"></tbody></table></div>
+<p class="note">Full ranking on <a href="dashboard.html">Markets</a>.</p>
+
+<h2>Topics</h2>
+<div class="tiles" id="topic-cards"></div>
+
+<div class="chats" style="margin-top:22px">
+  <div class="chat">
+    <div class="chat-head"><b>Latest alerts (≥ $0.10)</b><a class="small" href="alerts.html">Open both live chats →</a></div>
+    <div class="scroll" id="feed-preview" style="height:420px"></div>
+  </div>
+  <div class="chat">
+    <div class="chat-head"><b>Resolved events — how it ended</b><a class="small" href="resolved.html">All resolutions →</a></div>
+    <div style="padding:12px" id="resolved-strip"></div>
+    <div style="padding:0 12px 12px">
+      <h3>How to read this desk</h3>
+      <p class="note"><b>Last</b> is the last traded YES price; “no trade” means no contract traded in the last 24h (the API
+      returns 0, which is not a price). <b>Contracts at ask</b> is the size resting at the best YES ask. <b>24h $ (computed)</b>
+      is volume × last price. <b>Cause</b> of a move is never claimed: the API does not report causes, so reference links are
+      settlement/rules sources, not proof.</p>
+      <p class="note">Refresh the page — it re-reads <code>data/</code> every 30 seconds. A scheduled GitHub Actions job
+      rebuilds that data (default: every 10 minutes).</p>
+    </div>
+  </div>
 </div>
 
+<div class="card flag"><b>Kalshi demo environment.</b> Every market on this site is read live from the Kalshi <b>demo</b> REST API (<code>external-api.demo.kalshi.co/trade-api/v2</code>). Kalshi documents that demo funds are mock funds, that demo credentials are separate from production, and that demo prices and behaviour "may not be reflective of those in real markets". <a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener noreferrer">Official source ↗</a>. Nothing here is trading advice, and no orders are placed.</div>
+
 </main>
-<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
 </body>
 </html>

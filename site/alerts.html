@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Live alerts · Kalshi Demo Desk</title>
+<meta name="description" content="Two scrolling alert chats: all ≥ $0.10 moves and model high-ROI picks.">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body data-page="alerts">
+<header class="top" id="nav"></header>
+<main>
+
+<h1>Live alerting — two scrolling chats</h1>
+<p class="lead">An alert fires when a contract's <b>last price moves by $0.10 or more in either direction</b> between two
+collection runs. <b>Chat 1</b> shows every alert. <b>Chat 2</b> shows only alerts that pass the high-ROI screen the model likes
+(tight spread, size at the ask, 24h volume, entry between $0.05 and $0.95).</p>
+<div class="freshness" id="fresh"></div>
+<div class="kpis" id="alert-kpis"></div>
+<div class="controls">
+  <label>Topic <select id="topic-filter"><option value="all">All topics</option><option value="gas">Gas prices</option>
+  <option value="elections">Elections</option><option value="culture">Culture</option><option value="crypto">Crypto</option>
+  <option value="golf">Golf</option></select></label>
+  <span class="note">Newest alerts at the bottom. The feed auto-scrolls unless you scroll up. Re-reads <code>data/</code> every 30 s.</span>
+</div>
+<div class="chats">
+  <div class="chat"><div class="chat-head"><b>Chat 1 · All events (≥ $0.10)</b><span class="note">unfiltered</span></div>
+    <div class="scroll" id="feed-all"></div></div>
+  <div class="chat"><div class="chat-head"><b>Chat 2 · Model high-ROI picks</b><span class="note">rule-based screen</span></div>
+    <div class="scroll" id="feed-roi"></div></div>
+</div>
+<div class="card">
+  <h3>What the high-ROI screen is — and is not</h3>
+  <p class="note">The screen is a fixed, published rule set evaluated at alert time: spread ≤ $0.03, at least 50 contracts resting
+  at the YES ask, 24h volume ≥ 100 contracts, and entry price between $0.05 and $0.95. The ROI figure shown is a gross proxy,
+  (1 − entry) ÷ entry, before fees. It is <b>not</b> a trained, backtested or validated model, and it does not look at news.
+  <a href="findings.html">Method and limitations →</a></p>
+</div>
+<div class="card flag"><b>Why “sudden” is 10-minute granularity.</b> GitHub Actions runs the collector on a schedule, so a
+$0.10 move is measured between runs, not tick by tick. Kalshi's API also returns no
+<code>Access-Control-Allow-Origin</code> header (checked 2026-11-22), so a browser cannot poll the API directly from this page.
+A tick-level alert feed needs a WebSocket client (documented at
+<a href="https://docs.kalshi.com/getting_started/quick_start_websockets" target="_blank" rel="noopener noreferrer">docs.kalshi.com</a>)
+running on a server you own. <a href="suggestions.html">Suggestions →</a></div>
+
+</main>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
+</body>
+</html>

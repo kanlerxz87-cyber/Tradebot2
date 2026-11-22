@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Executive summary · Kalshi Demo Desk</title>
+<meta name="description" content="Executive summary of the Kalshi demo desk: scope, sources and limits.">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body>
+<header class="top" id="nav"></header>
+<main>
+
+<h1>Executive summary</h1>
+<p class="lead">What this repository is, what is verified, how the numbers are produced, and what is deliberately not claimed.</p>
+
+<h2>1. Purpose</h2>
+<p>A read-only monitoring and paper-trading desk for the <b>Kalshi demo exchange</b>, covering five topics only:
+gas prices, elections, culture, crypto and golf. It shows the highest-dollar live events, alerts on ≥ $0.10 contract moves in
+two scrolling chats (all events, and a rule-based high-ROI subset), charts price against time with seconds/minutes/hours axes,
+shows resting liquidity at each price, simulates trades, tracks their performance by strategy and topic, and records how events
+resolve (YES or NO).</p>
+
+<h2>2. Environment (verified 2026-11-22)</h2>
+<div class="table-wrap"><table class="sourced">
+<thead><tr><th>Item</th><th>Value used here</th><th>Official source</th></tr></thead>
+<tbody>
+<tr><td>Demo REST base URL</td><td><code>https://external-api.demo.kalshi.co/trade-api/v2</code> (also supported:
+<code>https://demo-api.kalshi.co/trade-api/v2</code>)</td>
+<td><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener noreferrer">Demo environment</a>,
+<a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener noreferrer">API environments</a></td></tr>
+<tr><td>Demo WebSocket</td><td><code>wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2</code> (also
+<code>wss://demo-api.kalshi.co/trade-api/ws/v2</code>) — documented, <b>not used</b> by this static site</td>
+<td><a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener noreferrer">API environments</a></td></tr>
+<tr><td>Demo money</td><td>Mock funds; demo credentials are separate from production; prices “may not be reflective of those in
+real markets”</td><td><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener noreferrer">Demo environment</a></td></tr>
+<tr><td>Exchange status at check time</td><td><code>exchange_active: true</code>, <code>trading_active: true</code></td>
+<td><a href="https://external-api.demo.kalshi.co/trade-api/v2/exchange/status" target="_blank" rel="noopener noreferrer">GET /exchange/status (live)</a></td></tr>
+<tr><td>Production REST (for reference)</td><td><code>https://external-api.kalshi.com/trade-api/v2</code> — not used</td>
+<td><a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener noreferrer">API environments</a></td></tr>
+</tbody></table></div>
+
+<h2>3. Topic mapping (official taxonomy)</h2>
+<p>The five topics map onto Kalshi's published categories and tags. Kalshi has no “Culture” and no “gas prices” category, so two
+mappings are approximations and are flagged on the site.</p>
+<div class="table-wrap"><table class="sourced">
+<thead><tr><th>Topic</th><th>Kalshi filter used</th><th>Why</th><th>Official source</th></tr></thead>
+<tbody>
+<tr><td>Gas prices</td><td><code>category=Commodities&amp;tags=Oil &amp; Gas</code></td><td>Closest official tag; includes crude oil,
+natural gas and heating oil, not only retail gasoline.</td>
+<td><a href="https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories" target="_blank" rel="noopener noreferrer">tags_by_categories</a></td></tr>
+<tr><td>Elections</td><td><code>category=Elections</code></td><td>Exact category.</td>
+<td><a href="https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories" target="_blank" rel="noopener noreferrer">tags_by_categories</a></td></tr>
+<tr><td>Culture</td><td><code>category=Entertainment</code></td><td>No “Culture” category exists; Entertainment is the nearest
+(oscars, music, TV, box office).</td>
+<td><a href="https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories" target="_blank" rel="noopener noreferrer">tags_by_categories</a></td></tr>
+<tr><td>Crypto</td><td><code>category=Crypto</code></td><td>Exact category.</td>
+<td><a href="https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories" target="_blank" rel="noopener noreferrer">tags_by_categories</a></td></tr>
+<tr><td>Golf</td><td><code>category=Sports&amp;tags=Golf</code></td><td>Exact tag under Sports.</td>
+<td><a href="https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories" target="_blank" rel="noopener noreferrer">tags_by_categories</a></td></tr>
+</tbody></table></div>
+
+<h2>4. Measured coverage</h2>
+<p>At the 2026-11-22 snapshot the demo host returned <b>18,298 open markets</b> across these five filters
+(≈13.7k crypto, 2.1k gas, 1.1k golf, 0.95k culture, 0.44k elections), from the top 40 series by volume in each topic.
+The site publishes only markets that traded in 24h or carry open interest, capped per topic, and states how many were left out.
+Series counts at the same time: crypto 321, elections 2,710, entertainment 2,631, golf 134, oil &amp; gas 25.
+Live counts are on the <a href="index.html">desk</a>; raw counts are in <code>data/meta.json</code>.</p>
+
+<h2>5. Alerting and “high ROI”</h2>
+<ul>
+<li><b>Alert rule:</b> |Δ last price| ≥ <b>$0.10</b> between consecutive collection runs, in either direction. $0.10 on a
+$1.00-settling contract is 10 percentage points of implied probability.</li>
+<li><b>Chat 1</b> shows every alert. <b>Chat 2</b> shows alerts passing the screen: spread ≤ $0.03, ≥ 50 contracts at the ask,
+24h volume ≥ 100 contracts, entry $0.05–$0.95. The screen is a transparent rule set, <b>not</b> a validated model.</li>
+<li><b>Cause of a move is never asserted.</b> The API does not report causes. Each alert lists the event's settlement sources as
+reference links only, explicitly marked unverified as causes.</li>
+</ul>
+
+<h2>6. Charts and liquidity</h2>
+<p>Price history comes from Kalshi's candlestick endpoint (1-minute and 1-hour candles) and the trade tape (individual prints with
+sub-second timestamps) for the most active markets; other markets fall back to run snapshots. Charts put time on X
+(seconds, minutes or hours) and YES price in dollars on Y, with recorded alerts marked. Liquidity comes from
+<code>GET /markets/{ticker}/orderbook</code>: both sides of the book, price by price, with resting contract counts and cumulative
+depth — i.e. how many contracts are available at a given price.</p>
+
+<h2>7. Trading, portfolio and strategies</h2>
+<p>Trades are <b>simulated</b>: 10 contracts, entered at the YES ask when a screened alert fires, bracketed ±$0.05 on the YES bid,
+with a 48-hour time stop, and settled at resolution. Performance is grouped by strategy (<code>follow_rise</code>,
+<code>fade_drop</code>, resolution hold), by topic and by alert direction, with win rate, realized P&amp;L and average P&amp;L per
+contract. Fees, slippage and queue position are <b>not</b> modelled, so results test the pipeline, not an edge. The real
+<b>demo account</b> (balance, positions, fills) is not connected because no API keys are stored in the repository.</p>
+
+<h2>8. What is verified, and what is not</h2>
+<p>Every endpoint and parameter on this site is listed with the official page that documents it on
+<a href="sources.html">Sources</a>. Every table row links to the API response that produced it. Values the API did not return are
+left blank and marked <span class="unv">unverified</span>. Items that could not be verified — including the absence of browser
+CORS support, the demo-account credential gap, and the fabricated content found in older pages of this repository — are on
+<a href="flagged.html">Flagged for review</a>, and repository-level findings are on <a href="repo-review.html">Repo review</a>.</p>
+
+<h2>9. Known limits</h2>
+<ul>
+<li>Demo prices are simulated and may not match the production exchange.</li>
+<li>Alert latency equals the collector cadence (GitHub Actions schedule, default every 10 minutes; GitHub documents that
+scheduled runs can be delayed).</li>
+<li>Candles/tape cover the most active markets only.</li>
+<li>Paper results have small samples early on; treat every P&amp;L figure as a pipeline test.</li>
+<li>The demo account is not connected, and no orders are ever sent.</li>
+</ul>
+
+</main>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
+</body>
+</html>
