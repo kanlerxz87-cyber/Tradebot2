@@ -356,6 +356,30 @@ def collect(
         exchange = {}
         errors.append(f"GET /exchange/status: {exc}")
 
+    # Official series enumeration. Keyword matching alone missed entire sports
+    # series whose titles are player names ("The RSM Classic: Bill Haas wins"),
+    # so golf reported zero in-scope markets even though the demo API had 200+.
+    # These filters are exact values from /search/tags_by_categories.
+    series_topic: dict[str, str] = {}
+    for topic, (category, tag) in (
+        ("golf", ("Sports", "Golf")),
+        ("gas_prices", ("Commodities", "Oil & Gas")),
+    ):
+        cursor = None
+        for _ in range(5):
+            try:
+                page = client.get_series_list(category=category, tags=tag, limit=200, cursor=cursor)
+            except KalshiError as exc:
+                errors.append(f"GET /series?category={category}&tags={tag}: {exc}")
+                break
+            for series in page.get("series", []):
+                ticker = str(series.get("ticker") or "")
+                if ticker:
+                    series_topic.setdefault(ticker, topic)
+            cursor = page.get("cursor") or ""
+            if not cursor:
+                break
+
     raw_markets: list[dict[str, Any]] = []
     raw_settled: list[dict[str, Any]] = []
     try:
@@ -455,6 +479,14 @@ def collect(
             event_ticker=event_ticker,
             series_ticker=series,
         )
+        if not found.topic and series in series_topic:
+            import dataclasses
+
+            found = dataclasses.replace(
+                found,
+                topic=series_topic[series],
+                reason=f"series listed under the official {series_topic[series]} category/tag filter",
+            )
         if not found.topic:
             return None
         return normalize_market(
