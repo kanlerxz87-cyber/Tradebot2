@@ -346,9 +346,16 @@ rebuild is kept as an archived generation; the published pipeline is untouched e
 * `flagged.html` — carries F-01 … F-13, including the corrected CORS statement and the fabricated-ticker evidence.
 * `index.html` — the landing page from #24 pointing at `/live/`; the gate now checks it and `live/index.html` together.
 
-**Correction worth carrying forward:** `KXPGATOUR` and `KXLPGATOUR` are not series tickers. Because the API ignores an unknown
-`series_ticker` filter and returns the whole book, querying them *looks* like healthy coverage. Any future count must be read
-next to its series ticker and cursor state.
+**Correction worth carrying forward (two retractions):**
+
+1. An intermediate claim in this session — “`KXPGATOUR`/`KXLPGATOUR` are not real series tickers” — is **wrong** and is retracted.
+   `GET /series/KXPGATOUR` returns 200 with `category: Sports`, `tags: ["Golf"]`, `title: "PGA Tour"`. It was inferred from a
+   `/series?category=Sports&tags=Golf` page whose first five tickers happened to be different, plus a 200-with-cursor response;
+   neither is proof that a ticker is unknown. Counts must be read next to the series ticker *and* the cursor state, and a
+   `/series/{ticker}` lookup is the only way to settle whether a ticker exists.
+2. What actually made golf empty was the keyword-only path to player-name tournament markets. Matching the event families
+   (`KXPGATOUR*`, `KXPGAMAKECUT*`, `KXLPGA*`, `KXPGA*`) fixed it: golf went from 0 to 407 open in scope / 27 tracked, and the
+   live page shows 261 open markets with real liquidity.
 
 ### Open items for the owner
 
