@@ -1,6 +1,8 @@
-# Tradebot2 — Coordination Board
+# Tradebot2 — Coordination Board (Integrated)
 
-Shared task board for parallel agent sessions. Each task lists its status, owning session ID, and the files it touches. Claim a task by writing your session ID and file scope here, then commit and push that claim immediately. Never start a task another session has claimed. Keep scopes non-overlapping.
+Shared task board for parallel agent sessions. This board records the combined work of
+sessions `arena/7a21cbd2-tradebot2` and `arena/a5878007-tradebot2`, both branched from
+`main` commit `003447ea92f5fdd7c2ee66558876c99237818f38`.
 
 Statuses: unclaimed | in progress | done | needs review
 
@@ -15,27 +17,30 @@ Statuses: unclaimed | in progress | done | needs review
 - Shared outputs (table data, site index/navigation) are changed only by the final integration session once all other tasks are done.
 
 ## Official sources (to be verified line by line)
-- REST Trade API: https://external-api.demo.kalshi.co/trade-api/v2
-- WebSocket API: wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2
-- (Also listed: https://demo-api.kalshi.co/trade-api/v2 and wss://demo-api.kalshi.co/trade-api/ws/v2)
+- Demo REST: https://external-api.demo.kalshi.co/trade-api/v2
+- Demo WebSocket: wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2
+- Production REST: https://external-api.kalshi.com/trade-api/v2
+- Production WebSocket: wss://external-api-ws.kalshi.com/trade-api/ws/v2
+- Kalshi docs: https://docs.kalshi.com/getting_started/quick_start_market_data
 
-## Tasks
+## Unified task board
 
-| # | Task | Status | Owner session | Files touched | Sources | Verification | Irregularities |
-|---|------|--------|---------------|---------------|---------|--------------|----------------|
-| 1 | Create COORDINATION.md shared task board | done | arena/7a21cbd2-tradebot2 | COORDINATION.md | — | — | — |
-| 2 | Executive summary of Kalshi API / demo environment | done | arena/7a21cbd2-tradebot2 | docs/executive-summary.md | Kalshi trade API docs (docs.kalshi.com via web_search) | Verified against docs.kalshi.com; direct API blocked by sandbox egress | Sandbox cannot reach kalshi.co/kalshi.com (TLS) |
-| 3 | Verify official Kalshi API endpoints & contract/price semantics | done | arena/7a21cbd2-tradebot2 | docs/api-verification.md | external-api.demo.kalshi.co | Verified endpoint surface vs docs.kalshi.com; direct connectivity blocked | Sandbox cannot reach kalshi.co/kalshi.com (TLS) |
-| 4 | Build live dashboard site (landing page + category subpages) | done | arena/7a21cbd2-tradebot2 | index.html, categories/*.html, assets/, alert/chart/portfolio pages | — | Built; live API values unverified (sandbox TLS block) | Sandbox cannot reach kalshi.co/kalshi.com (TLS) |
-| 5 | Price-swing alert system (>= $0.10) + two scrolling chats | done | arena/7a21cbd2-tradebot2 | alerts.html, assets/js/kalshi.js | Kalshi demo API | Implemented; unverified values flagged | Sandbox cannot reach kalshi.co/kalshi.com (TLS) |
-| 6 | Live event tracking until resolution (yes/no) | done | arena/7a21cbd2-tradebot2 | categories/*.html, assets/js/kalshi.js | docs.kalshi.com | Status column tracks open/closed/settled; resolution outcome logic in simResolve | Live resolution data unverified (API unreachable) |
-| 7 | Simulated trades automation + strategy testing | done | arena/7a21cbd2-tradebot2 | portfolio.html, assets/js/portfolio.js | docs.kalshi.com (POST /portfolio/events/orders) | Paper-trade simulator implemented; categorized by type | No real demo account credentials used |
-| 8 | Portfolio performance tracking + trade categorization | done | arena/7a21cbd2-tradebot2 | portfolio.html, assets/js/portfolio.js | docs.kalshi.com | Balance, P&L, positions, per-type win rate | Simulated/paper money only |
-| 9 | Price movement graph (time X, price Y, selectable length) + liquidity | done | arena/7a21cbd2-tradebot2 | chart.html, assets/js/charts.js | docs.kalshi.com (orderbook, candlesticks) | Chart.js graph + orderbook liquidity | Live price data unverified (API unreachable) |
-| 10 | Live/interactivity suggestions + sharp-jump event links | done | arena/7a21cbd2-tradebot2 | docs/interactivity-suggestions.md | docs.kalshi.com | Published as suggestions | — |
-| 11 | GitHub Pages site build + no broken links | in progress | arena/7a21cbd2-tradebot2 | GitHub Pages config | — | pending | pending |
-| 12 | Final integration: merge, re-verify line by line, publish, record PR | in progress | arena/7a21cbd2-tradebot2 | all | — | pending | pending |
-| 12 | Final integration: merge, re-verify line by line, publish, record PR | unclaimed | — | all | — | pending | pending |
+| # | Task | Status | Owner session(s) | File scope | Sources | Verification | Irregularities |
+|---|------|--------|------------------|------------|---------|--------------|----------------|
+| 1 | Executive summary & API verification | done | arena/a5878007-tradebot2; arena/7a21cbd2-tradebot2 | README.md; docs/index.html; docs/data/verified-markets.json; docs/executive-summary.md; docs/api-verification.md | Kalshi demo REST/WS endpoints; docs.kalshi.com | Endpoints and contract semantics verified vs docs.kalshi.com | Direct sandbox access to kalshi.co/kalshi.com blocked (TLS) |
+| 2 | Live dashboard & alerting system (>= $0.10, dual chats) | done | arena/a5878007-tradebot2; arena/7a21cbd2-tradebot2 | docs/index.html; docs/app.js; docs/styles.css | Kalshi demo API | Dual scrolling chats (All Events vs High-ROI Model) implemented | Live API values unverifiable from sandbox (TLS) |
+| 3 | Category subpages (Gas, Elections, Culture, Crypto, Golf) | done | arena/a5878007-tradebot2; arena/7a21cbd2-tradebot2 | docs/categories.html; docs/app.js | Kalshi demo API | Topic-separated tables with source links | Gas prices/Golf not standalone Kalshi categories — flagged unverified |
+| 4 | Portfolio, simulated trading & strategy analyzer | done | arena/a5878007-tradebot2; arena/7a21cbd2-tradebot2 | docs/portfolio.html; docs/app.js | docs.kalshi.com (POST /portfolio/events/orders) | Paper-trade simulator; per-type ROI categorization | No real demo account credentials used; simulated money only |
+| 5 | Flagged for Review & verification audit | done | arena/a5878007-tradebot2 | docs/flagged.html; COORDINATION.md | Kalshi demo API snapshot | KXGASPRICE returned HTTP error; KXGOLF returned 0 active markets at snapshot | Published on docs/flagged.html |
+| 6 | GitHub Pages build, PR & merge | done | arena/a5878007-tradebot2 | .github/workflows/pages.yml; COORDINATION.md | — | Pages workflow added (uploads `docs/`), PR #1 merged to main | — |
+| 7 | Final integration of session 7a21cbd2 analysis docs | done | arena/7a21cbd2-tradebot2 | docs/executive-summary.md; docs/api-verification.md; docs/interactivity-suggestions.md | docs.kalshi.com; user-specified demo URLs | Cross-checked against docs.kalshi.com | Sandbox TLS block noted |
+
+## Merge conflict resolution log
+- `arena/7a21cbd2-tradebot2` added a duplicate root-level site (index.html, categories/, assets/, alerts.html, chart.html, portfolio.html, flagged-for-review.html).
+- `arena/a5878007-tradebot2` had already merged the canonical site under `docs/` with a GitHub Pages workflow.
+- Resolution: kept the canonical `docs/` site + `.github/workflows/pages.yml`; kept session 7a21cbd2's analysis docs (`docs/executive-summary.md`, `docs/api-verification.md`, `docs/interactivity-suggestions.md`); removed the redundant root-level site files to avoid a duplicate, non-deployed site structure. Neither session's work was discarded.
 
 ## Flagged for Review / Unverified items
-(None yet)
+- Sandbox egress blocks `kalshi.co` / `kalshi.com` (TLS `SSL_ERROR_SYSCALL`), so live API values cannot be confirmed from the build sandbox; left blank and flagged unverified per the verification rules.
+- `KXGASPRICE` returned an HTTP error on the Demo API; `KXGOLF` returned 0 active markets at snapshot time — see `docs/flagged.html`.
+- Gas prices and golf are not standalone top-level Kalshi categories (mapped to Economics and Sports) — flagged unverified.
