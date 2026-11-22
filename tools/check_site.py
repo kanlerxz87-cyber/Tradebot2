@@ -48,6 +48,19 @@ class LinkParser(HTMLParser):
             self.scripts.append(d["src"])
 
 
+def _dataset_for(page_html: str) -> str:
+    """Concatenate the JSON datasets a page renders rows from, for anchor checks."""
+    import glob
+    parts = []
+    for path in sorted(glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                              "..", "data", "*.json"))):
+        try:
+            parts.append(open(path, encoding="utf-8").read())
+        except OSError:
+            pass
+    return "\n".join(parts)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default=".")
@@ -87,6 +100,12 @@ def main() -> int:
                 if frag_path.endswith(".html"):
                     frag_html = open(frag_path, encoding="utf-8").read()
                     if f'id="{anchor}"' not in frag_html:
+                        # Rows rendered from JSON carry their id at runtime. Accept the
+                        # anchor when the target page builds ids from a dataset AND the id
+                        # really exists in that dataset, so the guarantee is still checked.
+                        dynamic = 'id="${TB.esc(f.id)}"' in frag_html
+                        if dynamic and f'"id": "{anchor}"' in _dataset_for(frag_html):
+                            continue
                         errors.append(f"{page}: anchor not found -> {href}")
 
         for snippet, label in [("flagged.html", "Flagged"), ("sources.html", "Sources")]:

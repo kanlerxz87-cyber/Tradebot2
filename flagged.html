@@ -65,6 +65,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     <td><span class="tag ${f.status === 'open' ? 'elections' : f.status === 'unverified' ? 'gas' : 'crypto'}">${TB.esc(f.status)}</span></td>
     <td class="small">${TB.sourceLink(f.source, 'source ↗')}</td></tr>`).join('')
     || '<tr><td colspan="6" class="muted">No flags recorded.</td></tr>';
+
+  // Deep links such as flagged.html#F-15 scroll to that row.
+  const jump = () => {
+    const id = decodeURIComponent((location.hash || '').replace('#', ''));
+    const row = id && document.getElementById(id);
+    if (row) row.scrollIntoView({ block: 'center' });
+  };
+  jump();
+  window.addEventListener('hashchange', jump);
 });
 </script>
 </body>
