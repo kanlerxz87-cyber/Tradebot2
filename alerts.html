@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Price-Swing Alerts — Tradebot2 Kalshi Dashboard</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="mark">TB</div>
+      <div>Tradebot2</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories/elections.html">Elections</a></li>
+        <li><a href="categories/crypto.html">Crypto</a></li>
+        <li><a href="categories/culture.html">Culture</a></li>
+        <li><a href="categories/gas-prices.html">Gas Prices</a></li>
+        <li><a href="categories/golf.html">Golf</a></li>
+        <li><a href="alerts.html" class="active">Alerts</a></li>
+        <li><a href="chart.html">Charts</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="flagged-for-review.html" style="color:#b45309">Flagged for Review</a></li>
+      </ul>
+    </nav>
+    <div class="status-pill" id="page-status" data-status>Demo API connecting…</div>
+    <div class="subtle" id="page-lasterror" data-lasterror>—</div>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h1>Live Price-Swing Alerts</h1>
+    <p class="lead">Two scrolling chats for contract price swings of <strong>≥ $0.10 in either direction</strong>. Newest alerts appear at the top; the list auto-scrolls. Pause reading by hovering.</p>
+
+    <div class="notice info">
+      <strong>Threshold:</strong> any move of $0.10 or more up or down triggers an alert. The <strong>model-preferred</strong> chat shows only events a simple placeholder model scores as high potential ROI (large swing + high volume + price near $0.50). This model is simulated and is <strong>not financial advice</strong>.
+    </div>
+
+    <div class="grid cols-2">
+      <div class="card" style="height:640px;display:flex;flex-direction:column">
+        <div class="chat-header" style="padding:0.625rem 0.875rem;border-bottom:1px solid #e2e8f0;background:#f8fafc;flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:0.5rem;font-weight:700;color:#0f172a">All events<span style="font-weight:400;font-size:0.75rem;color:#64748b;margin-left:auto">≥ $0.10 swing</span></div>
+        </div>
+        <div id="chat-all" class="chat-body newest-top" style="flex:1;overflow-y:auto;padding:0.75rem 0.875rem;display:flex;flex-direction:column;gap:0.5rem;background:#fff">
+          <div class="chat-empty">Connecting to the Kalshi demo API…</div>
+        </div>
+      </div>
+
+      <div class="card" style="height:640px;display:flex;flex-direction:column">
+        <div class="chat-header" style="padding:0.625rem 0.875rem;border-bottom:1px solid #e2e8f0;background:#f8fafc;flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:0.5rem;font-weight:700;color:#0f172a">Model-preferred (high ROI)<span style="font-weight:400;font-size:0.75rem;color:#64748b;margin-left:auto">simulated model</span></div>
+        </div>
+        <div id="chat-model" class="chat-body newest-top" style="flex:1;overflow-y:auto;padding:0.75rem 0.875rem;display:flex;flex-direction:column;gap:0.5rem;background:#fff">
+          <div class="chat-empty">No model-preferred alerts yet.</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="subtle" style="margin-top:0.75rem">
+      Values that cannot be confirmed from the demo API (e.g., when the API is unreachable) are left blank and flagged unverified.
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div>Tradebot2 — Kalshi demo dashboard · Alerts</div>
+    <div class="subtle">Not financial advice. Demo / paper trading only.</div>
+  </div>
+</footer>
+
+<script src="assets/js/kalshi.js"></script>
+<script>
+  window.Tradebot.startPoll(15000);
+</script>
+</body>
+</html>

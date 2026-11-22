@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flagged for Review — Tradebot2 Kalshi Dashboard</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="mark">TB</div>
+      <div>Tradebot2</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories/elections.html">Elections</a></li>
+        <li><a href="categories/crypto.html">Crypto</a></li>
+        <li><a href="categories/culture.html">Culture</a></li>
+        <li><a href="categories/gas-prices.html">Gas Prices</a></li>
+        <li><a href="categories/golf.html">Golf</a></li>
+        <li><a href="alerts.html">Alerts</a></li>
+        <li><a href="chart.html">Charts</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="flagged-for-review.html" class="active" style="color:#b45309">Flagged for Review</a></li>
+      </ul>
+    </nav>
+    <div class="status-pill" id="page-status" data-status>Demo API connecting…</div>
+    <div class="subtle" id="page-lasterror" data-lasterror>—</div>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h1>Flagged for Review</h1>
+    <p class="lead">Irregularities and unverified items found while building this dashboard. These <strong>do not block the release</strong> and are published here for your review after the site is live.</p>
+
+    <div class="notice warn">
+      <strong>Sandbox connectivity limitation.</strong> Direct outbound access to <code>kalshi.co</code> / <code>kalshi.com</code> hosts is blocked from this build sandbox
+      (all returned <code>SSL_ERROR_SYSCOLL</code> / TLS errors), so the live Kalshi demo API could not be called directly during development.
+      All API facts were taken from official Kalshi documentation surfaced via web search (docs.kalshi.com). The live site still attempts to call the demo API
+      from the visitor's browser and reports connection status.
+    </div>
+
+    <h2>Unverified items</h2>
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Reason</th><th>Disposition</th><th>Source(s)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Live demo-account balance / positions / fills</td>
+          <td>Requires a signed demo API key; credentials were not collected; API unreachable from sandbox</td>
+          <td><span class="unverified">Left blank — unverified</span></td>
+          <td><a href="https://docs.kalshi.com/getting_started/quick_start_market_data" target="_blank" rel="noopener">docs.kalshi.com</a> (auth endpoints listed)</td>
+        </tr>
+        <tr>
+          <td>Real-time price values for any specific market</td>
+          <td>Demo API unreachable from build sandbox</td>
+          <td><span class="unverified">Left blank — unverified</span></td>
+          <td><a href="https://external-api.demo.kalshi.co/trade-api/v2" target="_blank" rel="noopener">external-api.demo.kalshi.co/trade-api/v2</a> (user-specified)</td>
+        </tr>
+        <tr>
+          <td>"Gas prices" as a standalone Kalshi category</td>
+          <td>Not a top-level Kalshi category; gas-price events are nested under Economics</td>
+          <td><span class="unverified">Unverified — tracked under Economics</span></td>
+          <td><a href="https://docs.kalshi.com/getting_started/quick_start_market_data" target="_blank" rel="noopener">docs.kalshi.com</a></td>
+        </tr>
+        <tr>
+          <td>"Golf" as a standalone Kalshi category</td>
+          <td>Not a top-level Kalshi category; golf events are nested under Sports</td>
+          <td><span class="unverified">Unverified — tracked under Sports</span></td>
+          <td><a href="https://docs.kalshi.com/getting_started/quick_start_market_data" target="_blank" rel="noopener">docs.kalshi.com</a></td>
+        </tr>
+        <tr>
+          <td>CORS behavior of demo API from github.io</td>
+          <td>Not tested (API unreachable from sandbox)</td>
+          <td><span class="unverified">Unverified — flagged</span></td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Source links for manual review</h2>
+    <ul>
+      <li><a href="https://external-api.demo.kalshi.co/trade-api/v2" target="_blank" rel="noopener">Kalshi demo REST API</a> (user-specified)</li>
+      <li><a href="https://demo-api.kalshi.co/trade-api/v2" target="_blank" rel="noopener">Kalshi demo REST API (alt host)</a> (user-specified)</li>
+      <li><code>wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2</code> — Kalshi demo WebSocket (user-specified)</li>
+      <li><a href="https://external-api.kalshi.com/trade-api/v2" target="_blank" rel="noopener">Kalshi production REST API</a> (docs.kalshi.com)</li>
+      <li><code>wss://external-api-ws.kalshi.com/trade-api/ws/v2</code> — Kalshi production WebSocket (docs.kalshi.com)</li>
+      <li><a href="https://docs.kalshi.com/getting_started/quick_start_market_data" target="_blank" rel="noopener">Kalshi docs: Quick Start: Market Data</a></li>
+    </ul>
+
+    <p class="subtle" style="margin-top:1.5rem">Per the verification rules: every table row carries a source link where a value can be confirmed; where it cannot, the value is left blank and flagged unverified. Nothing was inferred or filled in.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div>Tradebot2 — Kalshi demo dashboard · Flagged for Review</div>
+    <div class="subtle">Not financial advice. Demo / paper trading only.</div>
+  </div>
+</footer>
+
+<script src="assets/js/kalshi.js"></script>
+<script>window.Tradebot.startPoll(15000);</script>
+</body>
+</html>

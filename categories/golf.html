@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf — Tradebot2 Kalshi Dashboard</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="mark">TB</div>
+      <div>Tradebot2</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="elections.html">Elections</a></li>
+        <li><a href="crypto.html">Crypto</a></li>
+        <li><a href="culture.html">Culture</a></li>
+        <li><a href="gas-prices.html">Gas Prices</a></li>
+        <li><a href="golf.html" class="active">Golf</a></li>
+        <li><a href="../alerts.html">Alerts</a></li>
+        <li><a href="../chart.html">Charts</a></li>
+        <li><a href="../portfolio.html">Portfolio</a></li>
+        <li><a href="../flagged-for-review.html" style="color:#b45309">Flagged for Review</a></li>
+      </ul>
+    </nav>
+    <div class="status-pill" id="page-status" data-status>Demo API connecting…</div>
+    <div class="subtle" id="page-lasterror" data-lasterror>—</div>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h1>Golf</h1>
+    <p class="lead">Live Kalshi markets related to golf. Tracked inside the <strong>Sports</strong> category because <strong>golf is not a standalone top-level Kalshi category</strong>.</p>
+    <div class="notice warn">
+      <strong>Unverified category mapping.</strong> "Golf" is not a standalone top-level category in the Kalshi API;
+      golf events are nested under <em>Sports</em>. This mapping is flagged
+      <span class="unverified">unverified</span> until confirmed against an official source. Values are left blank where unconfirmed.
+    </div>
+    <div class="notice info">
+      <strong>Source:</strong> Kalshi public market data — GET /markets (no API key required).
+      <a href="https://docs.kalshi.com/getting_started/quick_start_market_data" target="_blank" rel="noopener">docs.kalshi.com</a>
+    </div>
+
+    <div class="filter-bar">
+      <strong>Sort by:</strong>
+      <select id="sort-golf" onchange="window.Tradebot.renderTopicTable('golf')">
+        <option value="volume">Volume (high to low)</option>
+        <option value="ticker">Ticker (A–Z)</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Ticker</th>
+            <th>Event / Market</th>
+            <th>Category</th>
+            <th>Yes Bid ($)</th>
+            <th>Yes Ask ($)</th>
+            <th>Volume</th>
+            <th>Event (source)</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="topic-table-golf">
+          <tr><td colspan="8" class="chat-empty">Loading live markets from the Kalshi demo API…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="subtle" style="margin-top:0.5rem">Blank or <span class="unverified">unverified</span> values could not be confirmed from an official source and are left blank — nothing is inferred.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div>Tradebot2 — Kalshi demo dashboard · Golf topic</div>
+    <div class="subtle">Not financial advice. Demo / paper trading only.</div>
+  </div>
+</footer>
+
+<script src="../assets/js/kalshi.js"></script>
+<script>
+  window.Tradebot.startPoll(15000);
+  window.Tradebot.renderTopicTable('golf');
+</script>
+</body>
+</html>
