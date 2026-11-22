@@ -26,6 +26,8 @@
   let lastRender = 0;
 
   /* ---------- mode control ---------- */
+  let lastActualMode = null; // 'live' | 'sim' — last synced store mode
+
   function setMode(target) {
     mode = target;
     const btns = document.querySelectorAll('#modeControls [data-mode]');
@@ -41,26 +43,48 @@
     clearOrderbookTimer();
     LIVE.stop();
     liveResolvedIds.clear();
+    lastActualMode = null;
     TRADER.reset();
     if (mode === 'sim') {
       resetStore();
       SIM.init();
       STORE.state.liveState = 'idle';
       setModeState('sim', 'Simulated mode — synthetic demo data', 'This session runs entirely on generated data so you can explore every feature. No Kalshi demo API was used.');
+      lastActualMode = 'sim';
+      renderAll();
     } else {
       resetStore();
+      lastActualMode = null;
       STORE.state.liveState = 'connecting';
       STORE.notify();
       LIVE.start(5000, null);
       startOrderbookTimer();
       // watch for connection failure, then fall back
-      const kick = setTimeout(() => {
-        if (STORE.state.liveState !== 'connected' && mode !== 'sim') {
+      setTimeout(() => {
+        if (lastActualMode === null && STORE.state.liveState !== 'connected' && mode !== 'sim') {
           LIVE.stop();
           SIM.init();
           setModeState('sim', 'Live API unavailable — showing simulation', 'The Kalshi demo API could not be reached. Showing clearly-labeled simulated data instead.');
+          lastActualMode = 'sim';
+          renderAll();
         }
-      }, 10000);
+      }, 9000);
+    }
+  }
+
+  function maybeTransitionLive() {
+    if (mode === 'sim') return;
+    const ls = STORE.state.liveState;
+    if (ls === 'connected' && lastActualMode !== 'live') {
+      lastActualMode = 'live';
+      setModeState('live', 'Live demo API connected', 'Public market data from the Kalshi demo environment. Demo prices may not reflect real markets.');
+      renderAll();
+    } else if (ls === 'failed' && lastActualMode !== 'sim') {
+      lastActualMode = 'sim';
+      LIVE.stop();
+      SIM.init();
+      setModeState('sim', 'Live API unavailable — showing simulation', 'The Kalshi demo API could not be reached. Showing clearly-labeled simulated data instead.');
+      renderAll();
     }
   }
 
@@ -169,6 +193,7 @@
     renderDepth();
     renderChats();
     renderStrategyTable();
+    renderTopicBreakdown();
     renderResolutions();
     renderPortfolio();
     renderBadge();
@@ -348,6 +373,22 @@
 
   function TT_STRATEGIES() { return TRADER.STRATEGIES; }
 
+  function renderTopicBreakdown() {
+    const pf = PORTFOLIO.compute();
+    const el = $('topicRows');
+    if (!el) return;
+    const topics = TOPICS.filter(t => pf.byTopic[t.id] || true);
+    el.innerHTML = topics.map(t => {
+      const d = pf.byTopic[t.id] || { topic: t.id, trades: 0, wins: 0, pnl: 0 };
+      return `<tr>
+        <td><span class="chip" style="border-color:${t.color}55;color:${t.color};background:${t.color}18;">${t.name}</span></td>
+        <td class="num">${d.trades}</td>
+        <td class="num good">${d.wins}</td>
+        <td class="num ${d.pnl >= 0 ? 'good' : 'bad'}">${d.pnl >= 0 ? '+' : ''}${fmt2(d.pnl)}</td>
+      </tr>`;
+    }).join('');
+  }
+
   function renderResolutions() {
     const el = $('resolvedFeed');
     const resolutions = STORE.state.resolved.slice(0, 30);
@@ -400,20 +441,6 @@
   setInterval(() => tickOnce(), 1000);
   window.addEventListener('resize', () => renderChart());
   // watch live state transitions -> sync mode badge/banner
-  STORE.subscribe(() => {
-    if (mode === 'sim') return;
-    if (STORE.state.liveState === 'connected' && STORE.state.mode !== 'live') {
-      STORE.state.mode = 'live';
-      setModeState('live', 'Live demo API connected', 'Public market data from the Kalshi demo environment. Demo prices may not reflect real markets.');
-      renderAll();
-    }
-    if (STORE.state.liveState === 'failed' && STORE.state.mode !== 'sim') {
-      LIVE.stop();
-      SIM.init();
-      setModeState('sim', 'Live API unavailable — showing simulation', 'The Kalshi demo API could not be reached. Showing clearly-labeled simulated data instead.');
-      renderAll();
-    }
-    if (Date.now() - lastRender > 1200) { lastRender = Date.now(); }
-  });
+  STORE.subscribe(() => maybeTransitionLive());
   render(Date.now());
 })();

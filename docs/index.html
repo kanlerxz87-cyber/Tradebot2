@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalshi Demo Dashboard — Live Event Tracker</title>
+<meta name="description" content="A clean, live dashboard for the highest-dollar Kalshi demo events — gas, elections, culture, crypto and golf — with sudden-swing alerts, liquidity depth, simulated trades and portfolio tracking.">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html">
+      <span class="dot">K</span>
+      <span>Kalshi Demo Tracker<small>Live event tracker</small></span>
+    </a>
+    <nav class="navlinks">
+      <a href="index.html" class="active">Landing</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="topics/gas.html">Gas</a>
+      <a href="topics/elections.html">Elections</a>
+      <a href="topics/culture.html">Culture</a>
+      <a href="topics/crypto.html">Crypto</a>
+      <a href="topics/golf.html">Golf</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="flagged-for-review.html">Flagged</a>
+    </nav>
+    <span class="mode-badge"><span class="pulse"></span><span>DEMO</span></span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Kalshi demo — live event tracker</div>
+      <h1>Follow the biggest dollar-volume events on Kalshi demo — from price swing to settlement.</h1>
+      <p class="lead">A clean, live dashboard that tracks the highest-dollar events across Gas, Elections, Culture, Crypto and Golf. It fires alerts on sudden ≥ $0.10 swings, draws price charts, shows liquidity depth, tracks resolutions and automates simulated trades — all against the Kalshi demo environment.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="dashboard.html">Open live dashboard →</a>
+        <a class="btn ghost" href="methodology.html">Methodology &amp; sources</a>
+      </div>
+      <span class="chip amber">No real money · No real orders · Demo data only</span>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="stat-grid">
+      <div class="stat"><div class="label">Tracked topics</div><div class="value">5</div><div class="meta">Gas · Elections · Culture · Crypto · Golf</div></div>
+      <div class="stat"><div class="label">Alert threshold</div><div class="value">$0.10</div><div class="meta">Sudden swings in either direction</div></div>
+      <div class="stat"><div class="label">Simulated strategies</div><div class="value">3</div><div class="meta">Momentum · Mean reversion · Swing breaker</div></div>
+      <div class="stat"><div class="label">Resolution tracking</div><div class="value">YES/NO</div><div class="meta">Events tracked until settled</div></div>
+    </div>
+
+    <div class="section-head">
+      <h2>Topics</h2>
+      <span class="meta">Each topic is its own page — events stay organized within the topic</span>
+    </div>
+
+    <div class="topic-grid">
+      <a class="topic-card" href="topics/gas.html">
+        <div class="tc-top"><span class="dot" style="background:#f59e0b;"></span><h3>Gas Prices</h3></div>
+        <p>Crude and gasoline contracts that react to supply shocks and demand swings.</p>
+        <div class="tc-meta">Gas · Crude · Fuel</div>
+      </a>
+      <a class="topic-card" href="topics/elections.html">
+        <div class="tc-top"><span class="dot" style="background:#60a5fa;"></span><h3>Elections</h3></div>
+        <p>Political contracts — winners, margins and key races where volume concentrates.</p>
+        <div class="tc-meta">Votes · Senate · House</div>
+      </a>
+      <a class="topic-card" href="topics/culture.html">
+        <div class="tc-top"><span class="dot" style="background:#a78bfa;"></span><h3>Culture</h3></div>
+        <p>Celebrity, music, film and TV moments that move contracts hard and fast.</p>
+        <div class="tc-meta">Music · Film · Awards</div>
+      </a>
+      <a class="topic-card" href="topics/crypto.html">
+        <div class="tc-top"><span class="dot" style="background:#34d399;"></span><h3>Crypto</h3></div>
+        <p>BTC, ETH and other majors — momentum swings and breakouts.</p>
+        <div class="tc-meta">BTC · ETH · Coins</div>
+      </a>
+      <a class="topic-card" href="topics/golf.html">
+        <div class="tc-top"><span class="dot" style="background:#f472b6;"></span><h3>Golf</h3></div>
+        <p>Tournament markets — majors and top events where one swing moves the field.</p>
+        <div class="tc-meta">Masters · US Open · PGA</div>
+      </a>
+    </div>
+
+    <div class="section-head">
+      <h2>How it works</h2>
+      <span class="meta">Five steps from signal to portfolio</span>
+    </div>
+
+    <div class="grid cols-4">
+      <div class="card"><h3>1 · Discover</h3><p class="sub">Live events are ranked by dollar volume across the five tracked topics.</p></div>
+      <div class="card"><h3>2 · Alert</h3><p class="sub">Sudden swings ≥ $0.10 fire into a scrolling chat — all events and a high-ROI filter.</p></div>
+      <div class="card"><h3>3 · Signal</h3><p class="sub">A heuristic model scores each swing for high-ROI potential. Not a financial recommendation.</p></div>
+      <div class="card"><h3>4 · Trade</h3><p class="sub">Three simulated strategies auto-execute. All trades are simulated; nothing executes real orders.</p></div>
+    </div>
+
+    <div class="banner info">
+      <span class="ico">ℹ</span>
+      <div>
+        <b>Live or simulated?</b>
+        <p>The dashboard tries the official Kalshi demo API first. If it is unreachable — for example, from a restricted network — it falls back to clearly-labeled simulated data so every feature stays explorable.</p>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <h2>Trust &amp; verification</h2>
+      <span class="meta">Every fact in the tables links to an official source or is flagged</span>
+    </div>
+
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>Methodology</h3>
+        <p class="sub">How data is sourced, verified and labeled — including what is unverified.</p>
+        <a href="methodology.html" style="margin-top:10px; display:inline-block;">Read methodology →</a>
+      </div>
+      <div class="card">
+        <h3>Flagged for review</h3>
+        <p class="sub">Every unverified value and irregular finding, with source links.</p>
+        <a href="flagged-for-review.html" style="margin-top:10px; display:inline-block;">See flagged items →</a>
+      </div>
+      <div class="card">
+        <h3>Live dashboard</h3>
+        <p class="sub">Charts, orderbook depth, two chats, strategies and portfolio performance.</p>
+        <a href="dashboard.html" style="margin-top:10px; display:inline-block;">Open dashboard →</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>Project</h4>
+        <p style="margin:0;">Kalshi Demo Tracker — live event tracking with simulated trades. Not affiliated with Kalshi.</p>
+      </div>
+      <div>
+        <h4>Sources</h4>
+        <ul>
+          <li><a href="https://docs.kalshi.com/getting_started/demo_env.md" target="_blank" rel="noopener">Kalshi demo environment</a></li>
+          <li><a href="https://docs.kalshi.com/getting_started/api_environments.md" target="_blank" rel="noopener">API environments &amp; endpoints</a></li>
+          <li><a href="https://docs.kalshi.com/getting_started/quick_start_market_data.md" target="_blank" rel="noopener">Market data quick start</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Scope</h4>
+        <p style="margin:0;">Demo only. No real money. No real orders. Demo prices may not reflect real markets.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

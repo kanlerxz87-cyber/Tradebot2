@@ -63,7 +63,7 @@ const ALERT_ENGINE = (() => {
       isSim: market.isSim,
       score: scored.score,
       verdict: scored.verdict,
-      roiFlag: scored.score >= 60,
+      roiFlag: scored.score >= 70,
     });
   }
 

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Methodology — Kalshi Demo Event Tracker</title>
+<meta name="description" content="How the dashboard sources, verifies and labels data — and what is not verified.">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html">
+      <span class="dot">K</span>
+      <span>Kalshi Demo Tracker<small>Live event tracker</small></span>
+    </a>
+    <nav class="navlinks">
+      <a href="index.html">Landing</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="topics/gas.html">Gas</a>
+      <a href="topics/elections.html">Elections</a>
+      <a href="topics/culture.html">Culture</a>
+      <a href="topics/crypto.html">Crypto</a>
+      <a href="topics/golf.html">Golf</a>
+      <a href="methodology.html" class="active">Methodology</a>
+      <a href="flagged-for-review.html">Flagged</a>
+    </nav>
+    <span class="mode-badge"><span class="pulse"></span><span>DEMO</span></span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Methodology</div>
+      <h1>How this dashboard sources, verifies and labels data</h1>
+      <p class="lead">This page documents every source used, what is verified against official docs, and what is an internal project rule or explicitly unverified. Anything not confirmed from an official source is left blank and flagged on the <a href="flagged-for-review.html">Flagged for review</a> page.</p>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="section-head"><h2>Architecture</h2></div>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Live mode (demo API)</h3>
+        <ul class="sub" style="padding-left: 20px; margin-top: 10px; color: var(--muted); font-size: 13px;">
+          <li>Public market data polling: <span class="mono">GET /markets?status=open&amp;limit=100</span></li>
+          <li>Selected-market detail: <span class="mono">GET /markets/{ticker}</span></li>
+          <li>Orderbook depth: <span class="mono">GET /markets/{ticker}/orderbook</span></li>
+          <li>Official endpoints: <a href="https://external-api.demo.kalshi.co/trade-api/v2" target="_blank" rel="noopener">external-api.demo.kalshi.co</a> (recommended) with <a href="https://demo-api.kalshi.co/trade-api/v2" target="_blank" rel="noopener">demo-api.kalshi.co</a> fallback</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Simulated fallback</h3>
+        <p class="sub" style="margin-top: 10px;">When the demo API is unreachable (sandbox or restricted network), the dashboard runs the built-in simulator: clearly-labeled synthetic markets with random-walk prices, news shocks, resolutions and trade execution. Everything labeled SIMULATED is synthetic — it is not market data.</p>
+      </div>
+    </div>
+
+    <div class="section-head"><h2>Pipeline</h2></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Step</th><th>How</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>1. Discovery</td><td>Live: poll <span class="mono">/markets</span>; Sim: generate events</td><td>Ranked by dollar volume</td></tr>
+          <tr><td>2. Tracking</td><td>Per-market history, price, spread, liquidity</td><td>Live: 5s polls; Sim: 1s ticks</td></tr>
+          <tr><td>3. Alerting</td><td>Alert when |price − 10s baseline| ≥ $0.10</td><td>Re-anchors every 15s or +$0.02 swing; sim/live both</td></tr>
+          <tr><td>4. ROI scoring</td><td>Heuristic: sweet spot + liquidity + volume + spread + momentum</td><td>Not a financial recommendation</td></tr>
+          <tr><td>5. Simulated trades</td><td>3 strategies fire on swings; all trades simulated</td><td>No real orders are ever placed</td></tr>
+          <tr><td>6. Resolution</td><td>Track until status → settled with YES/NO</td><td>Snapshot of history and volume per market</td></tr>
+          <tr><td>7. Portfolio</td><td>Starting cash $10,000; P&amp;L, win rate, equity from closed trades</td><td>All simulated</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-head"><h2>Verified sources</h2><span class="meta">Every official claim above, with the page it was read from</span></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Claim</th><th>Source</th><th>Verification</th></tr></thead>
+        <tbody>
+          <tr><td class="sub">Demo REST base URL (recommended)</td><td><a href="https://docs.kalshi.com/getting_started/demo_env.md" target="_blank" rel="noopener">docs.kalshi.com — Demo env</a></td><td><span class="chip green">Verified</span></td></tr>
+          <tr><td class="sub">Demo WebSocket base URL (recommended)</td><td><a href="https://docs.kalshi.com/getting_started/demo_env.md" target="_blank" rel="noopener">docs.kalshi.com — Demo env</a></td><td><span class="chip green">Verified</span></td></tr>
+          <tr><td class="sub">Production + demo endpoint table</td><td><a href="https://docs.kalshi.com/getting_started/api_environments.md" target="_blank" rel="noopener">docs.kalshi.com — API environments</a></td><td><span class="chip green">Verified</span></td></tr>
+          <tr><td class="sub">Public market data without auth</td><td><a href="https://docs.kalshi.com/getting_started/quick_start_market_data.md" target="_blank" rel="noopener">docs.kalshi.com — Quick Start: Market Data</a></td><td><span class="chip green">Verified</span></td></tr>
+          <tr><td class="sub">Market status values (unopened/open/closed/settled)</td><td><a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">docs.kalshi.com — Get Markets</a></td><td><span class="chip green">Verified</span></td></tr>
+          <tr><td class="sub">Orderbook shape and best-bid ordering</td><td><a href="https://docs.kalshi.com/getting_started/quick_start_market_data.md" target="_blank" rel="noopener">docs.kalshi.com — Quick Start: Market Data</a></td><td><span class="chip green">Verified</span></td></tr>
+          <tr><td class="sub">Demo prices may not reflect real markets</td><td><a href="https://docs.kalshi.com/getting_started/demo_env.md" target="_blank" rel="noopener">docs.kalshi.com — Demo env</a></td><td><span class="chip green">Verified</span></td></tr>
+          <tr><td class="sub">Markets settle YES or NO at $1 per contract</td><td><a href="https://docs.kalshi.com/getting_started/market_settlement.md" target="_blank" rel="noopener">docs.kalshi.com — Market Settlement</a></td><td><span class="chip green">Verified</span></td></tr>
+          <tr><td class="sub">Fixed-point price / quantity representation</td><td><a href="https://docs.kalshi.com/getting_started/fixed_point_migration.md" target="_blank" rel="noopener">docs.kalshi.com — Fixed-point</a></td><td><span class="chip green">Verified</span></td></tr>
+          <tr><td class="sub">Demo account creation flow</td><td><a href="https://help.kalshi.com/en/articles/13823775-creating-and-using-a-demo-account" target="_blank" rel="noopener">help.kalshi.com — Demo account</a></td><td><span class="chip green">Verified</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-head"><h2>What is NOT verified</h2><span class="meta">See <a href="flagged-for-review.html">Flagged for review</a> for the full list</span></div>
+    <ul style="padding-left: 22px; color: var(--muted);">
+      <li>Live demo API payload field names are best-effort and unverified — the dashboard degrades gracefully rather than guessing.</li>
+      <li>WebSocket channels are not enabled — the docs describe auth+headers that are not browser-safe to forge, and the feature is marked in the flagged list.</li>
+      <li>Values on topic pages are simulated, not demo market data.</li>
+      <li>“ROI” scoring is an internal heuristic, not a Kalshi product or a financial recommendation.</li>
+    </ul>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>Project</h4>
+        <p style="margin:0;">Kalshi Demo Tracker — live event tracking with simulated trades.</p>
+      </div>
+      <div>
+        <h4>Source</h4>
+        <ul>
+          <li><a href="https://github.com/kanlerxz87-cyber/Tradebot2" target="_blank" rel="noopener">kanlerxz87-cyber/Tradebot2</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

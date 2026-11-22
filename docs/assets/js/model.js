@@ -13,13 +13,13 @@ const ROI_MODEL = (() => {
   }
 
   function liquidityScore(liq) {
-    if (!liq || liq <= 0) return 30;
-    return Math.min(100, (liq / 2500) * 100);
+    if (!liq || liq <= 0) return 25;
+    return Math.min(100, (liq / 40000) * 100);
   }
 
   function volumeScore(vol) {
-    if (!vol || vol <= 0) return 30;
-    return Math.min(100, (vol / 60000) * 100);
+    if (!vol || vol <= 0) return 25;
+    return Math.min(100, (vol / 400000) * 100);
   }
 
   function spreadScore(spread) {
@@ -37,7 +37,7 @@ const ROI_MODEL = (() => {
       if (hist[i].t <= ref) { base = hist[i].price; break; }
     }
     const delta = last.price - base;
-    const score = Math.min(100, Math.abs(delta) * 400);
+    const score = Math.min(100, Math.abs(delta) * 300);
     return { delta, score };
   }
 
@@ -49,7 +49,7 @@ const ROI_MODEL = (() => {
     const spr = spreadScore(market.spread);
     const mom = momentum(market);
 
-    let total = 0.30 * sweet + 0.25 * liq + 0.15 * vol + 0.15 * spr + 0.15 * mom.score;
+    let total = 0.25 * sweet + 0.25 * liq + 0.10 * vol + 0.15 * spr + 0.25 * mom.score;
     total = Math.max(0, Math.min(100, total));
 
     const verdict = total >= 70 ? 'High ROI' : total >= 50 ? 'Watch' : 'Skip';

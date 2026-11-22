@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flagged for Review — Kalshi Demo Event Tracker</title>
+<meta name="description" content="Every unverified value and irregular finding in this project, with source links.">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html">
+      <span class="dot">K</span>
+      <span>Kalshi Demo Tracker<small>Live event tracker</small></span>
+    </a>
+    <nav class="navlinks">
+      <a href="index.html">Landing</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="topics/gas.html">Gas</a>
+      <a href="topics/elections.html">Elections</a>
+      <a href="topics/culture.html">Culture</a>
+      <a href="topics/crypto.html">Crypto</a>
+      <a href="topics/golf.html">Golf</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="flagged-for-review.html" class="active">Flagged</a>
+    </nav>
+    <span class="mode-badge"><span class="pulse"></span><span>DEMO</span></span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Flagged for review</div>
+      <h1>Irregularities &amp; unverified items</h1>
+      <p class="lead">Every value or claim that cannot be confirmed from an official source is listed here with its source link. Nothing on this site is hallucinated — anything missing carries this flag.</p>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="banner warn">
+      <span class="ico">⚠</span>
+      <div>
+        <b>Read me first</b>
+        <p>Flagged items do not block the merge. They are published here so you can review them after the site is live. Items marked <span class="flag">Partial</span> are honest about what is known; items marked <span class="flag">Unverified</span> should not be trusted as facts.</p>
+      </div>
+    </div>
+
+    <div class="section-head"><h2>Flagged items</h2><span class="meta">Source-linked, severity-tagged</span></div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>ID</th><th>Area</th><th>Item</th><th>Severity</th><th>Source / note</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">F1</td><td>Live API payloads</td><td class="sub"><b>Field names in live market responses</b> are best-effort approximations of official docs; the dashboard degrades gracefully rather than guessing. Verify in the dashboard against live data before trusting.</td><td><span class="chip red">Partial</span></td><td><a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">docs.kalshi.com — Get Markets</a></td></tr>
+          <tr><td class="mono">F2</td><td>WebSocket</td><td class="sub"><b>WebSocket streaming is not enabled.</b> The official docs show API-key headers for the handshake; browsers cannot safely forward real keys. Public-channel ws without auth is documented by the Kalshi Python SDK but not by the official quick-start. REST polling (5s) is used instead.</td><td><span class="chip amber">Unverified</span></td><td><a href="https://docs.kalshi.com/getting_started/quick_start_websockets.md" target="_blank" rel="noopener">docs.kalshi.com — Quick Start: WebSockets</a> · <a href="https://texascoding.github.io/kalshi-python-sdk/websockets/" target="_blank" rel="noopener">Kalshi Python SDK — WebSocket</a></td></tr>
+          <tr><td class="mono">F3</td><td>Orderbook</td><td class="sub"><b>Orderbook depth in live mode</b> depends on a live fetch succeeding. When unreachable, the depth panel shows a clear “unavailable” — it never fills in fabricated numbers.</td><td><span class="chip amber">Partial</span></td><td><a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook.md" target="_blank" rel="noopener">docs.kalshi.com — Get Orderbook</a></td></tr>
+          <tr><td class="mono">F4</td><td>ROI model</td><td class="sub"><b>The “High ROI” filter is a heuristic</b> (sweet spot + liquidity + volume + spread + momentum) — not a financial recommendation and not a Kalshi product. It is labeled as such on every page.</td><td><span class="chip amber">Internal model</span></td><td>internal — this site's own logic</td></tr>
+          <tr><td class="mono">F5</td><td>Simulated data</td><td class="sub"><b>Topic pages and the dashboard's SIM mode</b> show synthetic events, not Kalshi demo market data. Prices, volumes, liquidity and news are generated.</td><td><span class="chip amber">Unverified</span></td><td>internal — this site's own simulator</td></tr>
+          <tr><td class="mono">F6</td><td>Trades</td><td class="sub"><b>All trades are simulated</b> — no orders are ever placed on the demo exchange. Simulated P&amp;L is bookkeeping only.</td><td><span class="chip amber">By design</span></td><td>internal — this site's own simulator</td></tr>
+          <tr><td class="mono">F7</td><td>Topics</td><td class="sub"><b>The five tracked topics</b> (gas, elections, culture, crypto, golf) use title keywords that are not a Kalshi-official category taxonomy. Keyword filtering can misclassify or miss markets.</td><td><span class="chip amber">Internal heuristic</span></td><td>internal — this site's own logic</td></tr>
+          <tr><td class="mono">F8</td><td>Resolutions</td><td class="sub"><b>YES/NO resolution detection in live mode</b> relies on the market <span class="mono">status</span> field and its <span class="mono">result</span> field, which are not fully documented here. When a market settles, the dashboard shows YES/NO only when the API clearly reports it; otherwise it shows PENDING.</td><td><span class="chip amber">Partial</span></td><td><a href="https://docs.kalshi.com/getting_started/market_settlement.md" target="_blank" rel="noopener">docs.kalshi.com — Market Settlement</a></td></tr>
+          <tr><td class="mono">F9</td><td>Portfolio (live)</td><td class="sub"><b>Live demo portfolio balances/positions</b> require a signed API request with the user's own demo credentials (RSA-PSS / Ed25519). Credentials are never stored in this repository or in the page. The simulated portfolio is the only accounting this site performs. See the official docs before attempting live orders.</td><td><span class="chip amber">Needs credentials</span></td><td><a href="https://docs.kalshi.com/getting_started/quick_start_authenticated_requests.md" target="_blank" rel="noopener">docs.kalshi.com — Authenticated Requests</a> · <a href="https://docs.kalshi.com/getting_started/api_keys.md" target="_blank" rel="noopener">docs.kalshi.com — API Keys</a></td></tr>
+          <tr><td class="mono">F10</td><td>Environment</td><td class="sub"><b>Demo environment may not reflect real markets</b> — official warning. Values on the site are demo numbers, not production prices.</td><td><span class="chip red">Warning</span></td><td><a href="https://docs.kalshi.com/getting_started/demo_env.md" target="_blank" rel="noopener">docs.kalshi.com — Demo env</a></td></tr>
+          <tr><td class="mono">F11</td><td>CORS / reachability</td><td class="sub"><b>Browser access to the demo API is not guaranteed.</b> CORS headers and network restrictions may block the live fetch; the site falls back to simulation and says so. The demo API is unreachable from this build sandbox.</td><td><span class="chip amber">Unverified</span></td><td>docs.kalshi.com — <a href="https://docs.kalshi.com/getting_started/api_environments.md" target="_blank" rel="noopener">API environments</a></td></tr>
+          <tr><td class="mono">F12</td><td>Repo</td><td class="sub"><b>Original repo contents</b>: single line README (<span class="mono"># Tradebot2</span>). Nothing else existed to verify. The live dashboard is the main new surface.</td><td><span class="chip green">Verified</span></td><td>this repository — <a href="https://github.com/kanlerxz87-cyber/Tradebot2" target="_blank" rel="noopener">README.md</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-head"><h2>What this does not claim</h2></div>
+    <ul style="padding-left: 22px; color: var(--muted);">
+      <li>This site is not affiliated with Kalshi, and it does not execute in production.</li>
+      <li>All values on topic pages and in SIM mode are synthetic and clearly labeled.</li>
+      <li>“High ROI” and “model pick” labels are ranked heuristic signals, not recommendations.</li>
+      <li>No real money, signed credentials or orders are stored in the repository.</li>
+    </ul>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>Project</h4>
+        <p style="margin:0;">Kalshi Demo Tracker — flags are published for review, not hidden.</p>
+      </div>
+      <div>
+        <h4>Sources</h4>
+        <ul>
+          <li><a href="https://docs.kalshi.com/getting_started/demo_env.md" target="_blank" rel="noopener">Demo environment</a></li>
+          <li><a href="https://docs.kalshi.com/getting_started/api_environments.md" target="_blank" rel="noopener">API environments</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
