@@ -48,4 +48,9 @@ These items are published on the site's **Flagged for review** page and do not b
 
 ## Pull request and deployment record
 
-_Pending final PR creation, merge, and deployment verification._
+| Item | Result |
+|---|---|
+| Final integration PR | [#6 — Build source-first Kalshi demo Signal Desk](https://github.com/kanlerxz87-cyber/Tradebot2/pull/6) |
+| PR status | Open; automated checks pending after final coordination update. |
+| Merge result | Pending. |
+| GitHub Pages | Pending post-merge workflow deployment to <https://kanlerxz87-cyber.github.io/Tradebot2/>. |
