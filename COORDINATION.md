@@ -179,3 +179,13 @@ timestamps years after close on some markets.
   Per the pre-existing irregularity recorded above, the live URL currently keeps the legacy build;
   switching Pages to GitHub Actions source is a manual repo-settings step owned by the integration
   session (HTTP 403 from this token), unchanged by this PR.
+
+---
+
+## Session `arena-d60a6d1e` — collector safety audit
+
+| Task | Status | Owner | File scope | Notes |
+|---|---|---|---|---|
+| Demo collector environment and data integrity audit | `in progress` | `arena-d60a6d1e` | `scripts/kalshi_collector.py`, `scripts/tests/` | Examine the previously flagged production-default mismatch and test fixes; no changes to shared Pages integration files. |
+
+Claimed 2026-11-22 07:23 UTC. This session uses its fixed Arena branch `arena/d60a6d1e-tradebot2`.
