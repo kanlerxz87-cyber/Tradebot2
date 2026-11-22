@@ -80,3 +80,29 @@ Runtime note: fixed to single session branch `arena/4f9ce955-tradebot2`. Integra
 3. PR Link: https://github.com/kanlerxz87-cyber/Tradebot2/pull/8
 
 4. Third merge against `origin/main` (`a7a6284`, after PR #7 by `arena-93ec9646`): preserved PR #7's `dash/`, `data/snapshot.json`, `tools/`, and `.github/workflows/pages.yml` intact while resolving `COORDINATION.md` and `README.md`.
+
+### Session log — arena/0737c6bc-tradebot2
+
+- Session: `session-0737c6bc` (this branch, originally branched from `003447e`).
+- At start this session built a parallel static dashboard (flat pages `dashboard.html`,
+  `portfolio.html`, `review.html`, `flagged-review.html`, `executive-summary.html`,
+  `topics/*.html`, `assets/`, plus `scripts/simulate.js` and `data/README.md`), verified it with
+  jsdom smoke tests (events table, >= $0.10 swing alerts -> high-ROI feed, simulated ledger,
+  chart canvas guard), then discovered that the same scope was merged into `main` by other
+  parallel sessions (PRs #1-#9) with a stronger implementation (CI pipeline, verified taxonomy via
+  `/search/tags_by_categories`, `check_site.py`, dual root + /monitor + /dash + /pages publish).
+  Per the board's rule that shared outputs are owned by the integration session, this session
+  DROPPED its duplicate static site on this branch (kept locally, not merged) rather than
+  overwrite `main`'s site. The dropped site is kept outside the repo for reference.
+- Unique additions kept (additive, no conflicts): `scripts/simulate.js` (headless Node simulator;
+  paper-default, `--live` places orders on the DEMO environment with user-held credentials only)
+  and `data/README.md` (format notes; no fabricated data).
+- Verification performed (jsdom): dashboard/topic pages render, >= $0.10 alerts fire and are
+  routed to both chats, simulated ledger auto-fills, header/nav/footer inject, chart guards handle
+  missing canvas, portfolio page aggregates ledger correctly. Not deployed (dropped).
+- Irregularity noticed, NOT edited, flagged for review: `.github/workflows/pages.yml` runs
+  `python3 scripts/kalshi_collector.py` without setting `KALSHI_BASE`, so the collector defaults
+  to PRODUCTION (`https://external-api.kalshi.com/trade-api/v2`) while the site is branded as a demo
+  tracker (see also PR #4, which overlaps the same shared file). `data/portfolio-log.json` is not
+  covered by `.gitignore` — requested for the next integration session.
+- Status: additive handoff -> see the open PR from this branch.
