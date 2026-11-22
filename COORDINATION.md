@@ -324,20 +324,34 @@ rebuild is kept as an archived generation; the published pipeline is untouched e
 
 ### PR / deploy record
 
-* PR: [#25](https://github.com/kanlerxz87-cyber/Tradebot2/pull/25) — "Integration Session: real site gate, corrected CORS, gas coverage, honest docs"
-* Merge commit: _(filled in after the merge)_
-* Pages build/deploy: _(filled in after the deploy)_
-* Live checks: _(filled in after the deploy)_
+| PR | What | Merge commit | Result |
+|---|---|---|---|
+| [#25](https://github.com/kanlerxz87-cyber/Tradebot2/pull/25) | Site gate retargeted to the published pages; false “no CORS” claim corrected; gas topic opened to `Oil & Gas`; 25 markets per topic; README/EXECUTIVE_SUMMARY rewritten; `data/verification.json` | `e34bdb8` | merged |
+| [#26](https://github.com/kanlerxz87-cyber/Tradebot2/pull/26) | Collector scanned only the first ~2,000 of ~8,200 open markets (200-row pages × 10) — culture and golf were invisible | `e628df0` | merged |
+| [#27](https://github.com/kanlerxz87-cyber/Tradebot2/pull/27) · [#29](https://github.com/kanlerxz87-cyber/Tradebot2/pull/29) · [#30](https://github.com/kanlerxz87-cyber/Tradebot2/pull/30) | Coverage probe (`scripts/probe_coverage.py`, `data/…`/`probe/coverage.json`): one known series per topic, the golf chain, per-series open events | — | merged |
+| [#28](https://github.com/kanlerxz87-cyber/Tradebot2/pull/28) | Golf/gas series enumerated from the official `category`/`tags` filters instead of guessed tickers | — | merged |
+| [#31](https://github.com/kanlerxz87-cyber/Tradebot2/pull/31) · [#32](https://github.com/kanlerxz87-cyber/Tradebot2/pull/32) | Golf coverage gap published as an evidenced statement (F-13) + invented `KXPGATOUR`/`KXLPGATOUR` tickers replaced with the verified ones | `e4ae092` | merged |
 
----
+**Pages:** GitHub Pages is `build_type: legacy` from `main:/`. The build for `e4ae092` reports `status: built`
+(`gh api repos/…/pages/builds`). Live checks after that build:
 
-## Session `arena/10428a57-tradebot2` — full 5-topic discovery (including Golf & AAA Gas), candle swing detection & backtest fix (claimed 2026-11-22)
+* `gas-prices.html` — **139 open gas markets, 25 tracked**, real contracts (`KXAAAGASM-26DEC31-3.30` at `$0.70` last,
+  `KXAAAGASW-26NOV23-3.6400` at `$0.84` last, WTI strikes), every row carrying an `API ↗` and `Kalshi ↗` link, snapshot
+  `Nov 22, 03:11 AM`. Before this session the same page read “no open gas prices markets”.
+* `golf.html` — empty board, now stating the measurement: 134 golf series in the catalogue, **0 open events** for the four
+  largest, evidence in `data/coverage.json`, flag **F-13**.
+* `flagged.html` — carries F-01 … F-13, including the corrected CORS statement and the fabricated-ticker evidence.
+* `index.html` — the landing page from #24 pointing at `/live/`; the gate now checks it and `live/index.html` together.
 
-Base: `main` @ `330f82e` (after PRs #1–#26). Claimed after all prior sessions merged.
+**Correction worth carrying forward:** `KXPGATOUR` and `KXLPGATOUR` are not series tickers. Because the API ignores an unknown
+`series_ticker` filter and returns the whole book, querying them *looks* like healthy coverage. Any future count must be read
+next to its series ticker and cursor state.
 
-| # | Task | Status | Owner | File scope | Notes |
-|---|------|--------|-------|-----------|-------|
-| A1 | Fix `app/topics.py` and `app/collector.py` to discover active open and settled series across all 5 topics (`gas_prices`, `elections`, `culture`, `crypto`, `golf`) — fixing `golf: 0 open` and missing high-OI AAA Gas (`KXAAAGASM`/`KXAAAGASW`), Elections (`KXPRESPERSON`/`KXPRESNOMD`/`KXSENMAJ`), Culture (`KXOSCARPIC`/`KXGTAONLINE`/`KXNETFLIXRANKSHOWGLOBAL`), Crypto (`KXBTCY`/`KXBTCMAXY`), and Golf (`KXPGATOUR`/`KXLPGATOUR`/`KXPRESCUP`/`KXPGAMAKECUT`) | done | `arena/10428a57-tradebot2` | `app/topics.py`, `app/collector.py`, `tests/test_topics.py` | Verified in `data/snapshot.json` (`053cf92`): `131` tracked markets (`gas_prices: 139 open / 25 tracked`, `elections: 164 open / 27 tracked`, `culture: 117 open / 25 tracked`, `crypto: 39,428 open / 27 tracked`, `golf: 261 open / 27 tracked`) and `25,488` resolutions |
-| A2 | Fix `app/alerts.py`, `app/collector.py`, and `app/backtest.py` so `seed_alerts` and `run_backtest` inspect both `1m` and `60m` candlesticks as well as intra-bar `open -> close` moves `>= $0.10` | done | `arena/10428a57-tradebot2` | `app/alerts.py`, `app/collector.py`, `app/backtest.py`, `tests/test_alerts.py` | Verified in `data/snapshot.json` (`56` deduplicated `>= $0.10` seed alerts across all 5 topics) and `data/backtest.json` (`17` markets tested, `4,797` candle cells, `209` closed trades, `8` open positions) |
-| A3 | Fix `tools/build_category_pages.py` nav template (`Sources` link), `site/*.html` internal `../data/probe.json` links (`scripts/check_site.py`), and `collector/kalshi.py` optional `requests` import; clean up `flagged.html` non-official link warnings | done | `arena/10428a57-tradebot2` | `tools/build_category_pages.py`, `site/{alerts,findings,flagged,sources}.html`, `collector/kalshi.py`, `flagged.html`, `.github/workflows/data.yml` | Zero warnings/failures in `tools/verify_site.py`, `tools/check_site.py --root . --strict`, `scripts/check_site.py`, `scripts/verify_site.py`, `live/tests/check_live.py`, and `tests/run_fixture_pipeline.py` |
+### Open items for the owner
 
+1. **Demo credentials** (F-01): balance, positions and order placement stay unverified until keys are supplied.
+2. **Which front end is canonical.** `main:/index.html` is now a landing page for `/live/`, while the flat root topic pages
+   (`gas-prices.html` … `golf.html`) are the ones this session verified and populated. Both are published; a later integration
+   pass should collapse them into one entry point.
+3. **`snapshot.json` is 12.7 MB** (21k resolutions). It loads, but trimming the resolution history to the tracked series would
+   make the demo snappier.
