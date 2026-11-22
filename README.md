@@ -1,111 +1,112 @@
-# Kalshi Tradebot2: Live Alerting, Liquidity Depth & Automated Trading Dashboard
+# Signal Desk — Kalshi Demo Monitor
 
-[![GitHub Pages](https://img.shields.io/badge/Live%20Site-GitHub%20Pages-2ea043?style=for-the-badge&logo=github)](https://kanlerxz87-cyber.github.io/Tradebot2/)
-[![CFTC DCM](https://img.shields.io/badge/Regulation-CFTC%20Designated%20Contract%20Market-blue?style=for-the-badge)](https://www.cftc.gov/filings/contractlistings/kalshiexchange)
-[![Kalshi Demo API](https://img.shields.io/badge/API-Kalshi%20Trade%20API%20v2-8b949e?style=for-the-badge)](https://trading-api.kalshi.com/trade-api/v2/documentation)
+A source-first, GitHub Pages dashboard for monitoring selected Kalshi demo markets, detecting price swings, inspecting bid depth, and evaluating an automated **paper** strategy.
 
-**Kalshi Tradebot2** is an institutional-grade live event tracking, real-time price alerting, liquidity analysis, and automated simulated trading dashboard engineered for the **Kalshi Designated Contract Market (DCM)**.
+**Live site:** <https://kanlerxz87-cyber.github.io/Tradebot2/>
 
-The platform focuses on the highest-dollar-volume events across five core sectors:
-1. **Gas Prices** (EIA US Retail Regular Gasoline benchmarks, California indices, NYMEX crude prompt month)
-2. **Elections** (Presidential, US Senate, US House, and 2025 Gubernatorial races)
-3. **Culture** (Academy Awards/Oscars, Grammy Awards, Box Office gross thresholds, TIME honors)
-4. **Crypto** (Bitcoin $100k/$110k, Ethereum, Solana, and Spot Bitcoin ETF cumulative net inflows)
-5. **Golf** (The Masters Tournament, PGA Championship, US Open, and 2025 Ryder Cup)
+> This project is independent research software. It is not affiliated with or endorsed by Kalshi. Paper results are simulated and are not investment advice.
 
----
+## What it does
 
-## 🌐 Live GitHub Pages Site
-- **Master Dashboard**: [https://kanlerxz87-cyber.github.io/Tradebot2/](https://kanlerxz87-cyber.github.io/Tradebot2/)
-- **Gas Prices**: [https://kanlerxz87-cyber.github.io/Tradebot2/gas-prices.html](https://kanlerxz87-cyber.github.io/Tradebot2/gas-prices.html)
-- **Elections**: [https://kanlerxz87-cyber.github.io/Tradebot2/elections.html](https://kanlerxz87-cyber.github.io/Tradebot2/elections.html)
-- **Culture**: [https://kanlerxz87-cyber.github.io/Tradebot2/culture.html](https://kanlerxz87-cyber.github.io/Tradebot2/culture.html)
-- **Crypto**: [https://kanlerxz87-cyber.github.io/Tradebot2/crypto.html](https://kanlerxz87-cyber.github.io/Tradebot2/crypto.html)
-- **Golf**: [https://kanlerxz87-cyber.github.io/Tradebot2/golf.html](https://kanlerxz87-cyber.github.io/Tradebot2/golf.html)
-- **Strategies & Portfolio**: [https://kanlerxz87-cyber.github.io/Tradebot2/strategies.html](https://kanlerxz87-cyber.github.io/Tradebot2/strategies.html)
-- **Flagged for Review**: [https://kanlerxz87-cyber.github.io/Tradebot2/review.html](https://kanlerxz87-cyber.github.io/Tradebot2/review.html)
+- Discovers open events from Kalshi's recommended demo REST host.
+- Keeps only **gas prices, elections, culture, crypto, and golf** using a disclosed local classification rule.
+- Ranks events by calculated 24-hour contract notional: `volume_24h_fp × notional_value_dollars`.
+- Polls tracked contracts every 10 seconds and flags net YES-price moves of **at least $0.10** in either direction.
+- Shows two auto-scrolling tapes: all observed movements and a transparent score-gated shortlist.
+- Retains observed contracts through an API-reported `yes` / `no` result.
+- Charts locally observed YES prices over 60-second, 15-minute, and 1-hour windows.
+- Displays official YES/NO bid levels and fixed-point contract quantities.
+- Runs an autonomous one-contract paper strategy and groups results by topic.
+- Links every live table row to its official Kalshi demo API record.
+- Publishes official documentation sources and unresolved constraints in the interface.
 
----
+## Truth boundaries
 
-## ⚡ Kalshi API Verified Endpoints
+This is a static GitHub Pages application. Kalshi documents signed authentication headers for account endpoints and the WebSocket handshake. A public bundle cannot safely hold the private signing key, so:
 
-| Protocol | Environment | Official Verified Endpoint | Documentation Reference |
-|---|---|---|---|
-| **REST** | Primary Demo | `https://demo-api.kalshi.co/trade-api/v2` | [Kalshi API v2 Docs](https://trading-api.kalshi.com/trade-api/v2/documentation) |
-| **REST** | Fallback Demo | `https://external-api.demo.kalshi.co/trade-api/v2` | [Kalshi External Demo Gateway](https://external-api.demo.kalshi.co/trade-api/v2) |
-| **WebSocket** | Primary Demo | `wss://demo-api.kalshi.co/trade-api/ws/v2` | WebSocket Market Feeds |
-| **WebSocket** | Fallback Demo | `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2` | WebSocket External Gateway |
-| **REST** | Production | `https://trading-api.kalshi.com/trade-api/v2` | Live CFTC DCM Execution Gateway |
+- public demo market data is live through REST polling;
+- authenticated demo balance, positions, fills, and orders stay blank;
+- authenticated WebSockets and demo order execution are not claimed;
+- paper trading is clearly separated from demo-account trading;
+- price-jump causes remain “unverified” unless independently reviewed;
+- absent API fields render as `—` and are never filled with estimates.
 
----
+See [Flagged for Review](https://kanlerxz87-cyber.github.io/Tradebot2/#/review) and [`docs/VERIFICATION.md`](docs/VERIFICATION.md).
 
-## 🛠️ Key Capabilities & Features
+## Official sources
 
-### 1. Real-Time Price Swing Alert Engine ($\ge \$0.10$)
-- Ingests tick streams to detect high-velocity price moves greater than or equal to **$0.10 in either direction**.
-- **Dual Real-Time Scrolling Chat Interfaces**:
-  - **All Events Chat**: Unfiltered chronological feed of all contract moves $\ge \$0.10$ across all 5 categories.
-  - **Selective High-ROI Filter Chat**: Filtered stream displaying only high-edge contracts flagged by our quantitative probability model (Expected Value $\text{EV} \ge +18\%$ ROI).
-- Audio alert toggle with Web Audio synthesizer (high-pitch positive surge, low-pitch dump tone).
+- [API environments and endpoints](https://docs.kalshi.com/getting_started/api_environments)
+- [Unauthenticated market data](https://docs.kalshi.com/getting_started/quick_start_market_data)
+- [Get Markets schema](https://docs.kalshi.com/api-reference/market/get-markets)
+- [Get Events schema](https://docs.kalshi.com/api-reference/events/get-events)
+- [Get Market Orderbook](https://docs.kalshi.com/api-reference/market/get-market-orderbook)
+- [Authenticated requests](https://docs.kalshi.com/getting_started/quick_start_authenticated_requests)
+- [WebSocket quick start](https://docs.kalshi.com/getting_started/quick_start_websockets)
+- [Create an order](https://docs.kalshi.com/getting_started/quick_start_create_order)
+- [API changelog](https://docs.kalshi.com/changelog)
 
-### 2. Interactive Multi-Scale Canvas Chart & Order Book Depth
-- **Timeframe Resolution**: Dynamically switchable between **1s Ticks**, **1m Minutes**, and **1h Hours**.
-- **Y-Axis Scale**: Fixed unit interval from $\$0.00$ to $\$1.00$ reflecting implied probabilities.
-- **Sudden Jump Pins & Catalysts**: Visual pulsing markers highlight sudden $\ge \$0.10$ swings; clicking reveals the verified news catalyst, official report headline, and primary source link.
-- **Real-Time Liquidity Depth Ladder**: Displays exact discrete resting contract counts available at each bid and ask price level with horizontal volume visualizers.
+The complete claim-by-claim register is in [`src/data/sources.ts`](src/data/sources.ts) and rendered on the **Sources & methods** page.
 
-### 3. Automated Simulated Trading & Strategy Analytics
-- Simulates the Kalshi Demo Account with **$10,000.00 initial capital**.
-- Audits and executes 4 quantitative strategies:
-  1. `Momentum Swing Breakout`: Capitalizes on sudden upward velocity ($\Delta \ge +\$0.10$ with volume surge).
-  2. `Mean Reversion / Oversold Dip`: Buys sharp dislocations ($\Delta \le -\$0.10$) near support levels.
-  3. `High-ROI Expected Value Arbitrage`: Exploits pricing discrepancies where Model ROI $\ge 20\%$.
-  4. `Resolution Convergence Yield`: Collects yield on high-confidence ($>\$0.88$) contracts close to expiration.
-- Performance metrics: Realized/Unrealized P&L, Portfolio Equity, Win Rate %, Profit Factor, Annualized Sharpe Ratio (1.84), and Max Drawdown (3.4%).
-- Categorization tables breaking down performance by strategy type and by market topic.
+## Local development
 
-### 4. Line-by-Line Verification & Flagged for Review Registry
-- Every single table row is verified against primary regulatory and government sources:
-  - **Gas Prices**: [US Energy Information Administration (EIA)](https://www.eia.gov/petroleum/gasdiesel/) & [CME Group WTI](https://www.cmegroup.com/markets/energy/crude-oil/light-sweet-crude.html)
-  - **Elections**: [Federal Election Commission (FEC)](https://www.fec.gov/), [National Archives](https://www.archives.gov/), & [US House Clerk](https://clerk.house.gov/)
-  - **Culture**: [Academy of Motion Picture Arts and Sciences (AMPAS)](https://www.oscars.org/), [Recording Academy](https://www.grammy.com/), & [Box Office Mojo](https://www.boxofficemojo.com/)
-  - **Crypto**: [CoinGecko](https://www.coingecko.com/), [CME CF Benchmarks](https://www.cmegroup.com/), & [SEC EDGAR](https://www.sec.gov/edgar)
-  - **Golf**: [The Masters Tournament](https://www.masters.com/), [PGA Tour](https://www.pgatour.com/), & [USGA](https://www.usopen.com/)
-- Unverified items, rumors, or exit polls are left blank and documented on the [Flagged for Review Page](review.html).
+Requirements: a current Node.js release and npm.
 
----
-
-## 📂 Repository File Structure
-
-```
-Tradebot2/
-├── index.html               # Main Dashboard (Live Chart, Depth Ladder, Dual Alerts, Top Events)
-├── gas-prices.html          # Gas Prices Deep Dive & Resolution Tracking
-├── elections.html           # Elections Deep Dive & Resolution Tracking
-├── culture.html             # Culture & Entertainment Deep Dive
-├── crypto.html              # Cryptocurrency Benchmarks & Institutional Flows
-├── golf.html                # Major Championship Golf Markets
-├── strategies.html          # Automated Simulated Trading Lab & Portfolio Analytics
-├── review.html              # Flagged for Review Registry & Line-by-Line Audit
-├── COORDINATION.md          # Multi-Session Coordination & Task Board
-├── EXECUTIVE_SUMMARY.md     # Executive Summary & Architecture Specification
-├── README.md                # System Overview & Documentation
-├── css/
-│   └── style.css            # Institutional Dark Trading Terminal Stylesheet
-└── js/
-    ├── data.js              # Verified Kalshi Contract Repository & Model Parameters
-    ├── chart.js             # Canvas Interactive Charting & Order Book Engine
-    ├── alerts.js            # Dual Scrolling Real-Time Alert Feeds
-    ├── trading.js           # Simulated Trading Engine & Portfolio Performance Tracker
-    └── app.js               # Application Orchestrator & UI Connector
-```
-
----
-
-## 🚀 Running Locally
-
-To run the live preview server locally:
 ```bash
-python3 -m http.server 8080 --bind 0.0.0.0
+npm ci
+npm run dev
 ```
-Open your browser to `http://localhost:8080` (or your platform preview URL).
+
+The Vite server binds to `0.0.0.0`. No `.env` file or credentials are required or accepted.
+
+## Verification
+
+```bash
+npm run check
+```
+
+This runs ESLint, the Vitest suite, TypeScript compilation, and a production Vite build. Core tests cover:
+
+- five-topic classification and unrelated-market exclusion;
+- inclusive `$0.10` swing detection;
+- null-preserving calculations;
+- event normalization;
+- price and resolution alerts;
+- automatic paper entry and exit;
+- official-source URL policy.
+
+## Architecture
+
+```text
+Kalshi demo REST API
+  ├─ /events?status=open&with_nested_markets=true  (discovery, 60s)
+  ├─ /markets?tickers=…                            (tracked prices/status, 10s)
+  └─ /markets/{ticker}/orderbook                   (selected depth, 15s)
+                    │
+                    ▼
+React monitor → alert engine → local paper engine → charts/tables
+                    │
+                    ▼
+           Browser memory + localStorage
+```
+
+No backend, database, signing key, analytics tracker, or fabricated fallback dataset is included.
+
+## Documentation
+
+- [`docs/EXECUTIVE_SUMMARY.md`](docs/EXECUTIVE_SUMMARY.md)
+- [`docs/REQUIREMENTS_TRACEABILITY.md`](docs/REQUIREMENTS_TRACEABILITY.md)
+- [`docs/VERIFICATION.md`](docs/VERIFICATION.md)
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- [`COORDINATION.md`](COORDINATION.md)
+
+## Deployment
+
+`.github/workflows/pages.yml` validates and deploys `dist/` to GitHub Pages after a push to `main`. The app uses hash routes so category and research pages work without server rewrites.
+
+## Parallel-session archive
+
+PRs #1–#3 landed a separate static implementation while this final integration was in progress. That work is preserved under [`archive/parallel-sessions/`](archive/parallel-sessions/README.md), but excluded from the deployed artifact because its hard-coded market/account/performance values could not be confirmed row-by-row from official Kalshi API records. The conflict and preservation decision is recorded in `COORDINATION.md`.
+
+## License / usage
+
+No license has been granted by the repository owner. All Kalshi names, API documentation, and API data remain subject to Kalshi's terms and policies.

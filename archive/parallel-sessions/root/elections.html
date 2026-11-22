@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elections Category | Kalshi Tradebot2</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="brand-section">
+            <div class="brand-logo">
+                <a href="index.html" style="color:inherit; text-decoration:none;">⚡ KALSHI TRADEBOT2</a>
+                <span class="badge-demo">Demo Sandbox v2</span>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html" class="nav-item">Master Dashboard</a>
+            <a href="gas-prices.html" class="nav-item">⛽ Gas Prices</a>
+            <a href="elections.html" class="nav-item active">🗳️ Elections</a>
+            <a href="culture.html" class="nav-item">🎭 Culture</a>
+            <a href="crypto.html" class="nav-item">🪙 Crypto</a>
+            <a href="golf.html" class="nav-item">⛳ Golf</a>
+            <a href="strategies.html" class="nav-item">🧠 Strategies &amp; Portfolio</a>
+            <a href="review.html" class="nav-item">🔍 Flagged for Review</a>
+        </nav>
+        <div class="topbar-actions">
+            <div class="btn-demo-badge">
+                <span class="status-dot"></span>
+                <span>Category: Elections</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+
+        <section class="exec-banner">
+            <div class="exec-banner-text">
+                <h3>🗳️ Political &amp; Electoral Outcomes on Kalshi</h3>
+                <p>
+                    Tracks official certified election results from the Federal Election Commission (FEC), the US National Archives (Electoral College), Clerk of the US House, and State Divisions of Elections.
+                    Kalshi Rulebook Series 200 governs political market certification and dispute resolution.
+                </p>
+            </div>
+            <div class="btn-group-sm">
+                <a href="https://www.fec.gov/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">FEC Official Site</a>
+                <a href="https://www.archives.gov/electoral-college/2024" target="_blank" rel="noopener noreferrer" class="btn">National Archives</a>
+            </div>
+        </section>
+
+        <!-- Category Overview & Analysis Card -->
+        <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 24px;">
+            <div class="card-panel" style="padding: 16px;">
+                <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--blue-bright);">📊 Electoral Liquidity &amp; Dollar Volume</h4>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+                    Political markets represent the highest single dollar volume sector on Kalshi, with the 2024 Presidential Election recording over $100M+ in aggregate open interest. Key dynamics include:
+                </p>
+                <ul style="font-size: 12px; color: var(--text-secondary); margin-left: 20px; line-height: 1.6;">
+                    <li><strong>Battleground Tipping Points:</strong> Large rapid moves (&ge; $0.20) on election night as key precinct returns cross statistical certainty thresholds.</li>
+                    <li><strong>Congressional Control Margins:</strong> House and Senate composition contracts resolving based on official Clerk rolls.</li>
+                    <li><strong>Off-Year Gubernatorial Cycles:</strong> Virginia and New Jersey 2025 executive races offering high volatility in primary phases.</li>
+                </ul>
+            </div>
+
+            <div class="card-panel" style="padding: 16px;">
+                <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--green-bright);">🧠 Active Model Opportunities</h4>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+                    Our statistical demographic model currently flags high risk-reward setups in off-year gubernatorial races:
+                </p>
+                <div style="background: rgba(13, 17, 23, 0.6); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 12px;">
+                    <div style="margin-bottom: 4px;"><strong>VA-GOV-25:</strong> Implied Market 62% vs Model Forecast 74% (<strong>+19.3% Expected ROI</strong>)</div>
+                    <div><strong>NJ-GOV-25:</strong> Implied Market 71% vs Model Forecast 85% (<strong>+19.7% Expected ROI</strong>)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verified Category Table -->
+        <div class="section-header">
+            <div class="section-title">
+                <span>📋 Verified Elections Market Contracts &amp; Resolution Tracking</span>
+            </div>
+            <span style="font-size: 12px; color: var(--text-secondary);">Verified line-by-line against FEC &amp; State Election Records</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Ticker</th>
+                        <th>Market Event Title</th>
+                        <th>Strike Condition</th>
+                        <th>YES Price</th>
+                        <th>NO Price</th>
+                        <th>24h Change</th>
+                        <th>Resolution Status</th>
+                        <th>Settlement Outcome</th>
+                        <th>Target Date</th>
+                        <th>Official Regulatory Rule</th>
+                        <th>Verified Source Link</th>
+                    </tr>
+                </thead>
+                <tbody id="electionsTableBody">
+                    <!-- Populated dynamically from js/data.js -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <footer class="footer-main">
+        <div><strong>Kalshi Tradebot2</strong> | Elections &amp; Geopolitical Analytics</div>
+        <div class="footer-links">
+            <a href="https://www.fec.gov/" target="_blank" rel="noopener noreferrer">FEC.gov</a>
+            <a href="https://www.senate.gov/" target="_blank" rel="noopener noreferrer">US Senate Official</a>
+            <a href="https://clerk.house.gov/" target="_blank" rel="noopener noreferrer">House Clerk</a>
+            <a href="index.html">Master Dashboard</a>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.getElementById('electionsTableBody');
+            const contracts = getContractsByTopic('elections');
+            contracts.forEach(c => {
+                const tr = document.createElement('tr');
+                const isUp = c.change24h >= 0;
+                let statusBadge = c.status === "Active" ?
+                    `<span class="status-badge status-active">Active</span>` :
+                    (c.status === "Resolved YES" ? `<span class="status-badge status-resolved-yes">Resolved YES</span>` : `<span class="status-badge status-resolved-no">Resolved NO</span>`);
+
+                tr.innerHTML = `
+                    <td><strong class="txt-blue">${c.ticker}</strong></td>
+                    <td style="max-width:260px; white-space:normal; font-size:12px;">${c.title}</td>
+                    <td>${c.strikePrice}</td>
+                    <td style="font-family:var(--font-mono);"><strong>$${c.yesPrice.toFixed(2)}</strong></td>
+                    <td style="font-family:var(--font-mono);">$${c.noPrice.toFixed(2)}</td>
+                    <td class="${isUp ? 'txt-green' : 'txt-red'}" style="font-family:var(--font-mono);">${isUp ? '+' : ''}$${c.change24h.toFixed(2)}</td>
+                    <td>${statusBadge}</td>
+                    <td><strong>${c.resolutionOutcome}</strong></td>
+                    <td style="font-size:11px;">${c.resolutionDate}</td>
+                    <td style="font-size:11px; color:var(--text-secondary);">${c.rulebookRule}</td>
+                    <td><a href="${c.sourceUrl}" target="_blank" rel="noopener noreferrer" class="source-link-cell">🔗 ${c.sourceName}</a></td>
+                `;
+                body.appendChild(tr);
+            });
+        });
+    </script>
+</body>
+</html>
