@@ -203,9 +203,14 @@ F-08 gas/golf are not standalone categories · F-17 wide-book mids · F-18 archi
   events that move…”, 16 tracked markets, wide-book dashes, `data-stat` KPIs) after the CDN refresh;
   `/dashboard.html` returned the live dashboard. The previously cached b1cd545f sample-data page is
   gone from the root.
-- Post-merge fixes (new PR): `quotePrice()` no longer treats a $0.00 last trade as a price, so live
-  updates show “—” instead of $0.00 on untouched markets; dashboard/topic headers renamed
-  “YES price” because the basis can be mid, last or blank.
+- Post-merge fixes: PR **#21** (merged 07:35:56Z as `46a89fd`) stopped treating a $0.00 last trade as
+  a price and renamed headers to “YES price”; PR **#22** (merged 07:39:0xZ as `413f0cf`) blanks zero
+  bids, zero asks and zero spreads instead of printing “$0.00”.
+- Pages build for `413f0cf` reported **built** at 07:39:34Z. Live checks at
+  `…/dashboard.html?v=413f0cf` show `— / —` for an empty book, `—` spread, a “none” price basis, and
+  the resolved table with official API + Kalshi links on every row. `…/index.html` shows the canonical
+  hero, 16 tracked markets and the five topic cards. An intermediate build of merge commit `46a89fd`
+  errored once (“Page build failed”); the next commit rebuilt successfully and is the live one.
 
 The work therefore still exists only on this branch. It is re-submitted as a fresh PR rather than
 reopening the closed one, per the platform rule to merge with an explicit PR number. This note is
