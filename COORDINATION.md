@@ -273,3 +273,61 @@ Branch-name note: the runtime fixes this session to ONE branch, `arena/9a725a07-
 - At PR time, `main` was `27c53fe` and PR #9 was MERGEABLE/CLEAN.
 - Other open PRs overlap this PR's shared files (`.github/workflows/pages.yml`, `README.md`, `COORDINATION.md`, `index.html`, `.gitignore`): #4 (`arena/b6135c8d-tradebot2`), #5 (`arena/1546d2b0-tradebot2`), #6 (`arena/d1222891-tradebot2`), #7 (`arena/93ec9646-tradebot2`), #8 (`arena/4f9ce955-tradebot2`). Those sessions must rebase onto `main` after #9 merges and integrate this pipeline, not replace it. Logged as a coordination request, not an edit.
 - Scope rule breached by the board as a whole: the board promised non-overlapping file scopes, but several sessions chose the same shared files. Recorded for the integration owner.
+
+---
+
+## Session: `session-arena-93ec9646` (branch `arena/93ec9646-tradebot2`, PR #7)
+
+Joined after PRs #2/#3 (and concurrent with `arena-9a725a07` / PR #9). Built an
+independent, spec-complete dashboard and integrated it **without overwriting other
+sessions' files**: the site lives at **`/dash/`** and is added to the single Pages
+artifact (cross-file change logged below).
+
+### Tasks (all done)
+
+| Task | Status | File scope | Verification |
+|---|---|---|---|
+| T1 Coordination board | done | `COORDINATION.md` (this section) | — |
+| T2 Source verification (endpoints, demo env, auth, markets, orderbook, candlesticks, settlement, rate limits) | done | `dash/docs/verification.md` (V1–V15) | every fact linked to its official docs.kalshi.com page |
+| T3 Live data snapshot (gas, elections, culture, crypto, golf) | done | `dash/assets/data.js`, `data/snapshot.json` | 40 market records + 2 orderbooks + 15×1-min candles + 10-trade tape + series census; **every record embeds the exact official query that verified it** (`src.api`); snapshot 2026-11-22T07:15Z |
+| T4 Pages site (landing + 5 topic pages + alerts + charts + portfolio + exec summary + flagged) | done | `dash/index.html`, `dash/topics/{gas,elections,culture,crypto,golf}/`, `dash/alerts/`, `dash/charts/`, `dash/portfolio/`, `dash/docs/`, `dash/flagged/`, `dash/assets/` | `node tools/build.js` internal link check across the whole combined site = all OK |
+| T5 Simulated trading engine + portfolio analysis | done | `dash/assets/sim.js`, `dash/docs/strategies/` | paper-only (no demo API keys in session — F2); S1–S4 + ROI model; categorization table; findings labeled hypotheses |
+| T6 Integration (re-verify line by line, build check, no broken links, PR → main, merge, Pages confirm) | in progress | everything (integration pass) | re-verification D-tables in `dash/docs/verification.md`; link check green; **PR #7 open**; merge + Pages confirm recorded after merge |
+
+### Site map after integration (what publishes where)
+
+| Published path | Source dir | Owner session(s) | Content |
+|---|---|---|---|
+| `/` (Pages root) | `docs/` | `a5878007`, `7a21cbd2`, `b1cd545f` | their master dashboard (assembled by the shared Pages workflow) |
+| `/monitor/` | `site/` | `arena-9a725a07` | live monitor (collector + two alert chats + topic pages) |
+| `/dash/` | `dash/` | `session-arena-93ec9646` | **this session's spec-complete dashboard**: landing, `/dash/topics/{gas,elections,culture,crypto,golf}/` (topics separate, events grouped), `/dash/alerts/` (two scrolling chats: all ≥$0.10 swings + high-ROI model filter), `/dash/charts/` (time × price + verified orderbook depth), `/dash/portfolio/` (simulated paper trading + strategy categorization), `/dash/docs/` (executive summary, sources, strategy specs, verification log), `/dash/flagged/` (12 flags F1–F12) |
+
+### Flags raised by this session (details: `dash/flagged/` + `dash/docs/verification.md` §3)
+
+- **F1** sandbox TLS egress block (consistent with prior sessions' notes) — all official data via the platform's verified page fetcher.
+- **F2** no demo API keys ⇒ no real order placement anywhere; all trading on the site is labeled simulation.
+- **F3** demo environment is a sparse, partly synthetic subset (`"demo strike":"demo strike"` markers; KXGAS, DIESEL, DIESELM, KXRIPPLED, KXBBMARTIST, KXRTFIRSTOMEN verified to have **0** demo markets).
+- **F4** browser CORS to the demo API untestable from the sandbox ⇒ `/dash/` runs live-poll (15s) + labeled REPLAY fallback; active mode shown in the top bar.
+- **F5** `status=open` query returned a `closed` market (demo inconsistency) — site filters on each record's own `status`.
+- **F6** NOBELLIT-24 has two YES legs in one mutually-exclusive event (synthetic data).
+- **F7** KXBTCMAXY ladder non-monotonic in demo data.
+- **F8** `GET /events` ignored `category`/`limit` (byte-identical responses).
+- **F9** KXBTCMAXY-26DEC31-139999.99 vol/OI truncated in fetch ⇒ left "–".
+- **F10** website URL pattern not in API docs ⇒ only homepage-observed URLs linked.
+- **F11** quadratic fee formula applied as approximation in the paper engine.
+- **F12** demo settlement timestamps years after close on some markets.
+
+### Cross-file changes made by this session (logged per convention)
+
+1. **`.github/workflows/pages.yml`** (owned by `arena-9a725a07`): added `cp -r dash/. _site/dash/` to the "Assemble Pages artifact" step (plus a comment line) so the single Pages artifact also publishes this session's site at `/dash/`. Rationale: only one Pages deployment can exist, and the shared workflow is what assembles the published site; without this line `/dash/` would 404 on Pages. No other part of the workflow was changed.
+2. **`README.md`**: appended a "Alternate full-spec dashboard at `/dash/`" section (additive; no prior content modified).
+
+### Merge conflict resolution log (append)
+
+- `arena/93ec9646-tradebot2` vs `main` (post PRs #2/#3, then PR #9): both sides had complete dashboards. Resolution: this session's site was remounted under `/dash/` (all its files moved into `dash/`, internal links rewritten to be base-path-safe **relative** paths so it works under the `/{repo}/` Pages prefix; shared JS computes its root at runtime from the URL), all other sessions' files kept byte-identical, and `COORDINATION.md` + `README.md` unified additively. This session's earlier one-line `docs/index.html` link fix became unnecessary because `arena-9a725a07` (PR #9) had already fixed that link to `executive-summary.md`.
+
+### PR / merge record (this session)
+
+| PR | Branch → base | Merged | Pages |
+|---|---|---|---|
+| #7 | `arena/93ec9646-tradebot2` → `main` | _updated after merge_ | shared Pages workflow publishes `/dash/` from `dash/` |

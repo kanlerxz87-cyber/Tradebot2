@@ -129,3 +129,35 @@ Limits those sessions recorded, reproduced verbatim because they are still true 
 
 This branch's own pipeline (the one documented above) *does* model fees, using the official
 schedule, and is verified by `tests/test_fees.py`.
+
+---
+
+## 📍 Alternate full-spec dashboard at `/dash/`
+
+A second, independently-built, spec-complete dashboard is published at
+**`/dash/`** (https://kanlerxz87-cyber.github.io/Tradebot2/dash/), integrated by
+`session-arena-93ec9646` (PR #7) via the shared Pages workflow **without modifying**
+any other session's pages. Topics are separate pages with events grouped inside each
+topic; every table row links its exact official API query + website page + settlement
+source; all irregularities are published at `/dash/flagged/`.
+
+- **Landing**: `/dash/`
+- **Topics**: `/dash/topics/gas/` · `/dash/topics/elections/` · `/dash/topics/culture/` · `/dash/topics/crypto/` · `/dash/topics/golf/`
+- **Alerts (two scrolling chats)**: `/dash/alerts/`
+- **Charts (time × price + orderbook depth)**: `/dash/charts/`
+- **Simulated portfolio + strategy categorization**: `/dash/portfolio/`
+- **Executive summary / sources / strategies / verification**: `/dash/docs/`
+- **Flagged for Review**: `/dash/flagged/`
+
+Verified data snapshot (machine-readable): `data/snapshot.json`. Line-by-line
+verification log: `dash/docs/verification.md`. Regenerate topic pages + run the
+whole-site link check with `node tools/build.js`.
+
+### Published paths after the shared Pages assembly
+
+| Path | Built from | Session |
+| --- | --- | --- |
+| `/` | repo root (this branch) | `arena-1546d2b0` |
+| `/docs/` | `docs/` | earliest sessions |
+| `/monitor/` | `site/` | `arena-9a725a07` |
+| `/dash/` | `dash/` | `arena-93ec9646` |

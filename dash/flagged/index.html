@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flagged for Review — Irregularities & Unverified Items — Kalshi Demo Dashboard</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-page="flagged">
+
+<div class="wrap">
+  <div class="hero">
+    <h1>⚑ Flagged for Review</h1>
+    <p class="sub">Everything irregular, unverified, or assumed during the build — with the source evidence for each. Per the project rules, none of these block the site: they are published here so you can review and request changes after the site is live. Each item lists what was observed, the official source checked, and the action taken (value left blank / flagged / documented as demo behavior).</p>
+  </div>
+
+  <div class="card">
+    <h2>Flags <span class="tag">ordered by impact</span></h2>
+    <table><thead><tr><th>#</th><th>Flag</th><th>Detail &amp; evidence</th><th>Official source checked</th><th>Action taken</th></tr></thead><tbody>
+      <tr>
+        <td class="mono">F1</td><td><b>Sandbox network cannot reach Kalshi directly</b></td>
+        <td>Direct HTTPS from the build sandbox to <span class="mono">external-api.demo.kalshi.co</span> fails at TLS (<span class="mono">SSL_ERROR_SYSCALL</span> after ClientHello). All data was instead retrieved through the platform's verified page fetcher, which queries the same official endpoints. The build-time snapshot therefore reflects 2026-11-22 ≈07:00–07:20 UTC.</td>
+        <td class="srcs"><a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener">API environments (official)</a></td>
+        <td class="note">Site ships in snapshot + browser-live mode; see F4.</td>
+      </tr>
+      <tr>
+        <td class="mono">F2</td><td><b>No demo API keys in this session</b></td>
+        <td>Order placement, portfolio and user websocket channels require RSA-signed requests with demo API keys; none exist here. <b>No real trades were and can be executed on the demo account.</b></td>
+        <td class="srcs"><a href="https://docs.kalshi.com/getting_started/api_keys" target="_blank" rel="noopener">API Keys (official)</a> · <a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener">Demo environment (official)</a></td>
+        <td class="note">Portfolio page runs a clearly-labeled SIMULATED paper engine instead.</td>
+      </tr>
+      <tr>
+        <td class="mono">F3</td><td><b>Demo environment is a sparse subset of Kalshi</b></td>
+        <td>Verified empty (0 markets) in demo: KXGAS (Gas weekly, EIA), DIESEL, DIESELM (EIA), KXBBMARTIST (Billboard), KXRTFIRSTOMEN (Rotten Tomatoes), KXRIPPLED (Ripple daily). Many live demo events carry <span class="mono">"custom_strike": {"demo strike": "demo strike"}</span> — explicit synthetic markers. Series titles/categories come straight from the API.</td>
+        <td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXGAS" target="_blank" rel="noopener">KXGAS series</a> · <a href="https://external-api.demo.kalshi.co/trade-api/v2/series?tags=Gas&limit=10" target="_blank" rel="noopener">Gas tag query</a> · <a href="https://external-api.demo.kalshi.co/trade-api/v2/series?category=Entertainment&limit=5" target="_blank" rel="noopener">Entertainment series</a></td>
+        <td class="note">Empty series are shown as "verified empty" — never filled with guessed markets.</td>
+      </tr>
+      <tr>
+        <td class="mono">F4</td><td><b>Browser CORS to the demo API unverified</b></td>
+        <td>The dashboard tries to poll the official public market-data endpoints from the browser. Whether the API sends <span class="mono">Access-Control-Allow-Origin</span> for this Pages origin could not be tested from the sandbox (F1). If blocked, the site degrades to labeled REPLAY mode (verified historical data) — no feature breaks, mode chip tells you which is active.</td>
+        <td class="srcs"><a href="https://docs.kalshi.com/getting_started/quick_start_market_data" target="_blank" rel="noopener">Market data quick start (official)</a> · <a href="https://docs.kalshi.com/getting_started/rate_limits" target="_blank" rel="noopener">Rate limits (official)</a></td>
+        <td class="note">Graceful degradation built in; mode displayed in the top bar.</td>
+      </tr>
+      <tr>
+        <td class="mono">F5</td><td><b><span class="mono">status=open</span> filter returned a non-open market</b></td>
+        <td><span class="mono">GET /markets?series_ticker=KXSOL15M&status=open</span> returned one market with <span class="mono">"status":"closed"</span> (May 2026, zero volume) alongside the active one. The docs say status values are unopened/open/closed/settled and the filter selects by status — the demo data appears inconsistent (synthetic environment).</td>
+        <td class="srcs"><a href="https://docs.kalshi.com/api-reference/market/get-markets" target="_blank" rel="noopener">Get Markets (official)</a> · <a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXSOL15M&status=open&limit=5" target="_blank" rel="noopener">the observed query</a></td>
+        <td class="note">Site filters on each record's own <span class="mono">status</span> field instead of trusting the query filter.</td>
+      </tr>
+      <tr>
+        <td class="mono">F6</td><td><b>Demo settlement shows multiple YES in a mutually-exclusive event</b></td>
+        <td><span class="mono">NOBELLIT-24</span> (2024 Nobel Literature) finalized with <b>two</b> markets at <span class="mono">result:"yes"</span> (Gerald Murnane AND Can Xue) — impossible in reality for a single-prize event. Confirms demo data is synthetic. Only listed as a historical reference, not used in any live table.</td>
+        <td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=NOBELLIT&limit=4" target="_blank" rel="noopener">the observed query</a></td>
+        <td class="note">Excluded from rankings; documented here.</td>
+      </tr>
+      <tr>
+        <td class="mono">F7</td><td><b>KXBTCMAXY ladder non-monotonic</b></td>
+        <td>Verified last prices: &gt;$109,999.99 @ <b>0.50</b> vs &gt;$139,999.99 @ <b>0.72</b> — a higher strike trading a higher price is logically inconsistent for "above" ladders. Demo data anomaly.</td>
+        <td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXBTCMAXY&limit=4" target="_blank" rel="noopener">the observed query</a></td>
+        <td class="note">Values shown exactly as verified, flagged on the row and here.</td>
+      </tr>
+      <tr>
+        <td class="mono">F8</td><td><b><span class="mono">GET /events</span> ignores <span class="mono">category</span> and <span class="mono">limit</span></b></td>
+        <td>Three queries differing only by <span class="mono">category=</span> returned byte-identical unfiltered results. Topic mapping was therefore done via <span class="mono">series_ticker</span> (verified working) and the series' official <span class="mono">categories</span>/<span class="mono">tags</span> fields.</td>
+        <td class="srcs"><a href="https://docs.kalshi.com/api-reference/market/get-series-list" target="_blank" rel="noopener">Get Series List (official)</a></td>
+        <td class="note">All topic pages built from series-level queries; no values inferred.</td>
+      </tr>
+      <tr>
+        <td class="mono">F9</td><td><b>Truncated snapshot values left blank</b></td>
+        <td>For <span class="mono">KXBTCMAXY-26DEC31-139999.99</span>, the volume/open-interest fields were cut off in the fetched response, so they are shown as "–" rather than guessed.</td>
+        <td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXBTCMAXY&limit=4" target="_blank" rel="noopener">the observed query</a></td>
+        <td class="note">Blank + flag, per project rule "never infer or fill values".</td>
+      </tr>
+      <tr>
+        <td class="mono">F10</td><td><b>Kalshi website URL pattern not in API docs</b></td>
+        <td>The official docs don't document the website's <span class="mono">/markets/{series}/{slug}/{ticker}</span> pattern. Site links used on this dashboard were only included where the exact URL was <b>observed on the official demo.kalshi.co homepage</b> during this session; for other events only the API query + settlement-source links are given.</td>
+        <td class="srcs"><a href="https://demo.kalshi.co/" target="_blank" rel="noopener">demo.kalshi.co homepage (verified)</a></td>
+        <td class="note">No guessed website URLs anywhere on the site.</td>
+      </tr>
+      <tr>
+        <td class="mono">F11</td><td><b>Simulated-portfolio numbers are projections</b></td>
+        <td>Fee model: official quadratic formula <span class="mono">0.07·C·P·(1−P)</span> (the fee schedule PDF referenced by the API's <span class="mono">fee_type=quadratic</span>) — applied as an approximation; maker/taker distinctions and rounding not modeled. Sample size is very small (snapshot, not history).</td>
+        <td class="srcs"><a href="https://kalshi.com/docs/kalshi-fee-schedule.pdf" target="_blank" rel="noopener">Kalshi fee schedule (official)</a> · <a href="https://docs.kalshi.com/getting_started/fee_rounding" target="_blank" rel="noopener">Fee rounding (official)</a></td>
+        <td class="note">Portfolio page carries a persistent SIMULATED banner; findings labeled hypotheses.</td>
+      </tr>
+      <tr>
+        <td class="mono">F12</td><td><b>Settlement-timestamp oddities in demo</b></td>
+        <td>Some demo markets show <span class="mono">settlement_ts</span> years after their close (e.g. NOBELLIT-24 close 2024-10-12, settlement 2026-11-05). Consistent with a backfilled synthetic environment; timestamps shown exactly as the API returned them.</td>
+        <td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=NOBELLIT&limit=4" target="_blank" rel="noopener">the observed query</a></td>
+        <td class="note">Documented; no correction applied (never modify verified data).</td>
+      </tr>
+    </tbody></table>
+  </div>
+
+  <div class="card">
+    <h2>Unverified-by-necessity (left blank on data pages)</h2>
+    <ul class="tight note">
+      <li><b>24h volume for long-dated open markets</b> — most open markets report <span class="mono">volume_24h_fp = 0.00</span>; the tables show total volume with an explicit label instead of pretending 24h activity exists.</li>
+      <li><b>Ask sizes</b> — the orderbook endpoint returns bids only (official design); ask sizes come from the market record's <span class="mono">*_ask_size_fp</span> and are often 0/blank in the demo. Shown as "–" when absent.</li>
+      <li><b>News causation for jumps</b> — specific news articles were not fetched (sandbox network limits); only the official settlement sources are linked as "the place to check the cause".</li>
+      <li><b>Production (non-demo) volumes</b> — this project targets the demo environment as specified; production figures are intentionally absent rather than estimated.</li>
+    </ul>
+  </div>
+</div>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/layout.js"></script>
+</body>
+</html>
