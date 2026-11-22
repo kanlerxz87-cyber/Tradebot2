@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sources &amp; evidence · Tradebot2</title>
+<meta name="description" content="Every official source used by this project, what it supports, and the captured API responses that back the site's numbers.">
+<link rel="stylesheet" href="assets/css/main-site.css">
+</head>
+<body>
+<header class="site"><div class="wrap nav">
+  <a class="brand" href="index.html">Tradebot<span class="dot">2</span></a>
+  <a class="navlink" href="index.html">Dashboard</a>
+  <a class="navlink" href="topics/gas.html">Gas</a>
+  <a class="navlink" href="topics/elections.html">Elections</a>
+  <a class="navlink" href="topics/culture.html">Culture</a>
+  <a class="navlink" href="topics/crypto.html">Crypto</a>
+  <a class="navlink" href="topics/golf.html">Golf</a>
+  <a class="navlink" href="performance.html">Performance</a>
+  <a class="navlink" href="resolutions.html">Resolutions</a>
+  <a class="navlink" href="requirements.html">Requirements</a>
+  <a class="navlink" href="sources.html" aria-current="page">Sources</a>
+  <a class="navlink" href="flagged.html">Flagged</a>
+</div></header>
+<main class="wrap">
+  <h1>Sources &amp; evidence</h1>
+  <p class="lede">
+    Two kinds of evidence back this site: the official Kalshi documentation each rule is built
+    from, and the API responses the project captured itself. Both are listed here with links.
+  </p>
+
+  <h2>Captured API evidence</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Artifact</th><th>What it records</th><th>Produced by</th></tr></thead>
+    <tbody>
+      <tr><td><a href="data/verify-api.json">data/verify-api.json</a></td>
+        <td>HTTP status, CORS headers and body hashes for public REST reads on both demo hosts; preflight result for
+          the signed headers; WebSocket handshake outcomes.</td>
+        <td><code>tools/probe_api.py</code>, run by the <code>probe-api</code> GitHub Actions workflow
+          (<a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/probe-api.yml"
+             target="_blank" rel="noopener">run history ↗</a>)</td></tr>
+      <tr><td><a href="data/meta.json">data/meta.json</a></td>
+        <td>Collection timestamp, host, request count, per-topic matching rules and series lists.</td>
+        <td><code>collector/collect.py</code></td></tr>
+      <tr><td><a href="data/run_log.json">data/run_log.json</a></td>
+        <td>Per-stage success, duration and any warnings for the latest cycle.</td>
+        <td><code>collector/run.py</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Official documentation</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Source</th><th>What it supports</th></tr></thead>
+    <tbody id="rows"><tr><td colspan="2" class="muted">loading…</td></tr></tbody>
+  </table></div>
+
+  <h2>How a row on this site is verified</h2>
+  <ol class="small">
+    <li>The collector calls a documented endpoint and stores the exact request URL with the record.</li>
+    <li><code>tools/verify_data.py</code> rejects any record without an official Kalshi source URL, any
+      non-null value that contradicts the API's string format, and any resolved market without a yes/no result.</li>
+    <li>The site renders the stored value verbatim; a dash means the API returned nothing for that field.</li>
+    <li>Derived numbers name their formula next to the table (volume estimate, ROI, fee model).</li>
+  </ol>
+</main>
+<footer><div class="wrap">Tradebot2 · <a href="flagged.html">flagged items</a> · <a href="requirements.html">requirements</a></div></footer>
+<script src="assets/js/util.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const TB = window.TB;
+  const doc = await TB.getJSON('data/sources.json').catch(() => null);
+  const rows = doc?.sources || [];
+  document.querySelector('#rows').innerHTML = rows.map((s) => `<tr>
+    <td><a href="${TB.esc(s.url)}" target="_blank" rel="noopener">${TB.esc(s.name)} ↗</a>
+      <div class="small muted">${TB.esc(s.url)}</div></td>
+    <td class="small">${TB.esc(s.used_for)}</td></tr>`).join('')
+    || '<tr><td colspan="2" class="unverified">data/sources.json is missing</td></tr>';
+});
+</script>
+</body>
+</html>

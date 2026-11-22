@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flagged for review — Kalshi demo | Tradebot2</title>
+  <meta name="description" content="Every unverified value, assumption, limitation and corrected defect in the Kalshi demo dashboard, with evidence and official source links.">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232fe3b0'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-size='17' font-weight='bold' fill='%23041016'%3EK%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="flagged">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">K</span><span class="brand-text"><strong>Tradebot2</strong><span>Kalshi demo terminal</span></span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html" data-nav="home">Overview</a>
+        <a href="dashboard.html" data-nav="dashboard">Dashboard</a>
+        <span class="nav-sep"></span>
+        <a href="gas-prices.html" data-nav="gas">Gas</a>
+        <a href="elections.html" data-nav="elections">Elections</a>
+        <a href="culture.html" data-nav="culture">Culture</a>
+        <a href="crypto.html" data-nav="crypto">Crypto</a>
+        <a href="golf.html" data-nav="golf">Golf</a>
+        <span class="nav-sep"></span>
+        <a href="portfolio.html" data-nav="portfolio">Portfolio</a>
+        <a href="executive-summary.html" data-nav="summary">Summary</a>
+        <a href="methodology.html" data-nav="method">Method</a>
+        <a href="flagged.html" data-nav="flagged">Flagged</a>
+        <a href="suggestions.html" data-nav="suggestions">Ideas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap page">
+    <div class="page-head">
+      <div class="grow">
+        <div class="eyebrow">Verification · nothing hidden</div>
+        <h1>Flagged for review</h1>
+        <p class="lede">Everything that is unconfirmed, assumed, limited or was corrected. Flagged items do not block the site; they are published here with evidence so they can be reviewed and, where possible, closed with a credential or a longer measurement window.</p>
+      </div>
+      <div class="statusbar">
+        <span class="badge down">1 unverified credential area</span>
+        <span class="badge warn">6 assumptions</span>
+        <span class="badge green">8 corrected defects</span>
+        <span class="badge neutral">Reviewed 22 Nov 2026</span>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <strong>How to review an item.</strong> Each row states what was observed, where the evidence lives, and what would close it. “Verified” means checked against the linked official source or a measured probe in this repository — not that a value was plausible.
+    </div>
+
+    <section class="section">
+      <div class="section-head">
+        <div><h2>Register</h2><div class="sub">Newest review first; IDs are stable so they can be linked from other pages.</div></div>
+      </div>
+      <div class="card flush">
+        <div class="table-wrap">
+          <table id="flag-table">
+            <thead><tr><th>ID</th><th>Severity</th><th>Item</th><th>Status</th><th>Evidence / source</th><th>What would close it</th></tr></thead>
+            <tbody>
+              <tr id="F-01">
+                <td class="mono">F-01</td><td><span class="badge down">High</span></td>
+                <td><strong>Demo account balance, positions and order placement are unverified.</strong> No demo API key or private key was supplied to this project, and signed requests cannot be issued without one.</td>
+                <td><span class="badge down">Open</span></td>
+                <td>No signed request was made. Signing is unit-tested in <code>tests/test_signing.py</code>. Auth rules: <a href="https://docs.kalshi.com/getting_started/api_keys.md" target="_blank" rel="noopener">official API keys ↗</a>. Order shape: <a href="https://docs.kalshi.com/api-reference/orders/create-order-v2" target="_blank" rel="noopener">Create Order V2 ↗</a>.</td>
+                <td>Run <code>GET /portfolio/balance</code> with a demo key and record the HTTP status and body; place a $1 demo order and record the response. Then mark verified.</td>
+              </tr>
+              <tr id="F-02">
+                <td class="mono">F-02</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>Real-time WebSocket streaming is not used by the static site.</strong> The official API requires a signed handshake even for public channels, and a static page cannot hold a private key safely.</td>
+                <td><span class="badge blue">By design</span></td>
+                <td>Official requirement: <a href="https://docs.kalshi.com/getting_started/quick_start_websockets.md" target="_blank" rel="noopener">WebSocket quick start ↗</a>. Unauthenticated handshake probe result: <a href="data/probe.json">data/probe.json</a> (<span data-stat="probe_ws">—</span>).</td>
+                <td>Run the optional local server with a key and add an authenticated consumer; alerts then arrive event-driven instead of every 5 seconds.</td>
+              </tr>
+              <tr id="F-03">
+                <td class="mono">F-03</td><td><span class="badge blue">Low</span></td>
+                <td><strong>Browser CORS is measured, but a visitor’s network can still block it.</strong> Public reads were probed from a GitHub Actions runner against the demo hosts.</td>
+                <td><span class="badge green">Verified in CI</span></td>
+                <td><a href="data/probe.json">Raw probe output ↗</a> · <a href="https://docs.kalshi.com/getting_started/quick_start_market_data.md" target="_blank" rel="noopener">public market data requires no auth ↗</a>. Current result: <span data-stat="probe_cors">—</span> (<span data-stat="probe_time">—</span>).</td>
+                <td>If a visitor sees the offline banner, the page already falls back to the verified snapshot and states that prices are not current.</td>
+              </tr>
+              <tr id="F-04">
+                <td class="mono">F-04</td><td><span class="badge down">High</span></td>
+                <td><strong>Demo prices and behaviour may not reflect production markets.</strong> Kalshi states this explicitly; all figures here are demo-environment figures.</td>
+                <td><span class="badge warn">Accepted caveat</span></td>
+                <td><a href="https://docs.kalshi.com/getting_started/demo_env.md" target="_blank" rel="noopener">Test in the demo environment ↗</a> (“may not be reflective”).</td>
+                <td>Cannot be closed within demo scope. Any production use requires a separate production deployment and credentials.</td>
+              </tr>
+              <tr id="F-05">
+                <td class="mono">F-05</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>Settlement fees are not modelled.</strong> The paper broker charges the trading fee on entry/exit but assumes no fee at settlement. Maker rebates, fee multipliers and series-specific fee types are also ignored.</td>
+                <td><span class="badge warn">Assumption</span></td>
+                <td>Trading-fee formula and rounding: <a href="https://docs.kalshi.com/getting_started/fee_rounding.md" target="_blank" rel="noopener">fee rounding ↗</a>. No official statement about settlement fees was applied without verification.</td>
+                <td>Confirm settlement fee behaviour with a demo key and an actual settled position; then model it.</td>
+              </tr>
+              <tr id="F-06">
+                <td class="mono">F-06</td><td><span class="badge blue">Low</span></td>
+                <td><strong>“Notional” and “seeded move” are computed estimates</strong>, not exchange-reported dollar volume. Ranking by “highest dollar amount” uses contracts × mid.</td>
+                <td><span class="badge green">Labelled</span></td>
+                <td>Official fields are contract-based: <a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">Get Markets ↗</a>. Formula in <a href="methodology.html#ranking">methodology §7</a>.</td>
+                <td>No fix available from public fields; the estimate is labelled everywhere it appears and official contract counts sit beside it.</td>
+              </tr>
+              <tr id="F-07">
+                <td class="mono">F-07</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>News links are context, not causal evidence.</strong> Chips open a Google News search built from the market title and the settlement sources named by Kalshi; no timestamp alignment or causality test is performed.</td>
+                <td><span class="badge warn">Assumption</span></td>
+                <td>Links are labelled “News context” with a tooltip. No news API data is ingested.</td>
+                <td>Add licensed news ingestion, align article timestamps to the swing, and present correlation without asserting causation.</td>
+              </tr>
+              <tr id="F-08">
+                <td class="mono">F-08</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>Gas prices and golf are not standalone Kalshi categories.</strong> They are isolated from broader categories by ticker prefixes and narrow keyword rules; the mapping is not an official taxonomy.</td>
+                <td><span class="badge blue">Documented</span></td>
+                <td><a href="methodology.html#classification">Classification rules ↗</a> · <code>app/topics.py</code> · regression tests in <code>tests/test_topics.py</code> (Netherlands, Liga MX, Las Vegas). Category descriptions: <a href="https://docs.kalshi.com/api-reference/market/get-series-list.md" target="_blank" rel="noopener">Get Series List ↗</a>.</td>
+                <td>Kalshi adding official golf/gasoline categories would allow a simpler, exact mapping.</td>
+              </tr>
+              <tr id="F-09">
+                <td class="mono">F-09</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>Demo coverage is sparse and changes over time.</strong> At snapshot time: gas <span data-stat="gas_prices_open">—</span> open, elections <span data-stat="elections_open">—</span>, culture <span data-stat="culture_open">—</span>, crypto <span data-stat="crypto_open">—</span>, golf <span data-stat="golf_open">—</span>. An empty category is a coverage gap, not a zero price.</td>
+                <td><span class="badge neutral">Observed</span></td>
+                <td><a href="data/snapshot.json">Snapshot ↗</a> · topic pages state the gap in the table body.</td>
+                <td>Nothing to fix in code; re-check after the demo catalog changes. Production coverage is expected to be broader but is outside scope.</td>
+              </tr>
+              <tr id="F-10">
+                <td class="mono">F-10</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>The committed snapshot can go stale.</strong> Live prices are polled by the browser, but the fallback snapshot is only as fresh as the last data-workflow run.</td>
+                <td><span class="badge blue">Mitigated</span></td>
+                <td>Snapshot timestamp is shown on every page; the data workflow runs daily and on relevant pushes. <a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/data.yml" target="_blank" rel="noopener">Workflow ↗</a>.</td>
+                <td>A scheduled run can commit a fresh snapshot; a missed run is visible as an older timestamp and the page never disguises it.</td>
+              </tr>
+              <tr id="F-11">
+                <td class="mono">F-11</td><td><span class="badge down">High</span></td>
+                <td><strong>Published-site defect (corrected):</strong> an earlier Actions deployment of <code>docs/</code> reported success while the live URL served the legacy build of <code>README.md</code>. Pages is configured <code>build_type=legacy</code>, source <code>main:/</code>.</td>
+                <td><span class="badge green">Closed</span></td>
+                <td><a href="https://api.github.com/repos/kanlerxz87-cyber/Tradebot2/pages" target="_blank" rel="noopener">Pages configuration ↗</a> (<code>build_type: legacy</code>, <code>source: main /</code>) · Pages build history · the live URL returned “# Tradebot2” before this change. The GitHub token available to the build cannot change Pages settings (<code>PUT /pages</code> → 403).</td>
+                <td>Closed by publishing the canonical site at the repository root, which is what legacy Pages serves. The artifact deploy was repointed to verification rather than an ignored deployment.</td>
+              </tr>
+              <tr id="F-12">
+                <td class="mono">F-12</td><td><span class="badge down">High</span></td>
+                <td><strong>The V2 order request shape has not been executed</strong> against the demo API. The client targets <code>POST /portfolio/events/orders</code> with bid/ask on the YES leg and fixed-point strings, per the official reference.</td>
+                <td><span class="badge down">Open</span></td>
+                <td><a href="https://docs.kalshi.com/api-reference/orders/create-order-v2" target="_blank" rel="noopener">Create Order V2 ↗</a> · implementation in <code>app/kalshi.py</code>.</td>
+                <td>Same as F-01: one signed demo order with a minimal size, then record request and response.</td>
+              </tr>
+              <tr id="F-13">
+                <td class="mono">F-13</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>Backtest execution is optimistic by construction:</strong> candle-close fills, no latency, no queue position, no market impact, short window, and settlement fees not modelled.</td>
+                <td><span class="badge blue">Documented</span></td>
+                <td><a href="portfolio.html#backtest">Backtest section ↗</a> · <a href="methodology.html#paper">assumptions ↗</a>.</td>
+                <td>Longer history and a walk-forward test with latency/slippage sensitivity; do not treat the current number as expected live return.</td>
+              </tr>
+              <tr id="F-14">
+                <td class="mono">F-14</td><td><span class="badge blue">Low</span></td>
+                <td><strong>Unauthenticated public requests have their own rate limits.</strong> The dashboard batches tracked tickers into one request per poll and backs off on 429, but a very large watchlist could still be throttled.</td>
+                <td><span class="badge blue">Mitigated</span></td>
+                <td><a href="https://docs.kalshi.com/getting_started/rate_limits.md" target="_blank" rel="noopener">Rate limits ↗</a> (“unauthenticated public requests are subject to separate limits”). The UI shows a retry/degraded state.</td>
+                <td>Use an authenticated tier or an authenticated WebSocket via the local server for larger coverage.</td>
+              </tr>
+              <tr id="F-15">
+                <td class="mono">F-15</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>Earlier session tables showed 0.00 prices.</strong> A zero can be a genuine one-sided/untouched market, but it is not a midpoint. This build distinguishes “no observable price” (—) from a real zero and labels the basis.</td>
+                <td><span class="badge green">Clarified</span></td>
+                <td><a href="docs/index.html">Earlier site archive ↗</a> · <a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">market field semantics ↗</a> · current data: <a href="data/snapshot.json">snapshot ↗</a>.</td>
+                <td>Closed by the price-basis rule and the verifier’s range checks.</td>
+              </tr>
+              <tr id="F-16">
+                <td class="mono">F-16</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>Signed requests from a browser are not attempted.</strong> The preflight response is published; the site assumes it cannot send Kalshi’s auth headers from JavaScript, which is the conservative choice regardless of the measured allow-list.</td>
+                <td><span class="badge blue">By design</span></td>
+                <td>Measured preflight: <code>204</code> with <code>Access-Control-Allow-Origin</code> reflecting the site, but <code>Access-Control-Allow-Headers</code> lists only <code>Origin, Content-Length, Content-Type, Idempotency-Key, X-Csrf-Token…</code> — not <code>KALSHI-ACCESS-KEY</code>, <code>KALSHI-ACCESS-SIGNATURE</code> or <code>KALSHI-ACCESS-TIMESTAMP</code>. Raw: <a href="data/probe.json">data/probe.json</a> · header definitions: <a href="https://docs.kalshi.com/getting_started/api_keys.md" target="_blank" rel="noopener">API keys ↗</a>.</td>
+                <td>Even if allowed, embedding a private key in a public page would be unsafe. Keep execution server-side.</td>
+              </tr>
+              <tr id="F-17">
+                <td class="mono">F-17</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>A wide one-sided book can produce a meaningless “mid”.</strong> A 1¢ bid / 99¢ ask has a 50¢ arithmetic midpoint but no executable price. The alert engine ignores mids on books wider than 25¢, and every table now shows the last trade or a dash with the basis (“wide book” / “no quote”) instead of a 50¢ “price”. Bid and ask remain visible.</td>
+                <td><span class="badge green">Mitigated</span></td>
+                <td><code>quotePrice()</code> in <a href="assets/js/core.js">core.js</a> · <a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">Get Markets ↗</a> (bid/ask fields).</td>
+                <td>Closed for alerts. A future UI could show an “executable price” column alongside the book mid.</td>
+              </tr>
+              <tr id="F-18">
+                <td class="mono">F-18</td><td><span class="badge down">High</span></td>
+                <td><strong>Earlier parallel-session pages publish illustrative performance as if it were real.</strong> The archived page shows a $10,248 equity, +$248 (+2.48%), 75% win rate and Sharpe 1.84 with no demo account, fills or source behind them.</td>
+                <td><span class="badge green">Superseded</span></td>
+                <td>Archived copy: <a href="docs/index.html">docs/index.html</a> (lines with <code>portEquity</code>, <code>portWinRate</code>, <code>portSharpe</code>). Canonical portfolio: <a href="portfolio.html">portfolio.html</a>.</td>
+                <td>Closed by replacing the root site and marking the archive pages with a visible notice. Do not treat those numbers as results. A demo key would allow a real balance to be shown (F-01).</td>
+              </tr>
+              <tr id="F-19">
+                <td class="mono">F-19</td><td><span class="badge blue">Low</span></td>
+                <td><strong>Three site generations are kept in the repository</strong> (canonical root, <code>docs/</code>, <code>site/</code>). Only the root is maintained; the others are archives and may contain stale links or values.</td>
+                <td><span class="badge blue">Documented</span></td>
+                <td><a href="docs/index.html">docs/ archive ↗</a> · <a href="site/index.html">site/ archive ↗</a> · <a href="COORDINATION.md">coordination board ↗</a>.</td>
+                <td>Delete the archives only after an explicit decision; they are retained now so no session’s work is discarded.</td>
+              </tr>
+            </tbody>
+
+    <section class="grid grid-2 section">
+      <div class="card">
+        <h2>Values intentionally left blank</h2>
+        <p class="small muted">The brief says never infer or fill a value. These are blank until a credential or a settled market supplies them.</p>
+        <table class="compact">
+          <thead><tr><th>Value</th><th>Why blank</th></tr></thead>
+          <tbody>
+            <tr><td>Demo balance</td><td>Requires a signed request (F-01)</td></tr>
+            <tr><td>Demo positions / fills</td><td>Requires a signed request (F-01)</td></tr>
+            <tr><td>Real order IDs and fill prices</td><td>No order was placed (F-12)</td></tr>
+            <tr><td>Resolution of an open market</td><td>Only the API <code>result</code> after settlement (F-15)</td></tr>
+            <tr><td>Production prices</td><td>Out of scope; demo only (F-04)</td></tr>
+            <tr><td>Causal news attribution</td><td>Not measured; links are context only (F-07)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>Review log</h2>
+        <ul class="callout-list small">
+          <li><strong>22 Nov 2026 · session c504d30a.</strong> Rebuilt the data pipeline from live demo responses; added the CORS/WS probes, the swing engine, the model feed and the paper broker; published the site at the repository root after finding the Pages defect (F-11); added this register.</li>
+          <li><strong>22 Nov 2026 · sessions a5878007 / 7a21cbd2.</strong> First site under <code>docs/</code>, endpoint dossier and flagged page. Data values were left at zero/null because the build sandbox could not reach the API; that limitation is superseded by the Actions-runner snapshot (F-15).</li>
+          <li><strong>22 Nov 2026 · integration.</strong> Merged both histories, preserved the <code>docs/</code> and <code>site/</code> archives, unified the coordination board.</li>
+          <li><strong>22 Nov 2026 · browser tests (session c504d30a).</strong> Headless tests of all 12 pages, a mocked live API and a no-data copy. Fixed: the status badge dropped its own hook class after one update; “LIVE” was shown before the first successful poll; cached orderbooks never refreshed; negative money rendered as <code>$-0.68</code>; both chat feeds were blank with no explanation; several pages had no explicit “snapshot unavailable” notice; a $0.00 last trade was treated as a price in live updates. All fixed and re-tested.</li>
+        </ul>
+        <p class="small"><a href="COORDINATION.md">Coordination board ↗</a> · <a href="docs/api-verification.md">Earlier API dossier ↗</a> · <a href="methodology.html">Current methodology ↗</a></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="note info">
+        <strong>Requesting a change.</strong> Every item has a stable ID and a linked source. If you want an item closed, supply the demo credential locally (never in chat or the repository) and the authenticated result can be recorded here. If you believe a value is wrong, link the official source and the row will be re-checked against it.
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="cols">
+        <div><strong style="color:var(--text)">Tradebot2</strong><div class="small">Kalshi demo market intelligence.</div></div>
+        <div class="small-link-row"><a href="dashboard.html">Dashboard</a><a href="portfolio.html">Portfolio</a><a href="executive-summary.html">Executive summary</a><a href="methodology.html">Method &amp; sources</a><a href="docs/index.html">Session archive</a></div>
+      </div>
+      <p class="fine">Demo environment only. Not financial advice. © <span data-year>2026</span> Tradebot2.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/live.js"></script>
+  <script src="assets/js/pages.js"></script>
+</body>
+</html>

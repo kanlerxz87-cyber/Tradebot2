@@ -1,0 +1,36 @@
+name: Verify site and engine
+
+on:
+  push:
+    branches: [main, "arena/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r app/requirements.txt -r requirements.txt pytest
+      - name: Canonical engine tests
+        run: python -m pytest -q
+      - name: Archived engine tests (session 1546d2b0)
+        run: |
+          python tests/test_fees.py
+          python tests/test_engine.py
+          python tests/test_pipeline.py
+          python tests/run_fixture_pipeline.py
+      - name: Canonical data, required pages and local links
+        run: python tools/verify_site.py
+      - name: JavaScript syntax
+        run: |
+          for f in $(find assets/js js dash/assets -name '*.js' 2>/dev/null); do node --check "$f" || exit 1; done
+          echo "js ok"

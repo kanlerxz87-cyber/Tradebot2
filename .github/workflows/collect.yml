@@ -1,0 +1,61 @@
+name: collect
+
+# Live collection runs here because the agent build sandbox has no network route
+# to *.kalshi.co (data/verify-api.json records the probe; flagged.html F-01).
+on:
+  schedule:
+    - cron: "*/5 * * * *"        # GitHub may delay scheduled runs; see flagged.html F-12
+  workflow_dispatch:
+  push:
+    branches: ["**"]
+    paths:
+      - "collector/**"
+      - "requirements.txt"
+      - ".github/workflows/collect.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kalshi-data
+  cancel-in-progress: false
+
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: One collection + analysis cycle
+        env:
+          KALSHI_DEMO_API_KEY_ID: ${{ secrets.KALSHI_DEMO_API_KEY_ID }}
+          KALSHI_DEMO_PRIVATE_KEY: ${{ secrets.KALSHI_DEMO_PRIVATE_KEY }}
+        run: python collector/run.py --data-dir data
+      - name: Verify the data it just wrote
+        run: |
+          python tools/verify_data.py --data-dir data
+          python tools/check_site.py --root . --strict
+      - name: Commit refreshed data back to this branch
+        run: |
+          git config user.name "tradebot2-collector"
+          git config user.email "actions@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "no data change"
+            exit 0
+          fi
+          git commit -m "data: automated cycle $(date -u +%FT%TZ)"
+          # Rebase onto whatever landed while we were collecting, then retry a few times.
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+              git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 5
+          done
+          echo "push did not succeed after 3 attempts" >&2
+          exit 1

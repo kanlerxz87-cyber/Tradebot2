@@ -1,98 +1,49 @@
-# One Pages pipeline for this repository.
+# Publishing model for this repository.
 #
-# Published artifact (single site, built from site/):
-#   /                 <- site/   (canonical Kalshi DEMO desk)
+# GitHub Pages for this repo is configured as `build_type: legacy`, source
+# `main:/` (verified through the Pages API). Legacy Pages builds the repository
+# root, so the canonical site is served from /index.html at the root; an Actions
+# artifact deploy is ignored while that setting remains. The integration token
+# available here cannot change the setting (PUT /pages -> 403).
 #
-# The collector writes site/data/*.json at build time and those files are never
-# committed. GitHub Pages is configured with build_type "workflow", so this
-# artifact is what visitors see at https://kanlerxz87-cyber.github.io/Tradebot2/ .
-#
-# Earlier builds (docs/, dash/, the flat root pages) are kept in the repository
-# for review but are no longer published; see site/repo-review.html (R1, R2, R5).
-name: Build and deploy Kalshi Demo Desk
+# Therefore this workflow verifies the published contract instead of pretending
+# to deploy: the 12 canonical pages, their assets, the committed data and the
+# archived generations must all pass before a merge is considered safe.
+name: Verify published site
 
 on:
   push:
-    branches: ["main"]
+    branches: [main, "arena/**"]
+  pull_request:
   workflow_dispatch:
-  schedule:
-    # Collect + republish the demo data. GitHub documents a 5-minute minimum for
-    # scheduled workflows and that runs can be delayed under load.
-    - cron: "*/10 * * * *"
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "verify-pages"
+  cancel-in-progress: true
 
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Check out
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Restore collector state (history, alerts, paper trades)
-        uses: actions/cache/restore@v4
-        with:
-          path: state
-          key: kalshi-state-${{ github.run_id }}
-          restore-keys: |
-            kalshi-state-
-
-      - name: Collect public Kalshi DEMO data
-        env:
-          # Explicit: the site is a demo-environment tracker.
-          KALSHI_BASE: https://external-api.demo.kalshi.co/trade-api/v2
-          STATE_PATH: state/state.json
-          OUT_DIR: site/data
-        run: python3 scripts/kalshi_collector.py
-
-      - name: Check site (internal links, sourced rows, data records)
-        run: python3 scripts/check_site.py
-
-      - name: Assemble Pages artifact
+      - name: Install dependencies
+        run: pip install -r app/requirements.txt pytest
+      - name: Engine tests
+        run: python -m pytest -q
+      - name: Canonical site: data, required pages and local links
+        run: python tools/verify_site.py
+      - name: Archived generations: internal links and sourced rows
+        run: python scripts/check_site.py
+      - name: Confirm the root is the publish target
         run: |
-          rm -rf _site
-          mkdir -p _site
-          cp -r site/. _site/
-          ls -la _site | head -40
-
-      - name: Check assembled site links
-        run: python3 scripts/check_site.py --links-only-root _site
-
-      - name: Save collector state
-        if: success()
-        uses: actions/cache/save@v4
-        with:
-          path: state
-          key: kalshi-state-${{ github.run_id }}
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-
-  deploy:
-    if: github.ref == 'refs/heads/main'
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          test -f index.html
+          test -f .nojekyll
+          grep -q 'assets/js/core.js' index.html
+          echo "Legacy Pages publishes main:/ ; root index.html is the entry point."

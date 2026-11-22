@@ -1,152 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Category | Kalshi Tradebot2</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crypto markets — Kalshi demo | Tradebot2</title>
+  <meta name="description" content="Live crypto markets on the Kalshi demo exchange: prices, $0.10 swings, liquidity, open interest and official YES/NO resolutions with source links.">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232fe3b0'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-size='17' font-weight='bold' fill='%23041016'%3EK%3C/text%3E%3C/svg%3E">
 </head>
-<body>
+<body data-page="crypto" data-topic="crypto">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">K</span>
+        <span class="brand-text"><strong>Tradebot2</strong><span>Kalshi demo terminal</span></span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html" data-nav="home">Overview</a>
+        <a href="dashboard.html" data-nav="dashboard">Dashboard</a>
+        <span class="nav-sep"></span>
+        <a href="gas-prices.html" data-nav="gas">Gas</a>
+        <a href="elections.html" data-nav="elections">Elections</a>
+        <a href="culture.html" data-nav="culture">Culture</a>
+        <a href="crypto.html" data-nav="crypto">Crypto</a>
+        <a href="golf.html" data-nav="golf">Golf</a>
+        <span class="nav-sep"></span>
+        <a href="portfolio.html" data-nav="portfolio">Portfolio</a>
+        <a href="executive-summary.html" data-nav="summary">Summary</a>
+        <a href="methodology.html" data-nav="method">Method</a>
+        <a href="flagged.html" data-nav="flagged">Flagged</a>
+        <a href="suggestions.html" data-nav="suggestions">Ideas</a>
+      </nav>
+    </div>
+  </header>
 
-    <header class="topbar">
-        <div class="brand-section">
-            <div class="brand-logo">
-                <a href="index.html" style="color:inherit; text-decoration:none;">⚡ KALSHI TRADEBOT2</a>
-                <span class="badge-demo">Demo Sandbox v2</span>
-            </div>
-        </div>
-        <nav class="nav-links">
-            <a href="index.html" class="nav-item">Master Dashboard</a>
-            <a href="gas-prices.html" class="nav-item">⛽ Gas Prices</a>
-            <a href="elections.html" class="nav-item">🗳️ Elections</a>
-            <a href="culture.html" class="nav-item">🎭 Culture</a>
-            <a href="crypto.html" class="nav-item active">🪙 Crypto</a>
-            <a href="golf.html" class="nav-item">⛳ Golf</a>
-            <a href="strategies.html" class="nav-item">🧠 Strategies &amp; Portfolio</a>
-            <a href="review.html" class="nav-item">🔍 Flagged for Review</a>
-        </nav>
-        <div class="topbar-actions">
-            <div class="btn-demo-badge">
-                <span class="status-dot"></span>
-                <span>Category: Crypto</span>
-            </div>
-        </div>
-    </header>
-
-    <div class="main-wrapper">
-
-        <section class="exec-banner">
-            <div class="exec-banner-text">
-                <h3>🪙 Cryptocurrency &amp; Digital Asset Markets on Kalshi</h3>
-                <p>
-                    Tracks regulated spot Bitcoin (BTC), Ethereum (ETH), Solana (SOL) price levels, and institutional spot ETF cumulative net inflow milestones.
-                    Official settlements index against CME CF Benchmark Reference Rates and SEC EDGAR fund filings under Kalshi Rulebook Series 300.
-                </p>
-            </div>
-            <div class="btn-group-sm">
-                <a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" rel="noopener noreferrer" class="btn btn-primary">CoinGecko BTC</a>
-                <a href="https://www.cmegroup.com/markets/cryptocurrencies/cme-cf-cryptocurrency-benchmarks/cf-bitcoin-reference-rate.html" target="_blank" rel="noopener noreferrer" class="btn">CME CF Benchmarks</a>
-            </div>
-        </section>
-
-        <!-- Category Overview & Analysis Card -->
-        <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 24px;">
-            <div class="card-panel" style="padding: 16px;">
-                <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--blue-bright);">📊 Institutional Inflows &amp; Price Volatility</h4>
-                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
-                    Crypto contracts exhibit high beta and round-the-clock price discovery. Key drivers of sudden price dislocations &ge; $0.10:
-                </p>
-                <ul style="font-size: 12px; color: var(--text-secondary); margin-left: 20px; line-height: 1.6;">
-                    <li><strong>ETF Net Flow Disclosures:</strong> Daily 8:00 PM ET institutional flow releases exceeding &plusmn;$500M.</li>
-                    <li><strong>Round-Number Psychological Strikes:</strong> Massive options and binary gamma clustering around strike thresholds ($100k, $110k).</li>
-                    <li><strong>Regulatory Filings:</strong> SEC S-1 and 19b-4 filings for altcoin ETF registrations (Solana, XRP).</li>
-                </ul>
-            </div>
-
-            <div class="card-panel" style="padding: 16px;">
-                <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--green-bright);">🧠 Quantitative Model High-ROI Signals</h4>
-                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
-                    Our volatility surface model identifies persistent structural discounts in quarterly upside contracts:
-                </p>
-                <div style="background: rgba(13, 17, 23, 0.6); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 12px;">
-                    <div style="margin-bottom: 4px;"><strong>BTC-25Q1-110K:</strong> Market Price $0.64 vs Model Fair Value $0.78 (<strong>+21.9% Expected ROI</strong>)</div>
-                    <div style="margin-bottom: 4px;"><strong>ETH-25Q1-4K:</strong> Market Price $0.39 vs Model Fair Value $0.52 (<strong>+33.3% Expected ROI</strong>)</div>
-                    <div><strong>SOL-25-300:</strong> Market Price $0.48 vs Model Fair Value $0.62 (<strong>+29.2% Expected ROI</strong>)</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Verified Category Table -->
-        <div class="section-header">
-            <div class="section-title">
-                <span>📋 Verified Crypto Market Contracts &amp; Resolution Tracking</span>
-            </div>
-            <span style="font-size: 12px; color: var(--text-secondary);">Verified line-by-line against CME CF Benchmarks &amp; SEC EDGAR filings</span>
-        </div>
-
-        <div class="table-responsive">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Ticker</th>
-                        <th>Market Event Title</th>
-                        <th>Strike Price</th>
-                        <th>YES Price</th>
-                        <th>NO Price</th>
-                        <th>24h Change</th>
-                        <th>Resolution Status</th>
-                        <th>Settlement Outcome</th>
-                        <th>Target Date</th>
-                        <th>Official Regulatory Rule</th>
-                        <th>Verified Source Link</th>
-                    </tr>
-                </thead>
-                <tbody id="cryptoTableBody">
-                    <!-- Populated dynamically from js/data.js -->
-                </tbody>
-            </table>
-        </div>
-
+  <main class="wrap page">
+    <div class="page-head">
+      <div class="grow">
+        <div class="eyebrow">Topic 04 of 05 · Digital assets</div>
+        <h1>₿ Crypto</h1>
+        <p class="lede">Bitcoin, Ethereum, Solana and other digital-asset markets, including demo-only BTC hourly markets. Where the series metadata names CF Benchmarks as the settlement source, that is shown on the row.</p>
+      </div>
+      <div class="statusbar">
+        <span class="badge dot neutral js-live-status">CONNECTING</span>
+        <span class="badge neutral">Snapshot <span data-snapshot-time>—</span></span>
+        <a class="btn" href="dashboard.html">Open live dashboard →</a>
+      </div>
     </div>
 
-    <footer class="footer-main">
-        <div><strong>Kalshi Tradebot2</strong> | Crypto Asset Derivatives Analytics</div>
-        <div class="footer-links">
-            <a href="https://www.coingecko.com/" target="_blank" rel="noopener noreferrer">CoinGecko Portal</a>
-            <a href="https://www.cmegroup.com/" target="_blank" rel="noopener noreferrer">CME Group CF</a>
-            <a href="https://www.sec.gov/edgar" target="_blank" rel="noopener noreferrer">SEC EDGAR</a>
-            <a href="index.html">Master Dashboard</a>
+    <section class="kpi-row" aria-label="Topic metrics">
+      <div class="card kpi-card kpi"><div class="label">Open markets</div><div class="value" data-topic-open>—</div><div class="foot">in this topic, demo API</div></div>
+      <div class="card kpi-card kpi"><div class="label">Tracked here</div><div class="value" data-topic-tracked>—</div><div class="foot">top by 24h flow / OI</div></div>
+      <div class="card kpi-card kpi"><div class="label">24h volume</div><div class="value" data-topic-volume>—</div><div class="foot">contracts, official</div></div>
+      <div class="card kpi-card kpi"><div class="label">Open interest</div><div class="value" data-topic-oi>—</div><div class="foot">contracts, official</div></div>
+      <div class="card kpi-card kpi"><div class="label">Resolved 30d</div><div class="value" data-topic-resolved>—</div><div class="foot">YES/NO outcome logged</div></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Open crypto markets</h2>
+          <div class="sub">Sorted by 24h notional estimate. Prices refresh every 5 seconds while this tab is visible. Every row has a direct API record and Kalshi market link.</div>
         </div>
-    </footer>
+        <span class="badge neutral">Official source links</span>
+      </div>
+      <div class="card flush">
+        <div class="table-wrap">
+          <table id="topic-markets">
+            <thead>
+              <tr><th>Market</th><th class="num">YES price</th><th class="num">Bid</th><th class="num">Ask</th><th class="num">Seeded move</th><th class="num">24h vol</th><th class="num">OI</th><th class="num">Notional est.</th><th class="num">Spread / depth</th><th>Close / source</th></tr>
+            </thead>
+            <tbody><tr><td colspan="10"><div class="empty">Loading verified snapshot…</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="liq-note">Seeded move is the change between the first and last non-null 1-minute candle close in the collected window (8 hours by default). Notional est. = contracts × mid. Both are computed; contract counts and quotes are official.</p>
+    </section>
 
-    <script src="js/data.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const body = document.getElementById('cryptoTableBody');
-            const contracts = getContractsByTopic('crypto');
-            contracts.forEach(c => {
-                const tr = document.createElement('tr');
-                const isUp = c.change24h >= 0;
-                let statusBadge = c.status === "Active" ? 
-                    `<span class="status-badge status-active">Active</span>` :
-                    (c.status === "Resolved YES" ? `<span class="status-badge status-resolved-yes">Resolved YES</span>` : `<span class="status-badge status-resolved-no">Resolved NO</span>`);
+    <section class="grid grid-2 section">
+      <div class="card">
+        <h2>How this topic is selected</h2>
+        <p class="small muted">The classifier is deliberately narrow. A market that cannot be tied to crypto is excluded, not guessed into the topic.</p>
+        <ul class="callout-list">        <li>Official Kalshi category <code>Crypto</code> (trusted directly).</li>
+        <li>Keywords with word boundaries: Bitcoin, BTC, Ethereum, ether, ETH, Solana, SOL, XRP, Ripple, Dogecoin, DOGE, Cardano, crypto, stablecoin, blockchain, DeFi, Coinbase, Binance, Satoshi.</li>
+        <li>The word-boundary rule prevents “Netherlands” from matching “ETH”.</li></ul>
+        <div class="note info" style="margin-top:14px">Full rules and regression cases: <a href="methodology.html#classification">methodology → classification</a>.</div>
+      </div>
+      <div class="card">
+        <h2>Settlement sources &amp; context</h2>
+        <p class="small muted">Sources named in the official series metadata for these markets. These are the references Kalshi points to for resolution.</p>
+        <div id="settlement-sources"><div class="empty">Loading…</div></div>
+        <h3 style="margin-top:18px">Recent ≥ $0.10 swings</h3>
+        <div id="topic-swings"><div class="empty">Loading…</div></div>
+      </div>
+    </section>
 
-                tr.innerHTML = `
-                    <td><strong class="txt-blue">${c.ticker}</strong></td>
-                    <td style="max-width:260px; white-space:normal; font-size:12px;">${c.title}</td>
-                    <td>${c.strikePrice}</td>
-                    <td style="font-family:var(--font-mono);"><strong>$${c.yesPrice.toFixed(2)}</strong></td>
-                    <td style="font-family:var(--font-mono);">$${c.noPrice.toFixed(2)}</td>
-                    <td class="${isUp ? 'txt-green' : 'txt-red'}" style="font-family:var(--font-mono);">${isUp ? '+' : ''}$${c.change24h.toFixed(2)}</td>
-                    <td>${statusBadge}</td>
-                    <td><strong>${c.resolutionOutcome}</strong></td>
-                    <td style="font-size:11px;">${c.resolutionDate}</td>
-                    <td style="font-size:11px; color:var(--text-secondary);">${c.rulebookRule}</td>
-                    <td><a href="${c.sourceUrl}" target="_blank" rel="noopener noreferrer" class="source-link-cell">🔗 ${c.sourceName}</a></td>
-                `;
-                body.appendChild(tr);
-            });
-        });
-    </script>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Resolution log</h2>
+          <div class="sub">Settled markets from the last 30 days: the official result is <strong>YES</strong> or <strong>NO</strong>, taken from the API <code>result</code> field. Values are never inferred.</div>
+        </div>
+        <span class="badge green">Resolved</span>
+      </div>
+      <div class="card flush">
+        <div class="table-wrap">
+          <table id="topic-resolutions">
+            <thead><tr><th>Market</th><th>Result</th><th>Close time</th><th>Expiration value</th><th>Source</th></tr></thead>
+            <tbody><tr><td colspan="5"><div class="empty">Loading resolutions…</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-2 section">
+      <div class="card">
+        <h2>Notes for a trader</h2>
+        <ul class="callout-list">        <li>Tickers beginning <code>KXDEMO</code> are demo-only constructs and can behave differently from production crypto markets.</li>
+        <li>Hourly crypto markets close quickly; the close time column matters more than the seeded move for short-dated strikes.</li>
+        <li>Settlement sources are listed from the series metadata; the market rules and the linked source control the outcome.</li></ul>
+      </div>
+      <div class="card">
+        <h2>Flagged on this page</h2>
+        <div class="note warn">Binary “above/below” crypto strikes are sensitive to the exact observation window and index. Never assume the spot price you see is the settlement print.</div>
+        <h3 style="margin-top:18px">Data provenance</h3>
+        <table class="compact">
+          <tbody>
+            <tr><td class="muted">API base</td><td class="small mono" data-api-base>—</td></tr>
+            <tr><td class="muted">Snapshot</td><td class="small"><span data-snapshot-time>—</span> · <span data-snapshot-age>—</span></td></tr>
+            <tr><td class="muted">Resolution field</td><td class="small mono">result: yes | no</td></tr>
+            <tr><td class="muted">Alert basis</td><td class="small">YES mid; last price if one-sided</td></tr>
+          </tbody>
+        </table>
+        <p class="small" style="margin-top:12px"><a href="flagged.html">All flagged items →</a> · <a href="methodology.html">Method &amp; formulas →</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="cols">
+        <div><strong style="color:var(--text)">Tradebot2</strong><div class="small">Kalshi demo market intelligence.</div></div>
+        <div class="small-link-row">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="portfolio.html">Portfolio</a>
+          <a href="executive-summary.html">Executive summary</a>
+          <a href="methodology.html">Method &amp; sources</a>
+          <a href="flagged.html">Flagged for review</a>
+          <a href="docs/index.html">Session archive</a>
+        </div>
+      </div>
+      <p class="fine">Demo environment only. Kalshi warns that demo prices and behaviour may not reflect production markets. Not financial advice. © <span data-year>2026</span> Tradebot2.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/live.js"></script>
+  <script src="assets/js/category.js"></script>
 </body>
 </html>

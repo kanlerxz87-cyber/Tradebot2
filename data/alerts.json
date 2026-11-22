@@ -1,0 +1,14 @@
+{
+  "all_feed": [],
+  "counts": {
+    "all": 0,
+    "down": 0,
+    "high_roi": 0,
+    "up": 0
+  },
+  "generated_at": null,
+  "high_roi_feed": [],
+  "high_roi_rule": "model ROI on risk >= 25% and entry price between $0.10 and $0.90",
+  "threshold_dollars": 0.1,
+  "window_points": 6
+}
