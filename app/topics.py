@@ -281,6 +281,16 @@ def _as_text(value: object) -> str:
     return str(value)
 
 
+# Event tickers are not always "<series>-<date>". The demo exchange lists golf
+# tournaments as e.g. "KXPGATOURRSM-..." and "KXPGAMAKECUT-THRC26-NDUN", where
+# the leading token is a family, not a series ticker that /series returns. These
+# prefixes are matched loosely (prefix only) because the evidence for them is the
+# event tickers themselves, seen live on the dashboard.
+EVENT_FAMILY_PREFIXES: dict[str, tuple[str, ...]] = {
+    "golf": ("KXPGATOUR", "KXPGAMAKECUT", "KXLPGA", "KXPGA"),
+}
+
+
 def _ticker_matches(topic: str, *tickers: str) -> str | None:
     for prefix in TICKER_PREFIXES.get(topic, ()):
         p = prefix.upper()
@@ -290,6 +300,12 @@ def _ticker_matches(topic: str, *tickers: str) -> str | None:
                 continue
             if t == p or t.startswith(p + "-") or t.startswith(p + "_"):
                 return prefix
+    for prefix in EVENT_FAMILY_PREFIXES.get(topic, ()):
+        p = prefix.upper()
+        for ticker in tickers:
+            t = (ticker or "").upper()
+            if t.startswith(p):
+                return prefix + "*"
     return None
 
 
