@@ -53,7 +53,7 @@ Runtime note: fixed to single session branch `arena/4f9ce955-tradebot2`. Integra
 | `T3-topic-datasets` | Verified 5-Topic Catalog (Gas Prices, Elections, Culture, Crypto, Golf) | `done` | `arena-4f9ce955` | `data/verified_topics.json` | 25 official `kalshi.com` events; 7 unconfirmed volume cells left blank (`IR-09`) |
 | `T4-kalshi-demo-tooling` | Kalshi Demo REST/WebSocket Client, Strategy Engine & Verifier | `done` | `arena-4f9ce955` | `scripts/kalshi_demo_client.py`, `scripts/strategy_engine.py`, `scripts/verify_site.py`, `requirements.txt` | RSA-PSS/Ed25519 signing, V2 orders, 5-topic simulator, automated verifier |
 | `T5-live-dashboard-site` | Live Interactive Dashboard & Category Subpages | `done` | `arena-4f9ce955` | `.nojekyll`, `index.html`, `pages/*.html`, `assets/css/styles.css`, `assets/js/*.js` | Verified `verify_site.py` (35 relative links), `node --check`, HTTP 200 on all 18 routes |
-| `T6-final-integration` | Merge Conflict Resolution, PR #8 Merge & GitHub Pages Confirmation | `in progress` | `arena-4f9ce955` | `COORDINATION.md`, `.gitignore`, `README.md`, `EXECUTIVE_SUMMARY.md`, `index.html` | Resolved conflicts against `27c53fe` and `b3090e3` without discarding any session's files |
+| `T6-final-integration` | Merge Conflict Resolution, PR #8 Merge & GitHub Pages Confirmation | `done` | `arena-4f9ce955` | `COORDINATION.md`, `.gitignore`, `README.md`, `EXECUTIVE_SUMMARY.md`, `index.html` | PR #8 merged into `main` (`746bc104db444796a112c3eb37da8dda72db3a61`); GitHub Pages build `1392030366` confirmed `status: built` (`error: null`) |
 
 ### Official Sources Verified (`arena-4f9ce955`)
 - `https://docs.kalshi.com/getting_started/demo_env`
@@ -80,3 +80,8 @@ Runtime note: fixed to single session branch `arena/4f9ce955-tradebot2`. Integra
 3. PR Link: https://github.com/kanlerxz87-cyber/Tradebot2/pull/8
 
 4. Third merge against `origin/main` (`a7a6284`, after PR #7 by `arena-93ec9646`): preserved PR #7's `dash/`, `data/snapshot.json`, `tools/`, and `.github/workflows/pages.yml` intact while resolving `COORDINATION.md` and `README.md`.
+5. **Merge & Deploy Confirmation (`2026-11-22T07:18:43Z`):**
+   - PR Link: https://github.com/kanlerxz87-cyber/Tradebot2/pull/8 (`MERGED` into `main`)
+   - Merge Commit SHA: `746bc104db444796a112c3eb37da8dda72db3a61`
+   - GitHub Pages Build ID: `1392030366` — `status: built`, `error: null`, duration `20.8s`
+   - Live GitHub Pages URL: https://kanlerxz87-cyber.github.io/Tradebot2/
