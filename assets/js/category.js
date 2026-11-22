@@ -86,13 +86,13 @@
         '<td><a class="market-name" href="' + TB.esc(m.links.kalshi) + '" target="_blank" rel="noopener">' + TB.esc(m.title) + '</a>' +
         '<span class="sub mono">' + TB.esc(m.ticker) + '</span><span class="sub">' + TB.esc(m.event_title || "") + '</span></td>' +
         '<td class="num js-price">' + TB.money(TB.snapshotPrice(m).price) + '<span class="sub js-basis">' + TB.esc(TB.snapshotPrice(m).basis) + '</span></td>' +
-        '<td class="num js-bid">' + TB.money(m.prices && m.prices.yes_bid) + '</td>' +
-        '<td class="num js-ask">' + TB.money(m.prices && m.prices.yes_ask) + '</td>' +
+        '<td class="num js-bid">' + (m.prices && m.prices.yes_bid > 0 ? TB.money(m.prices.yes_bid) : "—") + '</td>' +
+        '<td class="num js-ask">' + (m.prices && m.prices.yes_ask > 0 && m.prices.yes_ask < 1 ? TB.money(m.prices.yes_ask) : "—") + '</td>' +
         '<td class="num js-move ' + (move > 0 ? "up" : move < 0 ? "down" : "") + '">' + (move === null ? "—" : (move > 0 ? "+" : "") + TB.cents(move)) + '</td>' +
         '<td class="num">' + TB.compact(m.volume.last_24h_contracts) + '</td>' +
         '<td class="num">' + TB.compact(m.volume.open_interest_contracts) + '</td>' +
         '<td class="num"' + ' title="Computed estimate: 24h contracts × mid price, not an official dollar-volume field.">' + TB.money(m.volume.notional_24h_est, 0) + '</td>' +
-        '<td class="num">' + (liq.spread === undefined || liq.spread === null ? "—" : TB.money(liq.spread)) + '<span class="sub">' + (liq.yes_depth_at_best !== undefined && liq.yes_depth_at_best !== null ? TB.compact(liq.yes_depth_at_best) + " at touch" : "depth n/a") + '</span></td>' +
+        '<td class="num">' + (liq.spread === undefined || liq.spread === null || liq.spread <= 0 ? "—" : TB.money(liq.spread)) + '<span class="sub">' + (liq.yes_depth_at_best !== undefined && liq.yes_depth_at_best !== null ? TB.compact(liq.yes_depth_at_best) + " at touch" : "depth n/a") + '</span></td>' +
         '<td class="small">' + TB.isoDate(m.close_time) + '<span class="sub"><span class="source-links"><a href="' + TB.esc(m.links.market_api) + '" target="_blank" rel="noopener">API ↗</a><a href="' + TB.esc(m.links.kalshi) + '" target="_blank" rel="noopener">Kalshi ↗</a></span></span></td>' +
         '</tr>';
     }
@@ -106,9 +106,9 @@
       const price = row.querySelector(".js-price");
       if (price) price.innerHTML = TB.money(q.mid) + '<span class="sub">' + TB.esc(q.basis) + '</span>';
       const bid = row.querySelector(".js-bid");
-      if (bid) bid.textContent = TB.money(q.bid);
+      if (bid) bid.textContent = q.bid > 0 ? TB.money(q.bid) : "—";
       const ask = row.querySelector(".js-ask");
-      if (ask) ask.textContent = TB.money(q.ask);
+      if (ask) ask.textContent = q.ask > 0 && q.ask < 1 ? TB.money(q.ask) : "—";
     });
   }
 

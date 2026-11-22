@@ -366,12 +366,12 @@
         '<span class="sub mono">' + TB.esc(m.ticker) + (m.is_provisional ? " · provisional" : "") + "</span></td>" +
         '<td><span class="badge neutral topic-tag">' + TB.esc((TB.TOPICS[m.topic] || {}).label || m.topic) + "</span></td>" +
         '<td class="num js-price">' + TB.money(TB.snapshotPrice(m).price) + '<span class="sub">' + TB.esc(TB.snapshotPrice(m).basis) + "</span></td>" +
-        '<td class="num js-bid muted">' + TB.money(price.yes_bid) + " / " + TB.money(price.yes_ask) + "</td>" +
+        '<td class="num js-bid muted">' + (price.yes_bid > 0 ? TB.money(price.yes_bid) : "—") + " / " + (price.yes_ask > 0 && price.yes_ask < 1 ? TB.money(price.yes_ask) : "—") + "</td>" +
         '<td class="num js-move ' + (move > 0 ? "up" : move < 0 ? "down" : "") + '">' + (move === null ? "—" : (move > 0 ? "+" : "") + TB.cents(move)) + "</td>" +
         '<td class="num">' + TB.compact(m.volume.last_24h_contracts) + '<span class="sub">contracts</span></td>' +
         '<td class="num">' + TB.compact(m.volume.open_interest_contracts) + "</td>" +
         '<td class="num" title="Computed estimate: 24h contracts × mid price. Not an official dollar-volume field.">' + (m.volume.notional_24h_est !== null ? TB.money(m.volume.notional_24h_est, 0) : "—") + "</td>" +
-        '<td class="num js-spread">' + (spread === null || spread === undefined ? "—" : TB.money(spread)) + '<span class="sub">' + (liq.yes_depth_at_best !== undefined && liq.yes_depth_at_best !== null ? TB.compact(liq.yes_depth_at_best) + " at touch" : "depth n/a") + "</span></td>" +
+        '<td class="num js-spread">' + (spread === null || spread === undefined || spread <= 0 ? "—" : TB.money(spread)) + '<span class="sub">' + (liq.yes_depth_at_best !== undefined && liq.yes_depth_at_best !== null ? TB.compact(liq.yes_depth_at_best) + " at touch" : "depth n/a") + "</span></td>" +
         '<td class="small"><span class="source-links"><a href="' + TB.esc(m.links.market_api) + '" target="_blank" rel="noopener">API ↗</a><a href="' + TB.esc(m.links.kalshi) + '" target="_blank" rel="noopener">Kalshi ↗</a></span></td>' +
         "</tr>";
     }).join("");
@@ -480,12 +480,17 @@
       const market = (state.snapshot.markets || []).find((m) => m.ticker === ticker);
       if (!market) return;
       const priceCell = document.querySelector('#market-table tr[data-ticker="' + cssEscape(ticker) + '"] .js-price');
-      if (priceCell) priceCell.textContent = TB.money(quote.mid);
+      if (priceCell) priceCell.innerHTML = TB.money(quote.mid) + '<span class="sub">' + TB.esc(quote.basis || "") + "</span>";
       const bidCell = document.querySelector('#market-table tr[data-ticker="' + cssEscape(ticker) + '"] .js-bid');
-      if (bidCell) bidCell.textContent = TB.money(quote.bid) + " / " + TB.money(quote.ask);
+      if (bidCell) {
+        bidCell.textContent = (quote.bid > 0 ? TB.money(quote.bid) : "—") + " / " +
+          (quote.ask > 0 && quote.ask < 1 ? TB.money(quote.ask) : "—");
+      }
       const spreadCell = document.querySelector('#market-table tr[data-ticker="' + cssEscape(ticker) + '"] .js-spread');
-      if (spreadCell && quote.bid !== null && quote.ask !== null) {
-        spreadCell.innerHTML = TB.money(quote.ask - quote.bid) + '<span class="sub">' + (market.liquidity && market.liquidity.yes_depth_at_best ? TB.compact(market.liquidity.yes_depth_at_best) + " at touch" : "depth n/a") + "</span>";
+      if (spreadCell) {
+        const spread = quote.bid !== null && quote.ask !== null ? quote.ask - quote.bid : null;
+        spreadCell.innerHTML = (spread === null || spread <= 0 ? "—" : TB.money(spread)) +
+          '<span class="sub">' + (market.liquidity && market.liquidity.yes_depth_at_best ? TB.compact(market.liquidity.yes_depth_at_best) + " at touch" : "depth n/a") + "</span>";
       }
       if (state.selected && state.selected.ticker === ticker) {
         updateQuoteMeta(market, quote);
