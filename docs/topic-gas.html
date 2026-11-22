@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gas prices · Tradebot2</title>
+<meta name="description" content="Kalshi demo gas-price markets: the KXAAAGAS family under Economics / Oil and energy, settled from AAA averages, with source links.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-topic="gas">
+<div id="shell"></div>
+<main class="wrap">
+  <p class="eyebrow">Topic 1 of 5 · gas prices</p>
+  <h1 id="topicTitle">Gas prices</h1>
+  <p class="lead" id="topicBlurb"></p>
+  <div class="controls">
+    <span class="badge gas">series family <b id="topicSeries"></b></span>
+    <a class="btn" id="topicLink" href="#" target="_blank" rel="noopener"></a>
+    <a class="btn" href="verification.html">how this was verified →</a>
+  </div>
+
+  <div id="liveBox"></div>
+
+  <h2>Series in this family</h2>
+  <p class="muted small" style="margin-top:-4px">Every column is copied from the series object returned by
+  <code>GET /series</code>. The last column jumps to the settlement source the series itself names.</p>
+  <div class="table-wrap"><table id="seriesTable">
+    <thead><tr><th>series</th><th>title</th><th>category</th><th>tags</th><th>frequency</th>
+    <th>settlement source</th><th>api source</th><th>settlement</th></tr></thead>
+    <tbody><tr><td colspan="8" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
+
+  <h2>Verified open markets at snapshot time</h2>
+  <div class="table-wrap"><table id="marketTable">
+    <thead><tr><th>market</th><th>question</th><th class="num">last</th><th class="num">yes bid</th>
+    <th class="num">yes ask</th><th class="num">bid depth</th><th class="num">volume</th>
+    <th class="num">open interest</th><th>source</th></tr></thead>
+    <tbody><tr><td colspan="9" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
+
+  <h2>Resolved markets</h2>
+  <div class="table-wrap"><table id="resolvedTable">
+    <thead><tr><th>market</th><th>question</th><th>resolved</th><th class="num">settlement value</th>
+    <th>settled at</th><th>source</th></tr></thead>
+    <tbody><tr><td colspan="6" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
+
+  <div class="notice">
+    <b>Why gas rows are sparse.</b> The demo exchange lists the gas ladder but almost never trades it:
+    three strikes were open with bids of 0.35–0.41 and daily volume under 13 contracts, and one strike had
+    no bid at all while its last trade printed at 0.90. That is exactly why the dashboard shows depth
+    instead of only a price.
+  </div>
+</main>
+<div id="footer"></div>
+<script src="js/live.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/topic.js"></script>
+</body>
+</html>

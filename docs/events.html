@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live → resolved tracker · Tradebot2</title>
+<meta name="description" content="Every tracked Kalshi demo market followed until it resolved, with the official yes/no result, settlement value, settlement timestamp and source link.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="shell"></div>
+<main class="wrap">
+  <p class="eyebrow">Resolution tracker</p>
+  <h1>Markets tracked until they resolved</h1>
+  <p class="lead">The requirement is to follow an event until the exchange says how it ended. Kalshi sets
+  <code>result</code> to <code>yes</code>, <code>no</code> or <code>scalar</code> when a market is determined and
+  <code>status</code> to <code>finalized</code> once positions are paid
+  (<a href="https://docs.kalshi.com/getting_started/market_lifecycle.md" target="_blank" rel="noopener">market lifecycle</a>).
+  The table below is built only from markets that reached that state; the settlement value and timestamp are the
+  API's own fields.</p>
+
+  <div class="grid g4" id="resKpis">
+    <div class="kpi"><div class="label">Resolved captured</div><div class="value" id="kCount">—</div><div class="sub">finalized markets</div></div>
+    <div class="kpi up"><div class="label">Resolved YES</div><div class="value" id="kYes">—</div><div class="sub">result = yes</div></div>
+    <div class="kpi down"><div class="label">Resolved NO</div><div class="value" id="kNo">—</div><div class="sub">result = no</div></div>
+    <div class="kpi"><div class="label">Snapshot</div><div class="value" id="kSnap" style="font-size:14px">—</div><div class="sub">UTC capture time</div></div>
+  </div>
+
+  <div class="controls" style="margin-top:14px">
+    <div class="seg" id="resFilter">
+      <button data-f="all" class="on">all</button>
+      <button data-f="yes">yes</button>
+      <button data-f="no">no</button>
+    </div>
+    <div class="seg" id="topicFilter">
+      <button data-t="all" class="on">every topic</button>
+      <button data-t="gas">gas</button>
+      <button data-t="elections">elections</button>
+      <button data-t="culture">culture</button>
+      <button data-t="crypto">crypto</button>
+      <button data-t="golf">golf</button>
+    </div>
+  </div>
+
+  <div class="table-wrap"><table id="resTable">
+    <thead><tr>
+      <th>topic</th><th>market ticker</th><th>question</th><th>result</th>
+      <th class="num">settlement value</th><th>settled (UTC)</th><th>close time</th><th>source</th><th>note</th>
+    </tr></thead>
+    <tbody><tr><td colspan="9" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
+
+  <h2>Still open, being tracked</h2>
+  <p class="muted small" style="margin-top:-4px">Open markets are polled on the dashboard until they leave
+  <code>active</code>. When one resolves it moves into the table above with the API's own result.</p>
+  <div class="table-wrap"><table id="openTable">
+    <thead><tr><th>topic</th><th>market</th><th>question</th><th>status</th><th>close time</th><th>source</th></tr></thead>
+    <tbody><tr><td colspan="6" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
+
+  <div class="notice">
+    <b>No guessing.</b> A market whose <code>result</code> is empty is never displayed as "no" — it stays open
+    until the exchange publishes an outcome. Scalar markets would be shown with their settlement value, and none
+    were captured for these five topics.
+  </div>
+</main>
+<div id="footer"></div>
+<script src="js/live.js"></script>
+<script src="js/shell.js"></script>
+<script>
+(async () => {
+  const { cents, esc, numf } = T2;
+  const data = await fetch("data/markets.json").then((r) => r.json());
+  const resolved = data.rows.filter((r) => r.row_type === "resolved");
+  const open = data.rows.filter((r) => r.row_type === "market");
+
+  document.getElementById("kCount").textContent = resolved.length;
+  document.getElementById("kYes").textContent = resolved.filter((r) => r.result === "yes").length;
+  document.getElementById("kNo").textContent = resolved.filter((r) => r.result === "no").length;
+  document.getElementById("kSnap").textContent = data.snapshot_ts;
+
+  let f = "all", t = "all";
+  function draw() {
+    const rows = resolved.filter((r) => (f === "all" || r.result === f) && (t === "all" || r.topic === t));
+    document.querySelector("#resTable tbody").innerHTML = rows.length ? rows.map((r) => `<tr>
+      <td>${Shell.topicBadge(r.topic)}</td>
+      <td class="tick">${esc(r.ticker)}</td>
+      <td>${esc(r.title)}</td>
+      <td><span class="badge ${r.result === "yes" ? "ok" : "err"}">${esc(r.result)}</span></td>
+      <td class="num">${esc(r.settlement_value)}</td>
+      <td class="mono small">${esc(r.settlement_ts || "—")}</td>
+      <td class="mono small">${esc(r.close_time || "—")}</td>
+      <td class="small">${Shell.srcLink(r.source_url, "kalshi")}</td>
+      <td class="small dim">${esc(r.note || "")}</td>
+    </tr>`).join("") : '<tr><td colspan="9" class="chat-empty">nothing matches this filter</td></tr>';
+  }
+  document.querySelectorAll("#resFilter button").forEach((b) => b.addEventListener("click", () => {
+    f = b.dataset.f;
+    document.querySelectorAll("#resFilter button").forEach((x) => x.classList.toggle("on", x === b));
+    draw();
+  }));
+  document.querySelectorAll("#topicFilter button").forEach((b) => b.addEventListener("click", () => {
+    t = b.dataset.t;
+    document.querySelectorAll("#topicFilter button").forEach((x) => x.classList.toggle("on", x === b));
+    draw();
+  }));
+  draw();
+
+  document.querySelector("#openTable tbody").innerHTML = open.length ? open.map((m) => `<tr>
+    <td>${Shell.topicBadge(m.topic)}</td>
+    <td class="tick">${esc(m.ticker)}</td>
+    <td>${esc(m.title)}</td>
+    <td><span class="badge live">${esc(m.status)}</span></td>
+    <td class="mono small">${esc(m.close_time || "—")}</td>
+    <td class="small">${Shell.srcLink(m.source_url, "kalshi")}</td>
+  </tr>`).join("") : '<tr><td colspan="6" class="chat-empty">none</td></tr>';
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Culture · Tradebot2</title>
+<meta name="description" content="Kalshi demo culture markets: awards, entertainment and internet culture, with the settlement source list shown verbatim.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-topic="culture">
+<div id="shell"></div>
+<main class="wrap">
+  <p class="eyebrow">Topic 3 of 5 · culture</p>
+  <h1 id="topicTitle">Gas prices</h1>
+  <p class="lead" id="topicBlurb"></p>
+  <div class="controls">
+    <span class="badge culture">series family <b id="topicSeries"></b></span>
+    <a class="btn" id="topicLink" href="#" target="_blank" rel="noopener"></a>
+    <a class="btn" href="verification.html">how this was verified →</a>
+  </div>
+
+  <div id="liveBox"></div>
+
+  <h2>Series in this family</h2>
+  <p class="muted small" style="margin-top:-4px">Every column is copied from the series object returned by
+  <code>GET /series</code>. The last column jumps to the settlement source the series itself names.</p>
+  <div class="table-wrap"><table id="seriesTable">
+    <thead><tr><th>series</th><th>title</th><th>category</th><th>tags</th><th>frequency</th>
+    <th>settlement source</th><th>api source</th><th>settlement</th></tr></thead>
+    <tbody><tr><td colspan="8" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
+
+  <h2>Verified open markets at snapshot time</h2>
+  <div class="table-wrap"><table id="marketTable">
+    <thead><tr><th>market</th><th>question</th><th class="num">last</th><th class="num">yes bid</th>
+    <th class="num">yes ask</th><th class="num">bid depth</th><th class="num">volume</th>
+    <th class="num">open interest</th><th>source</th></tr></thead>
+    <tbody><tr><td colspan="9" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
+
+  <h2>Resolved markets</h2>
+  <div class="table-wrap"><table id="resolvedTable">
+    <thead><tr><th>market</th><th>question</th><th>resolved</th><th class="num">settlement value</th>
+    <th>settled at</th><th>source</th></tr></thead>
+    <tbody><tr><td colspan="6" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
+
+  <div class="notice">
+    <b>Read the settlement sources carefully.</b> Both culture series captured name 20+ outlets, and several of those entries are search-engine placeholders (for example <code>google.com/search?q=Verge</code>) rather than publisher URLs. This is reproduced as returned and flagged on the review page instead of being "cleaned up".
+  </div>
+</main>
+<div id="footer"></div>
+<script src="js/live.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/topic.js"></script>
+</body>
+</html>

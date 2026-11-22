@@ -1,371 +1,153 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strategies &amp; Portfolio Analytics | Kalshi Tradebot2</title>
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strategies, paper trading and portfolio analytics · Tradebot2</title>
+<meta name="description" content="Five Kalshi strategies by trade type, replayed only on recorded prices with the official taker fee, plus the per-topic and per-price-bucket performance breakdown.">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<div id="shell"></div>
+<main class="wrap">
+  <p class="eyebrow">Simulated trading · paper only</p>
+  <h1>Strategies by trade type, and what the recording says about them</h1>
+  <p class="lead">Each strategy is a <em>trade type</em> with an explicit entry rule, exit rule and fee model.
+  They are replayed against the recorded price paths in <code>data/candles.json</code>. A fill is only booked
+  where an executable quote existed in that recording; when there is no counterparty the trade is skipped and
+  the reason is counted. This page never claims a live demo-account balance, because no API key exists here.</p>
 
-    <header class="topbar">
-        <div class="brand-section">
-            <div class="brand-logo">
-                <a href="index.html" style="color:inherit; text-decoration:none;">⚡ KALSHI TRADEBOT2</a>
-                <span class="badge-demo">Demo Sandbox v2</span>
-            </div>
-        </div>
-        <nav class="nav-links">
-            <a href="index.html" class="nav-item">Master Dashboard</a>
-            <a href="gas-prices.html" class="nav-item">⛽ Gas Prices</a>
-            <a href="elections.html" class="nav-item">🗳️ Elections</a>
-            <a href="culture.html" class="nav-item">🎭 Culture</a>
-            <a href="crypto.html" class="nav-item">🪙 Crypto</a>
-            <a href="golf.html" class="nav-item">⛳ Golf</a>
-            <a href="strategies.html" class="nav-item active">🧠 Strategies &amp; Portfolio</a>
-            <a href="review.html" class="nav-item">🔍 Flagged for Review</a>
-        </nav>
-        <div class="topbar-actions">
-            <div class="btn-demo-badge">
-                <span class="status-dot"></span>
-                <span>Portfolio Analytics &amp; Execution</span>
-            </div>
-        </div>
-    </header>
+  <div class="notice danger" id="disclosure">loading…</div>
 
-    <div class="main-wrapper">
+  <div class="grid g4" id="kpis">
+    <div class="kpi"><div class="label">Paper trades</div><div class="value" id="k1">—</div><div class="sub">all strategies</div></div>
+    <div class="kpi"><div class="label">Closed</div><div class="value" id="k2">—</div><div class="sub">exit or resolution</div></div>
+    <div class="kpi"><div class="label">Net P&amp;L</div><div class="value" id="k3">—</div><div class="sub">after fees</div></div>
+    <div class="kpi warn"><div class="label">Sample window</div><div class="value" id="k4" style="font-size:13px">—</div><div class="sub">read the caveat</div></div>
+  </div>
 
-        <section class="exec-banner">
-            <div class="exec-banner-text">
-                <h3>🧠 Automated Simulated Trading Engine &amp; Strategy Analytics</h3>
-                <p>
-                    Automates and audits 4 quantitative trading strategies against live Kalshi demo contract order books.
-                    Tracks starting demo capital ($10,000 USD), risk-adjusted Sharpe ratio, portfolio win rate, and categorizes trades by strategy and market topic.
-                </p>
-            </div>
-            <div class="btn-group-sm">
-                <button class="btn btn-primary" id="toggleAutoTradingBtn">🟢 Auto-Trading: ACTIVE</button>
-            </div>
-        </section>
+  <h2>Strategy library</h2>
+  <div class="table-wrap"><table id="stratTable">
+    <thead><tr><th>strategy</th><th>trade type</th><th>entry rule</th><th>exit rule</th>
+    <th class="num">trades</th><th class="num">closed</th><th class="num">hit rate</th><th class="num">net P&amp;L</th>
+    <th class="num">skipped</th><th>source</th></tr></thead>
+    <tbody><tr><td colspan="10" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
 
-        <!-- Portfolio Performance Metrics -->
-        <section class="metrics-ribbon">
-            <div class="metric-card">
-                <div class="metric-label">Demo Cash Balance</div>
-                <div class="metric-val" id="stratCash">$10,000.00</div>
-                <div class="metric-sub">Starting Capital: $10,000.00</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Total Portfolio Equity</div>
-                <div class="metric-val txt-blue" id="stratEquity">$10,248.00</div>
-                <div class="metric-sub">Liquid Cash + Open Value</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Realized &amp; Unrealized P&amp;L</div>
-                <div class="metric-val txt-green" id="stratPnl">+$248.00 (+2.48%)</div>
-                <div class="metric-sub">Cumulative Trading Gain</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Strategy Win Rate</div>
-                <div class="metric-val" id="stratWinRate">75.0%</div>
-                <div class="metric-sub">Profit Factor: 2.14</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Sharpe Ratio / Drawdown</div>
-                <div class="metric-val txt-purple">1.84 / 3.4%</div>
-                <div class="metric-sub">Max Peak-to-Trough Drawdown</div>
-            </div>
-        </section>
+  <h2>Why most strategies traded nothing</h2>
+  <p class="muted small" style="margin-top:-4px">This is the honest part of the exercise. The recording is one
+  instrument with a permanently one-sided book (bids 0.14, no NO bids, offers pinned at 1.00). Strategies that
+  require a two-sided quote or a cheap ask therefore have no executable entry, and the engine refuses to invent
+  one. The skip counters below are the proof.</p>
+  <div class="table-wrap"><table id="skipTable">
+    <thead><tr><th>strategy</th><th>skipped attempts</th><th>reasons (count)</th></tr></thead>
+    <tbody><tr><td colspan="3" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
 
-        <!-- Strategy Specification & Categorization Table -->
-        <div class="section-header">
-            <div class="section-title">
-                <span>🤖 Quantitative Strategy Performance Breakdown</span>
-            </div>
-            <span style="font-size: 12px; color: var(--text-secondary);">Categorized results across automated algorithmic models</span>
-        </div>
+  <h2>Performance by category</h2>
+  <p class="muted small" style="margin-top:-4px">Buckets are computed from closed trades only. A dash means no
+  closed trade landed in that bucket — it is not a zero result.</p>
+  <div class="grid g2">
+    <section class="panel"><div class="panel-head"><h3>By trade type</h3></div>
+      <div class="table-wrap"><table id="byType"><thead><tr><th>bucket</th><th class="num">trades</th><th class="num">wins</th><th class="num">hit rate</th><th class="num">net P&amp;L</th></tr></thead><tbody></tbody></table></div></section>
+    <section class="panel"><div class="panel-head"><h3>By topic</h3></div>
+      <div class="table-wrap"><table id="byTopic"><thead><tr><th>bucket</th><th class="num">trades</th><th class="num">wins</th><th class="num">hit rate</th><th class="num">net P&amp;L</th></tr></thead><tbody></tbody></table></div></section>
+    <section class="panel"><div class="panel-head"><h3>By entry price bucket</h3></div>
+      <div class="table-wrap"><table id="byPrice"><thead><tr><th>bucket</th><th class="num">trades</th><th class="num">wins</th><th class="num">hit rate</th><th class="num">net P&amp;L</th></tr></thead><tbody></tbody></table></div></section>
+    <section class="panel"><div class="panel-head"><h3>By side and exit reason</h3></div>
+      <div class="table-wrap"><table id="bySide"><thead><tr><th>bucket</th><th class="num">trades</th><th class="num">wins</th><th class="num">hit rate</th><th class="num">net P&amp;L</th></tr></thead><tbody></tbody></table></div></section>
+  </div>
 
-        <div class="table-responsive">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Strategy Code</th>
-                        <th>Strategy Name</th>
-                        <th>Core Methodology</th>
-                        <th>Total Trades</th>
-                        <th>Win Rate</th>
-                        <th>Net Realized P&amp;L</th>
-                        <th>Avg Return/Trade</th>
-                        <th>Engine Status</th>
-                    </tr>
-                </thead>
-                <tbody id="strategiesTableBody">
-                    <!-- Populated dynamically -->
-                </tbody>
-            </table>
-        </div>
+  <h2>Trade log</h2>
+  <div class="table-wrap"><table id="tradeLog">
+    <thead><tr><th>id</th><th>strategy</th><th>ticker</th><th>side</th><th class="num">entry</th>
+    <th class="num">contracts</th><th class="num">fee in</th><th>exit</th><th class="num">exit px</th>
+    <th class="num">P&amp;L</th><th>basis</th><th>source</th></tr></thead>
+    <tbody><tr><td colspan="12" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
 
-        <!-- Topic Breakdown Table -->
-        <div class="section-header">
-            <div class="section-title">
-                <span>📂 Performance Categorization by Market Topic</span>
-            </div>
-            <span style="font-size: 12px; color: var(--text-secondary);">Gas Prices, Elections, Culture, Crypto, Golf</span>
-        </div>
+  <h2>Fee model, in full</h2>
+  <p>Kalshi's published schedule charges the taker
+  <code>ceil_centicent(M × 0.07 × C × P × (1 − P))</code> and the maker <code>0.0175</code> instead of
+  <code>0.07</code> when a resting order later fills. The replay above uses the taker rate, because every entry is
+  modelled as crossing the spread. This matters: a $0.10 gross move on a 100-contract 50-cent position is $10.00,
+  of which $1.75 is fee on the way in and about $1.75 on the way out.
+  <a href="https://kalshi.com/docs/kalshi-fee-schedule.pdf" target="_blank" rel="noopener">Read the official fee schedule ↗</a></p>
 
-        <div class="table-responsive">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Topic</th>
-                        <th>Focus Sector</th>
-                        <th>Simulated Trades</th>
-                        <th>Sector Win Rate</th>
-                        <th>Sector Net P&amp;L</th>
-                        <th>Risk Allocation</th>
-                    </tr>
-                </thead>
-                <tbody id="topicTableBody">
-                    <!-- Populated dynamically -->
-                </tbody>
-            </table>
-        </div>
+  <h2>How to run this yourself against real demo-account data</h2>
+  <ol class="tight">
+    <li>Create a demo API key in the Kalshi demo UI and keep it outside the repository.</li>
+    <li>Read the account with <code>GET /portfolio/balance</code> (its own rate-limit bucket, 1 req/s on Basic).</li>
+    <li>Place orders with <b>V2</b> <code>POST /portfolio/events/orders</code> — the legacy
+      <code>/portfolio/orders</code> write endpoints now return <code>410 Gone</code>.</li>
+    <li>Send <code>side</code> as <code>bid</code> (≡ yes) or <code>ask</code> (≡ no), with <code>price</code> as a
+      fixed-point dollar string and <code>count</code> as a <code>*_fp</code> string.</li>
+  </ol>
+  <p class="small">Sources:
+    <a href="https://docs.kalshi.com/api-reference/orders/create-order-v2.md" target="_blank" rel="noopener">Create Order (V2)</a> ·
+    <a href="https://docs.kalshi.com/getting_started/order_direction.md" target="_blank" rel="noopener">order direction</a> ·
+    <a href="https://docs.kalshi.com/api-reference/portfolio/get-balance.md" target="_blank" rel="noopener">Get Balance</a>
+  </p>
+</main>
+<div id="footer"></div>
+<script src="js/live.js"></script>
+<script src="js/shell.js"></script>
+<script>
+(async () => {
+  const { esc, numf, money } = T2;
+  const d = await fetch("data/backtest.json").then((r) => r.json());
+  document.getElementById("disclosure").innerHTML = "<b>Simulation only.</b> " + esc(d.disclosure);
 
-        <!-- Manual Simulated Trade Execution Console -->
-        <section class="card-panel" style="margin-bottom: 24px;">
-            <div class="panel-header">
-                <div class="panel-title">
-                    <span>⚡ Order Execution Terminal</span>
-                </div>
-            </div>
-            <div style="padding: 16px;">
-                <div class="trade-card">
-                    <strong style="font-size: 13px;">Execute Manual Discretionary Order against Demo Depth Ladder:</strong>
-                    <div class="trade-form-row">
-                        <label style="font-size: 12px; color: var(--text-secondary);">Contract:</label>
-                        <select class="input-ctrl" id="stratTradeTicker">
-                            <!-- Populated dynamically -->
-                        </select>
+  document.getElementById("k1").textContent = d.portfolio.trades;
+  document.getElementById("k2").textContent = d.portfolio.closed;
+  document.getElementById("k3").textContent = money(Number(d.portfolio.net_pnl));
+  document.getElementById("k3").className = "value " + (Number(d.portfolio.net_pnl) >= 0 ? "" : "");
+  document.getElementById("k4").textContent = d.sample.candles_recorded + " bars";
 
-                        <label style="font-size: 12px; color: var(--text-secondary);">Side:</label>
-                        <select class="input-ctrl" id="stratTradeDirection">
-                            <option value="YES">BUY YES</option>
-                            <option value="NO">BUY NO</option>
-                        </select>
+  const pct = (x) => (x === null || x === undefined ? "—" : (x * 100).toFixed(1) + "%");
+  const strat = d.strategies;
+  document.querySelector("#stratTable tbody").innerHTML = strat.map((s) => `<tr>
+    <td><b>${esc(s.name)}</b><div class="small dim">${esc(s.thesis)}</div></td>
+    <td><span class="badge">${esc(s.trade_type)}</span></td>
+    <td class="small">${esc(s.entry_rule)}</td>
+    <td class="small">${esc(s.exit_rule)}</td>
+    <td class="num">${s.trades}</td><td class="num">${s.closed}</td>
+    <td class="num">${pct(s.hit_rate)}</td>
+    <td class="num" style="color:${Number(s.net_pnl) > 0 ? 'var(--up)' : Number(s.net_pnl) < 0 ? 'var(--down)' : ''}">${money(Number(s.net_pnl))}</td>
+    <td class="num">${s.skipped}</td>
+    <td class="small">${Shell.srcLink(s.source, "docs")}</td></tr>`).join("");
 
-                        <label style="font-size: 12px; color: var(--text-secondary);">Quantity (Contracts):</label>
-                        <input type="number" class="input-ctrl" id="stratTradeQty" value="100" min="10" max="5000" step="10" style="width: 100px;">
+  document.querySelector("#skipTable tbody").innerHTML = strat.map((s) => `<tr>
+    <td>${esc(s.name)}</td><td class="num">${s.skipped}</td>
+    <td class="small">${Object.entries(s.skip_reasons || {}).map(([k, v]) => `${esc(k)} (${v})`).join(" · ") || '<span class="unverified">no skips</span>'}</td>
+  </tr>`).join("");
 
-                        <button class="btn btn-success" id="stratExecuteBtn">Execute Demo Order</button>
-                    </div>
-                </div>
+  const bucket = (id, obj) => {
+    const el = document.querySelector(id + " tbody");
+    const keys = Object.keys(obj || {});
+    el.innerHTML = keys.length ? keys.map((k) => `<tr><td>${esc(k)}</td>
+      <td class="num">${obj[k].trades}</td><td class="num">${obj[k].wins}</td>
+      <td class="num">${pct(obj[k].hit_rate)}</td>
+      <td class="num">${money(Number(obj[k].net_pnl))}</td></tr>`).join("")
+      : '<tr><td colspan="5" class="chat-empty">no closed trades in any bucket</td></tr>';
+  };
+  bucket("#byType", d.portfolio.by_trade_type);
+  bucket("#byTopic", d.portfolio.by_topic);
+  bucket("#byPrice", d.portfolio.by_price_bucket);
+  bucket("#bySide", d.portfolio.by_side);
 
-                <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-secondary);">ACTIVE OPEN POSITIONS IN PORTFOLIO</h4>
-                <div class="table-responsive" style="margin-bottom: 16px;">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Position ID</th>
-                                <th>Ticker</th>
-                                <th>Topic</th>
-                                <th>Strategy</th>
-                                <th>Side</th>
-                                <th>Lots</th>
-                                <th>Entry Price</th>
-                                <th>Mark Price</th>
-                                <th>Unrealized P&amp;L</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="stratPositionsBody">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-secondary);">AUDITED TRADE EXECUTION &amp; RESOLUTION LEDGER</h4>
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Trade ID</th>
-                                <th>Exit Timestamp</th>
-                                <th>Ticker</th>
-                                <th>Topic</th>
-                                <th>Strategy</th>
-                                <th>Side</th>
-                                <th>Quantity</th>
-                                <th>Entry ➔ Exit</th>
-                                <th>P&amp;L ($)</th>
-                                <th>P&amp;L (%)</th>
-                                <th>Resolution Outcome</th>
-                            </tr>
-                        </thead>
-                        <tbody id="stratHistoryBody">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-    </div>
-
-    <footer class="footer-main">
-        <div><strong>Kalshi Tradebot2</strong> | Simulated Trading Strategy Laboratory</div>
-        <div class="footer-links">
-            <a href="index.html">Master Dashboard</a>
-            <a href="review.html">Flagged for Review</a>
-        </div>
-    </footer>
-
-    <script src="js/data.js"></script>
-    <script src="js/trading.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const trading = new KalshiTradingEngine();
-
-            function refreshUI() {
-                const summary = trading.getPortfolioSummary();
-                document.getElementById('stratCash').textContent = `$${summary.cash.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                document.getElementById('stratEquity').textContent = `$${summary.totalEquity.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                
-                const pnlEl = document.getElementById('stratPnl');
-                const isProf = summary.totalPnl >= 0;
-                pnlEl.textContent = `${isProf ? '+' : ''}$${summary.totalPnl.toFixed(2)} (${isProf ? '+' : ''}${summary.totalReturnPct.toFixed(2)}%)`;
-                pnlEl.className = isProf ? "metric-val txt-green" : "metric-val txt-red";
-
-                document.getElementById('stratWinRate').textContent = `${summary.winRate}% (${summary.winningTrades}/${summary.totalTrades})`;
-
-                // Render Strategies Table
-                const stratStats = trading.getStrategyAnalytics();
-                const stratBody = document.getElementById('strategiesTableBody');
-                stratBody.innerHTML = '';
-                Object.keys(stratStats).forEach(key => {
-                    const s = stratStats[key];
-                    const tr = document.createElement('tr');
-                    const isP = s.totalPnl >= 0;
-                    tr.innerHTML = `
-                        <td><code>${key}</code></td>
-                        <td><strong>${s.name}</strong></td>
-                        <td style="font-size:12px; color:var(--text-secondary);">${s.description}</td>
-                        <td>${s.tradesCount}</td>
-                        <td>${s.winRate}%</td>
-                        <td class="${isP ? 'txt-green' : 'txt-red'}">${isP ? '+' : ''}$${s.totalPnl.toFixed(2)}</td>
-                        <td class="${isP ? 'txt-green' : 'txt-red'}">${isP ? '+' : ''}$${s.avgReturn}</td>
-                        <td><span class="status-badge status-active">Active</span></td>
-                    `;
-                    stratBody.appendChild(tr);
-                });
-
-                // Render Topic Table
-                const topicStats = trading.getTopicAnalytics();
-                const topicBody = document.getElementById('topicTableBody');
-                topicBody.innerHTML = '';
-                Object.keys(topicStats).forEach(key => {
-                    const top = topicStats[key];
-                    const tr = document.createElement('tr');
-                    const isP = top.totalPnl >= 0;
-                    tr.innerHTML = `
-                        <td><strong>${top.icon} ${top.name}</strong></td>
-                        <td>Target Sector</td>
-                        <td>${top.tradesCount}</td>
-                        <td>${top.winRate}%</td>
-                        <td class="${isP ? 'txt-green' : 'txt-red'}">${isP ? '+' : ''}$${top.totalPnl.toFixed(2)}</td>
-                        <td>20% Capital Allocation</td>
-                    `;
-                    topicBody.appendChild(tr);
-                });
-
-                // Render Open Positions
-                const posBody = document.getElementById('stratPositionsBody');
-                posBody.innerHTML = '';
-                if (trading.positions.length === 0) {
-                    posBody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:var(--text-muted); padding:16px;">No open positions in Demo Account</td></tr>';
-                } else {
-                    trading.positions.forEach(p => {
-                        const tr = document.createElement('tr');
-                        const contract = getContractByTicker(p.ticker);
-                        const cur = contract ? contract.yesPrice : p.currentPrice;
-                        const marketVal = p.qty * cur;
-                        const costVal = p.qty * p.entryPrice;
-                        const unrealized = marketVal - costVal;
-                        const isProf = unrealized >= 0;
-
-                        tr.innerHTML = `
-                            <td><code>${p.id}</code></td>
-                            <td><strong class="txt-blue">${p.ticker}</strong></td>
-                            <td><span class="topic-badge">${p.topic}</span></td>
-                            <td><small>${p.strategy}</small></td>
-                            <td><span class="status-badge ${p.direction.includes('YES') ? 'status-resolved-yes' : 'status-resolved-no'}">${p.direction}</span></td>
-                            <td>${p.qty}</td>
-                            <td>$${p.entryPrice.toFixed(2)}</td>
-                            <td>$${cur.toFixed(2)}</td>
-                            <td class="${isProf ? 'txt-green' : 'txt-red'}">${isProf ? '+' : ''}$${unrealized.toFixed(2)} (${isProf ? '+' : ''}${((unrealized/costVal)*100).toFixed(1)}%)</td>
-                            <td><button class="btn-xs" onclick="window.closePos('${p.id}', ${cur})">Close</button></td>
-                        `;
-                        posBody.appendChild(tr);
-                    });
-                }
-
-                // Render History Ledger
-                const histBody = document.getElementById('stratHistoryBody');
-                histBody.innerHTML = '';
-                trading.tradeHistory.forEach(t => {
-                    const tr = document.createElement('tr');
-                    const isP = t.pnl >= 0;
-                    tr.innerHTML = `
-                        <td><code>${t.id}</code></td>
-                        <td style="font-size:11px; color:var(--text-muted);">${new Date(t.exitTime).toLocaleString()}</td>
-                        <td><strong class="txt-blue">${t.ticker}</strong></td>
-                        <td><span class="topic-badge">${t.topic}</span></td>
-                        <td><small>${t.strategy}</small></td>
-                        <td>${t.direction}</td>
-                        <td>${t.qty}</td>
-                        <td>$${t.entryPrice.toFixed(2)} ➔ $${t.exitPrice.toFixed(2)}</td>
-                        <td class="${isP ? 'txt-green' : 'txt-red'}">${isP ? '+' : ''}$${t.pnl.toFixed(2)}</td>
-                        <td class="${isP ? 'txt-green' : 'txt-red'}">${isP ? '+' : ''}${t.pnlPercent.toFixed(1)}%</td>
-                        <td><span class="status-badge ${isP ? 'status-resolved-yes' : 'status-resolved-no'}">${t.status}</span></td>
-                    `;
-                    histBody.appendChild(tr);
-                });
-            }
-
-            window.closePos = (id, exitPrice) => {
-                trading.closePosition(id, exitPrice, "Manual Exit");
-                refreshUI();
-            };
-
-            // Populate contract dropdown
-            const select = document.getElementById('stratTradeTicker');
-            KALSHI_CONTRACTS.forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c.ticker;
-                opt.textContent = `${c.ticker} ($${c.yesPrice.toFixed(2)}) - ${c.title.substring(0, 30)}...`;
-                select.appendChild(opt);
-            });
-
-            // Execute trade button
-            document.getElementById('stratExecuteBtn').addEventListener('click', () => {
-                const ticker = select.value;
-                const dir = document.getElementById('stratTradeDirection').value;
-                const qty = parseInt(document.getElementById('stratTradeQty').value) || 100;
-                const res = trading.executeManualTrade(ticker, dir, qty);
-                alert(res.message);
-                refreshUI();
-            });
-
-            // Auto trading toggle
-            const autoBtn = document.getElementById('toggleAutoTradingBtn');
-            autoBtn.addEventListener('click', () => {
-                trading.autoTradingActive = !trading.autoTradingActive;
-                autoBtn.textContent = trading.autoTradingActive ? "🟢 Auto-Trading: ACTIVE" : "⏸ Auto-Trading: PAUSED";
-                autoBtn.classList.toggle('btn-primary', trading.autoTradingActive);
-            });
-
-            refreshUI();
-            setInterval(refreshUI, 5000);
-        });
-    </script>
+  const trades = [];
+  strat.forEach((s) => (s.trades_detail || []).forEach((t) => trades.push(t)));
+  document.querySelector("#tradeLog tbody").innerHTML = trades.length ? trades.map((t) => `<tr>
+    <td class="tick">${esc(t.id)}</td><td>${esc(t.strategy)}</td>
+    <td class="tick">${esc(t.ticker)}</td><td><span class="badge">${esc(t.side)}</span></td>
+    <td class="num">${esc(t.entry_price)}</td><td class="num">${esc(t.contracts)}</td>
+    <td class="num">${esc(t.fee_entry)}</td><td>${esc(t.exit_reason)}</td>
+    <td class="num">${esc(t.exit_price ?? "—")}</td>
+    <td class="num">${esc(t.pnl)}</td><td class="small dim">${esc(t.data_basis)}</td>
+    <td class="small">${Shell.srcLink(t.source_url, "kalshi")}</td></tr>`).join("")
+    : '<tr><td colspan="12" class="chat-empty">no fills cleared the entry rules on this recording</td></tr>';
+})();
+</script>
 </body>
 </html>
