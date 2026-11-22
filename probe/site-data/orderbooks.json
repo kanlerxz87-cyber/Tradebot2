@@ -1,0 +1,822 @@
+{
+ "generated_at": "2026-11-22T07:26:20Z",
+ "books": {
+  "KXPRESNOMD-28-MSHE": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 333333.32,
+     "contracts_cumulative": 333333.32
+    },
+    {
+     "price": 0.002,
+     "contracts": 166666.66,
+     "contracts_cumulative": 499999.98
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 66666.66,
+     "contracts_cumulative": 66666.66
+    },
+    {
+     "price": 0.996,
+     "contracts": 82251.44,
+     "contracts_cumulative": 148918.1
+    },
+    {
+     "price": 0.997,
+     "contracts": 55555.55,
+     "contracts_cumulative": 204473.65
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-MSHE/orderbook?depth=10"
+  },
+  "KXPRESPERSON-28-ESLO": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 333473.32,
+     "contracts_cumulative": 333473.32
+    },
+    {
+     "price": 0.002,
+     "contracts": 166666.66,
+     "contracts_cumulative": 500139.98
+    },
+    {
+     "price": 0.003,
+     "contracts": 222222.2,
+     "contracts_cumulative": 722362.18
+    },
+    {
+     "price": 0.004,
+     "contracts": 83333.32,
+     "contracts_cumulative": 805695.5
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.992,
+     "contracts": 41666.66,
+     "contracts_cumulative": 41666.66
+    },
+    {
+     "price": 0.993,
+     "contracts": 95238.08,
+     "contracts_cumulative": 136904.74
+    },
+    {
+     "price": 0.994,
+     "contracts": 111085.44,
+     "contracts_cumulative": 247990.18
+    },
+    {
+     "price": 0.995,
+     "contracts": 62811.05,
+     "contracts_cumulative": 310801.23
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-ESLO/orderbook?depth=10"
+  },
+  "KXPRESNOMR-28-MPEN": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 833393.3,
+     "contracts_cumulative": 833393.3
+    },
+    {
+     "price": 0.002,
+     "contracts": 416666.65,
+     "contracts_cumulative": 1250059.95
+    },
+    {
+     "price": 0.003,
+     "contracts": 166667.82,
+     "contracts_cumulative": 1416727.77
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.993,
+     "contracts": 95238.08,
+     "contracts_cumulative": 95238.08
+    },
+    {
+     "price": 0.994,
+     "contracts": 111111.08,
+     "contracts_cumulative": 206349.16
+    },
+    {
+     "price": 0.995,
+     "contracts": 166666.65,
+     "contracts_cumulative": 373015.81
+    },
+    {
+     "price": 0.996,
+     "contracts": 37605.0,
+     "contracts_cumulative": 410620.81
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-MPEN/orderbook?depth=10"
+  },
+  "KXPRESNOMR-28-EM": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 166666.66,
+     "contracts_cumulative": 166666.66
+    },
+    {
+     "price": 0.002,
+     "contracts": 83333.33,
+     "contracts_cumulative": 249999.99
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 33333.33,
+     "contracts_cumulative": 33333.33
+    },
+    {
+     "price": 0.996,
+     "contracts": 37651.49,
+     "contracts_cumulative": 70984.82
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-EM/orderbook?depth=10"
+  },
+  "KXPRESNOMR-28-ETRU": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 166666.66,
+     "contracts_cumulative": 166666.66
+    },
+    {
+     "price": 0.002,
+     "contracts": 83333.33,
+     "contracts_cumulative": 249999.99
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 33333.33,
+     "contracts_cumulative": 33333.33
+    },
+    {
+     "price": 0.996,
+     "contracts": 37618.54,
+     "contracts_cumulative": 70951.87
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-ETRU/orderbook?depth=10"
+  },
+  "KXPRESNOMD-28-JSTE": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [],
+   "no_bids": [
+    {
+     "price": 0.167,
+     "contracts": 472.0,
+     "contracts_cumulative": 472.0
+    },
+    {
+     "price": 0.168,
+     "contracts": 522.0,
+     "contracts_cumulative": 994.0
+    },
+    {
+     "price": 0.169,
+     "contracts": 520.0,
+     "contracts_cumulative": 1514.0
+    },
+    {
+     "price": 0.17,
+     "contracts": 464.0,
+     "contracts_cumulative": 1978.0
+    },
+    {
+     "price": 0.171,
+     "contracts": 487.0,
+     "contracts_cumulative": 2465.0
+    },
+    {
+     "price": 0.172,
+     "contracts": 554.0,
+     "contracts_cumulative": 3019.0
+    },
+    {
+     "price": 0.173,
+     "contracts": 533.0,
+     "contracts_cumulative": 3552.0
+    },
+    {
+     "price": 0.174,
+     "contracts": 655.0,
+     "contracts_cumulative": 4207.0
+    },
+    {
+     "price": 0.175,
+     "contracts": 531.0,
+     "contracts_cumulative": 4738.0
+    },
+    {
+     "price": 0.176,
+     "contracts": 270.67,
+     "contracts_cumulative": 5008.67
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-JSTE/orderbook?depth=10"
+  },
+  "KXPRESPERSON-28-JHAW": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 333333.32,
+     "contracts_cumulative": 333333.32
+    },
+    {
+     "price": 0.002,
+     "contracts": 166666.66,
+     "contracts_cumulative": 499999.98
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 66666.66,
+     "contracts_cumulative": 66666.66
+    },
+    {
+     "price": 0.996,
+     "contracts": 81602.54,
+     "contracts_cumulative": 148269.2
+    },
+    {
+     "price": 0.997,
+     "contracts": 55555.08,
+     "contracts_cumulative": 203824.28
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-JHAW/orderbook?depth=10"
+  },
+  "KXPRESPERSON-28-RPAU": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 333333.32,
+     "contracts_cumulative": 333333.32
+    },
+    {
+     "price": 0.002,
+     "contracts": 166666.66,
+     "contracts_cumulative": 499999.98
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 66666.66,
+     "contracts_cumulative": 66666.66
+    },
+    {
+     "price": 0.996,
+     "contracts": 81856.48,
+     "contracts_cumulative": 148523.14
+    },
+    {
+     "price": 0.997,
+     "contracts": 51569.08,
+     "contracts_cumulative": 200092.22
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-RPAU/orderbook?depth=10"
+  },
+  "KXPRESNOMR-28-DMCC": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 333333.32,
+     "contracts_cumulative": 333333.32
+    },
+    {
+     "price": 0.002,
+     "contracts": 166666.66,
+     "contracts_cumulative": 499999.98
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 66666.66,
+     "contracts_cumulative": 66666.66
+    },
+    {
+     "price": 0.996,
+     "contracts": 81030.2,
+     "contracts_cumulative": 147696.86
+    },
+    {
+     "price": 0.997,
+     "contracts": 55198.71,
+     "contracts_cumulative": 202895.57
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-DMCC/orderbook?depth=10"
+  },
+  "KXPRESPERSON-28-JDIM": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 333333.32,
+     "contracts_cumulative": 333333.32
+    },
+    {
+     "price": 0.002,
+     "contracts": 166666.66,
+     "contracts_cumulative": 499999.98
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 66666.66,
+     "contracts_cumulative": 66666.66
+    },
+    {
+     "price": 0.996,
+     "contracts": 82204.7,
+     "contracts_cumulative": 148871.36
+    },
+    {
+     "price": 0.997,
+     "contracts": 51496.31,
+     "contracts_cumulative": 200367.67
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-JDIM/orderbook?depth=10"
+  },
+  "KXPRESPERSON-28-TGAB": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 166666.66,
+     "contracts_cumulative": 166666.66
+    },
+    {
+     "price": 0.002,
+     "contracts": 83333.33,
+     "contracts_cumulative": 249999.99
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 33333.33,
+     "contracts_cumulative": 33333.33
+    },
+    {
+     "price": 0.996,
+     "contracts": 39270.82,
+     "contracts_cumulative": 72604.15
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-TGAB/orderbook?depth=10"
+  },
+  "KXPRESNOMR-28-JT": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 333333.32,
+     "contracts_cumulative": 333333.32
+    },
+    {
+     "price": 0.002,
+     "contracts": 166666.66,
+     "contracts_cumulative": 499999.98
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 66666.66,
+     "contracts_cumulative": 66666.66
+    },
+    {
+     "price": 0.996,
+     "contracts": 80959.88,
+     "contracts_cumulative": 147626.54
+    },
+    {
+     "price": 0.997,
+     "contracts": 55555.39,
+     "contracts_cumulative": 203181.93
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-JT/orderbook?depth=10"
+  },
+  "KXPRESNOMD-28-ZMAM": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 166681.9,
+     "contracts_cumulative": 166681.9
+    },
+    {
+     "price": 0.002,
+     "contracts": 83333.33,
+     "contracts_cumulative": 250015.23
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 33333.33,
+     "contracts_cumulative": 33333.33
+    },
+    {
+     "price": 0.996,
+     "contracts": 41666.66,
+     "contracts_cumulative": 74999.99
+    },
+    {
+     "price": 0.997,
+     "contracts": 55553.89,
+     "contracts_cumulative": 130553.88
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-ZMAM/orderbook?depth=10"
+  },
+  "KXPRESNOMD-28-AYAN": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 24.23,
+     "contracts_cumulative": 24.23
+    }
+   ],
+   "no_bids": [],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-AYAN/orderbook?depth=10"
+  },
+  "KXPRESNOMD-28-JAM": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 166689.09,
+     "contracts_cumulative": 166689.09
+    },
+    {
+     "price": 0.002,
+     "contracts": 83333.36,
+     "contracts_cumulative": 250022.45
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 33333.33,
+     "contracts_cumulative": 33333.33
+    },
+    {
+     "price": 0.996,
+     "contracts": 41666.66,
+     "contracts_cumulative": 74999.99
+    },
+    {
+     "price": 0.997,
+     "contracts": 55555.55,
+     "contracts_cumulative": 130555.54
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-JAM/orderbook?depth=10"
+  },
+  "KXFRENCHPRES-27-VPEC": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [],
+   "no_bids": [],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXFRENCHPRES-27-VPEC/orderbook?depth=10"
+  },
+  "KXPRESNOMR-28-SBES": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 333333.32,
+     "contracts_cumulative": 333333.32
+    },
+    {
+     "price": 0.002,
+     "contracts": 166666.66,
+     "contracts_cumulative": 499999.98
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.99,
+     "contracts": 16666.66,
+     "contracts_cumulative": 16666.66
+    },
+    {
+     "price": 0.991,
+     "contracts": 18518.51,
+     "contracts_cumulative": 35185.17
+    },
+    {
+     "price": 0.992,
+     "contracts": 16173.55,
+     "contracts_cumulative": 51358.72
+    },
+    {
+     "price": 0.995,
+     "contracts": 33333.33,
+     "contracts_cumulative": 84692.05
+    },
+    {
+     "price": 0.996,
+     "contracts": 41666.66,
+     "contracts_cumulative": 126358.71
+    },
+    {
+     "price": 0.997,
+     "contracts": 55547.79,
+     "contracts_cumulative": 181906.5
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-SBES/orderbook?depth=10"
+  },
+  "KXPRESNOMR-28-THOM": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 333333.32,
+     "contracts_cumulative": 333333.32
+    },
+    {
+     "price": 0.002,
+     "contracts": 166666.66,
+     "contracts_cumulative": 499999.98
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.99,
+     "contracts": 16666.66,
+     "contracts_cumulative": 16666.66
+    },
+    {
+     "price": 0.991,
+     "contracts": 18518.51,
+     "contracts_cumulative": 35185.17
+    },
+    {
+     "price": 0.992,
+     "contracts": 16129.5,
+     "contracts_cumulative": 51314.67
+    },
+    {
+     "price": 0.995,
+     "contracts": 33333.33,
+     "contracts_cumulative": 84648.0
+    },
+    {
+     "price": 0.996,
+     "contracts": 41666.66,
+     "contracts_cumulative": 126314.66
+    },
+    {
+     "price": 0.997,
+     "contracts": 55539.36,
+     "contracts_cumulative": 181854.02
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-THOM/orderbook?depth=10"
+  },
+  "KXPRESNOMR-28-EKIR": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 166666.66,
+     "contracts_cumulative": 166666.66
+    },
+    {
+     "price": 0.002,
+     "contracts": 83333.33,
+     "contracts_cumulative": 249999.99
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 33333.33,
+     "contracts_cumulative": 33333.33
+    },
+    {
+     "price": 0.996,
+     "contracts": 40383.41,
+     "contracts_cumulative": 73716.74
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-EKIR/orderbook?depth=10"
+  },
+  "KXPRESPERSON-28-RKHA": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [],
+   "no_bids": [
+    {
+     "price": 0.97,
+     "contracts": 5555.55,
+     "contracts_cumulative": 5555.55
+    },
+    {
+     "price": 0.98,
+     "contracts": 8333.33,
+     "contracts_cumulative": 13888.88
+    },
+    {
+     "price": 0.99,
+     "contracts": 16663.17,
+     "contracts_cumulative": 30552.05
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-RKHA/orderbook?depth=10"
+  },
+  "KXPRESPERSON-28-VRAM": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 166666.66,
+     "contracts_cumulative": 166666.66
+    },
+    {
+     "price": 0.002,
+     "contracts": 83333.33,
+     "contracts_cumulative": 249999.99
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.192,
+     "contracts": 5446.0,
+     "contracts_cumulative": 5446.0
+    },
+    {
+     "price": 0.193,
+     "contracts": 5867.0,
+     "contracts_cumulative": 11313.0
+    },
+    {
+     "price": 0.194,
+     "contracts": 6070.0,
+     "contracts_cumulative": 17383.0
+    },
+    {
+     "price": 0.195,
+     "contracts": 5972.0,
+     "contracts_cumulative": 23355.0
+    },
+    {
+     "price": 0.196,
+     "contracts": 5805.0,
+     "contracts_cumulative": 29160.0
+    },
+    {
+     "price": 0.197,
+     "contracts": 5704.0,
+     "contracts_cumulative": 34864.0
+    },
+    {
+     "price": 0.198,
+     "contracts": 157.19,
+     "contracts_cumulative": 35021.19
+    },
+    {
+     "price": 0.995,
+     "contracts": 33333.33,
+     "contracts_cumulative": 68354.52
+    },
+    {
+     "price": 0.996,
+     "contracts": 41666.66,
+     "contracts_cumulative": 110021.18
+    },
+    {
+     "price": 0.997,
+     "contracts": 55553.96,
+     "contracts_cumulative": 165575.14
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-VRAM/orderbook?depth=10"
+  },
+  "KXLPGATOUR-CMEGTC26-CARCIG": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.001,
+     "contracts": 333333.32,
+     "contracts_cumulative": 333333.32
+    },
+    {
+     "price": 0.002,
+     "contracts": 166666.66,
+     "contracts_cumulative": 499999.98
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.995,
+     "contracts": 66666.66,
+     "contracts_cumulative": 66666.66
+    },
+    {
+     "price": 0.996,
+     "contracts": 83333.32,
+     "contracts_cumulative": 149999.98
+    },
+    {
+     "price": 0.997,
+     "contracts": 55555.55,
+     "contracts_cumulative": 205555.53
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXLPGATOUR-CMEGTC26-CARCIG/orderbook?depth=10"
+  },
+  "KXPRESNOMR-28-JJOR": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [],
+   "no_bids": [],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-JJOR/orderbook?depth=10"
+  },
+  "KXBTCY-27JAN0100-T20000.00": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [
+    {
+     "price": 0.01,
+     "contracts": 16666.66,
+     "contracts_cumulative": 16666.66
+    }
+   ],
+   "no_bids": [
+    {
+     "price": 0.96,
+     "contracts": 4166.66,
+     "contracts_cumulative": 4166.66
+    },
+    {
+     "price": 0.97,
+     "contracts": 5555.55,
+     "contracts_cumulative": 9722.21
+    },
+    {
+     "price": 0.98,
+     "contracts": 5211.78,
+     "contracts_cumulative": 14933.99
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXBTCY-27JAN0100-T20000.00/orderbook?depth=10"
+  },
+  "KXPRESNOMR-28-DBUR": {
+   "ts": "2026-11-22T07:26:20Z",
+   "yes_bids": [],
+   "no_bids": [
+    {
+     "price": 0.97,
+     "contracts": 5555.55,
+     "contracts_cumulative": 5555.55
+    },
+    {
+     "price": 0.98,
+     "contracts": 8333.33,
+     "contracts_cumulative": 13888.88
+    },
+    {
+     "price": 0.99,
+     "contracts": 16665.58,
+     "contracts_cumulative": 30554.46
+    }
+   ],
+   "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-DBUR/orderbook?depth=10"
+  }
+ }
+}
