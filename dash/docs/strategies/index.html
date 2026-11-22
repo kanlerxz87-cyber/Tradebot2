@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strategies — Simulated Trading Specs — Kalshi Demo Dashboard</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body data-page="docs">
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Strategies — full specification</h1>
+    <p class="sub">The four simulated strategies and the high-ROI alert filter, exactly as implemented in <span class="mono">assets/sim.js</span> and <span class="mono">assets/live.js</span>. All execution is paper-only (no API keys, no real orders — flag F2). The engine is deterministic: same snapshot ⇒ same trades, so results are reproducible.</p>
+  </div>
+
+  <div class="card">
+    <h2>High-ROI alert model (Chat 2 filter)</h2>
+    <table><thead><tr><th>Parameter</th><th>Value</th><th>Rationale (documented, not fitted)</th></tr></thead><tbody>
+      <tr><td>Trigger</td><td class="mono">|Δprice| ≥ $0.10</td><td>Project requirement: alert on sudden swings ≥ $0.10 either direction.</td></tr>
+      <tr><td>Reversion coefficient K</td><td class="mono">0.6</td><td>Assumes 60% of a sudden dislocation reverts to the mid. Conservative starting hypothesis — must be estimated from <span class="mono">/historical/markets</span> data before use as a signal.</td></tr>
+      <tr><td>Fair estimate</td><td class="mono">modelFair = clamp(0.5 + (prev − 0.5)·K, 0.02, 0.98)</td><td>Linear reversion toward 0.50, clamped away from the pins.</td></tr>
+      <tr><td>Edge gate</td><td class="mono">|modelFair − after| ≥ $0.05</td><td>Only a tradeable edge ≥ 5¢ after fees/spread is "high-ROI".</td></tr>
+      <tr><td>Liquidity gate</td><td class="mono">open_interest_fp ≥ 1</td><td>Refuse to highlight dead markets; real sizing needs book depth (see F11).</td></tr>
+      <tr><td>Worked example (verified replay data)</td><td class="mono">prev 0.34 → after 0.19 (Δ −$0.15): modelFair = 0.5+(0.34−0.5)·0.6 = 0.404; edge = 0.214 ≥ 0.05; OI 200.26 ≥ 1 ⇒ PASS</td><td>This is the line that reaches Chat 2 during the replay of the BTC 15-min collapse.</td></tr>
+    </tbody></table>
+    <p class="note">Limitations: single-asset reversion assumption; no cross-market information; K and the edge gate are not yet estimated from history. The model is a <b>filter for attention</b>, not a claim of edge — all such claims are flagged on the <a href="../../flagged/">review page</a>.</p>
+  </div>
+
+  <div class="card">
+    <h2>Trading strategies (paper engine)</h2>
+    <table><thead><tr><th>ID</th><th>Name</th><th>Entry rule (as coded)</th><th>Exit rule</th><th>Risk notes</th></tr></thead><tbody>
+      <tr><td class="mono">S1</td><td><b>Momentum-Fade</b></td><td>After a verified ≥$0.10 collapse in a 15-min crypto market, buy YES at a verified trade-feed price at the bottom.</td><td>Market settlement (verified result when available).</td><td class="note">Bets reversion. Lost on the verified sample (entry $0.025, settled NO @ $0.003). High variance, tail risk to full premium.</td></tr>
+      <tr><td class="mono">S2</td><td><b>Trend-Continue</b></td><td>After the same ≥$0.10 collapse, buy NO at the verified complementary price (NO = 1 − YES price).</td><td>Market settlement.</td><td class="note">Bets continuation. Won on the verified sample ($0.983 → $1.000, +2.2% on ~1% of time). Classic "sell the dip" in probability terms; risk = late reversal.</td></tr>
+      <tr><td class="mono">S3</td><td><b>Cheap-Side</b></td><td>Buy YES at ask ≤ $0.05 on high-OI strikes (lottery legs, e.g. gas ladder at OI ≈ 3,400). Plus a historical longshot study (GA-14 at $0.98) to quantify the opposite tail.</td><td>Settlement when known; otherwise held OPEN (no inferred outcome).</td><td class="note">Negative-skew profile: many small losses, rare full payout. Needs large sample sizes before any conclusion — flagged as hypothesis.</td></tr>
+      <tr><td class="mono">S4</td><td><b>Favorite-Edge</b></td><td>Buy the front-runner YES at ≤ $0.95 when implied edge ≥ $0.05 (Schumer $0.92; GTA-before-2028 $0.84).</td><td>+$0.05 take-profit or settlement.</td><td class="note">Small positive skew; time decay and late news are the risks. Both positions OPEN at snapshot — P&L deliberately unbooked.</td></tr>
+    </tbody></table>
+    <p class="note"><b>Fees</b> — official quadratic formula <span class="mono">fee = 0.07 · C · P · (1−P)</span> per side per contract (<a href="https://kalshi.com/docs/kalshi-fee-schedule.pdf" target="_blank" rel="noopener">fee schedule</a>); applied as an approximation (flag F11). <b>Sizing</b> — fixed notional per trade in the current engine; the roadmap (Portfolio page) adds Kelly sizing, daily loss limits and official order-group rolling caps.</p>
+  </div>
+
+  <div class="card">
+    <h2>Current paper results (from the verified snapshot)</h2>
+    <p class="note">Computed live by <span class="mono">assets/sim.js</span> on the <a href="../../portfolio/">Portfolio page</a> — closed trades: S1 −$11.85 (loss, settled NO), S2 +$2.57 (win, settled NO), longshot study −$49.07 (loss, settled NO); S3/S4 positions OPEN, P&L unbooked. Win rate on closed: 1/3. <b>Sample size ≈ 3 closed trades: the numbers are plumbing tests of the engine, not performance evidence.</b></p>
+  </div>
+</div>
+
+<script src="../../assets/data.js"></script>
+<script src="../../assets/layout.js"></script>
+</body>
+</html>

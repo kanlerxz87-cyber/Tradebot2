@@ -2,6 +2,7 @@
 # builds the whole published site in one artifact:
 #   /            <- docs/            (existing Kalshi Demo Dashboard, unchanged)
 #   /monitor/    <- site/            (live monitor: alerts, topic pages, charts, trades)
+#   /dash/       <- dash/            (session-arena-93ec9646 full-spec dashboard)
 # Collected data (site/data) is generated at build time and never committed.
 name: Deploy Kalshi Demo Dashboard to GitHub Pages
 
@@ -53,6 +54,7 @@ jobs:
           mkdir -p _site/monitor
           cp -r docs/. _site/
           cp -r site/. _site/monitor/
+          cp -r dash/. _site/dash/   # session-arena-93ec9646 dashboard (logged in COORDINATION.md)
           ls -la _site _site/monitor | head -60
 
       - name: Check assembled site links

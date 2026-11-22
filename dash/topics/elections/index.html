@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elections — Kalshi Demo Dashboard</title>
+<meta name="description" content="Elections events on the Kalshi demo exchange: verified live markets, prices, volume, liquidity and sources.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body data-page="elections">
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Elections</h1>
+    <p class="sub">US and international election markets. The demo's active election event is <b>KXSENMAJ-27</b> — 120th Congress Senate Majority Leader (the demo site shows <b>$434,922 volume</b> on it). Long-dated <b>KXCONTROLH-2030</b> (House control 2030) markets are also open with thin books. The <b>KXGA14SPECIAL1ROUND</b> market is tracked to its verified resolution (NO).</p>
+  </div>
+
+  <div class="card">
+    <h2>Live events — Elections <span class="tag">active markets at snapshot, ranked by notional</span></h2>
+    <div id="live-table"></div>
+  </div>
+
+  <div class="card">
+    <h2>Resolved &amp; tracked to settlement — Elections <span class="tag">yes/no outcomes</span></h2>
+    <div id="done-table"></div>
+  </div>
+
+
+      <div class="card">
+        <h2>Senate Majority Leader probability ladder <span class="tag">KXSENMAJ-27 · verified last prices</span></h2>
+        <div id="senmaj-ladder"></div>
+        <p class="note">Sources per row: <a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXSENMAJ&status=open&limit=6" target="_blank" rel="noopener">API query</a> · <a href="https://demo.kalshi.co/markets/kxsenmaj/120th-congress-who-will-be-elected-senate-majority-leader/kxsenmaj-27" target="_blank" rel="noopener">official demo page</a>. The demo site's headline narrative: "Democrats won control of the Senate in the midterms" (demo.kalshi.co, verified at snapshot time).</p>
+      </div>
+      <div class="card">
+        <h2>Orderbook depth — verified <span class="tag">GET /markets/{ticker}/orderbook</span></h2>
+        <div class="grid2">
+          <div>
+            <p class="note"><b>KXCONTROLH-2030-R</b> (Republicans, House 2030)</p>
+            <div class="book"><div><div class="lvl bk"><span>YES bid $0.01</span><span>100 contracts</span></div><div class="lvl sk"><span>NO ask $0.99</span><span>—</span></div></div><div><div class="lvl sk"><span>NO bid —</span><span>—</span></div></div></div>
+            <p class="srcs">source: <a href="https://external-api.demo.kalshi.co/trade-api/v2/markets/KXCONTROLH-2030-R/orderbook?depth=10" target="_blank" rel="noopener">orderbook endpoint (verified)</a></p>
+          </div>
+          <div>
+            <p class="note"><b>KXBTCMAXY-26DEC31-99999.99</b> (BTC &gt; $100k by Dec 31)</p>
+            <div class="book"><div><div class="lvl sk"><span>YES ask $0.07</span><span>2 contracts</span></div></div><div><div class="lvl bk"><span>NO bid $0.93</span><span>2 contracts</span></div></div></div>
+            <p class="srcs">source: <a href="https://external-api.demo.kalshi.co/trade-api/v2/markets/KXBTCMAXY-26DEC31-99999.99/orderbook?depth=10" target="_blank" rel="noopener">orderbook endpoint (verified)</a></p>
+          </div>
+        </div>
+      </div>
+
+  <div class="card">
+    <h2>Events in this topic (grouped) <span class="tag">every event, every source link</span></h2>
+    <div id="event-groups"></div>
+  </div>
+</div>
+
+<script src="../../assets/data.js"></script>
+<script src="../../assets/charts.js"></script>
+<script src="../../assets/render.js"></script>
+<script src="../../assets/layout.js"></script>
+<script>
+(function(){
+  var D = window.KDATA, K = window.KRENDER, S = "elections";
+  K.renderMarkets("live-table", {onlyTopic:S, onlyStatus:"live", ranked:true});
+  K.renderMarkets("done-table", {onlyTopic:S, onlyStatus:"done", ranked:true});
+  K.renderEvents("event-groups", {onlyTopic:S});
+  var ms = (D.markets||[]).filter(function(m){return m.topic===S;});
+  (function(){
+    // topic-specific ladders
+    function ladder(containerId, items, titleKey){
+      if (!document.getElementById(containerId)) return;
+      var max = Math.max.apply(null, items.map(function(i){return i.vol;}).concat([1]));
+      var h = "";
+      items.forEach(function(i){
+        var pct = i.vol/max*100;
+        h += '<div class="bar-row"><div class="lbl">'+K.esc(i.label)+'</div>' +
+             '<div class="bar-track"><div class="bar-fill" style="width:'+Math.max(1.5,pct).toFixed(1)+'%"></div></div>' +
+             '<div class="val">'+K.fmtVol(i.vol)+' · last '+K.fmtP(i.last)+'</div></div>';
+      });
+      document.getElementById(containerId).innerHTML = h;
+    }
+    if (S === "gas") {
+      var gas = ms.filter(function(m){return m.series==="KXAAAGASW";});
+      gas.sort(function(a,b){return parseFloat(a.market.split("-").pop()) - parseFloat(b.market.split("-").pop());});
+      ladder("gasladder", gas.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+    }
+    if (S === "elections") {
+      var sm = ms.filter(function(m){return m.series==="KXSENMAJ";});
+      sm.sort(function(a,b){return (b.last||0)-(a.last||0);});
+      ladder("senmaj-ladder", sm.map(function(m){return {label: m.title.replace(" wins Senate Majority Leader",""), vol: m.oi||1, last: m.last};}));
+    }
+    if (S === "culture") {
+      var gta = ms.filter(function(m){return m.series==="KXGTAONLINE";});
+      gta.sort(function(a,b){return (a.closeTime||"").localeCompare(b.closeTime||"");});
+      ladder("gta-ladder", gta.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+      var nflx = ms.filter(function(m){return m.series==="KXNETFLIXRANKSHOWGLOBAL";});
+      nflx.sort(function(a,b){return (b.last||0)-(a.last||0);});
+      ladder("netflix-ladder", nflx.map(function(m){return {label: m.title, vol: (m.oi||0)+ (m.last? m.last*100:0), last: m.last};}));
+    }
+    if (S === "crypto") {
+      // candlestick chart
+      var cd = D.candlesticks;
+      var canvas = document.getElementById("btcchart");
+      if (canvas && cd) {
+        var pts = cd.candles.map(function(c){return {t:c.t, o:c.o, h:c.h, l:c.l, c:c.c, v:c.v};});
+        function draw(){
+          window.KCHART.drawPrice(canvas, {
+            points: pts,
+            granularity: parseInt(document.getElementById("btc-gran").value||"0",10),
+            showCandles: document.getElementById("btc-candles").checked,
+            title: "KXBTC15M-26NOV201900-00 — BTC up in next 15 min (settled NO @ 0.003)",
+            subtitle: "1-min candles · CF Benchmarks BRTI · target $58,870",
+            alertLevels: [{price:0.10, label:"alert zone $0.10"}]
+          });
+        }
+        document.getElementById("btc-gran").onchange = draw;
+        document.getElementById("btc-candles").onchange = draw;
+        window.addEventListener("resize", draw);
+        draw();
+      }
+      var bmax = ms.filter(function(m){return m.series==="KXBTCMAXY";});
+      bmax.sort(function(a,b){
+        var av = parseFloat(a.market.split("-").pop().replace(/D/g,""))||0;
+        var bv = parseFloat(b.market.split("-").pop().replace(/D/g,""))||0;
+        return av-bv;
+      });
+      ladder("btcmaxy-ladder", bmax.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+      var cs = ms.filter(function(m){return m.settledResult && (m.series||"").indexOf("15M")>0;});
+      var tb = document.getElementById("crypto-settled");
+      if (tb) tb.innerHTML = cs.map(function(m){
+        return '<tr><td class="mono note">'+m.market+'</td><td class="note">'+K.esc(m.rule.replace("then the market resolves to Yes.",""))+'</td>'+
+          '<td class="num p">'+(m.last!=null?m.last.toFixed(3):"–")+'</td><td class="num">'+K.fmtVol(m.volume)+'</td>'+
+          '<td><span class="badge '+(m.settledResult==="yes"?"open":"done")+'">'+m.settledResult.toUpperCase()+'</span></td>'+
+          '<td class="mono">'+(m.settledTs||"").substr(0,16)+'Z</td>'+
+          '<td class="srcs"><a href="'+m.src.api+'" target="_blank" rel="noopener">API (verified)</a></td></tr>';
+      }).join("");
+    }
+  })();
+})();
+</script>
+</body>
+</html>
