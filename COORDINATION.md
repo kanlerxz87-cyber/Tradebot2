@@ -300,7 +300,7 @@ rebuild is kept as an archived generation; the published pipeline is untouched e
 
 ### PR / deploy record
 
-* PR: _(filled in before the merge)_
+* PR: [#25](https://github.com/kanlerxz87-cyber/Tradebot2/pull/25) — "Integration Session: real site gate, corrected CORS, gas coverage, honest docs"
 * Merge commit: _(filled in after the merge)_
 * Pages build/deploy: _(filled in after the deploy)_
 * Live checks: _(filled in after the deploy)_
