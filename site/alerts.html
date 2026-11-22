@@ -37,12 +37,14 @@ collection runs. <b>Chat 1</b> shows every alert. <b>Chat 2</b> shows only alert
   (1 − entry) ÷ entry, before fees. It is <b>not</b> a trained, backtested or validated model, and it does not look at news.
   <a href="findings.html">Method and limitations →</a></p>
 </div>
-<div class="card flag"><b>Why “sudden” is 10-minute granularity.</b> GitHub Actions runs the collector on a schedule, so a
-$0.10 move is measured between runs, not tick by tick. Kalshi's API also returns no
-<code>Access-Control-Allow-Origin</code> header (checked 2026-11-22), so a browser cannot poll the API directly from this page.
-A tick-level alert feed needs a WebSocket client (documented at
-<a href="https://docs.kalshi.com/getting_started/quick_start_websockets" target="_blank" rel="noopener noreferrer">docs.kalshi.com</a>)
-running on a server you own. <a href="suggestions.html">Suggestions →</a></div>
+<div class="card flag"><b>Why “sudden” is the collection interval and not a tick.</b> This page reads the collector's JSON, so a
+$0.10 move is measured between runs. The demo API <b>does</b> allow browser reads: a probe from this site's own origin
+(<code>https://kanlerxz87-cyber.github.io</code>) returned <code>Access-Control-Allow-Origin</code> equal to that origin with
+<code>Access-Control-Allow-Credentials: true</code>, and the OPTIONS preflight returned 204 with the same origin — measured by
+CI on 2026-11-22 and published in
+<a href="data/probe.json">data/probe.json</a>. A per-second alert feed would therefore only need a browser polling loop (or a
+WebSocket client, which <b>does</b> require a signed handshake — the unauthenticated handshake was rejected with HTTP 401).
+<a href="suggestions.html">Suggestions →</a></div>
 
 </main>
 <footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>

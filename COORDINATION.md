@@ -221,3 +221,81 @@ also on `flagged.html` as flag **F-19**.
 - Irregularity noted for the integration owner: PR #15's merge also left conflict-marker
   text (`<<<<<<< HEAD`, `>>>>>>> origin/main`) in COORDINATION.md — flagged, not edited
   by this session.
+
+---
+
+## Session `arena/4196d9d6` — branch `arena/4196d9d6-tradebot2` (FINAL INTEGRATION SESSION)
+
+Runtime note: work is confined to `arena/4196d9d6-tradebot2` (branched from `19ca09c`, repeatedly merged with `origin/main`).
+When this session started the repository held four front-end generations and two competing publish paths; while it ran, parallel
+sessions landed PRs #12–#21 and established the **canonical root site** (`index.html` + flat topic pages, published by the legacy
+Pages build of `main:/`). This session therefore integrated **into** that canonical site instead of replacing it.
+
+| Task ID | Task | Status | Owner | File scope |
+|---|---|---|---|---|
+| `I1-api-verification` | Measure the demo API from a networked runner: endpoints, CORS, WebSocket, taxonomy, ticker existence | `done` | `arena/4196d9d6` | `scripts/probe_demo.py`, `.github/workflows/probe-demo.yml`, `data/verification.json` |
+| `I2-collector-hardening` | Demo-first default, 1-minute/1-hour candlesticks, trade tape, event `$` ranking, active-market trim, paper-portfolio block | `done` | `arena/4196d9d6` | `scripts/kalshi_collector.py` |
+| `I3-site-gate-fix` | Site gate asserted mount points from a different page generation, so the published pages were never checked; retargeted to the canonical pages and added the missing Sources nav link | `done` | `arena/4196d9d6` | `tools/check_site.py`, 12 root pages (nav only) |
+| `I4-docs-correction` | Remove unsupported capability claims (tick streams, four strategies, EV ≥ 18 %, Sharpe 1.84, verified news catalysts) and document the real pipeline | `done` | `arena/4196d9d6` | `README.md`, `EXECUTIVE_SUMMARY.md`, `COORDINATION.md` |
+| `I5-build-and-deploy` | Build/verify, PR, merge, confirm the Pages deploy and the live pages | `in progress` | `arena/4196d9d6` | `COORDINATION.md` |
+
+### Verification performed (2026-11-22, from GitHub Actions runners — the agent sandbox has no route to `*.kalshi.co`)
+
+Read from `docs.kalshi.com`: `getting_started/demo_env`, `getting_started/api_environments`, `getting_started/rate_limits`,
+`getting_started/quick_start_websockets`, `api-reference/events/get-events`, `api-reference/market/get-market-candlesticks`,
+`api-reference/market/get-trades`, `api-reference/market/get-market-orderbook`, `api-reference/market/get-markets`.
+
+Exercised live on the demo host: `GET /exchange/status` (`exchange_active`/`trading_active` true), `GET /search/tags_by_categories`
+(Sports→Golf, Commodities→“Oil & Gas”, Elections, Crypto, Entertainment; **no** “Culture”, **no** gasoline category),
+`GET /series?category=Crypto` (321 series), `GET /events?status=open&with_nested_markets=true`, `GET /markets/{ticker}`,
+`GET /markets/{ticker}/orderbook` (`orderbook_fp.yes_dollars`/`no_dollars`), `GET /markets/trades` (limit ≤ 1000, sub-second
+`created_time`), `GET /series/{s}/markets/{t}/candlesticks` (1-minute and 1-hour intervals, OHLC `_dollars` fields).
+
+Measured on 2026-11-22 (recorded in `data/verification.json`):
+
+* **18,298 open markets** across the five topic filters (top 40 series by volume per topic); series counts crypto 321,
+  elections 2,710, entertainment 2,631, golf 134, oil & gas 25.
+* **CORS is allowed for this site's origin.** With `Origin: https://kanlerxz87-cyber.github.io` the demo host answered 200 with
+  `Access-Control-Allow-Origin` equal to that origin, `Access-Control-Allow-Credentials: true` and an
+  `Access-Control-Expose-Headers` list; the OPTIONS preflight answered **204** with the same origin. *Correction:* an earlier
+  probe in this session sent no `Origin` header, saw no CORS header, and nearly recorded “CORS blocked” — the header is
+  origin-reflective. The correction is published on `flagged.html` and `site/flagged.html`.
+* **Unauthenticated WebSocket handshake is rejected** (`HTTP 401 token_authentication_failure`) on both demo WS hosts.
+* **Hand-written tickers are not real demo markets:** `GET /markets/PRES-24-DJT`, `GAS-24DEC-3.15`, `BTC-24DEC-100K`,
+  `OSCAR-BESTPIC-25`, `MASTERS-25-SCHEFFLER`, `BTC-ETF-NET10B` returned no market object, while
+  `KXAAAGASW-26NOV23-3.8400` returned a full market object — the older pages' data was invented; the `dash/` snapshot was not.
+* **`trading-api.kalshi.com` is not in Kalshi's endpoint table**; documented hosts are listed in the README.
+* **Static gate:** `python3 tools/check_site.py --root . --strict` → 13 canonical pages, 399 internal links, OK (it previously
+  failed with 8 problems because it asserted mount points from a different generation); `python3 tools/verify_data.py --data-dir
+  data` → OK; `python3 -m py_compile` on every script; `node --check` on every JS file; jsdom smoke test of all 18 archived
+  `site/` pages against a real collected snapshot.
+
+### Changes made to shared files (logged per the board's rule)
+
+* `tools/check_site.py` — PAGES/REQUIRED_SNIPPETS retargeted from the superseded `topics/*` +
+  `performance/resolutions/requirements` generation to the **canonical published pages**, using each page's real mount points.
+* 12 root pages — added the `Sources` nav link (the gate required it; the canonical nav omitted it).
+* `README.md`, `EXECUTIVE_SUMMARY.md` — rewritten to describe what runs; the old capability list was not supported by the code.
+* `COORDINATION.md` — this section. `.gitignore` — added `probe/` and `node_modules/` (scratch output).
+* No other session's content was deleted. `docs/`, `dash/`, `site/`, `pages/`, `topics/`, `observatory/`, `main-site-*.html`
+  remain in the tree and are labelled archives.
+
+### Deviation from the original plan (abandoned, recorded for review)
+
+This session initially rebuilt `site/` as a standalone desk and switched `pages.yml` to an Actions artifact deploy. Two facts
+invalidated that: (a) GitHub Pages here is `build_type: legacy` and the integration token cannot change it (`PUT /pages` → 403),
+so the repository root is what visitors get; (b) a parallel session had already built a stronger canonical root site. The `site/`
+rebuild is kept as an archived generation; the published pipeline is untouched except for the gate fix.
+
+### Irregularities carried forward
+
+* Repository-level findings with evidence: `site/repo-review.html` (R1–R10) and the canonical `flagged.html` (F-01…).
+* Open item for the user: **demo-account credentials** (F-01), and a decision on the authenticated client / strategy engine
+  restored from commit `6d98549` (back in the tree on `main`, still unexecuted).
+
+### PR / deploy record
+
+* PR: _(filled in before the merge)_
+* Merge commit: _(filled in after the merge)_
+* Pages build/deploy: _(filled in after the deploy)_
+* Live checks: _(filled in after the deploy)_

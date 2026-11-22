@@ -71,9 +71,12 @@ off on 429, without publishing the numbers.</td><td>2026-11-22</td><td>Partly ve
 <td>Scheduled workflows use cron, run on the default branch, can be delayed under load; GitHub states the shortest interval is
 5 minutes.</td><td>2026-11-22</td><td>Verified</td></tr>
 <tr><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?limit=1" target="_blank" rel="noopener noreferrer">GET /markets (demo, live) — CORS check</a></td>
-<td>Response headers carried <code>content-type: application/json</code> but <b>no</b> <code>Access-Control-Allow-Origin</code>
-(or <code>-Methods</code>/<code>-Headers</code>) on a GET with an Origin header and on an OPTIONS preflight. A browser therefore cannot
-read this API cross-origin. Recorded in <code>data/verification.json</code>.</td><td>2026-11-22</td><td>Verified (absence)</td></tr>
+<td>With <code>Origin: https://kanlerxz87-cyber.github.io</code> the demo host answered 200 with
+<code>Access-Control-Allow-Origin: https://kanlerxz87-cyber.github.io</code>, <code>Access-Control-Allow-Credentials: true</code> and
+an <code>Access-Control-Expose-Headers</code> list; the OPTIONS preflight answered 204 with the same origin and
+<code>GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS</code>. An earlier probe that sent no Origin header saw no CORS header — the header is
+<b>origin-reflective</b>. Measured by CI and stored in <a href="data/probe.json">data/probe.json</a>.</td>
+<td>2026-11-22</td><td>Verified (headers measured)</td></tr>
 <tr><td><a href="https://www.cftc.gov/filings/contractlistings/kalshiexchange" target="_blank" rel="noopener noreferrer">CFTC · Kalshi contract listings</a></td>
 <td>Linked from the repository README as the regulation reference. Not reviewed in this session.</td><td>—</td><td>Linked, not reviewed</td></tr>
 </tbody></table></div>

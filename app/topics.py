@@ -44,7 +44,21 @@ TOPIC_KLINK = {
 # Series-ticker prefixes seen in the demo/production catalogs. Prefix matches are
 # case-insensitive and must be followed by a non-letter (or end of string).
 TICKER_PREFIXES: dict[str, tuple[str, ...]] = {
-    "gas_prices": ("KXAAAGASW", "KXAAAGASM", "KXAAAGASD", "KXAAAGAS", "KXGASPRICE", "KXGAS"),
+    # Gasoline tickers, plus the crude / natural-gas series that Kalshi files
+    # under `Commodities > Oil & Gas`. The latter are a proxy: see
+    # flagged.html F-02 ("no retail gasoline series was live at collection").
+    "gas_prices": (
+        "KXAAAGASW",
+        "KXAAAGASM",
+        "KXAAAGASD",
+        "KXAAAGAS",
+        "KXGASPRICE",
+        "KXGAS",
+        "KXWTI",
+        "KXNGAS",
+        "KXBRENT",
+        "KXHEATOIL",
+    ),
     "elections": (
         "KXPRES",
         "KXSENATE",
@@ -80,6 +94,12 @@ TICKER_PREFIXES: dict[str, tuple[str, ...]] = {
 KEYWORDS: dict[str, tuple[str, ...]] = {
     "gas_prices": (
         r"\bgas prices?\b",
+        r"\bwti\b",
+        r"\bcrude\b",
+        r"\bnatural gas\b",
+        r"\bbrent\b",
+        r"\bheating oil\b",
+        r"\boil & gas\b",
         r"\bgasoline\b",
         r"\bpump prices?\b",
         r"\baaa\b",

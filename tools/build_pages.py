@@ -122,12 +122,14 @@ collection runs. <b>Chat 1</b> shows every alert. <b>Chat 2</b> shows only alert
   (1 − entry) ÷ entry, before fees. It is <b>not</b> a trained, backtested or validated model, and it does not look at news.
   <a href="findings.html">Method and limitations →</a></p>
 </div>
-<div class="card flag"><b>Why “sudden” is 10-minute granularity.</b> GitHub Actions runs the collector on a schedule, so a
-$0.10 move is measured between runs, not tick by tick. Kalshi's API also returns no
-<code>Access-Control-Allow-Origin</code> header (checked 2026-11-22), so a browser cannot poll the API directly from this page.
-A tick-level alert feed needs a WebSocket client (documented at
-<a href="https://docs.kalshi.com/getting_started/quick_start_websockets" target="_blank" rel="noopener noreferrer">docs.kalshi.com</a>)
-running on a server you own. <a href="suggestions.html">Suggestions →</a></div>
+<div class="card flag"><b>Why “sudden” is the collection interval and not a tick.</b> This page reads the collector's JSON, so a
+$0.10 move is measured between runs. The demo API <b>does</b> allow browser reads: a probe from this site's own origin
+(<code>https://kanlerxz87-cyber.github.io</code>) returned <code>Access-Control-Allow-Origin</code> equal to that origin with
+<code>Access-Control-Allow-Credentials: true</code>, and the OPTIONS preflight returned 204 with the same origin — measured by
+CI on 2026-11-22 and published in
+<a href="data/probe.json">data/probe.json</a>. A per-second alert feed would therefore only need a browser polling loop (or a
+WebSocket client, which <b>does</b> require a signed handshake — the unauthenticated handshake was rejected with HTTP 401).
+<a href="suggestions.html">Suggestions →</a></div>
 """
 
 DASHBOARD = """
@@ -332,8 +334,8 @@ contract. Fees, slippage and queue position are <b>not</b> modelled, so results 
 <h2>8. What is verified, and what is not</h2>
 <p>Every endpoint and parameter on this site is listed with the official page that documents it on
 <a href="sources.html">Sources</a>. Every table row links to the API response that produced it. Values the API did not return are
-left blank and marked <span class="unv">unverified</span>. Items that could not be verified — including the absence of browser
-CORS support, the demo-account credential gap, and the fabricated content found in older pages of this repository — are on
+left blank and marked <span class="unv">unverified</span>. Items that could not be verified — including the corrected CORS
+measurement, the demo-account credential gap, and the fabricated content found in older pages of this repository — are on
 <a href="flagged.html">Flagged for review</a>, and repository-level findings are on <a href="repo-review.html">Repo review</a>.</p>
 
 <h2>9. Known limits</h2>
@@ -386,8 +388,9 @@ stop or settlement.</li>
 <ul>
 <li><b>Why a contract moved.</b> The API reports prices and trades, not causes. Any news headline shown anywhere on this site is
 a reference link from the event's settlement sources, and is marked unverified as a cause.</li>
-<li><b>Sub-10-minute alert latency</b> without a WebSocket client. The static site cannot poll Kalshi directly: the demo API
-returned no <code>Access-Control-Allow-Origin</code> header when checked on 2026-11-22.</li>
+<li><b>Sub-interval alert latency</b> on this page: it renders the collector's JSON, not a browser poll. The API itself does
+allow cross-origin reads for this site's origin (measured, see <a href="data/probe.json">data/probe.json</a>); WebSocket
+channels need a signed handshake.</li>
 <li><b>True dollar volume.</b> Kalshi publishes volume in contracts, not dollars; the $ columns are explicitly labelled
 “computed”.</li>
 <li><b>Edge.</b> Fees, queuing and slippage are not modelled. Early samples are far too small to judge a strategy.</li>
@@ -461,9 +464,12 @@ off on 429, without publishing the numbers.</td><td>2026-11-22</td><td>Partly ve
 <td>Scheduled workflows use cron, run on the default branch, can be delayed under load; GitHub states the shortest interval is
 5 minutes.</td><td>2026-11-22</td><td>Verified</td></tr>
 <tr><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?limit=1" target="_blank" rel="noopener noreferrer">GET /markets (demo, live) — CORS check</a></td>
-<td>Response headers carried <code>content-type: application/json</code> but <b>no</b> <code>Access-Control-Allow-Origin</code>
-(or <code>-Methods</code>/<code>-Headers</code>) on a GET with an Origin header and on an OPTIONS preflight. A browser therefore cannot
-read this API cross-origin. Recorded in <code>data/verification.json</code>.</td><td>2026-11-22</td><td>Verified (absence)</td></tr>
+<td>With <code>Origin: https://kanlerxz87-cyber.github.io</code> the demo host answered 200 with
+<code>Access-Control-Allow-Origin: https://kanlerxz87-cyber.github.io</code>, <code>Access-Control-Allow-Credentials: true</code> and
+an <code>Access-Control-Expose-Headers</code> list; the OPTIONS preflight answered 204 with the same origin and
+<code>GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS</code>. An earlier probe that sent no Origin header saw no CORS header — the header is
+<b>origin-reflective</b>. Measured by CI and stored in <a href="data/probe.json">data/probe.json</a>.</td>
+<td>2026-11-22</td><td>Verified (headers measured)</td></tr>
 <tr><td><a href="https://www.cftc.gov/filings/contractlistings/kalshiexchange" target="_blank" rel="noopener noreferrer">CFTC · Kalshi contract listings</a></td>
 <td>Linked from the repository README as the regulation reference. Not reviewed in this session.</td><td>—</td><td>Linked, not reviewed</td></tr>
 </tbody></table></div>
@@ -620,11 +626,12 @@ Every item names what would settle it.</p>
 not shown; the portfolio on this site is a paper simulation.</td><td>Blocked — needs secrets</td>
 <td>Add a demo API key id and RSA private key as encrypted repository secrets and enable the signed-request job.</td>
 <td><a href="https://docs.kalshi.com/getting_started/api_keys" target="_blank" rel="noopener noreferrer">API keys</a></td></tr>
-<tr><td>F2</td><td><b>No browser CORS on the Kalshi API.</b> A GET and an OPTIONS preflight from an allowed origin returned no
-<code>Access-Control-Allow-Origin</code> header on 2026-11-22, so the page cannot poll Kalshi directly and “live” means the
-scheduled rebuild cadence.</td><td>Open</td>
-<td>A server-side WebSocket worker (or Kalshi enabling CORS) would give true real-time updates.</td>
-<td><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?limit=1" target="_blank" rel="noopener noreferrer">GET /markets headers</a></td></tr>
+<tr><td>F2</td><td><b>Browser CORS is allowed (measured), so direct polling is possible — this page still renders the
+collector's JSON.</b> With an Origin header the demo host returns <code>Access-Control-Allow-Origin</code> for that origin and a
+204 preflight. An early probe without an Origin header saw no CORS header and that was almost written up as a limit; the
+measurement corrected it. The WebSocket handshake, by contrast, needs signing (401 without it).</td><td>Verified, corrected</td>
+<td>Add a 5-second browser poll to this page for true per-second quotes; use the collector JSON as the fallback.</td>
+<td><a href="data/probe.json">data/probe.json</a></td></tr>
 <tr><td>F3</td><td><b>Demo prices are simulated.</b> Kalshi states demo prices and behaviour may not reflect real markets, so
 nothing here is evidence about production odds or liquidity.</td><td>Documented limit</td>
 <td>Run the same collector against the production host (<code>KALSHI_BASE</code> switch already exists) and label the site accordingly.</td>

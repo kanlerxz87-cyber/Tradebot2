@@ -1,96 +1,92 @@
-> **Archive — session b1cd545f.** This document is retained for review. It is superseded by
-> [`executive-summary.html`](executive-summary.html), which separates verified facts, snapshot
-> observations and unverified items. Performance figures in this document are illustrative unless a
-> source is shown; no Kalshi demo credentials were available to verify a live account. See
-> [`flagged.html`](flagged.html).
+# Executive summary — Tradebot2 (Kalshi demo desk)
 
-# Kalshi Tradebot2: Executive Summary & System Specification
+**Site:** https://kanlerxz87-cyber.github.io/Tradebot2/ · **Pages model:** legacy build of `main:/` (repository root)
+**Venue:** Kalshi **demo** environment · **Data:** public, unauthenticated Kalshi REST reads · **Orders:** none
 
-## 1. Project Overview & Mission
-**Kalshi Tradebot2** is an institutional-grade analytics, live monitoring, alerting, and automated simulated trading platform specifically engineered for the Kalshi Designated Contract Market (DCM). The platform tracks high-dollar-volume events across five prioritized sectors:
-1. **Gas Prices** (EIA US Retail Gas Averages, crude benchmarks, fuel CPI derivatives)
-2. **Elections** (Presidential, Congressional, Gubernatorial, and geopolitical outcomes)
-3. **Culture** (Academy Awards, Grammys, Box Office milestones, Billboard rankings)
-4. **Crypto** (Bitcoin, Ethereum price targets, ETF net flow thresholds, regulatory actions)
-5. **Golf** (The Masters, PGA Championship, US Open, Ryder Cup outcomes, player cuts)
+> This file mirrors the published [executive summary page](executive-summary.html). If the two ever disagree, the page and the
+> live data in `data/` win; this file is the repository copy.
 
-The platform provides real-time detection of high-velocity price dislocations (sudden swings $\ge \$0.10$ in contract price), dual scrolling real-time alert feeds (all events vs. selective high-ROI model opportunities), order-book liquidity visualization, and an automated simulated trading engine executing and auditing four quantitative strategies.
+## 1. What it is
 
----
+A monitoring and paper-trading desk for five topics on the Kalshi demo exchange: **gas prices, elections, culture, crypto,
+golf**. It does five things:
 
-## 2. Official Kalshi API Infrastructure & Specifications
+1. **Ranks live events by flow** so the highest-dollar events are visible first.
+2. **Alerts on ≥ $0.10 contract moves** in either direction, in two scrolling feeds — all swings, and the model's high-ROI
+   subset.
+3. **Charts price against time** with an order-book depth ladder (contracts available at each price, both sides).
+4. **Paper-trades** the alerts and reports performance by strategy, topic and side, with settlement at the API's resolution.
+5. **Tracks each event to resolution** — YES or NO, taken from `result`, never inferred.
 
-Kalshi operates under CFTC oversight as a regulated Designated Contract Market (DCM). All contract parameters, settlement determinations, and pricing rules are codified in official regulatory filings.
+Every row links to the Kalshi API record it came from. Unconfirmed values are blank and flagged.
 
-### 2.1 API Endpoints (Demo vs. Production)
-| Environment | Protocol | Verified Official URL | Description |
-|---|---|---|---|
-| **Demo REST API** | HTTPS | `https://demo-api.kalshi.co/trade-api/v2` | Primary sandbox trading & market data endpoint |
-| **Demo REST Fallback** | HTTPS | `https://external-api.demo.kalshi.co/trade-api/v2` | Secondary external sandbox REST gateway |
-| **Demo WebSocket** | WSS | `wss://demo-api.kalshi.co/trade-api/ws/v2` | Real-time market tick, order book & trade stream |
-| **Demo WS Fallback** | WSS | `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2` | Alternate WebSocket connection gateway |
-| **Production REST** | HTTPS | `https://trading-api.kalshi.com/trade-api/v2` | Regulated live execution & clearing gateway |
-| **Documentation** | HTTPS | `https://trading-api.kalshi.com/trade-api/v2/documentation` | Official OpenAPI 3.0 specification |
+## 2. Environment (verified 2026-11-22)
 
-### 2.2 Market Mechanics & Binary Structure
-- **Contract Valuation**: All contracts trade within the unit interval $[\\$0.01, \\$0.99]$.
-- **Payout Settlement**:
-  - Event occurs $\rightarrow$ **YES** resolves to $\mathbf{\$1.00}$ (100¢).
-  - Event does not occur $\rightarrow$ **NO** resolves to $\mathbf{\$0.00}$ (0¢).
-- **Price as Implied Probability**: A contract priced at $\$0.65$ reflects a market-implied probability of $65\%$ for event occurrence.
-- **Liquidity Depth**: Quantities represent discrete 1-contract lots, collateralized fully with zero margin debt or counterparty risk.
+| Item | Value |
+|---|---|
+| Demo REST (recommended) | `https://external-api.demo.kalshi.co/trade-api/v2` |
+| Demo REST (also supported) | `https://demo-api.kalshi.co/trade-api/v2` |
+| Demo WebSocket (recommended) | `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2` |
+| Demo WebSocket (also supported) | `wss://demo-api.kalshi.co/trade-api/ws/v2` |
+| Production REST (not used) | `https://external-api.kalshi.com/trade-api/v2` |
+| Exchange status at check time | `exchange_active: true`, `trading_active: true` |
+| Browser CORS | Allowed for this site's origin: `Access-Control-Allow-Origin: https://kanlerxz87-cyber.github.io` on GET; 204 preflight (`data/probe.json`) |
+| WebSocket without signing | Rejected, HTTP 401 `token_authentication_failure` (`data/probe.json`) |
 
----
+Sources: [Demo environment](https://docs.kalshi.com/getting_started/demo_env) ·
+[API environments](https://docs.kalshi.com/getting_started/api_environments) ·
+[live status](https://external-api.demo.kalshi.co/trade-api/v2/exchange/status)
 
-## 3. Core Functional Modules
+## 3. Topic filters (official taxonomy)
 
-### 3.1 Live Event Tracking & Resolution Lifecycle
-- Events are ingested with open order book depth, 24h dollar volume, open interest, and settlement target timestamps.
-- Contracts are monitored through three distinct states:
-  1. **Active (Live)**: Open order book trading, continuous bid/ask quotes.
-  2. **Pending Settlement**: Expiration time reached; awaiting official verifier determination.
-  3. **Resolved**: Finalized outcome strictly recorded as YES or NO based on official source criteria.
+| Topic | Filter | Caveat |
+|---|---|---|
+| Gas prices | `category=Commodities&tags=Oil & Gas` | No gasoline category exists; includes crude, natural gas, heating oil |
+| Elections | `category=Elections` | Exact |
+| Culture | `category=Entertainment` | No “Culture” category |
+| Crypto | `category=Crypto` | Exact |
+| Golf | `category=Sports&tags=Golf` | Exact |
 
-### 3.2 Dual Scrolling Real-Time Alert Engine
-The alerting system captures any instantaneous or intra-minute price movement $\ge \$0.10$:
-- **Feed 1: Global All-Events Stream**: Unfiltered chronological scroll of all market moves $\ge \$0.10$ across all 5 categories. Displays contract ticker, prior price, new price, magnitude ($\Delta$), volume, and timestamp.
-- **Feed 2: High-ROI Model Filter**: Selective stream filtering only events where our quantitative probability model identifies a statistically significant edge (Expected Value $\text{EV} \ge +18\%$ ROI).
+Source: [tags_by_categories](https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories).
 
-### 3.3 Interactive Multi-Scale Charting & Order Book Depth
-- **X-Axis (Time)**: Dynamically switchable between **Seconds (1s/5s ticks)**, **Minutes (1m/5m)**, and **Hours (1h/4h)**.
-- **Y-Axis (Price)**: Full precision scale spanning $\$0.00$ to $\$1.00$.
-- **Liquidity Ladder**: Real-time visualization of resting bid/ask contracts at each price tick, displaying exact contract count available at the best bid, best ask, and deep book levels.
-- **Catalyst Markers**: Visual pins on charts pinpointing sudden $\ge \$0.10$ jumps with hyperlinks to verified external news catalysts and official reports.
+## 4. Method
 
-### 3.4 Automated Simulated Trading Engine
-The engine simulates demo trading accounts with realistic execution constraints (slippage, fill rates against resting depth):
-1. **Momentum Swing Breakout**: Enters long on sudden velocity ($\Delta \ge +\$0.10$ with volume surge) targeting continuation to resistance.
-2. **Mean Reversion / Oversold Dip**: Identifies sharp downswings ($\Delta \le -\$0.10$) occurring on thin liquidity and buys the dip for bounce reversion.
-3. **High-ROI Expected Value (EV) Arbitrage**: Compares market-implied probability to our verified fundamental model forecast, executing when mispricing yields $>20\%$ expected return.
-4. **Resolution Convergence Yield**: Collects yield by purchasing high-confidence contracts ($>\$0.88$) close to resolution with verified positive underlying data.
+* Collect public series/events/markets, order books, candles and resolutions on a schedule; publish JSON into `data/`.
+* Price history: 1-minute and 1-hour candlesticks plus the trade tape for the most active markets; snapshots elsewhere.
+* Alerts: |Δ last| ≥ $0.10 between observations. Model feed: published rule set (spread, size at the ask, 24h volume, price
+  band). Feeds are labelled; the model feed is **not** a validated edge.
+* Paper broker: simulated fills with the documented trading fee; settlement from `result`. Fees at settlement and queue
+  position are not modelled.
+* Verification: `pages.yml` gates every merge/PR on the canonical pages, their mount points, internal links and required data
+  files; `tools/verify_data.py` checks every published row carries an official source.
 
----
+## 5. Verified / not verified
 
-## 4. Source Verification & Compliance Standards
-In accordance with strict verification directives:
-- Every market contract is verified against official Kalshi rulebook filings and government or primary authoritative data sources:
-  - **Gas Prices**: US Energy Information Administration (EIA) Gasoline & Diesel Fuel Update (`https://www.eia.gov/petroleum/gasdiesel/`).
-  - **Elections**: Federal Election Commission (FEC) & Official State Secretary of State canvasses (`https://www.fec.gov/`).
-  - **Culture**: Academy of Motion Picture Arts and Sciences (AMPAS) (`https://www.oscars.org/`).
-  - **Crypto**: Spot exchange volume-weighted average prices and CFTC/SEC filings (`https://www.coingecko.com/`).
-  - **Golf**: PGA Tour Official Scoring System & Augusta National Masters Committee (`https://www.pgatour.com/`, `https://www.masters.com/`).
-- Any metric that cannot be directly confirmed from an official regulatory or primary source is marked as **Unverified** and routed to the **Flagged for Review** registry (`review.html`).
+**Verified against official docs and measured live:** demo and production base URLs; `/exchange/status`; `/series`;
+`/events`; `/markets/{ticker}`; `/markets/{ticker}/orderbook`; candlesticks (1 / 60 / 1440-minute intervals); `/markets/trades`
+(limit ≤ 1000, sub-second timestamps); the category/tag taxonomy; and the CORS/WS behaviour above.
 
----
+**Not verified / not claimed (published as F-01 … on `flagged.html`):**
 
-## 5. Deployment & GitHub Pages Architecture
-The platform is organized into static, standards-compliant HTML5/CSS3/ES6 web modules served from the repository root:
-- `index.html`: Executive Dashboard, Live Charts, Order Book Depth, Dual Alerts & Portfolio Summary.
-- `gas-prices.html`: Gas Prices category deep-dive with EIA benchmark tracking.
-- `elections.html`: Election contracts, polling aggregate comparisons, and resolution criteria.
-- `culture.html`: Cultural and entertainment contracts with official certification sources.
-- `crypto.html`: Digital asset contracts with real-time liquidity and price targets.
-- `golf.html`: Major championship outcomes with PGA Tour official links.
-- `strategies.html`: Strategy testing console, trade execution interface, and portfolio performance analytics.
-- `review.html`: Flagged for Review page listing all unverified items and audit logs.
-- `COORDINATION.md`: Multi-session task board tracking development and verification milestones.
+1. **Demo-account balance, positions, orders** — no API key was supplied; nothing was signed against the account.
+2. **WebSocket streaming** — not used by the static site; it needs a signed handshake.
+3. **Demo prices are simulated** and may not reflect production markets.
+4. **Culture / gas mappings** are approximations of Kalshi's taxonomy.
+5. **The model feed and paper P&L** — rule-based, small-sample, fee-approximate; not evidence of an edge.
+6. **Causes of price moves** — never asserted; the API publishes none.
+
+## 6. Repository state and corrections
+
+* Canonical site = root pages; generated data = `data/*.json`; pipeline = `collector/` + `tools/build_snapshot.py`.
+* Archived generations (`docs/`, `site/`, `dash/`, `pages/`, `topics/`, `observatory/`, `main-site-*.html`) are frozen and
+  labelled; earlier builds included hand-written “live” data (tickers, catalysts, a $10,000 demo portfolio and Sharpe 1.84)
+  that was never API output. They are flagged, not cited.
+* An earlier README claimed tick-stream ingestion, four quantitative strategies, verified news catalysts and a live demo
+  account. Those claims were not supported by the code and were removed in this integration pass.
+* The repository's site gate (`tools/check_site.py`) referenced mount points from a different page generation; it now checks
+  the pages that are actually published, so a missing mount point fails the build instead of passing unnoticed.
+* Pages is `build_type: legacy` from `main:/`; the Pages settings API returned 403 for this integration token, so the
+  repository root is the contract that is verified on every push.
+
+Open items, evidence and the condition that would close each one: **`flagged.html`**. Task ownership and history:
+**`COORDINATION.md`**.

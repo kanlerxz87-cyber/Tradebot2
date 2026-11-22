@@ -22,11 +22,12 @@ Every item names what would settle it.</p>
 not shown; the portfolio on this site is a paper simulation.</td><td>Blocked — needs secrets</td>
 <td>Add a demo API key id and RSA private key as encrypted repository secrets and enable the signed-request job.</td>
 <td><a href="https://docs.kalshi.com/getting_started/api_keys" target="_blank" rel="noopener noreferrer">API keys</a></td></tr>
-<tr><td>F2</td><td><b>No browser CORS on the Kalshi API.</b> A GET and an OPTIONS preflight from an allowed origin returned no
-<code>Access-Control-Allow-Origin</code> header on 2026-11-22, so the page cannot poll Kalshi directly and “live” means the
-scheduled rebuild cadence.</td><td>Open</td>
-<td>A server-side WebSocket worker (or Kalshi enabling CORS) would give true real-time updates.</td>
-<td><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?limit=1" target="_blank" rel="noopener noreferrer">GET /markets headers</a></td></tr>
+<tr><td>F2</td><td><b>Browser CORS is allowed (measured), so direct polling is possible — this page still renders the
+collector's JSON.</b> With an Origin header the demo host returns <code>Access-Control-Allow-Origin</code> for that origin and a
+204 preflight. An early probe without an Origin header saw no CORS header and that was almost written up as a limit; the
+measurement corrected it. The WebSocket handshake, by contrast, needs signing (401 without it).</td><td>Verified, corrected</td>
+<td>Add a 5-second browser poll to this page for true per-second quotes; use the collector JSON as the fallback.</td>
+<td><a href="data/probe.json">data/probe.json</a></td></tr>
 <tr><td>F3</td><td><b>Demo prices are simulated.</b> Kalshi states demo prices and behaviour may not reflect real markets, so
 nothing here is evidence about production odds or liquidity.</td><td>Documented limit</td>
 <td>Run the same collector against the production host (<code>KALSHI_BASE</code> switch already exists) and label the site accordingly.</td>
