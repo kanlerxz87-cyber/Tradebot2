@@ -103,6 +103,10 @@ No backend, database, signing key, analytics tracker, or fabricated fallback dat
 
 `.github/workflows/pages.yml` validates and deploys `dist/` to GitHub Pages after a push to `main`. The app uses hash routes so category and research pages work without server rewrites.
 
+## Parallel-session archive
+
+PRs #1–#3 landed a separate static implementation while this final integration was in progress. That work is preserved under [`archive/parallel-sessions/`](archive/parallel-sessions/README.md), but excluded from the deployed artifact because its hard-coded market/account/performance values could not be confirmed row-by-row from official Kalshi API records. The conflict and preservation decision is recorded in `COORDINATION.md`.
+
 ## License / usage
 
 No license has been granted by the repository owner. All Kalshi names, API documentation, and API data remain subject to Kalshi's terms and policies.
