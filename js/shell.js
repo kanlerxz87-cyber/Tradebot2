@@ -16,6 +16,7 @@
     ["verification.html", "Verification"],
     ["suggestions.html", "Ideas"],
     ["flagged.html", "Flagged"],
+    ["archive-dashboards.html", "Archive"],
   ];
 
   function nav() {

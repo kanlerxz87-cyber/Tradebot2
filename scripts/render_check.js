@@ -21,7 +21,12 @@ try {
 }
 
 const ROOT = path.resolve(__dirname, "..", "docs");
-const pages = fs.readdirSync(ROOT).filter((f) => f.endsWith(".html")).sort();
+// Only the pages this pass owns carry the shared shell; other sessions' pages are
+// validated by the Python link check but not restyled here.
+const OWNED = new Set(["index.html", "topic-gas.html", "topic-elections.html", "topic-culture.html",
+  "topic-crypto.html", "topic-golf.html", "events.html", "strategies.html", "summary.html",
+  "verification.html", "suggestions.html", "flagged.html", "archive-dashboards.html"]);
+const pages = fs.readdirSync(ROOT).filter((f) => OWNED.has(f)).sort();
 
 function offlineFetch(url) {
   const m = String(url).match(/data\/([a-z\-]+\.json)$/);

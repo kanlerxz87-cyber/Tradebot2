@@ -45,8 +45,21 @@ def load(name: str) -> dict:
     return json.loads((DATA / name).read_text(encoding="utf-8"))
 
 
+# Pages this pass owns (they must carry the shared shell). Other sessions' pages
+# (site/, dash/, pages/, docs/*.html from earlier passes) are link-checked but not
+# restyled — their markup is theirs.
+OWNED = {"index.html", "topic-gas.html", "topic-elections.html", "topic-culture.html",
+         "topic-crypto.html", "topic-golf.html", "events.html", "strategies.html",
+         "summary.html", "verification.html", "suggestions.html", "flagged.html",
+         "archive-dashboards.html"}
+
+
 def html_files() -> list[Path]:
     return sorted(DOCS.glob("*.html"))
+
+
+def owned_files() -> list[Path]:
+    return [p for p in html_files() if p.name in OWNED]
 
 
 def check_data() -> None:
@@ -131,9 +144,14 @@ def check_data() -> None:
     check("source registry matches engine/sources.py", reg == set(SOURCE_BY_ID))
 
 
+def src_of(page: Path) -> str:
+    """Root-relative folder of a published page ('' for the repo root)."""
+    return str(page.parent.relative_to(ROOT)) if page.parent != ROOT else ""
+
+
 def check_links() -> None:
-    pages = html_files()
-    check("at least 12 pages", len(pages) >= 12, f"{len(pages)} pages")
+    pages = owned_files()
+    check("at least 12 owned pages", len(pages) >= 12, f"{len(pages)} owned pages")
     missing_css, missing_js, broken, no_nav = [], [], [], []
     for page in pages:
         text = page.read_text(encoding="utf-8")
@@ -144,12 +162,24 @@ def check_links() -> None:
         if 'id="shell"' not in text:
             no_nav.append(page.name)
         for href in re.findall(r'href="([^"#?:]+\.html)"', text):
-            if not (DOCS / href).exists():
+            # a page may link a sibling surface published at the repo root
+            if not (DOCS / href).exists() and not (ROOT / href).exists() and not (ROOT / src_of(page) / href).exists():
                 broken.append(f"{page.name}->{href}")
     check("every page links styles.css", not missing_css, str(missing_css))
     check("every page links js/live.js", not missing_js, str(missing_js))
     check("every page mounts the shared nav shell", not no_nav, str(no_nav))
     check("every internal page link resolves", not broken, str(broken))
+
+    # root mirror must resolve its links too
+    root_broken = []
+    for page in sorted(ROOT.glob("*.html")):
+        if page.name not in OWNED:
+            continue
+        text = page.read_text(encoding="utf-8")
+        for href in re.findall(r'href="([^"#?:]+\.html)"', text):
+            if not (ROOT / href).exists():
+                root_broken.append(f"{page.name}->{href}")
+    check("every root mirror link resolves", not root_broken, str(root_broken))
 
     # nav entries used by shell.js must all exist
     shell = (DOCS / "js" / "shell.js").read_text(encoding="utf-8")
@@ -209,7 +239,7 @@ def check_markup() -> None:
     defined = set(re.findall(r"\.([a-zA-Z][\w-]*)", css))
 
     bad_markup, unknown_classes = [], []
-    for page in html_files():
+    for page in owned_files():
         text = page.read_text(encoding="utf-8")
         parser = Balancer()
         parser.feed(text)
@@ -229,7 +259,7 @@ def check_markup() -> None:
 
 
 def check_claims() -> None:
-    pages = html_files()
+    pages = owned_files()
     bad_balance = []
     for page in pages:
         text = page.read_text(encoding="utf-8").lower()
