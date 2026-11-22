@@ -1,351 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalshi Tradebot2 | Live Event Alerting, Liquidity & Automated Trading Dashboard</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tradebot2 — Kalshi Demo Live Dashboard</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
+  <header id="site-header" class="site-header"></header>
 
-    <!-- Top Navigation Bar -->
-    <header class="topbar">
-        <div class="brand-section">
-            <div class="brand-logo">
-                <span>⚡ KALSHI TRADEBOT2</span>
-                <span class="badge-demo">Demo Sandbox v2</span>
-            </div>
+  <main class="container">
+    <section class="page-hero">
+      <div>
+        <h1>Kalshi Demo Live Trading &amp; Swing Alert Dashboard</h1>
+        <p>
+          Tracking highest dollar volume live and resolved events strictly across
+          <strong>Gas Prices, Elections, Culture, Crypto, and Golf</strong> — with real-time
+          <strong>&ge; $0.10</strong> dual scrolling alert chats, Seconds/Minutes/Hours interactive price charts,
+          orderbook liquidity depth, and automated Demo strategy testing.
+        </p>
+      </div>
+      <div class="control-group">
+        <a href="pages/executive-summary.html" class="btn">Executive Summary</a>
+        <a href="pages/portfolio-strategies.html" class="btn btn-primary">Demo Portfolio &amp; Strategies</a>
+      </div>
+    </section>
+
+    <!-- Connection & Live Control Bar -->
+    <section class="control-bar" aria-label="Kalshi Demo API connection controls">
+      <div class="control-group">
+        <span class="status-pill">
+          <span id="connection-status-dot" class="status-dot amber"></span>
+          <span id="connection-status-text">Interactive Demo Simulator Active (Click to query Live Kalshi Demo REST)</span>
+        </span>
+      </div>
+      <div class="control-group">
+        <select id="demo-host-select" aria-label="Kalshi Demo REST Endpoint">
+          <option value="https://external-api.demo.kalshi.co/trade-api/v2">Recommended: external-api.demo.kalshi.co/trade-api/v2</option>
+          <option value="https://demo-api.kalshi.co/trade-api/v2">Also Supported: demo-api.kalshi.co/trade-api/v2</option>
+        </select>
+        <button id="btn-connect-live" class="btn btn-primary">Connect Live Demo REST</button>
+        <button id="btn-trigger-swing" class="btn btn-amber">Trigger &ge; $0.10 Swing</button>
+        <button id="btn-toggle-sim" class="btn">Pause Live Stream</button>
+      </div>
+    </section>
+
+    <!-- KPI Strip -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Demo Portfolio Equity</div>
+        <div id="kpi-equity" class="kpi-value">$10,000.00</div>
+        <div id="kpi-equity-sub" class="kpi-sub">Mock Kalshi Demo Account</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Total Demo P&amp;L</div>
+        <div id="kpi-pnl" class="kpi-value pos">+$0.00</div>
+        <div id="kpi-pnl-sub" class="kpi-sub">Realized + Unrealized</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">&ge; $0.10 Swing Alerts</div>
+        <div id="kpi-swings" class="kpi-value">0</div>
+        <div id="kpi-swings-sub" class="kpi-sub">All Events vs Selective High-ROI</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Tracked Events (Active / Resolved)</div>
+        <div id="kpi-events" class="kpi-value">0 / 0</div>
+        <div id="kpi-events-sub" class="kpi-sub">Verified official kalshi.com catalog</div>
+      </div>
+    </section>
+
+    <!-- Dual Real-Time Scrolling Swing Alert Chats -->
+    <section class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Live Swing Alert Chat — All Events (&ge; $0.10)</h2>
+            <p class="card-subtitle">Real-time scrolling feed for every contract price jump or drop &ge; $0.10 across the 5 topics.</p>
+          </div>
+          <span id="all-swing-count" class="badge badge-blue">0 alerts</span>
         </div>
-        <nav class="nav-links">
-            <a href="index.html" class="nav-item active">Master Dashboard</a>
-            <a href="gas-prices.html" class="nav-item">⛽ Gas Prices</a>
-            <a href="elections.html" class="nav-item">🗳️ Elections</a>
-            <a href="culture.html" class="nav-item">🎭 Culture</a>
-            <a href="crypto.html" class="nav-item">🪙 Crypto</a>
-            <a href="golf.html" class="nav-item">⛳ Golf</a>
-            <a href="strategies.html" class="nav-item">🧠 Strategies & Portfolio</a>
-            <a href="review.html" class="nav-item">🔍 Flagged for Review</a>
-        </nav>
-        <div class="topbar-actions">
-            <div class="btn-demo-badge">
-                <span class="status-dot"></span>
-                <span>REST & WS Live Simulation</span>
-            </div>
-            <button class="btn btn-xs" id="soundToggleBtn">🔇 Sound: OFF</button>
+        <div id="chat-all-events" class="chat-feed" aria-live="polite"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Selective High-ROI Model Chat (&ge; $0.10 Filtered)</h2>
+            <p class="card-subtitle">Filtered strictly to swings passing our High-ROI model (Score &ge; 68/100, spread &le; $0.05, depth &ge; 150 cts).</p>
+          </div>
+          <span id="roi-swing-count" class="badge badge-amber">0 high-ROI</span>
         </div>
-    </header>
+        <div id="chat-high-roi" class="chat-feed" aria-live="polite"></div>
+      </div>
+    </section>
 
-    <div class="main-wrapper">
+    <!-- Interactive Price Chart + Orderbook Liquidity Depth -->
+    <section id="chart-section" class="grid-chart-book">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 id="chart-market-title" class="card-title">Loading Contract Chart…</h2>
+            <div id="chart-market-meta" class="card-subtitle"></div>
+          </div>
+          <div class="control-group" role="group" aria-label="Chart X-axis time length">
+            <button id="tf-seconds" class="btn btn-sm">Seconds</button>
+            <button id="tf-minutes" class="btn btn-sm active-toggle">Minutes</button>
+            <button id="tf-hours" class="btn btn-sm">Hours</button>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="price-chart-canvas" class="chart-canvas"></canvas>
+          <div id="price-chart-tooltip" class="chart-tooltip"></div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+          <span>X-Axis: Timestamp (Seconds / Minutes / Hours) · Y-Axis: Contract Price ($0.00–$1.00)</span>
+          <span>Markers indicate &ge; $0.10 swings with verified catalyst source links below</span>
+        </div>
+        <div id="chart-catalysts" class="catalyst-list"></div>
+      </div>
 
-        <!-- Executive Summary Banner -->
-        <section class="exec-banner">
-            <div class="exec-banner-text">
-                <h3>📋 Kalshi Trade API v2 Architecture & Verified Specifications</h3>
-                <p>
-                    Tracks highest-dollar live events across <strong>Gas Prices, Elections, Culture, Crypto, and Golf</strong>.
-                    CFTC-regulated Designated Contract Market binary structure ($0.01–$0.99 resolving to $1.00 YES / $0.00 NO).
-                    Connected to verified endpoints: <code>demo-api.kalshi.co/trade-api/v2</code> &amp; <code>wss://demo-api.kalshi.co/trade-api/ws/v2</code>.
-                </p>
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Current Orderbook Liquidity</h2>
+            <p class="card-subtitle">Contracts available at each price level (click any price to pre-fill order).</p>
+          </div>
+        </div>
+        <div id="orderbook-container"></div>
+        <div class="notice warn" style="margin-top:12px;margin-bottom:0;font-size:11.5px;">
+          <strong>Verified Kalshi API Note (<a href="pages/flagged-for-review.html">IR-03</a>):</strong>
+          Market <code>liquidity_dollars</code> fields are deprecated (return 0); live liquidity must come from
+          <code>GET /markets/{ticker}/orderbook</code>.
+        </div>
+      </div>
+    </section>
+
+    <!-- Trade Ticket + Automated Strategy Engine -->
+    <section id="trade-ticket-card" class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Execute Demo Trade Ticket</h2>
+            <p class="card-subtitle">Simulate order execution, categorize trade setup, and track resolution in Demo Portfolio.</p>
+          </div>
+          <a href="https://demo.kalshi.co/" target="_blank" rel="noopener" class="btn btn-sm">Open demo.kalshi.co ↗</a>
+        </div>
+        <form id="trade-ticket-form">
+          <div class="form-grid">
+            <div class="form-field" style="grid-column: span 2;">
+              <label for="trade-ticker">Verified Contract Event</label>
+              <select id="trade-ticker"></select>
             </div>
-            <div class="btn-group-sm">
-                <a href="EXECUTIVE_SUMMARY.md" target="_blank" class="btn btn-primary">Read Exec Summary</a>
-                <a href="https://trading-api.kalshi.com/trade-api/v2/documentation" target="_blank" rel="noopener noreferrer" class="btn">Official API Docs</a>
+            <div class="form-field">
+              <label for="trade-side">Side</label>
+              <select id="trade-side">
+                <option value="YES">Buy YES ($1.00 if YES)</option>
+                <option value="NO">Buy NO ($1.00 if NO)</option>
+              </select>
             </div>
-        </section>
-
-        <!-- Portfolio Metrics Ribbon -->
-        <section class="metrics-ribbon">
-            <div class="metric-card">
-                <div class="metric-label">Demo Cash Balance</div>
-                <div class="metric-val" id="portCash">$10,000.00</div>
-                <div class="metric-sub">Kalshi Sandbox Funds</div>
+            <div class="form-field">
+              <label for="trade-price">Limit Price ($)</label>
+              <input id="trade-price" type="number" step="0.01" min="0.01" max="0.99" value="0.50" required />
             </div>
-            <div class="metric-card">
-                <div class="metric-label">Total Portfolio Equity</div>
-                <div class="metric-val txt-blue" id="portEquity">$10,248.00</div>
-                <div class="metric-sub">Cash + Open Market Value</div>
+            <div class="form-field">
+              <label for="trade-contracts">Contracts</label>
+              <input id="trade-contracts" type="number" step="1" min="1" max="5000" value="50" required />
             </div>
-            <div class="metric-card">
-                <div class="metric-label">Total Return / P&amp;L</div>
-                <div class="metric-val txt-green" id="portTotalPnl">+$248.00 (+2.48%)</div>
-                <div class="metric-sub">Realized + Unrealized</div>
+            <div class="form-field">
+              <label for="trade-category">Trade Category Tag</label>
+              <select id="trade-category">
+                <option value="High-ROI Selective">High-ROI Selective</option>
+                <option value="Mean-Reversion">Mean-Reversion</option>
+                <option value="Momentum">Momentum</option>
+                <option value="Liquidity Imbalance">Liquidity Imbalance</option>
+                <option value="Catalyst News">Catalyst News</option>
+              </select>
             </div>
-            <div class="metric-card">
-                <div class="metric-label">Win Rate %</div>
-                <div class="metric-val" id="portWinRate">75.0% (3/4)</div>
-                <div class="metric-sub">Closed Trades Ratio</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Sharpe Ratio</div>
-                <div class="metric-val txt-purple" id="portSharpe">1.84</div>
-                <div class="metric-sub">Risk-Adjusted Alpha</div>
-            </div>
-        </section>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <button type="submit" class="btn btn-primary">Submit Demo Trade</button>
+            <div id="trade-feedback" style="font-size:12.5px;"></div>
+          </div>
+        </form>
+      </div>
 
-        <!-- Main Dashboard Grid: Live Chart + Dual Scrolling Alert Feeds -->
-        <section class="dashboard-grid">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Automated Simulated Strategies</h2>
+            <p class="card-subtitle">Enabled bots automatically execute Demo trades whenever a &ge; $0.10 swing hits.</p>
+          </div>
+          <a href="pages/portfolio-strategies.html" class="btn btn-sm">Build Custom Strategy →</a>
+        </div>
+        <div id="auto-strategy-toggles" class="strategy-toggles"></div>
+        <div id="auto-exec-log" style="margin-top:10px;max-height:90px;overflow-y:auto;background:var(--bg-card);border-radius:6px;padding:8px 10px;border:1px solid var(--border-soft);">
+          <div class="card-subtitle">Automated execution log will appear here when a &ge; $0.10 swing triggers an active strategy.</div>
+        </div>
+      </div>
+    </section>
 
-            <!-- Left Column: Interactive Multi-Timeframe Chart & Liquidity Order Book -->
-            <div class="card-panel">
-                <div class="panel-header">
-                    <div class="panel-title">
-                        <span>📈 Live Contract Price Action &amp; Jump Catalyst Pins</span>
-                    </div>
-                    <div class="panel-controls">
-                        <!-- Contract Dropdown -->
-                        <select class="contract-select" id="contractSelect">
-                            <!-- Populated dynamically by app.js -->
-                        </select>
-
-                        <!-- Timeframe Selector -->
-                        <div class="timeframe-selector">
-                            <button class="tf-btn" data-tf="seconds" onclick="window.tradebotApp.setTimeframe('seconds')">1s Ticks</button>
-                            <button class="tf-btn active" data-tf="minutes" onclick="window.tradebotApp.setTimeframe('minutes')">1m Min</button>
-                            <button class="tf-btn" data-tf="hours" onclick="window.tradebotApp.setTimeframe('hours')">1h Hours</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Canvas Chart -->
-                <div class="chart-container">
-                    <canvas id="liveChartCanvas" class="chart-canvas"></canvas>
-                </div>
-
-                <!-- Order Book Depth Ladder -->
-                <div class="orderbook-wrapper" id="orderBookContainer">
-                    <!-- Populated dynamically by chart.js -->
-                </div>
-            </div>
-
-            <!-- Right Column: Dual Scrolling Alert Chat Feeds -->
-            <div class="card-panel">
-                <div class="panel-header">
-                    <div class="panel-title">
-                        <span>⚡ Real-Time Price Swing Alert Feeds</span>
-                    </div>
-                    <div class="panel-controls">
-                        <span class="status-badge status-active">Active Monitoring</span>
-                    </div>
-                </div>
-
-                <div class="dual-chat-container">
-                    <!-- Chat 1: All Events (>= $0.10) -->
-                    <div class="chat-column">
-                        <div class="chat-col-header">
-                            <span class="chat-col-title">📢 All Swings (&ge;$0.10)</span>
-                            <button class="btn-xs" id="pauseAllFeedBtn">⏸ Pause</button>
-                        </div>
-                        <div class="chat-scroll-area" id="allAlertsFeed">
-                            <!-- Ingested dynamically by alerts.js -->
-                        </div>
-                    </div>
-
-                    <!-- Chat 2: Selective High-ROI Filter -->
-                    <div class="chat-column">
-                        <div class="chat-col-header">
-                            <span class="chat-col-title">💎 Model High-ROI Filter</span>
-                            <button class="btn-xs" id="pauseRoiFeedBtn">⏸ Pause</button>
-                        </div>
-                        <div class="chat-scroll-area" id="highRoiAlertsFeed">
-                            <!-- Ingested dynamically by alerts.js -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- Simulated Trading Execution & Strategy Console -->
-        <section class="card-panel" style="margin-bottom: 24px;">
-            <div class="panel-header">
-                <div class="panel-title">
-                    <span>🎮 Simulated Demo Trade Execution &amp; Position Tracking</span>
-                </div>
-                <div class="panel-controls">
-                    <a href="strategies.html" class="btn btn-xs btn-primary">Open Full Strategy Lab</a>
-                </div>
-            </div>
-            <div style="padding: 16px;">
-                <div class="trade-card">
-                    <strong style="font-size: 13px;">Execute Simulated Order against Demo Order Book:</strong>
-                    <div class="trade-form-row">
-                        <label style="font-size: 12px; color: var(--text-secondary);">Contract:</label>
-                        <select class="input-ctrl" id="tradeTicker">
-                            <option value="BTC-25Q1-110K">BTC-25Q1-110K (Crypto)</option>
-                            <option value="GAS-25Q1-3.25">GAS-25Q1-3.25 (Gas Prices)</option>
-                            <option value="VA-GOV-25">VA-GOV-25 (Elections)</option>
-                            <option value="OSCAR-BESTPIC-25">OSCAR-BESTPIC-25 (Culture)</option>
-                            <option value="MASTERS-25-SCHEFFLER">MASTERS-25-SCHEFFLER (Golf)</option>
-                        </select>
-
-                        <label style="font-size: 12px; color: var(--text-secondary);">Direction:</label>
-                        <select class="input-ctrl" id="tradeDirection">
-                            <option value="YES">BUY YES</option>
-                            <option value="NO">BUY NO</option>
-                        </select>
-
-                        <label style="font-size: 12px; color: var(--text-secondary);">Contracts (Lots):</label>
-                        <input type="number" class="input-ctrl" id="tradeQty" value="100" min="10" max="5000" step="10" style="width: 90px;">
-
-                        <button class="btn btn-success" id="executeTradeBtn">Submit Simulated Order</button>
-                    </div>
-                </div>
-
-                <!-- Open Positions Table -->
-                <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-secondary);">CURRENT OPEN DEMO POSITIONS</h4>
-                <div class="table-responsive" style="margin-bottom: 16px;">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Ticker</th>
-                                <th>Topic</th>
-                                <th>Side</th>
-                                <th>Quantity</th>
-                                <th>Avg Entry</th>
-                                <th>Mark Price</th>
-                                <th>Unrealized P&amp;L</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="positionsTableBody">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Recent Closed Trades -->
-                <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-secondary);">RECENT CLOSED TRADES &amp; RESOLUTIONS</h4>
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Ticker</th>
-                                <th>Topic</th>
-                                <th>Side</th>
-                                <th>Quantity</th>
-                                <th>Entry ➔ Exit</th>
-                                <th>Realized P&amp;L</th>
-                                <th>Outcome / Exit Reason</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tradesTableBody">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- Master Table: Highest Dollar Amount Live Events on Kalshi (5 Topics) -->
-        <section>
-            <div class="section-header">
-                <div class="section-title">
-                    <span>🏆 Highest Dollar Amount Live Events (Gas Prices, Elections, Culture, Crypto, Golf)</span>
-                </div>
-                <div>
-                    <span style="font-size: 12px; color: var(--text-secondary);">Line-by-line verified with official source links</span>
-                </div>
-            </div>
-
-            <div class="table-responsive">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Ticker</th>
-                            <th>Topic</th>
-                            <th>Market Event Title</th>
-                            <th>YES Price</th>
-                            <th>NO Price</th>
-                            <th>24h Change</th>
-                            <th>Total Depth (Bid/Ask)</th>
-                            <th>24h Volume ($)</th>
-                            <th>Resolution Status</th>
-                            <th>Target Date</th>
-                            <th>Verified Official Source</th>
-                        </tr>
-                    </thead>
-                    <tbody id="eventsTableBody">
-                        <!-- Populated dynamically by app.js -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Suggestions Panel: Making Site More Live and Interactive -->
-        <section style="margin-top: 10px;">
-            <div class="section-header">
-                <div class="section-title">
-                    <span>💡 Architectural Suggestions to Maximize Real-Time Interactivity</span>
-                </div>
-            </div>
-
-            <div class="suggestions-grid">
-                <div class="suggestion-card">
-                    <div class="sugg-icon">⚡</div>
-                    <div class="sugg-title">Direct WebSocket Level 2 Order Book Feed</div>
-                    <div class="sugg-desc">
-                        Connect browser WebSocket clients directly to <code>wss://demo-api.kalshi.co/trade-api/ws/v2</code> subscribing to the <code>orderbook_delta</code> channel for sub-millisecond liquidity ladder visual updates.
-                    </div>
-                </div>
-                <div class="suggestion-card">
-                    <div class="sugg-icon">📰</div>
-                    <div class="sugg-title">News Catalyst Link Overlay on Spikes</div>
-                    <div class="sugg-desc">
-                        Every price movement &ge; $0.10 is automatically tagged with verified news catalysts and regulatory filings. Traders can click jump pins directly on the chart to read the breaking news.
-                    </div>
-                </div>
-                <div class="suggestion-card">
-                    <div class="sugg-icon">🔔</div>
-                    <div class="sugg-title">Audio &amp; Browser Push Notification Engine</div>
-                    <div class="sugg-desc">
-                        Web Audio synthesizer generates distinctive frequency tones for upward surges (880 Hz) and rapid dumps (440 Hz). Web Notification API triggers desktop alerts when high-ROI events dislocate.
-                    </div>
-                </div>
-                <div class="suggestion-card">
-                    <div class="sugg-icon">🎯</div>
-                    <div class="sugg-title">1-Click Order Execution from Depth Ladder</div>
-                    <div class="sugg-desc">
-                        Enable point-and-click execution directly on order book price bars, instantly routing simulated demo orders to capture transient spreads before mean reversion.
-                    </div>
-                </div>
-                <div class="suggestion-card">
-                    <div class="sugg-icon">📊</div>
-                    <div class="sugg-title">Dynamic Timeframe Interpolation (Sec/Min/Hr)</div>
-                    <div class="sugg-desc">
-                        Traders seamlessly toggle between microsecond high-frequency tick views to observe order sweeps, and multi-hour macro views to assess resolution probability convergence.
-                    </div>
-                </div>
-                <div class="suggestion-card">
-                    <div class="sugg-icon">🤖</div>
-                    <div class="sugg-title">Automated Quantitative Strategy Backtesting</div>
-                    <div class="sugg-desc">
-                        Traders can customize slippage tolerance, stop-loss and profit-target parameters, executing forward paper trading against historical Kalshi market states.
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer-main">
+    <!-- Highest Dollar Volume Events by Separated Topic -->
+    <section class="card">
+      <div class="card-header">
         <div>
-            <strong>Kalshi Tradebot2</strong> | Regulated DCM Market Architecture &amp; Demo Sandbox Engine
+          <h2 class="card-title">Highest Dollar Volume Events — Organized Separately by Topic</h2>
+          <p class="card-subtitle">
+            Strictly 5 topics only (Gas Prices, Elections, Culture, Crypto, Golf). Every row links directly to official Kalshi pages;
+            unconfirmed volumes are left blank and linked to <a href="pages/flagged-for-review.html">Flagged for Review</a>.
+          </p>
         </div>
-        <div class="footer-links">
-            <a href="https://kalshi.com/regulatory/rulebook" target="_blank" rel="noopener noreferrer">Kalshi Rulebook</a>
-            <a href="https://www.cftc.gov/filings/contractlistings/kalshiexchange" target="_blank" rel="noopener noreferrer">CFTC Listing Notice</a>
-            <a href="https://trading-api.kalshi.com/trade-api/v2/documentation" target="_blank" rel="noopener noreferrer">API Documentation</a>
-            <a href="review.html">Flagged for Review Page</a>
-        </div>
-    </footer>
+      </div>
+      <div class="topic-tabs" role="tablist" aria-label="Filter by topic">
+        <button class="topic-tab active" data-topic="all">All 5 Topics (Separated)</button>
+        <button class="topic-tab" data-topic="gas-prices">Gas Prices</button>
+        <button class="topic-tab" data-topic="elections">Elections</button>
+        <button class="topic-tab" data-topic="culture">Culture</button>
+        <button class="topic-tab" data-topic="crypto">Crypto</button>
+        <button class="topic-tab" data-topic="golf">Golf</button>
+      </div>
+      <div id="topics-table-container"></div>
+    </section>
 
-    <!-- Scripts -->
-    <script src="js/data.js"></script>
-    <script src="js/chart.js"></script>
-    <script src="js/alerts.js"></script>
-    <script src="js/trading.js"></script>
-    <script src="js/app.js"></script>
+    <!-- Preserved Parallel Session Companion Views -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Integrated Parallel Session Companion Views</h2>
+          <p class="card-subtitle">Preserved non-destructively from prior merged sessions alongside the unified dashboard above.</p>
+        </div>
+      </div>
+      <div class="control-group">
+        <a href="docs/index.html" class="btn btn-sm">Companion Docs Portal (`docs/index.html`) →</a>
+        <a href="strategies.html" class="btn btn-sm">Companion Strategy Console (`strategies.html`) →</a>
+        <a href="review.html" class="btn btn-sm">Companion Review Audit (`review.html`) →</a>
+        <a href="docs/flagged.html" class="btn btn-sm">Companion Flagged Log (`docs/flagged.html`) →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="assets/js/app-core.js"></script>
+  <script src="assets/js/dashboard.js"></script>
 </body>
 </html>
