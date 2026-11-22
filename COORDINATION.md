@@ -95,3 +95,11 @@ Branch-name note: the runtime fixes this session to ONE branch, `arena/9a725a07-
   - `.github/workflows/pages.yml`: main's workflow kept (name, triggers, concurrency group, Pages deploy); collect/check/assemble steps added. `docs/` is published at the root and `site/` at `/monitor/`, in one artifact.
   - `docs/index.html`: broken link `EXECUTIVE_SUMMARY.md` → `executive-summary.md` (published file). Found by `check_site.py --links-only-root`.
 - Verification on GitHub Actions (branch dispatch, deploy skipped by design): build job succeeded; steps "Collect public Kalshi data", "Check site", "Upload Pages artifact" all succeeded.
+
+### Integration status — arena-9a725a07 (pre-merge)
+
+- PR: opened from `arena/9a725a07-tradebot2` to `main` (see PR link recorded in the merge step below).
+- Build on the final commit (GitHub Actions run 44997229347): build success, deploy skipped on branch by design.
+- Pages source: still `legacy` (`main` `/`). The integration token cannot change it (HTTP 403). Manual step needed: Settings → Pages → Source → GitHub Actions. Until then the artifact deploy runs but the live URL keeps the legacy build.
+- Open PR #4 (`arena/b6135c8d-tradebot2`) overlaps this scope (`pages.yml`, `README.md`, `COORDINATION.md`, `index.html`). Not merged over. Second-merging PR must integrate the other's pipeline.
+- Node 20 deprecation notice on GitHub Actions (`actions/checkout@v4`, `actions/setup-python@v5`, `actions/cache@v4`, `actions/upload-pages-artifact@v3`, `actions/configure-pages@v5`). Upgrade pending.
