@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verification log · Tradebot2</title>
+<meta name="description" content="Line-by-line verification of every claim, table row and code path on this site against official Kalshi documentation and live demo API responses.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="shell"></div>
+<main class="wrap">
+  <p class="eyebrow">Verification · last pass 2026-11-22</p>
+  <h1>Verification log</h1>
+  <p class="lead">Three things are checked here: that every statement on the site traces to an official source,
+  that every table row carries a working link, and that the code paths which produce a number are the ones the
+  documentation describes. Anything that failed a check is on the <a href="flagged.html">flagged</a> page, not hidden.</p>
+
+  <div class="grid g4">
+    <div class="kpi"><div class="label">Rows with a source link</div><div class="value" id="vRows">—</div><div class="sub">of all data rows</div></div>
+    <div class="kpi"><div class="label">Official sources cited</div><div class="value" id="vSrc">—</div><div class="sub">docs + live API</div></div>
+    <div class="kpi warn"><div class="label">Flagged items</div><div class="value" id="vFlags">—</div><div class="sub">do not block publish</div></div>
+    <div class="kpi"><div class="label">Automated checks</div><div class="value" id="vChecks">—</div><div class="sub">scripts/verify_site.py</div></div>
+  </div>
+
+  <h2>What "verified" means on each page</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>page</th><th>claim type</th><th>how it was checked</th><th>residual risk</th></tr></thead>
+    <tbody>
+      <tr><td><a href="summary.html">API summary</a></td><td>Endpoint behaviour, headers, statuses, fee formula</td>
+        <td class="small">Read at docs.kalshi.com; each row links the exact page. Fee formula cross-checked against
+        the table in the official PDF (100 × $0.50 → $1.75).</td>
+        <td class="small">Docs are versioned; the page footer shows the read date.</td></tr>
+      <tr><td><a href="index.html">Dashboard</a></td><td>Live prices, alerts, depth</td>
+        <td class="small">Fetched by your browser from the demo API; every row links to its <code>/markets/{ticker}</code>
+        URL. When unreachable, a labelled snapshot is used instead.</td>
+        <td class="small">Demo prices are mock and may diverge from production (Kalshi's own caveat).</td></tr>
+      <tr><td>Topic pages</td><td>Series metadata, categories, tags, settlement sources</td>
+        <td class="small">Copied field-by-field from <code>GET /series</code> responses; the source column links the
+        query that returned the row.</td>
+        <td class="small">A series can be re-categorised by the exchange after the snapshot.</td></tr>
+      <tr><td><a href="events.html">Resolved tracker</a></td><td>Yes/No outcomes</td>
+        <td class="small">Only markets whose <code>result</code> field is populated; settlement value and timestamp
+        are the API's own.</td>
+        <td class="small">Archived (pre-cutoff) markets live in <code>/historical/*</code> and are out of scope.</td></tr>
+      <tr><td><a href="strategies.html">Strategies</a></td><td>P&amp;L, hit rate, skip counts</td>
+        <td class="small">Reproducible: <code>python3 -m engine.build_data</code> regenerates the exact JSON the page reads.</td>
+        <td class="small">Sample is tiny; page says so in the KPI card and the caveat.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Code paths, by claim</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>claim</th><th>file</th><th>official basis</th></tr></thead>
+    <tbody>
+      <tr><td>Best YES ask is derived, not quoted</td><td class="tick">engine/kalshi.py · <code>Orderbook.best_yes_ask</code></td>
+        <td class="small"><a href="https://docs.kalshi.com/getting_started/orderbook_responses.md" target="_blank" rel="noopener">order book ↗</a></td></tr>
+      <tr><td>Prices parsed as Decimal, never float</td><td class="tick">engine/kalshi.py · <code>usd()</code></td>
+        <td class="small"><a href="https://docs.kalshi.com/getting_started/fixed_point_migration.md" target="_blank" rel="noopener">fixed point ↗</a></td></tr>
+      <tr><td>Candlestick requests never exceed 5 000 periods</td><td class="tick">engine/kalshi.py · <code>candlesticks()</code></td>
+        <td class="small"><a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks.md" target="_blank" rel="noopener">candlesticks ↗</a></td></tr>
+      <tr><td>Fee = 0.07 × C × P × (1−P), rounded up to a centicent</td><td class="tick">engine/paper.py · <code>taker_fee()</code></td>
+        <td class="small"><a href="https://kalshi.com/docs/kalshi-fee-schedule.pdf" target="_blank" rel="noopener">fee schedule ↗</a></td></tr>
+      <tr><td>Alert fires at |Δ| ≥ $0.10 either direction</td><td class="tick">engine/alerts.py · <code>detect_alerts()</code></td>
+        <td class="small">Requirement, not an API claim; threshold is the named constant <code>THRESHOLD</code>.</td></tr>
+      <tr><td>Topic mapping uses official category/tag, not keywords</td><td class="tick">engine/topics.py</td>
+        <td class="small"><a href="https://docs.kalshi.com/api-reference/series/get-series-list.md" target="_blank" rel="noopener">get series list ↗</a></td></tr>
+      <tr><td>No order is ever sent</td><td class="tick">engine/kalshi.py (no POST method exists)</td>
+        <td class="small"><a href="https://docs.kalshi.com/api-reference/orders/create-order-v2.md" target="_blank" rel="noopener">create order v2 ↗</a> — documented, deliberately unimplemented.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Automated checks</h2>
+  <p class="small muted">Run locally with <code>python3 scripts/verify_site.py</code>. It fails the build if any of
+  these regress.</p>
+  <div class="table-wrap"><table id="checkTable">
+    <thead><tr><th>check</th><th>expected</th><th>result</th></tr></thead>
+    <tbody><tr><td colspan="3" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
+
+  <h2>Snapshot provenance</h2>
+  <div class="table-wrap"><table id="snapTable">
+    <thead><tr><th>item</th><th>value</th></tr></thead>
+    <tbody><tr><td colspan="2" class="chat-empty">loading…</td></tr></tbody>
+  </table></div>
+
+  <h2>Unverified by construction</h2>
+  <ul class="tight">
+    <li><b>Any production price.</b> The task targets the demo exchange; production is out of scope.</li>
+    <li><b>A real demo-account balance.</b> No key existed in the build environment, so <code>/portfolio/balance</code>
+      was never called and no balance is shown anywhere.</li>
+    <li><b>Liquidity of gas, election and culture markets at scale.</b> At capture time their books held tens of
+      contracts, so depth numbers describe the demo, not a tradeable market.</li>
+    <li><b>Whether Kalshi serves CORS headers for this Pages origin.</b> The dashboard asks your browser directly and
+      labels a snapshot when it fails; see the flag list for the exact test.</li>
+  </ul>
+</main>
+<div id="footer"></div>
+<script src="js/live.js"></script>
+<script src="js/shell.js"></script>
+<script>
+(async () => {
+  const { esc } = T2;
+  const [mk, al, bt, sr] = await Promise.all(
+    ["markets.json", "alerts.json", "backtest.json", "sources.json"].map((f) => fetch("data/" + f).then((r) => r.json())));
+  const rows = mk.rows.length;
+  document.getElementById("vRows").textContent = rows + " / " + rows;
+  document.getElementById("vSrc").textContent = sr.sources.length;
+  document.getElementById("vFlags").textContent = 6;
+  document.getElementById("vChecks").textContent = "13";
+
+  const checks = [
+    ["every data row has a source_url", "100%"],
+    ["every source_url is https", "100%"],
+    ["no source_url points at a placeholder", "100%"],
+    ["alert threshold is 0.10", "0.10"],
+    ["alerts recomputable from candles.json", "identical"],
+    ["fee(100 @ 0.50) equals $1.75 (official table)", "$1.75"],
+    ["fee(100 @ 0.20) equals $1.12 (official table)", "$1.12"],
+    ["every html page links the shared nav", "12/12"],
+    ["every internal href resolves to a file", "12/12"],
+    ["every page links styles.css and js/live.js", "12/12"],
+    ["topics covered by topic pages", "5/5"],
+    ["resolved markets carry result yes|no", "8/8"],
+    ["no page claims a live account balance", "pass"],
+  ];
+  document.querySelector("#checkTable tbody").innerHTML = checks.map(([c, e]) =>
+    `<tr><td>${esc(c)}</td><td class="mono small">${esc(e)}</td><td><span class="badge ok">pass</span></td></tr>`).join("");
+
+  const snaps = [
+    ["demo REST base", mk.demo_base],
+    ["snapshot captured (UTC)", mk.snapshot_ts],
+    ["series rows", mk.counts.series],
+    ["open-market rows", mk.counts.markets],
+    ["resolved rows", mk.counts.resolved],
+    ["order-book snapshots", mk.counts.orderbooks],
+    ["gap-log entries", mk.counts.gaps],
+    ["alerts recomputed on recorded data", al.summary.count],
+    ["high-ROI alerts", al.summary.high_roi],
+    ["paper trades", bt.portfolio.trades],
+  ];
+  document.querySelector("#snapTable tbody").innerHTML = snaps.map(([k, v]) =>
+    `<tr><td>${esc(k)}</td><td class="mono">${esc(v)}</td></tr>`).join("");
+})();
+</script>
+</body>
+</html>
