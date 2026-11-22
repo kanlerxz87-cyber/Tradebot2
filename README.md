@@ -154,6 +154,12 @@ cross-file change is requested here: add `kalshi-demo/` to the "Assemble Pages
 artifact" step so the sub-site publishes at `/kalshi-demo/`. See the flagged page
 for every unverified item (F1–F12) in this sub-site.
 
+**Note on main's own pipeline:** `pages.yml` has been failing on `main` since the
+PR #18 merge (2026-11-22 07:32 UTC; run 44998691839). That is main's problem, not
+this sub-site's — the Pages status API currently reports `built` (legacy, `main`/`/`,
+https enforced), and the published root site + /monitor/ + /dash/ live on their own
+owned pipelines. Do not merge the sub-site into `main` until this is stable.
+
 ## Parallel sessions, preserved
 
 Other sessions' pages are kept and linked, never deleted. Their own documented limits still
