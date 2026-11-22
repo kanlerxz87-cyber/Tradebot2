@@ -179,3 +179,30 @@ timestamps years after close on some markets.
   Per the pre-existing irregularity recorded above, the live URL currently keeps the legacy build;
   switching Pages to GitHub Actions source is a manual repo-settings step owned by the integration
   session (HTTP 403 from this token), unchanged by this PR.
+
+---
+
+## Session `arena-c4713a7f` — branch `arena/c4713a7f-tradebot2` (2026-11-22)
+
+**Task board entry — claimed at session start (pushed before any other work, per convention).**
+
+| Task ID | Task | Status | Owner | File scope |
+|---|---|---|---|---|
+| `C1-coordination` | This claim + close-out log | `in progress` | `arena-c4713a7f` | `COORDINATION.md` (own section only) |
+| `C2-live-desk-site` | Single live desk: real Kalshi demo API data, WS/REST live transport, ≥ $0.10 dual alert chats, time×price charts with selectable windows, order-book depth, resolution tracking, paper strategies + performance, 5 topics separated | `in progress` | `arena-c4713a7f` | `live/**` (new directory only) |
+| `C3-tooling` | Correct-semantics collector + build gate + browser probe | `in progress` | `arena-c4713a7f` | `scripts/kalshi_live.py`, `scripts/verify_live_site.py`, `scripts/tests/test_kalshi_live.py` |
+| `C4-publish` | Publish `/live/` in the single Pages artifact + a workflow that refreshes the snapshot | `in progress` | `arena-c4713a7f` | `.github/workflows/live.yml`; **one line** in `.github/workflows/pages.yml` (`cp -r live/. _site/live/`), logged below |
+| `C5-review` | Line-by-line repo review + irregularities register + executive summary + interactivity suggestions | `in progress` | `arena-c4713a7f` | `live/repo-review.html`, `live/flagged.html`, `live/summary.html`, `live/suggestions.html` |
+
+**Non-overlap statement:** this session does **not** edit `docs/`, `dash/`, `site/`, `css/`, `js/`, `tools/`, `data/`, `index.html`, or the root companion `.html` pages. It adds a new `live/` directory, new `scripts/kalshi_live*` files, one new workflow, and one additive line in `pages.yml`.
+
+**Reason for a new page rather than editing existing ones:** four separate dashboards already publish in this repo (`/` from `docs/`, `/monitor/` from `site/`, `/dash/` from `dash/`, plus open PRs #6, #10, #14 with more). Their data models disagree and at least one publishes non-API mock data (flagged as `R-C1` below). Consolidating them is the integration session's call; this session ships one page whose every number is traceable to a live official endpoint, and registers the conflicts instead of overwriting other sessions' files.
+
+### Cross-file change log (per convention)
+- `.github/workflows/pages.yml` — appended `cp -r live/. _site/live/` to the "Assemble Pages artifact" step only. No other line touched.
+
+### Irregularities found so far (details on `/live/flagged.html`, IDs `R-C*`)
+- `R-C1` The published root dashboard (`docs/index.html` → `/`) renders tickers that do not exist on Kalshi (`GAS-24DEC-3.15`, `PRES-24-DJT`, `SENATE-24-GOP`, …) with a "Demo Cash Balance $9,693.00", "Sharpe Ratio 1.84" and "Win Rate 75% (3/4)". These are hard-coded mock values, not API responses. **Not edited by this session** (owned by earlier sessions); published on the Flagged for Review page.
+- `R-C2` `scripts/kalshi_collector.py` defaults `KALSHI_BASE` to the **production** host while the site is branded a demo tracker, and `.github/workflows/pages.yml` never sets `KALSHI_BASE`. (Already flagged by `arena/0737c6bc`; re-confirmed here at line 32.)
+- `R-C3` The same collector alerts on `last_price_dollars` between 15-minute cron runs, so a "≥ $0.10 sudden swing" is really a change over up to 15 minutes and misses anything that reverts in between. It also emits `0` for years of history, which is why `/monitor/` showed "0 alerts" with 11,673 markets.
+- `R-C4` Kalshi's WebSocket handshake now **requires** authentication (`KALSHI-ACCESS-*` headers), so a static, keyless GitHub Pages site cannot open a real socket. Any page claiming "WS live" without keys is mislabelled. This session measures the handshake and labels the transport truthfully.
