@@ -36,7 +36,9 @@
       <tr><td><a href="data/verify-api.json">data/verify-api.json</a></td>
         <td>HTTP status, CORS headers and body hashes for public REST reads on both demo hosts; preflight result for
           the signed headers; WebSocket handshake outcomes.</td>
-        <td><code>tools/probe_api.py</code> in <a href=".github/workflows/probe-api.yml">probe-api.yml</a></td></tr>
+        <td><code>tools/probe_api.py</code>, run by the <code>probe-api</code> GitHub Actions workflow
+          (<a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/probe-api.yml"
+             target="_blank" rel="noopener">run history ↗</a>)</td></tr>
       <tr><td><a href="data/meta.json">data/meta.json</a></td>
         <td>Collection timestamp, host, request count, per-topic matching rules and series lists.</td>
         <td><code>collector/collect.py</code></td></tr>

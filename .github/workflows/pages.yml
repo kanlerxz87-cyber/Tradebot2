@@ -1,8 +1,11 @@
 # Single Pages pipeline for this repo. Only one Pages deployment can exist, so this file
 # builds the whole published site in one artifact:
-#   /            <- docs/            (existing Kalshi Demo Dashboard, unchanged)
-#   /monitor/    <- site/            (live monitor: alerts, topic pages, charts, trades)
-# Collected data (site/data) is generated at build time and never committed.
+#   /            <- repo root: the source-linked dashboard (index.html, topics/, performance,
+#                   resolutions, requirements, sources, flagged) plus every earlier page
+#                   (gas-prices.html, elections.html, ..., docs/, EXECUTIVE_SUMMARY.md)
+#   /monitor/    <- site/            (the parallel session's live monitor)
+# `docs/` is published at /docs/ so the earlier dashboard is still reachable, and its own
+# index is linked from the root page. Collected data (site/data) is generated at build time.
 name: Deploy Kalshi Demo Dashboard to GitHub Pages
 
 on:
@@ -47,16 +50,30 @@ jobs:
       - name: Check monitor site (links, sourced rows, data source fields)
         run: python3 scripts/check_site.py
 
-      - name: Assemble Pages artifact (docs at root, monitor at /monitor/)
+      - name: Assemble Pages artifact (root dashboard + earlier pages + /monitor)
         run: |
           rm -rf _site
-          mkdir -p _site/monitor
-          cp -r docs/. _site/
+          mkdir -p _site/monitor _site/docs
+          # Root: this branch's source-linked dashboard and every earlier root page.
+          # tar (not rsync) because rsync is not guaranteed on the runner image.
+          tar -cf - --exclude='./.git' --exclude='./_site' --exclude='./site' \
+                   --exclude='./.github' --exclude='*/__pycache__' --exclude='./state' \
+                   --exclude='./collector' --exclude='./tests' --exclude='./tools' \
+                   --exclude='./scripts' --exclude='./requirements.txt' --exclude='./.gitignore' \
+                   . | tar -xf - -C _site/
+          # Earlier dashboard (kept verbatim) at /docs/
+          cp -r docs/. _site/docs/
+          # Parallel session's monitor at /monitor/
           cp -r site/. _site/monitor/
-          ls -la _site _site/monitor | head -60
+          ls -la _site | head -40
 
       - name: Check assembled site links
         run: SITE_DIR=_site/monitor python3 scripts/check_site.py --links-only-root _site
+
+      - name: Check the root dashboard (links, required pages, data integrity)
+        run: |
+          python3 tools/check_site.py --root _site --strict
+          python3 tools/verify_data.py --data-dir _site/data
 
       - name: Save collector state
         if: success()

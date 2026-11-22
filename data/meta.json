@@ -1,48 +1,146 @@
 {
-  "awaiting_first_live_run": true,
-  "collected_at": null,
+  "api_requests": 0,
+  "collected_at": "2026-11-22T07:17:34Z",
+  "duration_seconds": 820.0,
   "environment": "demo",
   "host": "https://external-api.demo.kalshi.co/trade-api/v2",
-  "note": "No live cycle has been committed yet. The collector runs in GitHub Actions (.github/workflows/collect.yml); this file is replaced on its first run. Until then the site shows empty tables rather than sample data.",
+  "run_log": {
+    "open_events": 0,
+    "orderbooks_captured": 0,
+    "series_seen": 0,
+    "started_at": "2026-11-22T07:03:54Z",
+    "topic_counts": {
+      "crypto": {
+        "kept": 0,
+        "open_markets": 0
+      },
+      "culture": {
+        "kept": 0,
+        "open_markets": 0
+      },
+      "elections": {
+        "kept": 0,
+        "open_markets": 0
+      },
+      "gas": {
+        "kept": 0,
+        "open_markets": 0
+      },
+      "golf": {
+        "kept": 0,
+        "open_markets": 0
+      }
+    },
+    "warnings": [
+      "exchange/status failed: GET failed after 4 attempts: /exchange/status (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/exchange/status (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "tags_by_categories failed: GET failed after 4 attempts: /search/tags_by_categories (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/search/tags_by_categories (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series category=Commodities failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?category=Commodities&include_volume=true&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series category=Crypto failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?category=Crypto&include_volume=true&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series category=Culture failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?category=Culture&include_volume=true&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series category=Economics failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?category=Economics&include_volume=true&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series category=Elections failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?category=Elections&include_volume=true&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series category=Entertainment failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?category=Entertainment&include_volume=true&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series category=Financials failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?category=Financials&include_volume=true&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series category=Mentions failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?category=Mentions&include_volume=true&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series category=Politics failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?category=Politics&include_volume=true&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series category=Sports failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?category=Sports&include_volume=true&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Art failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Art&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Awards failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Awards&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=BNB failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=BNB&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=BTC failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=BTC&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Bitcoin failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Bitcoin&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Collectibles failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Collectibles&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Critics Choice Awards failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Critics+Choice+Awards&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Crypto failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Crypto&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=DOGE failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=DOGE&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=ETH failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=ETH&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Election Combos failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Election+Combos&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Ethereum failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Ethereum&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Food failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Food&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Golf failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Golf&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Governor failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Governor&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Grammys failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Grammys&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=HYPE failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=HYPE&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=House failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=House&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=International elections failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=International+elections&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Leadership races failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Leadership+races&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Movies failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Movies&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Music failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Music&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Music charts failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Music+charts&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=NEAR failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=NEAR&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Nomination race failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Nomination+race&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Oil and energy failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Oil+and+energy&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Oscars failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Oscars&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=People failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=People&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Presidential winner failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Presidential+winner&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Primaries failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Primaries&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Reality TV failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Reality+TV&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Referendums failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Referendums&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=SOL failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=SOL&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Senate failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Senate&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Shiba Inu failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Shiba+Inu&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Solana failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Solana&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Television failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Television&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=US Elections failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=US+Elections&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Video games failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Video+games&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=XRP failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=XRP&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=ZEC failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=ZEC&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "series tags=Zcash failed: GET failed after 4 attempts: /series (HTTPSConnectionPool(host='demo-api.kalshi.co', port=443): Max retries exceeded with url: /trade-api/v2/series?tags=Zcash&limit=200 (Caused by SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:992)'))))",
+      "topic gas: no series matched the official rules",
+      "topic elections: no series matched the official rules",
+      "topic culture: no series matched the official rules",
+      "topic crypto: no series matched the official rules",
+      "topic golf: no series matched the official rules"
+    ]
+  },
+  "tags_by_categories_url": null,
   "topics": [
     {
+      "blurb": "Retail gasoline price contracts. Kalshi's gas series are sourced from AAA (https://gasprices.aaa.com) per each series' settlement sources.",
       "id": "gas",
       "name": "Gas prices",
       "rules": [
-        "series tag \u2208 {Oil & Gas}",
-        "series category \u2208 {Economics | Commodities}, title ~ /gas(oline)?\\s*pric/i"
+        "series tag \u2208 {Oil and energy | Oil & Gas}",
+        "series category \u2208 {Economics | Commodities}, title ~ /gas price|gasoline/i"
       ],
       "series": [],
       "series_matched": 0
     },
     {
+      "blurb": "Election contracts: US and international elections, nominations, and leadership races, matched on Kalshi's official Elections category and tags.",
       "id": "elections",
       "name": "Elections",
       "rules": [
-        "series category \u2208 {Elections}"
+        "series category \u2208 {Elections}",
+        "series tag \u2208 {US Elections | International elections | Presidential winner | Senate | House | Governor | Primaries | Nomination race | Leadership races | Referendums | Mayors & local | Election Combos}"
       ],
       "series": [],
       "series_matched": 0
     },
     {
+      "blurb": "Culture & entertainment contracts: Kalshi category `Culture` plus the `Entertainment` and `Mentions` categories that carry pop-culture markets.",
       "id": "culture",
       "name": "Culture",
       "rules": [
-        "series category \u2208 {Culture | Entertainment | Mentions}"
+        "series category \u2208 {Culture | Entertainment | Mentions}",
+        "series tag \u2208 {Music | Awards | Movies | Television | People | Video games | Oscars | Grammys | Collectibles | Critics Choice Awards | Reality TV | Music charts | Art | Food}"
       ],
       "series": [],
       "series_matched": 0
     },
     {
+      "blurb": "Crypto price and milestone contracts: Kalshi category `Crypto` and its asset tags (BTC, ETH, SOL, XRP, DOGE, ...).",
       "id": "crypto",
       "name": "Crypto",
       "rules": [
-        "series category \u2208 {Crypto}"
+        "series category \u2208 {Crypto}",
+        "series tag \u2208 {BTC | ETH | SOL | XRP | DOGE | BNB | HYPE | ZEC | NEAR | Shiba Inu | Crypto | Bitcoin | Ethereum | Solana | Zcash}"
       ],
       "series": [],
       "series_matched": 0
     },
     {
+      "blurb": "Golf contracts (PGA, DP World Tour, LIV, majors). Kalshi exposes golf as the `Golf` subcategory tag under category `Sports`.",
       "id": "golf",
       "name": "Golf",
       "rules": [
@@ -52,5 +150,5 @@
       "series_matched": 0
     }
   ],
-  "volume_metric_note": "est_volume_24h_dollars = volume_24h_fp (contracts) x last price in dollars; an estimate, not an API field."
+  "volume_metric_note": "est_volume_24h_dollars = volume_24h_fp (contracts, from the API) x last price in dollars. It is an estimate of traded dollars, not a field returned by Kalshi."
 }
