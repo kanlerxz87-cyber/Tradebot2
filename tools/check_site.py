@@ -61,12 +61,88 @@ def _dataset_for(page_html: str) -> str:
     return "\n".join(parts)
 
 
+PUBLISHED_MAP = {
+    # source dir -> path in the deployed artifact
+    "docs/": "docs/",
+    "site/": "monitor/",
+    "dash/": "dash/",
+}
+SKIP_DIRS = {".git", ".github", "collector", "tests", "tools", "scripts", "site", "state",
+             ".venv", "__pycache__"}
+
+
+def build_published(root: str, target: str) -> dict[str, str]:
+    """Recreate exactly what pages.yml uploads, so links are checked as visitors see them."""
+    import shutil
+    if os.path.isdir(target):
+        shutil.rmtree(target)
+    os.makedirs(target)
+    for name in os.listdir(root):
+        src = os.path.join(root, name)
+        if name in SKIP_DIRS or name in {"_site", "requirements.txt", ".gitignore"}:
+            continue
+        dst = os.path.join(target, name)
+        if os.path.isdir(src):
+            shutil.copytree(src, dst)
+        else:
+            shutil.copy2(src, dst)
+    for src_dir, dst_rel in PUBLISHED_MAP.items():
+        src = os.path.join(root, src_dir)
+        if not os.path.isdir(src):
+            continue
+        dst = os.path.join(target, dst_rel)
+        if os.path.isdir(dst):
+            shutil.rmtree(dst)
+        shutil.copytree(src, dst)
+    return PUBLISHED_MAP
+
+
+def check_published(root: str) -> int:
+    """Check every HTML page in the exact tree Pages will serve."""
+    import tempfile
+    target = os.path.join(tempfile.gettempdir(), "tradebot2-published")
+    build_published(root, target)
+    probe = LinkParser()
+    pages = []
+    for base, dirs, files in os.walk(target):
+        dirs[:] = [d for d in dirs if d not in {"__pycache__"}]
+        for name in files:
+            if name.endswith(".html"):
+                pages.append(os.path.join(base, name))
+    errors: list[str] = []
+    for page in pages:
+        probe = LinkParser()
+        probe.feed(open(page, encoding="utf-8", errors="replace").read())
+        for href in probe.links:
+            if href.startswith(("http://", "https://", "mailto:", "#", "javascript:",
+                                "data:", "tel:")):
+                continue
+            target_path = href.split("#")[0].split("?")[0]
+            if not target_path:
+                continue
+            resolved = os.path.normpath(os.path.join(os.path.dirname(page), target_path))
+            if not os.path.exists(resolved):
+                errors.append(f"{os.path.relpath(page, target)}: broken -> {href}")
+    print(f"published tree: {len(pages)} HTML pages under {target}")
+    for e in errors[:40]:
+        print("  -", e)
+    if errors:
+        print(f"FAIL: {len(errors)} broken link(s) in the published tree")
+        return 1
+    print("OK: every link resolves in the tree GitHub Pages actually serves")
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default=".")
+    ap.add_argument("--published", action="store_true",
+                    help="rebuild and check the exact tree pages.yml deploys")
     ap.add_argument("--strict", action="store_true")
     args = ap.parse_args()
     root = os.path.abspath(args.root)
+    if args.published:
+        return check_published(root)
     errors: list[str] = []
     checked = 0
 
@@ -93,6 +169,10 @@ def main() -> int:
             resolved = os.path.normpath(os.path.join(root, base, target))
             checked += 1
             if not os.path.exists(resolved):
+                # /monitor/ is produced by pages.yml (site/ is copied there); it is verified
+                # by --published, which rebuilds the deployed tree.
+                if href.split("#")[0].startswith("monitor/"):
+                    continue
                 errors.append(f"{page}: broken link -> {href}")
             elif "#" in href and href.split("#")[1]:
                 anchor = href.split("#")[1]
