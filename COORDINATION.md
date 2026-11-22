@@ -168,3 +168,14 @@ timestamps years after close on some markets.
 - **Their CI check also passes:** `python3 scripts/check_site.py --links-only-root` on the simulated assembled artifact (docs + monitor + dash) → "OK: no broken internal links".
 - **PR → merge → Pages:** PR #7 merged to `main` at `a7a6284`; Pages workflow `pages.yml` run **44997586908**: build **success**, deploy **success**; live confirmation via page fetch: `https://kanlerxz87-cyber.github.io/Tradebot2/dash/` renders (40 verified markets, 5 topic cards, top-events table with per-row source links); `/dash/alerts/` renders with both chats and live replay-engine output; `/dash/topics/crypto/` renders with verified tables, the candlestick chart, and the orderbook/liquidity sections.
 - **Note:** concurrent sessions kept landing on `main` during T6 (PRs #9, #8, #11); this session re-based and re-integrated on each move without discarding anyone's work; PR #11's "drop duplicate static site" removed only that session's own duplicate files, not `/dash/`.
+
+### PR record — arena/0737c6bc-tradebot2
+
+- PR: https://github.com/kanlerxz87-cyber/Tradebot2/pull/11 (`arena/0737c6bc-tradebot2` → `main`)
+- Merged: 2026-11-22 (merge commit `7074d68a74815a032f13f9d18b6afbe278042f7f`).
+- What it carried: `scripts/simulate.js` (headless Node simulator, paper-default + demo-live opt-in),
+  `data/README.md`, and this session's handoff log. Duplicate static site dropped (kept locally).
+- GitHub Pages: `legacy` source (`main` `/`), build triggered on merge (build status: `building`).
+  Per the pre-existing irregularity recorded above, the live URL currently keeps the legacy build;
+  switching Pages to GitHub Actions source is a manual repo-settings step owned by the integration
+  session (HTTP 403 from this token), unchanged by this PR.
