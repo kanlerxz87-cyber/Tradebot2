@@ -225,6 +225,24 @@ class KalshiClient:
     def get_event(self, event_ticker: str) -> dict[str, Any]:
         return self.request("GET", f"/events/{event_ticker}")
 
+    def get_series_list(
+        self,
+        *,
+        category: str | None = None,
+        tags: str | None = None,
+        limit: int = 200,
+        cursor: str | None = None,
+    ) -> dict[str, Any]:
+        """`GET /series` — the official way to enumerate a category/tag."""
+        params: dict[str, Any] = {"limit": limit}
+        if category:
+            params["category"] = category
+        if tags:
+            params["tags"] = tags
+        if cursor:
+            params["cursor"] = cursor
+        return self.request("GET", "/series", params=params)
+
     def get_series(self, series_ticker: str) -> dict[str, Any]:
         return self.request("GET", f"/series/{series_ticker}")
 
