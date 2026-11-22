@@ -85,3 +85,17 @@ def test_gas_in_rules_only():
 
 def test_category_is_case_insensitive():
     assert topic_of(title="Some coin", category="crypto") == "crypto"
+
+
+def test_discovered_demo_series_tickers():
+    assert topic_of(market_ticker="KXAAAGASM-26NOV30-4.70", series_ticker="KXAAAGASM") == "gas_prices"
+    assert topic_of(market_ticker="KXSENMAJ-27-CSCH", series_ticker="KXSENMAJ") == "elections"
+    assert topic_of(market_ticker="KXPRESPERSON-28-VRAM", series_ticker="KXPRESPERSON") == "elections"
+    assert topic_of(market_ticker="KXOSCARPIC-27-DIG", series_ticker="KXOSCARPIC") == "culture"
+    assert topic_of(market_ticker="KXGTAONLINE-GTA6ONLINE-28", series_ticker="KXGTAONLINE") == "culture"
+    assert topic_of(market_ticker="KXNETFLIXRANKSHOWGLOBAL-26NOV23-THEB", series_ticker="KXNETFLIXRANKSHOWGLOBAL") == "culture"
+    assert topic_of(market_ticker="KXBTCY-27JAN0100-B47500", series_ticker="KXBTCY") == "crypto"
+    assert topic_of(market_ticker="KXBTCMAXY-26DEC31-119999.99", series_ticker="KXBTCMAXY") == "crypto"
+    assert topic_of(market_ticker="KXLPGATOUR-CMEGTC26-YURYOS", series_ticker="KXLPGATOUR") == "golf"
+    assert topic_of(market_ticker="KXPRESCUP-26-USA", series_ticker="KXPRESCUP") == "golf"
+

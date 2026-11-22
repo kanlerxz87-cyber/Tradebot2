@@ -14,7 +14,10 @@ import time
 from typing import Any, Iterable
 from urllib.parse import urlencode
 
-import requests
+try:
+    import requests
+except ImportError:  # pragma: no cover - stdlib fallback
+    requests = None  # type: ignore[assignment]
 
 DEMO_HOSTS = [
     "https://external-api.demo.kalshi.co/trade-api/v2",
@@ -35,15 +38,16 @@ class KalshiClient:
     """Public (unauthenticated) reads with host fallback and polite backoff."""
 
     def __init__(self, env: str = "demo", timeout: int = 25, pause: float = 0.12,
-                 session: requests.Session | None = None,
+                 session: Any = None,
                  max_transport_failures: int = 3) -> None:
         self.env = env
         self.hosts = DEMO_HOSTS if env == "demo" else PROD_HOSTS
         self.host = self.hosts[0]
         self.timeout = timeout
         self.pause = pause
-        self.session = session or requests.Session()
-        self.session.headers.update({"User-Agent": USER_AGENT, "Accept": "application/json"})
+        self.session = session or (requests.Session() if requests is not None else None)
+        if self.session is not None and hasattr(self.session, "headers"):
+            self.session.headers.update({"User-Agent": USER_AGENT, "Accept": "application/json"})
         self.calls: list[dict[str, Any]] = []
         self.transport_failures = 0
         self.max_transport_failures = max_transport_failures

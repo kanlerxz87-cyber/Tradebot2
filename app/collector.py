@@ -20,6 +20,28 @@ from .topics import TOPIC_DESCRIPTIONS, TOPIC_LABELS, classify
 SITE_ORIGIN = "https://kanlerxz87-cyber.github.io"
 MARKET_LIMIT = 1000
 
+KNOWN_TOPIC_SERIES: dict[str, tuple[str, ...]] = {
+    "gas_prices": ("KXAAAGASM", "KXAAAGASW"),
+    "elections": (
+        "KXPRESPERSON",
+        "KXPRESNOMD",
+        "KXSENMAJ",
+        "KXCONTROLH",
+        "KXSENATEIAD",
+        "KXNEXTNATOSECGEN",
+        "KXGA14",
+    ),
+    "culture": (
+        "KXOSCARPIC",
+        "KXGTAONLINE",
+        "KXNETFLIXRANKSHOWGLOBAL",
+        "KXELONMARS",
+        "NOBELLIT",
+    ),
+    "crypto": ("KXBTCY", "KXBTCMAXY", "KXBTC15M", "KXDEMOFUTHOURLY"),
+    "golf": ("KXPGATOUR", "KXLPGATOUR", "KXPRESCUP", "KXPGAMAKECUT"),
+}
+
 
 def _iso(ts: float | int | None = None) -> str:
     when = datetime.fromtimestamp(ts, tz=timezone.utc) if ts else datetime.now(tz=timezone.utc)
@@ -175,7 +197,7 @@ def fetch_candles(
     errors: list[str],
 ) -> dict[str, Any]:
     now = int(time.time())
-    out: dict[str, Any] = {"1m": [], "60m": []}
+    out: dict[str, Any] = {"1m": [], "60m": [], "_raw_1m": [], "_raw_60m": []}
     try:
         payload = client.get_candlesticks(
             series_ticker=series_ticker,
@@ -184,7 +206,9 @@ def fetch_candles(
             end_ts=now,
             period_interval=1,
         )
-        out["1m"] = compact_candles(payload.get("candlesticks", []))
+        raw_1m = payload.get("candlesticks", []) or []
+        out["_raw_1m"] = raw_1m
+        out["1m"] = compact_candles(raw_1m)
     except KalshiError as exc:
         errors.append(f"candlesticks 1m {ticker}: {exc}")
     try:
@@ -195,7 +219,9 @@ def fetch_candles(
             end_ts=now,
             period_interval=60,
         )
-        out["60m"] = compact_candles(payload.get("candlesticks", []))
+        raw_60m = payload.get("candlesticks", []) or []
+        out["_raw_60m"] = raw_60m
+        out["60m"] = compact_candles(raw_60m)
     except KalshiError as exc:
         errors.append(f"candlesticks 60m {ticker}: {exc}")
     return out
@@ -274,15 +300,32 @@ def summarize_liquidity(book: dict[str, Any] | None) -> dict[str, Any]:
 def select_tracked(markets: list[dict[str, Any]], per_topic: int = 8) -> list[dict[str, Any]]:
     selected: list[dict[str, Any]] = []
     for topic in TOPIC_KEYS:
-        pool = [m for m in markets if m["topic"] == topic and m["status"] == "active"]
+        pool = [m for m in markets if m["topic"] == topic and m["status"] in {"active", "open"}]
         pool.sort(
             key=lambda m: (
                 m["volume"].get("last_24h_contracts") or 0,
                 m["volume"].get("open_interest_contracts") or 0,
+                m["volume"].get("total_contracts") or 0,
             ),
             reverse=True,
         )
-        chosen = pool[:per_topic]
+        # First pass: diversify across distinct series/events (up to 3 per series)
+        # so a single multi-outcome event does not crowd out other active series.
+        chosen: list[dict[str, Any]] = []
+        per_series_count: dict[str, int] = {}
+        for market in pool:
+            if len(chosen) >= per_topic:
+                break
+            st = str(market.get("series_ticker") or market.get("event_ticker") or "")
+            if per_series_count.get(st, 0) >= 3:
+                continue
+            chosen.append(market)
+            per_series_count[st] = per_series_count.get(st, 0) + 1
+        for market in pool:
+            if len(chosen) >= per_topic:
+                break
+            if market not in chosen:
+                chosen.append(market)
         # Add the largest open-interest markets that are not already included.
         by_oi = sorted(
             pool,
@@ -301,7 +344,7 @@ def collect(
     environment: str = "demo",
     per_topic: int = 8,
     candle_hours: int = 12,
-    max_series_lookups: int = 60,
+    max_series_lookups: int = 100,
 ) -> dict[str, Any]:
     base = DEMO_REST
     client = KalshiClient(base_url=base)
@@ -358,6 +401,33 @@ def collect(
 
     events = collect_events(client, errors)
 
+    # Supplement paginated discovery with targeted queries for known in-scope series
+    # across all 5 topics so older high-OI series (Gas, Culture, Golf, Elections, Crypto)
+    # are never missed behind newest-first pagination of short-dated contracts.
+    seen_open_tickers = {str(m.get("ticker") or "") for m in raw_markets}
+    seen_settled_tickers = {str(m.get("ticker") or "") for m in raw_settled}
+    for topic_series in KNOWN_TOPIC_SERIES.values():
+        for st in topic_series:
+            try:
+                resp_open = client.get_markets(series_ticker=st, status="open", limit=200)
+                for m in resp_open.get("markets", []) or []:
+                    tk = str(m.get("ticker") or "")
+                    if tk and tk not in seen_open_tickers:
+                        raw_markets.append(m)
+                        seen_open_tickers.add(tk)
+            except KalshiError as exc:
+                errors.append(f"GET /markets?series_ticker={st}&status=open: {exc}")
+            try:
+                resp_settled = client.get_markets(series_ticker=st, status="settled", limit=100)
+                for m in resp_settled.get("markets", []) or []:
+                    tk = str(m.get("ticker") or "")
+                    if tk and tk not in seen_settled_tickers:
+                        raw_settled.append(m)
+                        seen_settled_tickers.add(tk)
+            except KalshiError as exc:
+                errors.append(f"GET /markets?series_ticker={st}&status=settled: {exc}")
+            time.sleep(0.04)
+
     def is_mve(market: dict[str, Any]) -> bool:
         ticker = str(market.get("ticker") or "")
         return ticker.startswith("KXMVE") or bool(market.get("mve_collection_ticker"))
@@ -366,8 +436,21 @@ def collect(
     raw_settled = [m for m in raw_settled if not is_mve(m)]
 
     # Series metadata cache (official settlement sources / category / title).
+    # Prioritize known in-scope series first so their settlement sources are always fetched.
     series_cache: dict[str, dict[str, Any]] = {}
-    for market in raw_markets:
+    priority_series = [st for group in KNOWN_TOPIC_SERIES.values() for st in group]
+    for series in priority_series:
+        if series in series_cache:
+            continue
+        try:
+            payload = client.get_series(series)
+            series_cache[series] = payload.get("series", {}) or {}
+        except KalshiError as exc:
+            errors.append(f"GET /series/{series}: {exc}")
+            series_cache[series] = {}
+        time.sleep(0.04)
+
+    for market in raw_markets + raw_settled:
         series = series_from_event(str(market.get("event_ticker") or ""), events)
         if not series or series in series_cache or len(series_cache) >= max_series_lookups:
             continue
@@ -389,7 +472,7 @@ def collect(
             subtitle=str(market.get("yes_sub_title") or ""),
             event_title=str(event_meta.get("title") or ""),
             series_title=str(series_meta.get("title") or ""),
-            rules=str(market.get("rules_primary") or ""),
+            rules=str(market.get("rules_primary") or "") + "\n" + str(market.get("rules_secondary") or ""),
             category=str(event_meta.get("category") or series_meta.get("category") or ""),
             tags=series_meta.get("tags"),
             market_ticker=str(market.get("ticker") or ""),
@@ -441,19 +524,47 @@ def collect(
     # Seed alerts from real candle closes (history, explicitly labelled).
     seed_alerts: list[dict[str, Any]] = []
     for market in tracked:
-        candles = [
+        c_obj = market.get("candles") or {}
+        candles_1m = c_obj.pop("_raw_1m", None) or [
             {"end_period_ts": row[0], "price": {"close_dollars": row[1]}}
-            for row in market.get("candles", {}).get("1m", [])
+            for row in c_obj.get("1m", [])
+            if row[1] is not None
+        ]
+        candles_60m = c_obj.pop("_raw_60m", None) or [
+            {"end_period_ts": row[0], "price": {"close_dollars": row[1]}}
+            for row in c_obj.get("60m", [])
             if row[1] is not None
         ]
         alerts = swings_from_candles(
-            candles,
+            candles_1m,
             ticker=str(market["ticker"]),
             topic=str(market["topic"]),
             title=str(market["title"]),
             threshold=0.10,
-            limit=12,
+            limit=6,
         )
+        if candles_60m:
+            hourly_alerts = swings_from_candles(
+                candles_60m,
+                ticker=str(market["ticker"]),
+                topic=str(market["topic"]),
+                title=str(market["title"]),
+                threshold=0.10,
+                limit=6,
+            )
+            seen_hours = {int(a.ts // 3600) for a in alerts}
+            for ha in hourly_alerts:
+                dup = any(
+                    round(ha.before, 3) == round(a.before, 3)
+                    and round(ha.after, 3) == round(a.after, 3)
+                    and abs(ha.ts - a.ts) <= 3600
+                    for a in alerts
+                )
+                if not dup and int(ha.ts // 3600) not in seen_hours:
+                    alerts.append(ha)
+                    seen_hours.add(int(ha.ts // 3600))
+            alerts.sort(key=lambda a: a.ts, reverse=True)
+            alerts = alerts[:6]
         for alert in alerts:
             payload = alert.to_dict()
             payload["links"] = market["links"]
