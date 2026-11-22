@@ -131,6 +131,16 @@
       "name": "GitHub Pages documentation",
       "url": "https://docs.github.com/en/pages",
       "used_for": "How the site is published from the main branch."
+    },
+    {
+      "name": "Production exchange status (live check)",
+      "url": "https://external-api.kalshi.com/trade-api/v2/exchange/status",
+      "used_for": "Confirms the documented production host is live (exchange_active=true on 2026-11-22). trading-api.kalshi.com, cited by the earlier sessions, is not in the official host list and returned no page."
+    },
+    {
+      "name": "Demo series object for a gas series",
+      "url": "https://demo-api.kalshi.co/trade-api/v2/series/KXAAAGASD",
+      "used_for": "settlement_sources = AAA (gasprices.aaa.com); contract terms AAAGAS.pdf. Used to check the earlier sessions' EIA claim."
     }
   ]
 }

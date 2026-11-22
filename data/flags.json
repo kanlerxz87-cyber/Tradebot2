@@ -113,6 +113,38 @@
       "impact": "This is deliberate: matching on title keywords would be inference. The matched series list is published per topic so a missing series is easy to spot and add to collector/topics.py.",
       "status": "review",
       "source": "https://docs.kalshi.com/getting_started/terms"
+    },
+    {
+      "id": "F-15",
+      "title": "Earlier session pages show constructed sample contracts, not API data",
+      "observed": "The pages delivered by the earlier sessions (gas-prices.html, elections.html, culture.html, crypto.html, golf.html, strategies.html) render records from js/data.js. That file contains hand-built contracts with tickers such as GAS-24DEC-3.15, PRES-24-DJT, OSCAR-BESTPIC-25 and order books with round quantities, and marks them as verified against the Kalshi Rulebook. The Kalshi markets API returns 404 for an unknown ticker rather than a price, and no such tickers were found in the demo series list.",
+      "impact": "Those pages are preserved unchanged on this site so no work is lost, but they are NOT source-linked to a live API response and their numbers should not be used. The current pages (dashboard, topics/*, performance, resolutions) read only committed API responses and carry a per-row source link. This is the single most important thing to review.",
+      "status": "open",
+      "source": "https://demo-api.kalshi.co/trade-api/v2/series?category=Economics&limit=200"
+    },
+    {
+      "id": "F-16",
+      "title": "Earlier README lists trading-api.kalshi.com as the production endpoint",
+      "observed": "README.md and js/data.js state https://trading-api.kalshi.com/trade-api/v2 as the production REST host and .../documentation as the docs URL. The official documentation names https://external-api.kalshi.com/trade-api/v2 and https://api.elections.kalshi.com/trade-api/v2 as the production base URLs; trading-api is not listed. A live request to https://external-api.kalshi.com/trade-api/v2/exchange/status on 2026-11-22 returned exchange_active=true; https://trading-api.kalshi.com/trade-api/v2 did not return a page.",
+      "impact": "No production calls are made by this build, so nothing is broken today. The README is corrected on this branch to show the official hosts and to keep the earlier text as a quoted, flagged claim.",
+      "status": "resolved",
+      "source": "https://docs.kalshi.com/getting_started/api_environments"
+    },
+    {
+      "id": "F-17",
+      "title": "Earlier pages pair Kalshi contracts with non-Kalshi source agencies",
+      "observed": "The earlier gas table cites EIA and \"Kalshi Rulebook Rule 502\" as the settlement source. Kalshi's own gas series list AAA (https://gasprices.aaa.com) as the settlement source and uses contract terms AAAGAS.pdf / AAAGASNEW.pdf. EIA is not the settlement source for the series returned by the API in this session.",
+      "impact": "Settlement-source columns on the earlier pages may mislead. The current topic pages show the settlement source that the series object itself returns, with a link to GET /series/{ticker}.",
+      "status": "open",
+      "source": "https://demo-api.kalshi.co/trade-api/v2/series/KXAAAGASD"
+    },
+    {
+      "id": "F-18",
+      "title": "Merge note: two dashboards now coexist",
+      "observed": "This branch merged origin/main, which already contained a dashboard from three earlier sessions. index.html now shows the current source-linked dashboard and a table linking every earlier page.",
+      "impact": "Duplicate navigation exists by design so that no earlier work is deleted. A follow-up can retire the earlier pages once the reviewer is satisfied.",
+      "status": "open",
+      "source": "https://github.com/kanlerxz87-cyber/Tradebot2/pulls?q=is%3Apr"
     }
   ]
 }
