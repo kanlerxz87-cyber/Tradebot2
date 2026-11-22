@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Resolved markets · Tradebot2</title>
+<title>Resolved events · Kalshi Demo Desk</title>
+<meta name="description" content="How tracked Kalshi demo events resolved: YES or NO.">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/app.js" defer></script>
 </head>
@@ -11,12 +12,17 @@
 <header class="top" id="nav"></header>
 <main>
 
-<h1>Resolved markets</h1>
-<p class="lead">Markets whose API <code>result</code> became <b>yes</b> or <b>no</b>. Each row links to the API endpoint that returned the result.</p>
+<h1>Resolved events</h1>
+<p class="lead">Markets are tracked after they leave the open listing and are re-checked with <code>GET /markets/{ticker}</code>
+until the API reports <code>result</code> = <b>yes</b> or <b>no</b>. That result, and the settlement value when present, are shown here.</p>
+<div class="freshness" id="fresh"></div>
 <div class="kpis" id="res-kpi"></div>
 <div id="res-table"></div>
+<p class="note">Resolution comes from the market object's <code>result</code> field
+(<a href="https://docs.kalshi.com/api-reference/market/get-market" target="_blank" rel="noopener noreferrer">official docs ↗</a>).
+Where the API returns an empty result, the market stays open on this list and no outcome is inferred.</p>
 
 </main>
-<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
 </body>
 </html>

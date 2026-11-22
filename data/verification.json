@@ -1,0 +1,112 @@
+{
+ "schema_version": 1,
+ "generated_at": "2026-11-22T08:05:00Z",
+ "note": "Facts measured by this repository's CI against the Kalshi DEMO API. Every item names the request that produced it. Nothing here is inferred.",
+ "environment": "demo",
+ "api_base": "https://external-api.demo.kalshi.co/trade-api/v2",
+ "exchange_status": {
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/exchange/status",
+  "http_status": 200,
+  "observed": "exchange_active=true, trading_active=true"
+ },
+ "cors": {
+  "measured": {
+   "origin": "https://kanlerxz87-cyber.github.io",
+   "get": {
+    "status": 200,
+    "access_control_allow_origin": "https://kanlerxz87-cyber.github.io",
+    "access_control_allow_credentials": "true",
+    "access_control_expose_headers": "X-Csrf-Token,X-Ratelimit-Limit,X-Ratelimit-Remaining,X-Ratelimit-Reset,X-Ratelimit-Cost"
+   },
+   "preflight": {
+    "status": 204,
+    "access_control_allow_origin": "https://kanlerxz87-cyber.github.io",
+    "access_control_allow_methods": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+   },
+   "source": "data/probe.json"
+  },
+  "correction": "A probe that omitted the Origin header saw no CORS header and was nearly recorded as 'CORS blocked'. The header is origin-reflective; browser reads from this site's origin are allowed."
+ },
+ "websocket": {
+  "source": "data/probe.json",
+  "observed": "Unauthenticated handshake on both demo WS hosts was rejected with HTTP 401 token_authentication_failure."
+ },
+ "topic_taxonomy": {
+  "source": "https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories",
+  "observed": {
+   "gas": "Commodities / 'Oil & Gas' tag (no gasoline category exists)",
+   "elections": "category 'Elections'",
+   "culture": "no 'Culture' category; mapped to 'Entertainment'",
+   "crypto": "category 'Crypto'",
+   "golf": "Sports / 'Golf' tag"
+  }
+ },
+ "series_counts_at_check": {
+  "gas": 25,
+  "elections": 2710,
+  "culture": 2631,
+  "crypto": 321,
+  "golf": 134
+ },
+ "open_events_sampled_at_check": {
+  "gas": 41,
+  "elections": 12,
+  "culture": 15,
+  "crypto": 173,
+  "golf": 8
+ },
+ "open_markets_seen_top40_series_per_topic": 18298,
+ "ticker_checks": {
+  "PRES-24-DJT": {
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/PRES-24-DJT",
+   "http_status": 404,
+   "market_returned": false
+  },
+  "GAS-24DEC-3.15": {
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/GAS-24DEC-3.15",
+   "http_status": 404,
+   "market_returned": false
+  },
+  "BTC-24DEC-100K": {
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/BTC-24DEC-100K",
+   "http_status": 404,
+   "market_returned": false
+  },
+  "OSCAR-BESTPIC-25": {
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/OSCAR-BESTPIC-25",
+   "http_status": 404,
+   "market_returned": false
+  },
+  "MASTERS-25-SCHEFFLER": {
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/MASTERS-25-SCHEFFLER",
+   "http_status": 404,
+   "market_returned": false
+  },
+  "BTC-ETF-NET10B": {
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/BTC-ETF-NET10B",
+   "http_status": 404,
+   "market_returned": false
+  },
+  "KXAAAGASW-26NOV23-3.8400": {
+   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXAAAGASW-26NOV23-3.8400",
+   "http_status": 200,
+   "market_returned": true
+  }
+ },
+ "ticker_check_conclusion": "The six tickers taken from the repository's older hand-written pages (js/data.js, docs/js/data.js) returned 404 not_found on the demo host; a ticker taken from the dash/ snapshot (KXAAAGASW-26NOV23-3.8400) returned a live market object. The older pages' market data was not API output.",
+ "documentation": [
+  "https://docs.kalshi.com/getting_started/demo_env",
+  "https://docs.kalshi.com/getting_started/api_environments",
+  "https://docs.kalshi.com/api-reference/events/get-events",
+  "https://docs.kalshi.com/api-reference/market/get-markets",
+  "https://docs.kalshi.com/api-reference/market/get-market-orderbook",
+  "https://docs.kalshi.com/api-reference/market/get-market-candlesticks",
+  "https://docs.kalshi.com/api-reference/market/get-trades",
+  "https://docs.kalshi.com/getting_started/rate_limits"
+ ],
+ "unverified": [
+  "demo-account balance/positions/orders (no API key supplied)",
+  "unauthenticated rate-limit numbers (Kalshi does not publish them)",
+  "causes of price moves (the API reports none)"
+ ]
+}

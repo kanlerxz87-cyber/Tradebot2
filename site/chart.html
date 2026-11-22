@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Price chart &amp; liquidity · Tradebot2</title>
+<title>Chart & liquidity · Kalshi Demo Desk</title>
+<meta name="description" content="YES price over seconds, minutes or hours with order-book depth.">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/app.js" defer></script>
 </head>
@@ -11,20 +12,38 @@
 <header class="top" id="nav"></header>
 <main>
 
-<h1>Price chart &amp; liquidity</h1>
-<p class="lead">YES price over time for any tracked market, with resting order depth. Pick a market, a time range and an axis unit.</p>
-<div class="stale" id="fresh"></div>
+<h1>Chart & liquidity</h1>
+<p class="lead">YES contract price over time with <b>seconds, minutes or hours</b> on the X axis, plus the resting order book:
+how many contracts are available at each price.</p>
+<div class="freshness" id="fresh"></div>
 <div class="controls">
   <label>Market <select id="ticker"></select></label>
-  <span id="ctl-range"><button data-r="1h">1h</button> <button data-r="6h">6h</button> <button data-r="24h" class="on">24h</button> <button data-r="7d">7d</button> <button data-r="all">All</button></span>
-  <label>X-axis labels <select id="unit"><option value="seconds">Seconds (HH:MM:SS)</option><option value="minutes" selected>Minutes (HH:MM)</option><option value="hours">Hours (date + hour)</option></select></label>
+  <label>X axis <select id="mode">
+    <option value="seconds">Seconds — trade tape (≤ 6h)</option>
+    <option value="minutes" selected>Minutes — 1-minute candles</option>
+    <option value="hours">Hours — 1-hour candles (≤ 30d)</option>
+  </select></label>
+  <span id="ctl-range">
+    <button data-r="1h">1h</button><button data-r="6h" class="on">6h</button>
+    <button data-r="24h">24h</button><button data-r="7d">7d</button><button data-r="30d">30d</button>
+  </span>
+  <button class="ghost" id="refresh-now">Refresh data</button>
 </div>
-<p class="note">Snapshots are taken once per scheduled run (about every 15 minutes), so the finest real resolution is one snapshot. Second-level labels show the exact snapshot time only.</p>
 <div class="card" id="mkinfo"></div>
 <div class="card" id="chart"></div>
 <div id="book"></div>
+<div class="card">
+  <h3>Axes and units</h3>
+  <p class="note">X axis is time (labels in UTC; the data file timestamps are UTC). Y axis is the YES contract price in dollars,
+  on a $0.00–$1.00 scale where $1.00 is a certain YES. Seconds mode plots individual prints from
+  <code>GET /markets/trades</code>; minutes mode plots 1-minute candles and hours mode 1-hour candles from
+  <code>GET /series/{series_ticker}/markets/{ticker}/candlesticks</code>. Dashed red lines mark recorded ≥ $0.10 alerts.
+  Grey bars show contracts traded per period.</p>
+  <p class="note">Candles and the trade tape are captured for the most active markets only (to stay inside public rate limits).
+  Other markets fall back to collection-run snapshots, labelled “snapshot mode”.</p>
+</div>
 
 </main>
-<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
 </body>
 </html>

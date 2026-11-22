@@ -1,0 +1,27 @@
+{
+ "generated_at": "2026-11-22T07:30:02Z",
+ "portfolio": {
+  "mode": "SIMULATED paper portfolio (no Kalshi account is connected)",
+  "starting_cash": 10000.0,
+  "realized_pnl": 0,
+  "unrealized_pnl": 0,
+  "equity": 10000.0,
+  "open_positions": 0,
+  "closed_trades": 0,
+  "win_rate": null
+ },
+ "mode": "SIMULATED (paper) - no orders are placed",
+ "assumptions": {
+  "qty_per_trade": 10,
+  "target_move": 0.05,
+  "time_stop_hours": 48,
+  "exit_price": "YES bid (conservative)",
+  "fees": "not modelled",
+  "entry": "YES ask at alert time"
+ },
+ "by_strategy": [],
+ "by_topic": [],
+ "by_alert_direction": [],
+ "open_trades": [],
+ "closed_trades": []
+}

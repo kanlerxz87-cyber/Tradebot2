@@ -1,0 +1,78 @@
+{
+ "generated_at": "2026-11-22T07:30:02Z",
+ "api_base": "https://external-api.demo.kalshi.co/trade-api/v2",
+ "runs": 2,
+ "first_run": null,
+ "alert_threshold_dollars": 0.1,
+ "environment": "demo",
+ "live_market_count": 1181,
+ "open_markets_seen": 18298,
+ "markets_omitted_per_topic": {
+  "gas": 2031,
+  "elections": 135,
+  "culture": 718,
+  "crypto": 13392,
+  "golf": 841
+ },
+ "candle_markets": 12,
+ "tape_markets": 12,
+ "series_per_topic": {
+  "gas": 25,
+  "elections": 40,
+  "culture": 40,
+  "crypto": 40,
+  "golf": 40
+ },
+ "topics": {
+  "gas": {
+   "label": "Gas prices",
+   "note": "Kalshi tag 'Oil & Gas' (category Commodities). Includes oil/natural-gas/heating-oil futures; retail gasoline is NOT separated by the API (flagged).",
+   "filter": {
+    "category": "Commodities",
+    "tags": "Oil & Gas"
+   }
+  },
+  "elections": {
+   "label": "Elections",
+   "note": "Kalshi category 'Elections'.",
+   "filter": {
+    "category": "Elections"
+   }
+  },
+  "culture": {
+   "label": "Culture",
+   "note": "No 'Culture' category exists in the verified taxonomy; mapped to 'Entertainment' (inference, flagged).",
+   "filter": {
+    "category": "Entertainment"
+   }
+  },
+  "crypto": {
+   "label": "Crypto",
+   "note": "Kalshi category 'Crypto'.",
+   "filter": {
+    "category": "Crypto"
+   }
+  },
+  "golf": {
+   "label": "Golf",
+   "note": "Kalshi category 'Sports' with tag 'Golf'.",
+   "filter": {
+    "category": "Sports",
+    "tags": "Golf"
+   }
+  }
+ },
+ "orderbook_markets": 25,
+ "errors": [],
+ "error_count": 0,
+ "snapshot_interval_note": "Snapshots happen once per scheduled run (about every 15 min), so a 'sudden' move is measured between runs.",
+ "screen": {
+  "max_spread": 0.03,
+  "min_ask_size": 50,
+  "min_volume_24h": 100,
+  "entry_range": [
+   0.05,
+   0.95
+  ]
+ }
+}

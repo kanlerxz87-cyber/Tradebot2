@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Live dashboard · Tradebot2</title>
+<title>Markets · Kalshi Demo Desk</title>
+<meta name="description" content="Every published Kalshi demo market, grouped by event and topic.">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/app.js" defer></script>
 </head>
@@ -11,21 +12,31 @@
 <header class="top" id="nav"></header>
 <main>
 
-<h1>Live dashboard</h1>
-<p class="lead">Two scrolling alert chats. <b>All events</b> lists every ≥ $0.10 move. <b>High-ROI picks</b> lists only moves that pass the rule-based screen (tight spread, deep ask, enough 24h volume, entry between $0.05 and $0.95).</p>
-<div class="stale" id="fresh"></div>
-<div class="kpis" id="kpis"></div>
-<div class="controls"><span class="note">Auto-refresh every 60 s. Newest alerts at the bottom.</span></div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" class="two">
-  <div><h2>All events (≥ $0.10)</h2><div class="scroll" id="feed-all"></div></div>
-  <div><h2>High-ROI picks</h2><div class="scroll" id="feed-roi"></div></div>
+<h1>Markets — the whole published book</h1>
+<p class="lead">Every demo market that traded in the last 24 hours or carries open interest, grouped by event and topic.
+Filter by topic, by minimum 24h volume, or search titles and tickers.</p>
+<div class="freshness" id="fresh"></div>
+<div class="controls">
+  <label>Topic <select id="topic-filter"><option value="all">All topics</option><option value="gas">Gas prices</option>
+  <option value="elections">Elections</option><option value="culture">Culture</option><option value="crypto">Crypto</option>
+  <option value="golf">Golf</option></select></label>
+  <label>Min 24h contracts <select id="min-vol"><option value="0">any</option><option value="1">1</option>
+  <option value="100">100</option><option value="1000">1,000</option><option value="10000">10,000</option></select></label>
+  <label>Search <input type="search" id="q" placeholder="ticker, title, event…"></label>
 </div>
-<h2>Live markets</h2>
-<div class="controls"><label>Topic <select id="topic-filter"><option value="all">All topics</option><option value="gas">Gas</option><option value="elections">Elections</option><option value="culture">Culture</option><option value="crypto">Crypto</option><option value="golf">Golf</option></select></label></div>
+<h2>Events ranked by 24h dollar notional (computed)</h2>
+<div class="table-wrap"><table class="sourced">
+<thead><tr><th class="num">#</th><th>Event</th><th>Topic</th><th class="num">24h contracts</th>
+<th class="num">24h $ (computed)</th><th class="num">Open interest</th><th>Closes</th><th>Source</th></tr></thead>
+<tbody id="top-events"></tbody></table></div>
+<h2>All published markets</h2>
+<p class="note" id="mk-head"></p>
 <div id="mk-table"></div>
-<style>@media (max-width:760px){.two{grid-template-columns:1fr !important}}</style>
+<div class="card flag"><b>Contract price read-out.</b> A last price of 0 with no volume is shown as “no trade”, not $0.00,
+because the API uses 0 for “no trade” rather than a price. Bid/ask and resting size are shown as returned.
+Rows without an API value are marked <span class="unv">unverified</span> rather than filled in.</div>
 
 </main>
-<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
 </body>
 </html>

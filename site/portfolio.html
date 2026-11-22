@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio & strategy lab · Kalshi Demo Desk</title>
+<meta name="description" content="Simulated trades, strategy categorisation and paper P&L.">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body data-page="portfolio">
+<header class="top" id="nav"></header>
+<main>
+
+<h1>Portfolio & strategy lab</h1>
+<p class="lead">Automated paper trades opened from high-ROI alerts, marked against live YES bids, settled at resolution
+($1.00 for YES, $0.00 for NO). Performance is broken out by strategy, topic and alert direction so trade types can be compared.</p>
+<div class="freshness" id="fresh"></div>
+<div class="kpis" id="pf-kpis"></div>
+<div id="trade-body"></div>
+<h2>Strategy definitions</h2>
+<div class="table-wrap"><table class="sourced">
+<thead><tr><th>Strategy</th><th>Rule</th><th>Risk control</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td><code>follow_rise</code></td><td>Buy YES at the ask after an alert with Δ ≥ +$0.10 that passes the high-ROI screen.</td>
+<td>10 contracts; +$0.05 target or −$0.05 stop on the YES bid; 48h time stop.</td>
+<td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/scripts/kalshi_collector.py" target="_blank" rel="noopener noreferrer">collector</a></td></tr>
+<tr><td><code>fade_drop</code></td><td>Buy YES at the ask after an alert with Δ ≤ −$0.10 that passes the high-ROI screen.</td>
+<td>Same bracket and time stop.</td>
+<td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/scripts/kalshi_collector.py" target="_blank" rel="noopener noreferrer">collector</a></td></tr>
+<tr><td>Resolution hold</td><td>Any open paper position that reaches settlement is closed at the API <code>result</code> value.</td>
+<td>No leverage; 1 contract pays $1.00 or $0.00.</td>
+<td><a href="https://docs.kalshi.com/api-reference/market/get-market" target="_blank" rel="noopener noreferrer">GET /markets/{ticker}</a></td></tr>
+</tbody></table></div>
+<div class="card flag"><b>This is not the Kalshi demo account.</b> The portfolio is computed from simulated fills at API prices.
+Connecting the real demo account (balance, positions, fills) needs API-key credentials in repository secrets; none are set.
+See <a href="flagged.html">Flagged for review</a>.</div>
+
+</main>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
+</body>
+</html>

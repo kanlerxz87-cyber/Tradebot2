@@ -3,19 +3,95 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Repo review · Tradebot2</title>
+<title>Repo review · Kalshi Demo Desk</title>
+<meta name="description" content="Line-by-line repository review and irregularities.">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/app.js" defer></script>
 </head>
-<body data-page="repo">
+<body>
 <header class="top" id="nav"></header>
 <main>
 
 <h1>Repo review</h1>
-<p class="lead">Line-by-line review of the repository at its base commit, plus irregularities found during the work. Each row links to its source.</p>
-<table class="sourced"><thead><tr><th>#</th><th>Finding</th><th>Source</th><th>Verification</th><th>Severity</th></tr></thead><tbody><tr><td>R1</td><td>Repository contents at base commit 003447e: only README.md, one line (“# Tradebot2”). No code, no tests, no LICENSE, no .gitignore, no CI workflow.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2" target="_blank" rel="noopener">GitHub repo</a></td><td>Verified (git ls-files)</td><td>Info</td></tr><tr><td>R2</td><td>COORDINATION.md did not exist. Created in claim commit 93c1ba4 on arena/9a725a07-tradebot2.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/arena/9a725a07-tradebot2/COORDINATION.md" target="_blank" rel="noopener">COORDINATION.md</a></td><td>Verified</td><td>Info</td></tr><tr><td>R3</td><td>Pages was already enabled (build type legacy, source main /). Per GitHub docs this publishes the repo root. Replaced by a GitHub Actions source in this session.</td><td><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages docs</a></td><td>Verified (gh api)</td><td>Review</td></tr><tr><td>R4</td><td>Branch-naming conflict: the brief asks for session-&lt;id&gt;/&lt;task&gt; branches, but the runtime fixes the session to one branch. All work is on arena/9a725a07-tradebot2 with non-overlapping file scopes.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/arena/9a725a07-tradebot2/COORDINATION.md" target="_blank" rel="noopener">COORDINATION.md (internal)</a></td><td>Documented in COORDINATION.md</td><td>Review</td></tr><tr><td>R5</td><td>The brief’s branch-name text contains escaping artifacts (“&amp;amp;lt;”). Intended pattern taken as session-&lt;id&gt;/&lt;task&gt;.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/arena/9a725a07-tradebot2/COORDINATION.md" target="_blank" rel="noopener">COORDINATION.md (internal)</a></td><td>Interpretation (brief text)</td><td>Review</td></tr><tr><td>R6</td><td>The brief’s WebSocket links are malformed (a bracketed host inside a wss:// URL). Canonical URLs were taken from Kalshi’s demo page.</td><td><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener">Demo environment</a></td><td>Verified</td><td>Review</td></tr><tr><td>R7</td><td>Commit metadata for the initial commit includes a personal email address in a public repository.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/commits/main" target="_blank" rel="noopener">commit history</a></td><td>Verified (git log)</td><td>Privacy note</td></tr><tr><td>R8</td><td>Kalshi market status values are inconsistent across the docs: the market example uses “initialized”, the status filter lists unopened/open/closed/settled, and live responses show “active”. The collector uses the result field (yes/no), not status, to detect resolution.</td><td><a href="https://docs.kalshi.com/api-reference/market/get-markets" target="_blank" rel="noopener">Get Markets</a></td><td>Verified (inconsistency)</td><td>Review</td></tr><tr><td>R9</td><td>Kalshi’s demo docs say demo prices may not reflect real markets. Market-price claims on this site use the production read endpoints, not the demo host. Demo data is used for endpoint checks only.</td><td><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener">Demo environment</a></td><td>Verified</td><td>Review</td></tr><tr><td>R10</td><td>Unauthenticated rate-limit numbers are not stated on the rate-limit page. The collector backs off on 429 and uses a fixed delay.</td><td><a href="https://docs.kalshi.com/getting_started/rate_limits" target="_blank" rel="noopener">Rate limits</a></td><td>Partly verified</td><td>Review</td></tr><tr><td>R11</td><td>Demo sample markets show test artefacts (e.g. custom_strike “demo strike”). They are not used as market data.</td><td><a href="https://external-api.demo.kalshi.co/trade-api/v2/events?limit=5&amp;status=open&amp;with_nested_markets=true" target="_blank" rel="noopener">demo events sample</a></td><td>Verified (live, demo)</td><td>Info</td></tr><tr><td>R12</td><td>The brief asks to work “line by line” through the repo. The repo has one line of content, so there was no further content to verify.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2" target="_blank" rel="noopener">GitHub repo</a></td><td>Verified</td><td>Info</td></tr></tbody></table>
+<p class="lead">A line-by-line pass over this repository as it stood at the start of the integration session, with the
+irregularities found and what was done about each. Nothing here is inferred: each item names the file and, where it concerns an
+external fact, the official source that contradicts or confirms it.</p>
+
+<h2>What the repository contained</h2>
+<p>Four separate front-end builds of the same idea had accumulated, plus two competing Pages configurations:</p>
+<div class="table-wrap"><table class="sourced">
+<thead><tr><th>Path</th><th>What it was</th><th>Data source</th><th>Status now</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td><code>index.html</code>, <code>gas-prices.html</code>, <code>elections.html</code>, <code>culture.html</code>,
+<code>crypto.html</code>, <code>golf.html</code>, <code>strategies.html</code>, <code>review.html</code>, <code>js/</code>, <code>css/</code></td>
+<td>Session a5878007 build: a “live” dashboard with hard-coded markets, prices, catalysts and portfolio metrics.</td>
+<td><code>js/data.js</code> (hand-written, not API output)</td><td>Not published; kept in the repo, flagged R1/R2</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/js/data.js" target="_blank" rel="noopener noreferrer">js/data.js</a></td></tr>
+<tr><td><code>docs/</code></td><td>Session b1cd545f build, published at the site root until this session.</td>
+<td><code>docs/js/data.js</code> (same hand-written data)</td><td>Not published; flagged R1</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/docs/js/data.js" target="_blank" rel="noopener noreferrer">docs/js/data.js</a></td></tr>
+<tr><td><code>site/</code></td><td>Session 9a725a07 live monitor, published at <code>/monitor/</code>.</td>
+<td>API collector (<code>site/data/*.json</code>)</td><td><b>Canonical site, now published at the root</b></td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/scripts/kalshi_collector.py" target="_blank" rel="noopener noreferrer">collector</a></td></tr>
+<tr><td><code>dash/</code></td><td>Session 93ec9646 full-spec dashboard, published at <code>/dash/</code>.</td>
+<td><code>dash/assets/data.js</code> + <code>data/snapshot.json</code> (API snapshot)</td><td>Not published; kept, snapshot spot-checked</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/data/snapshot.json" target="_blank" rel="noopener noreferrer">snapshot</a></td></tr>
+</tbody></table></div>
+
+<h2>Irregularities</h2>
+<div class="table-wrap"><table class="sourced">
+<thead><tr><th>#</th><th>Finding</th><th>Evidence</th><th>Action</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>R1</td><td>Hand-written market data presented as live Kalshi data. Tickers such as <code>PRES-24-DJT</code>,
+<code>GAS-24DEC-3.15</code>, <code>BTC-24DEC-100K</code>, <code>OSCAR-BESTPIC-25</code> and <code>MASTERS-25-SCHEFFLER</code>
+do not follow the demo exchange's ticker format and were not returned by the demo API when queried. Each record also has a
+“catalyst” headline with a specific time and no source.</td>
+<td><code>js/data.js</code>, <code>docs/js/data.js</code>; demo API <code>GET /markets/{ticker}</code> returned not-found for the
+tested tickers (recorded in <code>data/verification.json</code>).</td><td>Retired from publishing; flagged for review</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/js/data.js" target="_blank" rel="noopener noreferrer">js/data.js</a></td></tr>
+<tr><td>R2</td><td>Capability claims with no implementation in the repo: “ingests tick streams”, “$10,000 demo account”,
+“EV ≥ +18% ROI model”, “verified news catalyst pins”, “4 quantitative strategies”.</td>
+<td><code>README.md</code>, <code>EXECUTIVE_SUMMARY.md</code>; no tick-stream client, no demo-account code and no model in the tree.</td>
+<td>README and summary rewritten to match what runs</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/README.md" target="_blank" rel="noopener noreferrer">README.md</a></td></tr>
+<tr><td>R3</td><td>The Pages workflow ran the collector against the <b>production</b> API (no <code>KALSHI_BASE</code> set, collector
+defaulted to <code>external-api.kalshi.com</code>) while the site was branded as a demo tracker.</td>
+<td><code>.github/workflows/pages.yml</code> + old collector default</td><td>Collector now defaults to the demo host; workflow
+sets it explicitly</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/.github/workflows/pages.yml" target="_blank" rel="noopener noreferrer">pages.yml</a></td></tr>
+<tr><td>R4</td><td>Seven records in <code>docs/data/verified-markets.json</code> carry <code>0.0</code> / <code>0</code> for
+bid, ask, last, sizes, volume and open interest on active markets. A zero is not a verified value.</td>
+<td><code>docs/data/verified-markets.json</code></td><td>Flagged; file no longer published</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/docs/data/verified-markets.json" target="_blank" rel="noopener noreferrer">verified-markets.json</a></td></tr>
+<tr><td>R5</td><td>Two Pages configurations existed at once: a “legacy” branch build from <code>main</code> at <code>/</code>, and
+an Actions workflow deploying an assembled artifact. Which one visitors saw depended on timing.</td>
+<td><code>gh api repos/…/pages</code> reported <code>build_type: legacy</code>; <code>pages.yml</code> deploys by Actions</td>
+<td>Pages switched to <code>build_type: workflow</code></td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions" target="_blank" rel="noopener noreferrer">Actions runs</a></td></tr>
+<tr><td>R6</td><td>README links “Production REST” to <code>https://trading-api.kalshi.com/trade-api/v2</code>. Kalshi's endpoint
+table does not list that host.</td>
+<td><a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener noreferrer">API environments</a></td>
+<td>README rewritten with the documented hosts</td></tr>
+<tr><td>R7</td><td>The root dashboard's portfolio cards read “$10,000.00 / +$248.00 / Sharpe 1.84” in HTML, then are overwritten
+at runtime from a local simulation — with no account connected.</td>
+<td><code>docs/index.html</code> + <code>docs/js/trading.js</code></td><td>Retired from publishing; replaced by a clearly
+labelled paper portfolio</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/docs/index.html" target="_blank" rel="noopener noreferrer">docs/index.html</a></td></tr>
+<tr><td>R8</td><td>COORDINATION.md lists <code>scripts/kalshi_demo_client.py</code>, <code>scripts/strategy_engine.py</code>,
+<code>scripts/verify_site.py</code> and <code>requirements.txt</code> as delivered, but none of those files is in the tree.</td>
+<td>Present in commit <code>6d98549</code>, absent from <code>main</code> (a later merge dropped them); <code>ls scripts</code></td>
+<td>Flagged; not restored (the collector covers the same read-only functions; the strategy engine used random price paths)</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/commit/6d98549" target="_blank" rel="noopener noreferrer">commit 6d98549</a></td></tr>
+<tr><td>R9</td><td>COORDINATION.md records “Pages live” for a build that was never the deployed artifact at <code>/</code>.</td>
+<td>Pages build history and <code>gh api …/pages</code></td><td>Corrected in COORDINATION.md by this session</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/COORDINATION.md" target="_blank" rel="noopener noreferrer">COORDINATION.md</a></td></tr>
+<tr><td>R10</td><td>Generated data was committed to the repository by some sessions (<code>data/snapshot.json</code>,
+<code>docs/data/verified-markets.json</code>) while other generated data is ignored (<code>site/data/</code>).</td>
+<td><code>.gitignore</code>, repository tree</td><td>Generated collector output stays ignored; small verification files are kept</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/.gitignore" target="_blank" rel="noopener noreferrer">.gitignore</a></td></tr>
+</tbody></table></div>
+
+<h2>What was checked file by file</h2>
+<ul>
+<li><code>js/*.js</code>, <code>docs/js/*.js</code> — traced where numbers come from: all from hand-written objects plus local
+simulation; no <code>fetch</code> of the Kalshi API.</li>
+<li><code>site/assets/app.js</code>, <code>site/*.html</code> — reads only <code>data/*.json</code>; each row links to its endpoint.</li>
+<li><code>scripts/kalshi_collector.py</code> — public read-only endpoints only; no signing, no orders; now demo-first.</li>
+<li><code>scripts/check_site.py</code> — link and source-link gate used by CI; extended expectations kept intact.</li>
+<li><code>tools/*.js</code> — static generators for the <code>dash/</code> build; no longer on the published path.</li>
+<li><code>data/snapshot.json</code> — spot-checked: <code>KXAAAGASW-26NOV23-3.8400</code> exists on the demo host with the same
+rules text and open interest as the snapshot.</li>
+<li><code>.github/workflows/pages.yml</code> — the only workflow on <code>main</code>; now assembles and deploys one site.</li>
+</ul>
 
 </main>
-<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
 </body>
 </html>

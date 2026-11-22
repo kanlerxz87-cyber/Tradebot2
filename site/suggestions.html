@@ -3,26 +3,70 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Suggestions · Tradebot2</title>
+<title>Suggestions · Kalshi Demo Desk</title>
+<meta name="description" content="How to make the desk more live and more useful.">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/app.js" defer></script>
 </head>
-<body data-page="suggestions">
+<body>
 <header class="top" id="nav"></header>
 <main>
 
-<h1>Suggestions to make the site more live and interactive</h1>
-<p class="lead">Recommendations, not verified facts. Each one is a design choice for review.</p>
-<table class="sourced"><thead><tr><th>#</th><th>Suggestion</th><th>Why</th><th>Reference</th></tr></thead><tbody>
-<tr><td>1</td><td>Stream prices over WebSocket instead of 15-minute polling.</td><td>Second-level alerts. The docs list a WebSocket API with a demo host.</td><td><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener">Kalshi demo environment</a></td></tr>
-<tr><td>2</td><td>Add a per-market candlestick chart for longer history.</td><td>The OpenAPI spec defines a candlesticks endpoint with 1, 60 and 1440-minute periods.</td><td><a href="https://docs.kalshi.com/openapi.yaml" target="_blank" rel="noopener">openapi.yaml</a></td></tr>
-<tr><td>3</td><td>Use the public events endpoint’s <code>min_updated_ts</code> filter for cheaper polling.</td><td>Reduces API calls between runs.</td><td><a href="https://docs.kalshi.com/api-reference/events/get-events" target="_blank" rel="noopener">Get Events</a></td></tr>
-<tr><td>4</td><td>Add a sparkline column to each topic table.</td><td>Shows direction at a glance.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/scripts/kalshi_collector.py" target="_blank" rel="noopener">scripts/kalshi_collector.py (internal)</a></td></tr>
-<tr><td>5</td><td>Connect the demo account (balance and positions) once an API key is provided as a secret.</td><td>Needed for real portfolio tracking. Kalshi documents separate rate limits for the balance endpoint (1 or 5 calls per second depending on tier).</td><td><a href="https://docs.kalshi.com/getting_started/rate_limits" target="_blank" rel="noopener">Rate limits</a></td></tr>
-<tr><td>6</td><td>Backtest the high-ROI screen on resolved markets before using it.</td><td>The screen is a rule set, not a validated model.</td><td><a href="https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/scripts/kalshi_collector.py" target="_blank" rel="noopener">scripts/kalshi_collector.py (internal)</a></td></tr>
-</tbody></table>
+<h1>Making the desk more live and more useful</h1>
+<p class="lead">Suggestions are split into what this session actually implemented and what is worth doing next. Each one says
+what it needs, so a cost is visible before you ask for it.</p>
+
+<h2>Implemented in this session</h2>
+<ul>
+<li><b>Two scrolling chats</b> side by side — every ≥ $0.10 move, and the model's high-ROI subset — with topic filter,
+auto-scroll and a per-alert link to the exact API response.</li>
+<li><b>Real price history instead of snapshots only:</b> Kalshi's 1-minute and 1-hour candlesticks and its sub-second trade tape,
+so the X axis can be seconds, minutes or hours.</li>
+<li><b>Time-range buttons</b> (1h / 6h / 24h / 7d / 30d) that match the available data instead of pretending to have more.</li>
+<li><b>Alert markers drawn on the chart</b>, so a price jump and its alert are visible in the same picture.</li>
+<li><b>Liquidity ladder</b> with cumulative depth on both book sides, plus “contracts available at the ask” and the computed cost
+to fill that size.</li>
+<li><b>Highest-dollar events ranking</b> (computed 24h notional) with events grouped inside their topic pages.</li>
+<li><b>Honest freshness banner</b> — data timestamp, age, environment and a stale warning.</li>
+<li><b>One canonical site</b> at the root, one build pipeline, and a source link on every row.</li>
+</ul>
+
+<h2>Next, in priority order</h2>
+<div class="table-wrap"><table class="sourced">
+<thead><tr><th>Idea</th><th>Why it helps a trader</th><th>What it needs</th><th>Reference</th></tr></thead>
+<tbody>
+<tr><td>Tick-level alerting over WebSocket</td><td>Turns “≥ $0.10 between 10-minute runs” into a true real-time alert and makes the
+seconds chart live rather than tape-based.</td><td>A small always-on worker (Fly/Render/VPS) subscribing to
+<code>wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2</code>; the browser then polls your worker, not Kalshi.</td>
+<td><a href="https://docs.kalshi.com/getting_started/quick_start_websockets" target="_blank" rel="noopener noreferrer">WS quick start</a></td></tr>
+<tr><td>Demo-account portfolio</td><td>Replaces the paper ledger with the actual demo balance, positions and fills.</td>
+<td>Demo API key id + private key stored as encrypted repository secrets; signed requests per Kalshi's auth docs.</td>
+<td><a href="https://docs.kalshi.com/getting_started/api_keys" target="_blank" rel="noopener noreferrer">API keys</a></td></tr>
+<tr><td>Automated demo order execution</td><td>Moves from paper fills to real demo orders, so fill quality and fees can be measured.</td>
+<td>The same credentials plus a hard kill-switch and per-run order caps.</td>
+<td><a href="https://docs.kalshi.com/api-reference/orders/create-order-v2" target="_blank" rel="noopener noreferrer">Create order V2</a></td></tr>
+<tr><td>Event timeline with news pins</td><td>Lets you see whether a headline preceded a jump — without claiming causation.</td>
+<td>A news source with timestamps and an explicit “reference only, unverified cause” label; the event's
+<code>settlement_sources</code> already give the official resolution authority.</td>
+<td><a href="https://docs.kalshi.com/api-reference/events/get-events" target="_blank" rel="noopener noreferrer">Get Events</a></td></tr>
+<tr><td>Strategy scorecards with confidence intervals</td><td>Stops small samples from looking like an edge.</td>
+<td>More days of alerts; report n, win rate with Wilson interval, average P&amp;L per contract, and fee-adjusted P&amp;L.</td>
+<td><a href="https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval" target="_blank" rel="noopener noreferrer">Wilson interval</a></td></tr>
+<tr><td>Saved watchlists and deep links</td><td>Fewer clicks during a live event.</td><td>URL state (already used for
+<code>chart.html?ticker=…</code>) extended to filters and chat topic; localStorage for watchlists.</td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams" target="_blank" rel="noopener noreferrer">URLSearchParams</a></td></tr>
+<tr><td>Keyboard-first navigation and sound alerts</td><td>Faster scanning of two feeds.</td><td>Arrow-key feed navigation and an
+opt-in sound on new high-ROI alerts.</td><td><a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets" target="_blank" rel="noopener noreferrer">MDN</a></td></tr>
+</tbody></table></div>
+
+<h2>What is deliberately not suggested</h2>
+<ul>
+<li>More aggregate “live” counters that are not backed by a response — the previous builds did that and it was misleading.</li>
+<li>Filling blank cells with estimates. Blank plus <span class="unv">unverified</span> is the rule.</li>
+<li>Claiming a cause for a price move from the API. It does not publish one.</li>
+</ul>
 
 </main>
-<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
 </body>
 </html>

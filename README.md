@@ -1,4 +1,4 @@
-# Tradebot2
+# Tradebot2 — a Kalshi **demo** live-event desk
 
 > ### ⚠️ Start here: the verified live dashboard is [`/live/`](live/index.html)
 >
@@ -32,148 +32,123 @@
 > (first site) and [`site/`](site/index.html) (monitor prototype). Values on those
 > pages are historical; see [`flagged.html`](flagged.html).
 
-**Other generations in this repository (archives, not maintained):**
-[dash/](dash/index.html) · [pages/](pages/api-reference.html) · [topics/](topics/crypto.html) ·
-[docs/](docs/index.html) · [site/](site/index.html) · [main-site-index.html](main-site-index.html) ·
-[main-site-flagged.html](main-site-flagged.html). The canonical root site is the only one updated by
-`data.yml`; archived snapshots are frozen.
+A focused desk for five topics only — **gas prices, elections, culture, crypto and golf**. It ranks live events by flow,
+alerts on contract moves of **$0.10 or more in either direction** in two scrolling feeds, charts price against time, shows the
+resting order book, paper-trades the alerts, and follows each event to its **YES/NO** resolution.
 
-
-[![GitHub Pages](https://img.shields.io/badge/Live%20Site-GitHub%20Pages-2ea043?style=for-the-badge&logo=github)](https://kanlerxz87-cyber.github.io/Tradebot2/)
-[![CFTC DCM](https://img.shields.io/badge/Regulation-CFTC%20Designated%20Contract%20Market-blue?style=for-the-badge)](https://www.cftc.gov/filings/contractlistings/kalshiexchange)
-[![Kalshi Demo API](https://img.shields.io/badge/API-Kalshi%20Trade%20API%20v2-8b949e?style=for-the-badge)](https://docs.kalshi.com)
-
-**Kalshi Tradebot2** is an institutional-grade live event tracking, real-time price alerting, liquidity analysis, and automated simulated trading dashboard engineered for the **Kalshi Designated Contract Market (DCM)**.
-
-The platform focuses on the highest-dollar-volume events across five core sectors:
-1. **Gas Prices** (EIA US Retail Regular Gasoline benchmarks, California indices, NYMEX crude prompt month)
-2. **Elections** (Presidential, US Senate, US House, and 2025 Gubernatorial races)
-3. **Culture** (Academy Awards/Oscars, Grammy Awards, Box Office gross thresholds, TIME honors)
-4. **Crypto** (Bitcoin $100k/$110k, Ethereum, Solana, and Spot Bitcoin ETF cumulative net inflows)
-5. **Golf** (The Masters Tournament, PGA Championship, US Open, and 2025 Ryder Cup)
+Every table row links to the Kalshi API record that produced it. Anything the API did not return is blank and flagged, never
+filled in.
 
 ---
 
-## 🌐 Live GitHub Pages Site
-- **Master Dashboard**: [https://kanlerxz87-cyber.github.io/Tradebot2/](https://kanlerxz87-cyber.github.io/Tradebot2/)
-- **Gas Prices**: [https://kanlerxz87-cyber.github.io/Tradebot2/gas-prices.html](https://kanlerxz87-cyber.github.io/Tradebot2/gas-prices.html)
-- **Elections**: [https://kanlerxz87-cyber.github.io/Tradebot2/elections.html](https://kanlerxz87-cyber.github.io/Tradebot2/elections.html)
-- **Culture**: [https://kanlerxz87-cyber.github.io/Tradebot2/culture.html](https://kanlerxz87-cyber.github.io/Tradebot2/culture.html)
-- **Crypto**: [https://kanlerxz87-cyber.github.io/Tradebot2/crypto.html](https://kanlerxz87-cyber.github.io/Tradebot2/crypto.html)
-- **Golf**: [https://kanlerxz87-cyber.github.io/Tradebot2/golf.html](https://kanlerxz87-cyber.github.io/Tradebot2/golf.html)
-- **Strategies & Portfolio**: [https://kanlerxz87-cyber.github.io/Tradebot2/strategies.html](https://kanlerxz87-cyber.github.io/Tradebot2/strategies.html)
-- **Flagged for Review**: [https://kanlerxz87-cyber.github.io/Tradebot2/review.html](https://kanlerxz87-cyber.github.io/Tradebot2/review.html)
+## Read the site in this order
+
+| Page | What it answers |
+|---|---|
+| [`index.html`](https://kanlerxz87-cyber.github.io/Tradebot2/) | Overview, system status, tracked-market counts, latest swings |
+| [`dashboard.html`](https://kanlerxz87-cyber.github.io/Tradebot2/dashboard.html) | Live dashboard: chat feeds, chart, depth, paper broker |
+| [`gas-prices.html`](https://kanlerxz87-cyber.github.io/Tradebot2/gas-prices.html) · [`elections.html`](https://kanlerxz87-cyber.github.io/Tradebot2/elections.html) · [`culture.html`](https://kanlerxz87-cyber.github.io/Tradebot2/culture.html) · [`crypto.html`](https://kanlerxz87-cyber.github.io/Tradebot2/crypto.html) · [`golf.html`](https://kanlerxz87-cyber.github.io/Tradebot2/golf.html) | One topic per page, events grouped, resolution log, settlement sources |
+| [`portfolio.html`](https://kanlerxz87-cyber.github.io/Tradebot2/portfolio.html) | Paper portfolio, strategy/topic/side analytics |
+| [`executive-summary.html`](https://kanlerxz87-cyber.github.io/Tradebot2/executive-summary.html) | The one-page summary |
+| [`methodology.html`](https://kanlerxz87-cyber.github.io/Tradebot2/methodology.html) | How every number is produced, with formulas |
+| [`sources.html`](https://kanlerxz87-cyber.github.io/Tradebot2/sources.html) | Official pages and live endpoints used |
+| [`flagged.html`](https://kanlerxz87-cyber.github.io/Tradebot2/flagged.html) | Unverified items, assumptions and corrected defects (F-01 …) |
+| [`suggestions.html`](https://kanlerxz87-cyber.github.io/Tradebot2/suggestions.html) | What would make the desk more live |
 
 ---
 
-## ⚡ Kalshi API Verified Endpoints
+## Documented endpoints
 
-| Protocol | Environment | Official Verified Endpoint | Documentation Reference |
-|---|---|---|---|
-| **REST** | Primary Demo | `https://demo-api.kalshi.co/trade-api/v2` | [Kalshi API v2 Docs](https://docs.kalshi.com) |
-| **REST** | Fallback Demo | `https://external-api.demo.kalshi.co/trade-api/v2` | [Kalshi External Demo Gateway](https://external-api.demo.kalshi.co/trade-api/v2) |
-| **WebSocket** | Primary Demo | `wss://demo-api.kalshi.co/trade-api/ws/v2` | WebSocket Market Feeds |
-| **WebSocket** | Fallback Demo | `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2` | WebSocket External Gateway |
-| **REST** | Production | `https://api.elections.kalshi.com/trade-api/v2` | [Official environments page](https://docs.kalshi.com/getting_started/api_environments.md) · not used by this demo build |
+| Surface | Endpoint | Documentation |
+|---|---|---|
+| REST (demo, recommended) | `https://external-api.demo.kalshi.co/trade-api/v2` | [Demo environment](https://docs.kalshi.com/getting_started/demo_env) · [API environments](https://docs.kalshi.com/getting_started/api_environments) |
+| REST (demo, also supported) | `https://demo-api.kalshi.co/trade-api/v2` | same |
+| WebSocket (demo, recommended) | `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2` | same |
+| WebSocket (demo, also supported) | `wss://demo-api.kalshi.co/trade-api/ws/v2` | same |
+| REST (production, not used here) | `https://external-api.kalshi.com/trade-api/v2` | same |
 
----
+Kalshi documents that demo funds are mock funds, that demo credentials are separate from production, and that demo prices and
+behaviour *may not be reflective of those in real markets*. The WebSocket API requires an authenticated (signed) handshake even
+for public channels; the unauthenticated handshake was measured and rejected with HTTP 401 (`data/probe.json`).
 
-## 🛠️ Key Capabilities & Features
-
-### 1. Real-Time Price Swing Alert Engine ($\ge \$0.10$)
-- Ingests tick streams to detect high-velocity price moves greater than or equal to **$0.10 in either direction**.
-- **Dual Real-Time Scrolling Chat Interfaces**:
-  - **All Events Chat**: Unfiltered chronological feed of all contract moves $\ge \$0.10$ across all 5 categories.
-  - **Selective High-ROI Filter Chat**: Filtered stream displaying only high-edge contracts flagged by our quantitative probability model (Expected Value $\text{EV} \ge +18\%$ ROI).
-- Audio alert toggle with Web Audio synthesizer (high-pitch positive surge, low-pitch dump tone).
-
-### 2. Interactive Multi-Scale Canvas Chart & Order Book Depth
-- **Timeframe Resolution**: Dynamically switchable between **1s Ticks**, **1m Minutes**, and **1h Hours**.
-- **Y-Axis Scale**: Fixed unit interval from $\$0.00$ to $\$1.00$ reflecting implied probabilities.
-- **Sudden Jump Pins & Catalysts**: Visual pulsing markers highlight sudden $\ge \$0.10$ swings; clicking reveals the verified news catalyst, official report headline, and primary source link.
-- **Real-Time Liquidity Depth Ladder**: Displays exact discrete resting contract counts available at each bid and ask price level with horizontal volume visualizers.
-
-### 3. Automated Simulated Trading & Strategy Analytics
-- Simulates the Kalshi Demo Account with **$10,000.00 initial capital**.
-- Audits and executes 4 quantitative strategies:
-  1. `Momentum Swing Breakout`: Capitalizes on sudden upward velocity ($\Delta \ge +\$0.10$ with volume surge).
-  2. `Mean Reversion / Oversold Dip`: Buys sharp dislocations ($\Delta \le -\$0.10$) near support levels.
-  3. `High-ROI Expected Value Arbitrage`: Exploits pricing discrepancies where Model ROI $\ge 20\%$.
-  4. `Resolution Convergence Yield`: Collects yield on high-confidence ($>\$0.88$) contracts close to expiration.
-- Performance metrics: Realized/Unrealized P&L, Portfolio Equity, Win Rate %, Profit Factor, Annualized Sharpe Ratio (1.84), and Max Drawdown (3.4%).
-- Categorization tables breaking down performance by strategy type and by market topic.
-
-### 4. Line-by-Line Verification & Flagged for Review Registry
-- Every single table row is verified against primary regulatory and government sources:
-  - **Gas Prices**: [US Energy Information Administration (EIA)](https://www.eia.gov/petroleum/gasdiesel/) & [CME Group WTI](https://www.cmegroup.com/markets/energy/crude-oil/light-sweet-crude.html)
-  - **Elections**: [Federal Election Commission (FEC)](https://www.fec.gov/), [National Archives](https://www.archives.gov/), & [US House Clerk](https://clerk.house.gov/)
-  - **Culture**: [Academy of Motion Picture Arts and Sciences (AMPAS)](https://www.oscars.org/), [Recording Academy](https://www.grammy.com/), & [Box Office Mojo](https://www.boxofficemojo.com/)
-  - **Crypto**: [CoinGecko](https://www.coingecko.com/), [CME CF Benchmarks](https://www.cmegroup.com/), & [SEC EDGAR](https://www.sec.gov/edgar)
-  - **Golf**: [The Masters Tournament](https://www.masters.com/), [PGA Tour](https://www.pgatour.com/), & [USGA](https://www.usopen.com/)
-- Unverified items, rumors, or exit polls are left blank and documented on the [Flagged for Review Page](review.html).
+Browser reads of the demo REST API **are** allowed for this site's origin: CI measured
+`Access-Control-Allow-Origin: https://kanlerxz87-cyber.github.io` on a GET and a 204 preflight (`data/probe.json`).
 
 ---
 
-## 📂 Repository File Structure
+## How it works
 
 ```
-Tradebot2/
-├── index.html               # Main Dashboard (Live Chart, Depth Ladder, Dual Alerts, Top Events)
-├── gas-prices.html          # Gas Prices Deep Dive & Resolution Tracking
-├── elections.html           # Elections Deep Dive & Resolution Tracking
-├── culture.html             # Culture & Entertainment Deep Dive
-├── crypto.html              # Cryptocurrency Benchmarks & Institutional Flows
-├── golf.html                # Major Championship Golf Markets
-├── strategies.html          # Automated Simulated Trading Lab & Portfolio Analytics
-├── review.html              # Flagged for Review Registry & Line-by-Line Audit
-├── COORDINATION.md          # Multi-Session Coordination & Task Board
-├── EXECUTIVE_SUMMARY.md     # Executive Summary & Architecture Specification
-├── README.md                # System Overview & Documentation
-├── css/
-│   └── style.css            # Institutional Dark Trading Terminal Stylesheet
-└── js/
-    ├── data.js              # Verified Kalshi Contract Repository & Model Parameters
-    ├── chart.js             # Canvas Interactive Charting & Order Book Engine
-    ├── alerts.js            # Dual Scrolling Real-Time Alert Feeds
-    ├── trading.js           # Simulated Trading Engine & Portfolio Performance Tracker
-    └── app.js               # Application Orchestrator & UI Connector
+GitHub Actions
+  data.yml   (daily + on demand)  tools/build_snapshot.py  → data/snapshot.json, data/probe.json, analytics
+  collect.yml (every 5 min)       collector/run.py         → data/markets.json, alerts.json, orderbooks.json,
+                                                              resolutions.json, paper_trades.json, analytics.json
+  pages.yml  (push/PR)            verifies the published contract (13 canonical pages, links, markers, data files)
+GitHub Pages (legacy, main:/)     serves the repository root — index.html and its assets/
 ```
+
+The front end reads the committed JSON in `data/` and, where the API allows it, polls the demo REST API for live quotes
+(`assets/js/live.js`), falling back to the snapshot with an explicit status when a request fails. Nothing is invented when a
+request fails.
+
+* **Alert rule:** a market's YES price moves **≥ $0.10** in either direction. Feed 1 = all swings; feed 2 = the model's
+  high-ROI subset. The model feed is a published rule set, not a trained, back-tested edge (`methodology.html#model`).
+* **Cause of a move** is never asserted. Kalshi's API reports prices and trades; settlement sources are reference links only.
+* **Paper trading:** simulated fills, fees modelled as documented on `methodology.html#paper`; settlement values come from the
+  API `result` field. This is **not** the demo account — see F-01.
+* **Resolution:** `GET /markets/{ticker}` → `result` = `yes` / `no`; blank until Kalshi reports it.
 
 ---
 
-## 🚀 Running Locally
+## Repository layout (canonical parts)
 
-To run the live preview server locally:
-```bash
-python3 -m http.server 8080 --bind 0.0.0.0
 ```
-Open your browser to `http://localhost:8080` (or your platform preview URL).
+index.html, dashboard.html, gas-prices.html, elections.html, culture.html, crypto.html, golf.html,
+portfolio.html, executive-summary.html, methodology.html, sources.html, flagged.html, suggestions.html
+assets/css/…            stylesheets for the canonical pages
+assets/js/…             core.js, common.js, live.js (Kalshi polls + fallback), home.js, dashboard.js,
+                        category.js, portfolio.js, pages.js, chart.js
+collector/              the scheduled collector: kalshi.py, collect.py, alerts.py, resolutions.py,
+                        trading.py, strategy.py, run.py
+app/                    typed model/backtest/server modules used by the data builder and tests
+tools/                  build_snapshot.py, check_site.py, verify_data.py, probe.py, build_category_pages.py
+data/                   published JSON: markets, alerts, orderbooks, resolutions, paper trades, analytics,
+                        meta, flags, sources, requirements, probe (+ snapshot.json for the archived builds)
+tests/                  unit tests, including request signing
+```
+
+Archived generations are kept for review and are **not** maintained: `docs/` (first site), `site/` (monitor prototype),
+`dash/`, `pages/`, `topics/`, `observatory/`, `main-site-index.html`, `main-site-flagged.html`, `earlier-dashboard.html`.
+Their snapshots are frozen; see `flagged.html`.
 
 ---
 
-## Live price monitor (`/monitor/` on the Pages site)
-
-Added by session `arena-9a725a07` (branch `arena/9a725a07-tradebot2`). Published at **https://kanlerxz87-cyber.github.io/Tradebot2/monitor/**.
-
-| Path | Purpose |
-|------|---------|
-| `scripts/kalshi_collector.py` | Reads public, unauthenticated Kalshi REST endpoints (`/series`, `/events`, `/markets/{ticker}`, `/markets/{ticker}/orderbook`) and writes `site/data/*.json`. Standard library only. |
-| `scripts/check_site.py` | Checks: no broken internal links; every row of a `sourced` table has an https source link; every data record has a `source_url`. `--links-only-root DIR` checks the assembled site. |
-| `scripts/tests/mock_kalshi_server.py` | Offline mock of the documented endpoints, used to test the collector. |
-| `site/` | Monitor site (published under `/monitor/`). `site/data/` is generated at build time and not committed. |
-| `.github/workflows/pages.yml` | One Pages pipeline: collect → check → assemble (`docs/` at root, `site/` at `/monitor/`) → deploy from `main`. Runs on push, manually, and every 15 minutes. |
-
-Run locally:
+## Run it locally
 
 ```bash
-KALSHI_BASE=https://external-api.kalshi.com/trade-api/v2 python3 scripts/kalshi_collector.py
-python3 scripts/check_site.py
-python3 -m http.server -d site 8000   # http://localhost:8000
+pip install -r requirements.txt            # collector + tests
+python3 collector/run.py --data-dir data   # needs network access to *.kalshi.co
+python3 tools/check_site.py --root . --strict
+python3 tools/verify_data.py --data-dir data
+python3 -m pytest -q
+python3 -m http.server 8000                # then open http://localhost:8000/
 ```
 
-Limits (also on the site's Findings and Flagged pages):
+The site is static: no build step, no framework, SVG/canvas charts.
 
-- Trades are simulated. No orders are placed and fees are not modelled.
-- The demo-account portfolio is not connected. It needs API-key secrets that were not provided.
-- Alerts compare snapshots from consecutive scheduled runs (about 15 minutes apart), not per-second ticks.
-- The high-ROI screen is a rule set, not a validated model.
+---
+
+## Honest limitations
+
+1. **Demo only.** Prices are simulated by the venue; nothing here is evidence about production odds or liquidity (F-04).
+2. **Demo account not connected.** No API key was supplied, so balance, positions and order placement are unverified (F-01).
+   The signed client and the V2 order path exist and are unit-tested; execution is off by default.
+3. **Alert cadence** is the collection schedule (5 minutes in CI, subject to GitHub's scheduling), unless a browser poll is
+   running for the page you have open.
+4. **WebSocket streaming is not used.** It requires a signed handshake and a process that can hold a key (F-02).
+5. **The high-ROI feed is a rule set**, and paper P&L is small-sample and fee-approximate (F-05).
+6. **Older pages in this repo contain hand-written data** that was never API output. They are archived and flagged; do not cite
+   them.
+
+All open items, with evidence and what would close them, are on **`flagged.html`**. Multi-session history and task ownership are
+in **`COORDINATION.md`**.

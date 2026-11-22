@@ -13,19 +13,34 @@ import sys
 from html.parser import HTMLParser
 from urllib.parse import urlparse
 
+# The canonical site is the set of root pages linked from index.html (the
+# repository root is what GitHub Pages publishes, build_type "legacy").
+# Markers below are the mount points each page's own script needs; if one is
+# missing the page renders empty, which is exactly the failure this gate exists
+# to catch. Older generations (topics/, performance.html, pages/, docs/, dash/,
+# site/) are archives and are only link-checked where they are referenced.
 PAGES = [
-    "index.html", "performance.html", "resolutions.html", "requirements.html",
-    "sources.html", "flagged.html",
-    "topics/gas.html", "topics/elections.html", "topics/culture.html",
-    "topics/crypto.html", "topics/golf.html",
+    "index.html", "live/index.html", "dashboard.html",
+    "gas-prices.html", "elections.html", "culture.html", "crypto.html", "golf.html",
+    "portfolio.html", "executive-summary.html", "methodology.html",
+    "flagged.html", "suggestions.html", "sources.html",
 ]
 REQUIRED_SNIPPETS = {
-    "index.html": ["chatAll", "chatRoi", "chartRanges", "chartCanvas", "topicTables", "kpis"],
-    "performance.html": ["strategyRows", "topicRows", "sideRows", "openRows", "settledRows"],
-    "resolutions.html": ["stateFilter", "rows"],
-    "requirements.html": ["statusFilter", "rows"],
-    "sources.html": ["rows"],
-    "flagged.html": ["rows"],
+    # index.html became the landing page for the /live/ generation; the mount
+    # points it used to carry (data-tracked, data-open-scope, data-resolved-30d,
+    # data-total-volume) now belong to that generation and are gated below.
+    "index.html": ['id="site-head"', "live/index.html"],
+    "live/index.html": ['id="kpis"', 'id="topics"', 'id="events"'],
+    "dashboard.html": ['id="dashboard-root"', 'id="live-last"', 'id="paper-mode"'],
+    "gas-prices.html": ['id="topic-markets"', 'id="topic-swings"', 'id="topic-resolutions"'],
+    "elections.html": ['id="topic-markets"', 'id="topic-swings"', 'id="topic-resolutions"'],
+    "culture.html": ['id="topic-markets"', 'id="topic-swings"', 'id="topic-resolutions"'],
+    "crypto.html": ['id="topic-markets"', 'id="topic-swings"', 'id="topic-resolutions"'],
+    "golf.html": ['id="topic-markets"', 'id="topic-swings"', 'id="topic-resolutions"'],
+    "portfolio.html": ['id="pf-equity"', 'id="pf-chart"', 'id="pf-trades"'],
+    "flagged.html": ['id="flag-table"'],
+    "methodology.html": ['id="pipeline"', 'id="fields"', 'id="verification"'],
+    "sources.html": ['id="rows"'],
 }
 
 
@@ -188,6 +203,12 @@ def main() -> int:
                             continue
                         errors.append(f"{page}: anchor not found -> {href}")
 
+        # The landing page and the /live/ generation render their nav from JS
+        # (TB.renderHeader), so a literal <a href> is not in the source there.
+        # They are still link-checked above; the static-nav pages must carry the
+        # Flagged and Sources links explicitly.
+        if page == "index.html" or page.startswith("live/"):
+            continue
         for snippet, label in [("flagged.html", "Flagged"), ("sources.html", "Sources")]:
             if f'href="{snippet}"' not in html and f'href="../{snippet}"' not in html:
                 errors.append(f"{page}: navigation is missing the {label} link")

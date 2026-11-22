@@ -38,7 +38,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--environment", default="demo")
     parser.add_argument("--out", default=str(Path(__file__).resolve().parent.parent / "data"))
-    parser.add_argument("--per-topic", type=int, default=8)
+    parser.add_argument("--per-topic", type=int, default=25)
     parser.add_argument("--candle-hours", type=int, default=8)
     parser.add_argument("--origin", default=os.getenv("SITE_ORIGIN", "https://kanlerxz87-cyber.github.io"))
     parser.add_argument("--skip-probe", action="store_true")

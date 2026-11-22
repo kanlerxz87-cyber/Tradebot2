@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gas prices · Tradebot2</title>
+<title>Gas prices · Kalshi Demo Desk</title>
+<meta name="description" content="Gas prices">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/app.js" defer></script>
 </head>
@@ -12,16 +13,22 @@
 <main>
 
 <h1>Gas prices</h1>
-<p class="lead">Open markets, grouped by event, with the latest YES price, change since the previous run, and the source link for each row.</p>
-<p class="note" id="topic-note">Kalshi tag “Oil &amp; Gas” (category Commodities). The API does not separate retail gasoline from oil, natural gas or heating-oil contracts, so this page can include non-gasoline markets. See Flagged for Review.</p>
-<div class="stale" id="fresh"></div>
-<h2>Markets</h2>
+<p class="lead">Open gas-price and energy markets on the Kalshi demo exchange, grouped by event. This is the “Oil &amp; Gas” tag under the Commodities category — Kalshi publishes no retail-gasoline category.</p>
+<p class="note" id="topic-note"></p>
+<div class="freshness" id="fresh"></div>
+<h2>Events ranked by 24h dollar notional (computed)</h2>
+<div class="table-wrap"><table class="sourced">
+<thead><tr><th class="num">#</th><th>Event</th><th>Topic</th><th class="num">24h contracts</th>
+<th class="num">24h $ (computed)</th><th class="num">Open interest</th><th>Closes</th><th>Source</th></tr></thead>
+<tbody id="topic-events"></tbody></table></div>
+<h2>Markets in this topic</h2>
+<p class="note">Markets with 24h trading or open interest, grouped by event and ordered by computed 24h dollar notional. Each row links to the market object that produced it.</p>
 <div id="mk-table"></div>
-<h2>Live alerts for Gas prices (≥ $0.10 move)</h2>
-<div class="scroll" id="feed"></div>
-<p class="note">Simulated trades only. No orders are placed and no real money is used. Prices are Kalshi API values at collection time.</p>
+<h2>Alerts for this topic (≥ $0.10)</h2>
+<div class="chat"><div class="scroll" id="feed" style="height:380px"></div></div>
+<div class="card flag"><b>Kalshi demo environment.</b> Every market on this site is read live from the Kalshi <b>demo</b> REST API (<code>external-api.demo.kalshi.co/trade-api/v2</code>). Kalshi documents that demo funds are mock funds, that demo credentials are separate from production, and that demo prices and behaviour "may not be reflective of those in real markets". <a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener noreferrer">Official source ↗</a>. Nothing here is trading advice, and no orders are placed.</div>
 
 </main>
-<footer>Tradebot2 · Kalshi public market data · Simulated trades only · Not financial advice · <a href="flagged.html">Flagged for Review</a></footer>
+<footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>
 </body>
 </html>
