@@ -2,7 +2,7 @@ name: Verify dashboard
 on:
   pull_request:
   push:
-    branches: ['arena/**']
+    branches: ["arena/**"]
 permissions:
   contents: read
   checks: write

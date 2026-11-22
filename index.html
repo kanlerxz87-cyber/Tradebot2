@@ -1,42 +1,129 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A source-linked Kalshi demo market observatory. Price alerts, liquidity and transparent paper strategy analysis.">
-  <meta name="color-scheme" content="light"><title>Tradebot / Market observatory</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%231e493c'/%3E%3Cpath d='M10 13h20M20 13v17' stroke='%23c6ef86' stroke-width='5'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./src/style.css"><script type="module" src="./src/app.js"></script>
-</head>
-<body>
-<a class="skip" href="#main">Skip to content</a>
-<aside class="sidebar">
-  <a href="#/" class="brand"><span class="brandmark">t<span>↗</span></span>tradebot<span class="brand-dot">.</span></a>
-  <div class="workspace"><span class="workspace-icon">K</span><div>Kalshi workspace<small>Demo environment</small></div><span class="chevron">⌄</span></div>
-  <div class="nav-label">WORKSPACE</div>
-  <nav aria-label="Workspace">
-    <a href="#/" data-page="overview"><span>▦</span> Overview</a>
-    <a href="#/alerts" data-page="alerts"><span>ϟ</span> Live alerts <b id="alert-count">0</b></a>
-    <a href="#/portfolio" data-page="portfolio"><span>◴</span> Paper portfolio</a>
-    <a href="#/strategies" data-page="strategies"><span>⌘</span> Strategy lab</a>
-  </nav>
-  <div class="nav-label">MARKET TOPICS <span>5</span></div>
-  <nav id="topic-nav" aria-label="Market topics"></nav>
-  <div class="nav-label">RESEARCH & TRUST</div>
-  <nav aria-label="Research">
-    <a href="#/summary" data-page="summary"><span>▤</span> Executive summary</a>
-    <a href="#/sources" data-page="sources"><span>↗</span> Source register</a>
-    <a href="#/review" data-page="review"><span>⚑</span> Flagged for review <i class="review-dot"></i></a>
-  </nav>
-  <div class="sidebar-bottom"><div class="safety"><span class="dot"></span> DEMO ONLY<small>No real funds. No hidden trades.</small></div><a class="repo" href="https://github.com/kanlerxz87-cyber/Tradebot2" target="_blank" rel="noopener noreferrer">View repository <span>↗</span></a><div class="profile"><span>TB</span><div>Market observatory<small>Independent research workspace</small></div></div></div>
-</aside>
-<div class="shell">
-  <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <strong id="crumb">Overview</strong></div><div class="top-actions"><span class="demo-pill">KALSHI DEMO</span><span class="top-date" id="utc-clock"></span><a href="https://demo.kalshi.co/" target="_blank" rel="noopener noreferrer" class="external">Open Kalshi ↗</a></div></header>
-  <main id="main" tabindex="-1">
-    <div class="heading"><div><div class="eyebrow">YOUR EDGE STARTS WITH CLARITY</div><h1 id="page-title">Market overview<span class="title-dot">.</span></h1><p id="page-description">Follow the money. Catch the move. Stay ahead of the market.</p></div><div class="heading-actions"><button id="refresh" class="button secondary">↻ <span>Refresh data</span></button><button id="export" class="button primary">↓ Export data</button></div></div>
-    <div id="connection" class="connection" role="status"><span class="dot"></span><strong>Connecting to market data</strong><span>Only official observations will appear.</span></div>
-    <section id="content" aria-label="Dashboard content"></section>
-    <footer><span><strong>tradebot.</strong> A clearer view of the market.</span><span>Demo market research · Not investment advice · <a href="#/sources">Data & methodology ↗</a></span></footer>
-  </main>
-</div>
-<div id="toast" role="status" hidden></div>
-</body></html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A source-linked Kalshi demo market observatory. Price alerts, liquidity and transparent paper strategy analysis."
+    />
+    <meta name="color-scheme" content="light" />
+    <title>Tradebot / Market observatory</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%231e493c'/%3E%3Cpath d='M10 13h20M20 13v17' stroke='%23c6ef86' stroke-width='5'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./src/style.css" />
+    <script type="module" src="./src/app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <aside class="sidebar">
+      <a href="#/" class="brand"
+        ><span class="brandmark">t<span>↗</span></span
+        >tradebot<span class="brand-dot">.</span></a
+      >
+      <div class="workspace">
+        <span class="workspace-icon">K</span>
+        <div>Kalshi workspace<small>Demo environment</small></div>
+        <span class="chevron">⌄</span>
+      </div>
+      <div class="nav-label">WORKSPACE</div>
+      <nav aria-label="Workspace">
+        <a href="#/" data-page="overview"><span>▦</span> Overview</a>
+        <a href="#/alerts" data-page="alerts"
+          ><span>ϟ</span> Live alerts <b id="alert-count">0</b></a
+        >
+        <a href="#/portfolio" data-page="portfolio"
+          ><span>◴</span> Paper portfolio</a
+        >
+        <a href="#/strategies" data-page="strategies"
+          ><span>⌘</span> Strategy lab</a
+        >
+      </nav>
+      <div class="nav-label">MARKET TOPICS <span>5</span></div>
+      <nav id="topic-nav" aria-label="Market topics"></nav>
+      <div class="nav-label">RESEARCH & TRUST</div>
+      <nav aria-label="Research">
+        <a href="#/summary" data-page="summary"
+          ><span>▤</span> Executive summary</a
+        >
+        <a href="#/sources" data-page="sources"
+          ><span>↗</span> Source register</a
+        >
+        <a href="#/review" data-page="review"
+          ><span>⚑</span> Flagged for review <i class="review-dot"></i
+        ></a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="safety">
+          <span class="dot"></span> DEMO ONLY<small
+            >No real funds. No hidden trades.</small
+          >
+        </div>
+        <a
+          class="repo"
+          href="https://github.com/kanlerxz87-cyber/Tradebot2"
+          target="_blank"
+          rel="noopener noreferrer"
+          >View repository <span>↗</span></a
+        >
+        <div class="profile">
+          <span>TB</span>
+          <div>
+            Market observatory<small>Independent research workspace</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div class="shell">
+      <header class="topbar">
+        <div class="breadcrumb">
+          Workspace <span>/</span> <strong id="crumb">Overview</strong>
+        </div>
+        <div class="top-actions">
+          <span class="demo-pill">KALSHI DEMO</span
+          ><span class="top-date" id="utc-clock"></span
+          ><a
+            href="https://demo.kalshi.co/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="external"
+            >Open Kalshi ↗</a
+          >
+        </div>
+      </header>
+      <main id="main" tabindex="-1">
+        <div class="heading">
+          <div>
+            <div class="eyebrow">YOUR EDGE STARTS WITH CLARITY</div>
+            <h1 id="page-title">
+              Market overview<span class="title-dot">.</span>
+            </h1>
+            <p id="page-description">
+              Follow the money. Catch the move. Stay ahead of the market.
+            </p>
+          </div>
+          <div class="heading-actions">
+            <button id="refresh" class="button secondary">
+              ↻ <span>Refresh data</span></button
+            ><button id="export" class="button primary">↓ Export data</button>
+          </div>
+        </div>
+        <div id="connection" class="connection" role="status">
+          <span class="dot"></span><strong>Connecting to market data</strong
+          ><span>Only official observations will appear.</span>
+        </div>
+        <section id="content" aria-label="Dashboard content"></section>
+        <footer>
+          <span><strong>tradebot.</strong> A clearer view of the market.</span
+          ><span
+            >Demo market research · Not investment advice ·
+            <a href="#/sources">Data & methodology ↗</a></span
+          >
+        </footer>
+      </main>
+    </div>
+    <div id="toast" role="status" hidden></div>
+  </body>
+</html>
