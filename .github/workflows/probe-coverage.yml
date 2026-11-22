@@ -1,0 +1,22 @@
+name: Probe topic coverage
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe one known series per topic
+        run: python3 scripts/probe_coverage.py
+      - name: Commit the evidence
+        run: |
+          git config user.name "arena-agent"
+          git config user.email "297053741+arena-agent@users.noreply.github.com"
+          git add probe/coverage.json
+          git commit -m "chore(probe): topic coverage evidence [skip ci]" || echo "nothing to commit"
+          git push
