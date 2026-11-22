@@ -123,6 +123,17 @@
                 <td><a href="data/snapshot.json">Snapshot ↗</a> · <a href="https://docs.kalshi.com/api-reference/market/get-markets.md" target="_blank" rel="noopener">Get Markets (series_ticker filter) ↗</a> · <code>app/collector.py</code>.</td>
                 <td>Closed by supplementing paginated discovery with targeted <code>series_ticker</code> queries across all 5 topics.</td>
               </tr>
+              <tr id="F-13">
+                <td class="mono">F-13</td><td><span class="badge neutral">Observed</span></td>
+                <td><strong>Golf had no open events at collection time even though the catalogue lists 134 golf series.</strong>
+                  The board is empty by measurement, not by a filter error. An earlier probe reported “200 open KXPGATOUR markets”;
+                  that filter was unknown to the API and was ignored, returning the whole book.</td>
+                <td><span class="badge green">Verified</span></td>
+                <td><a href="data/coverage.json">data/coverage.json</a> (<code>golf_series_events</code>: 134 series, 0 open events for the four largest) ·
+                  <code>scripts/probe_coverage.py</code> · <a href="https://docs.kalshi.com/api-reference/market/get-series-list.md" target="_blank" rel="noopener">Get Series List ↗</a></td>
+                <td>Re-run the probe when the tour calendar resumes; the page will fill automatically because the collector now enumerates the
+                  official golf series instead of guessing tickers.</td>
+              </tr>
               <tr id="F-10">
                 <td class="mono">F-10</td><td><span class="badge warn">Medium</span></td>
                 <td><strong>The committed snapshot can go stale.</strong> Live prices are polled by the browser, but the fallback snapshot is only as fresh as the last data-workflow run.</td>
