@@ -1,0 +1,162 @@
+{
+  "flags": [
+    {
+      "id": "F-01",
+      "impact": "All live collection therefore runs on GitHub Actions (collect.yml / probe-api.yml), which do have egress. The repository's committed data is produced there.",
+      "observed": "The agent sandbox that built this repository has no network route to *.kalshi.co: TLS is closed (SSLZeroReturnError) and DNS resolves but the handshake never completes. The official docs pages were reachable, so documentation was verified directly.",
+      "source": "https://docs.kalshi.com/getting_started/api_environments",
+      "status": "open",
+      "title": "Demo API not reachable from the build sandbox"
+    },
+    {
+      "id": "F-02",
+      "impact": "Every number on this site is a demo-environment number. It is labelled as such in the header and footer, and must not be read as a production price.",
+      "observed": "Kalshi's own demo guide states: \"The price and behavior of markets in the demo environment may not be reflective of those in real markets.\"",
+      "source": "https://docs.kalshi.com/getting_started/demo_env",
+      "status": "open",
+      "title": "Demo environment prices are not production prices"
+    },
+    {
+      "id": "F-03",
+      "impact": "A purely static, credential-free web page cannot hold a WebSocket. The dashboard therefore uses REST polling (browser live reads + committed snapshots). True streaming requires the demo credentials, which this session cannot create.",
+      "observed": "The official WebSocket guide states that connections require authentication during the handshake, and that even public market-data channels use the authenticated session.",
+      "source": "https://docs.kalshi.com/getting_started/quick_start_websockets",
+      "status": "open",
+      "title": "WebSocket API requires an authenticated handshake"
+    },
+    {
+      "id": "F-04",
+      "impact": "Live *signed* reads (balance, positions, order entry) are therefore performed server-side in GitHub Actions, not in the visitor's browser. The probe records the exact preflight response in data/verify-api.json so the current behaviour is measured rather than assumed.",
+      "observed": "Signed requests must send KALSHI-ACCESS-KEY, KALSHI-ACCESS-SIGNATURE and KALSHI-ACCESS-TIMESTAMP headers. A cross-origin browser request with custom headers triggers a preflight, and the allowed header list is controlled by Kalshi, not by this project.",
+      "source": "https://docs.kalshi.com/getting_started/quick_start_authenticated_requests",
+      "status": "open",
+      "title": "Signed REST calls from a browser are subject to CORS preflight"
+    },
+    {
+      "id": "F-05",
+      "impact": "Demo-account balance, positions and order execution are implemented but untested end to end. portfolio.json says configured=false and the performance page says so explicitly. Simulated (paper) trading does run and is fully tracked.",
+      "observed": "KALSHI_DEMO_API_KEY_ID / KALSHI_DEMO_PRIVATE_KEY are repository secrets that only the repository owner can create; none were present.",
+      "source": "https://docs.kalshi.com/api-reference/portfolio/get-balance",
+      "status": "unverified",
+      "title": "No demo API credentials in this session"
+    },
+    {
+      "id": "F-06",
+      "impact": "The engine defaults to cent rounding (which matches all 42 printed values, asserted by tests/test_fees.py) and records the rounding rule in every trade's fee_model field. Sub-cent markets could differ; flagged for review.",
+      "observed": "The fee schedule PDF says the fee is rounded up \"such that the fee + positionCost is rounded to a centicent\" ($0.0001). Every value in the PDF's own General Trading Fees Table is reproduced only by rounding up to the next whole cent. Example: 1 contract at $0.50 \u2192 formula gives $0.0175, table prints $0.02.",
+      "source": "https://kalshi.com/docs/kalshi-fee-schedule.pdf",
+      "status": "open",
+      "title": "Fee schedule: formula note vs printed table"
+    },
+    {
+      "id": "F-07",
+      "impact": "\"Highest dollar amount\" ranking uses est_volume_24h_dollars = volume_24h_fp \u00d7 last price, which is an estimate and is labelled as one in data/meta.json and on the dashboard.",
+      "observed": "Market objects expose volume_fp / volume_24h_fp as contract counts. There is no traded-dollar field on the market object.",
+      "source": "https://docs.kalshi.com/api-reference/market/get-markets",
+      "status": "open",
+      "title": "Volume is reported in contracts, not dollars"
+    },
+    {
+      "id": "F-08",
+      "impact": "An explicit exclusion (KXNDKOIL) is recorded in collector/topics.py with its reason, rather than a silent filter. Other crude series may need the same treatment; review the matched series list on the Gas topic page.",
+      "observed": "Kalshi's `Oil & Gas` / `Oil and energy` tags also cover series such as \"North Dakota crude oil production\", which are not retail gasoline prices.",
+      "source": "https://demo-api.kalshi.co/trade-api/v2/series?tags=Oil%20and%20energy&limit=200",
+      "status": "open",
+      "title": "Gas topic: crude-oil series carry the same tags"
+    },
+    {
+      "id": "F-09",
+      "impact": "No causal claim is made anywhere on the site. Each alert links to its own API row and market page so a human can investigate. Adding attribution would require a news API and an explicit correlation method.",
+      "observed": "The brief asks which events or links may have caused a jump of \u2265 $0.10. This project has no verified, official news source that can be tied to a specific contract move.",
+      "source": "https://demo-api.kalshi.co/trade-api/v2/markets/trades?limit=5",
+      "status": "open",
+      "title": "No verified news-attribution feed"
+    },
+    {
+      "id": "F-10",
+      "impact": "A market that settles while the collector is paused could be missed by the live poll. The tracker keeps its own record of every market it has seen, so a missing row is visible as `awaiting_result` rather than being silently dropped. Historical fallback is documented but not yet wired in.",
+      "observed": "Kalshi partitions data into live and historical tiers; settled markets older than the `market_settled_ts` cutoff stop appearing in GET /markets and move to GET /historical/markets.",
+      "source": "https://docs.kalshi.com/getting_started/historical_data",
+      "status": "open",
+      "title": "Resolution state depends on live-endpoint availability"
+    },
+    {
+      "id": "F-11",
+      "impact": "There was nothing to review line by line, so this build is additive. Findings are recorded in the README's \"Repo review\" section. No other session had a claim on the task board.",
+      "observed": "At commit 003447e the repository held a single file, README.md, containing \"# Tradebot2\". There was no code, no license file, no CI configuration and no Pages content; Pages was enabled on main and served an empty site.",
+      "source": "https://github.com/kanlerxz87-cyber/Tradebot2/commit/003447ea92f5fdd7c2ee66558876c99237818f38",
+      "status": "resolved",
+      "title": "Repo review: repository contained only a one-line README"
+    },
+    {
+      "id": "F-12",
+      "impact": "The 5-minute cadence in collect.yml is a target, not a guarantee; gaps appear as wider spacing on the charts and in run_log.json timestamps. The site never back-fills a gap.",
+      "observed": "GitHub documents that scheduled workflows can be delayed and are disabled automatically after 60 days of repository inactivity.",
+      "source": "https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule",
+      "status": "open",
+      "title": "Scheduled GitHub Actions runs are best-effort"
+    },
+    {
+      "id": "F-13",
+      "impact": "A $0.10 threshold is unaffected by tick size, but fee rounding on sub-cent markets could differ from the cent-rounded model (see F-06).",
+      "observed": "The fixed-point docs list markets with 0.001 / 0.0001 tick sizes (e.g. multivariate, some crypto series). The dashboard's y axis and delta arithmetic handle them, but the tracked demo markets observed in this session used $0.01 grids.",
+      "source": "https://docs.kalshi.com/getting_started/fixed_point_migration",
+      "status": "open",
+      "title": "Sub-cent price grids are supported by the API but not exercised here"
+    },
+    {
+      "id": "F-14",
+      "impact": "This is deliberate: matching on title keywords would be inference. The matched series list is published per topic so a missing series is easy to spot and add to collector/topics.py.",
+      "observed": "Series metadata (category / categories / tags) is used to assign a topic. A contract whose wording implies a topic but whose series metadata does not carry a matching tag would not be picked up.",
+      "source": "https://docs.kalshi.com/getting_started/terms",
+      "status": "review",
+      "title": "Topic rules cover categories and tags, not individual contract wording"
+    },
+    {
+      "id": "F-15",
+      "impact": "Those pages are preserved unchanged on this site so no work is lost, but they are NOT source-linked to a live API response and their numbers should not be used. The current pages (dashboard, topics/*, performance, resolutions) read only committed API responses and carry a per-row source link. This is the single most important thing to review.",
+      "observed": "The pages delivered by the earlier sessions (gas-prices.html, elections.html, culture.html, crypto.html, golf.html, strategies.html) render records from js/data.js. That file contains hand-built contracts with tickers such as GAS-24DEC-3.15, PRES-24-DJT, OSCAR-BESTPIC-25 and order books with round quantities, and marks them as verified against the Kalshi Rulebook. The Kalshi markets API returns 404 for an unknown ticker rather than a price, and no such tickers were found in the demo series list.",
+      "source": "https://demo-api.kalshi.co/trade-api/v2/series?category=Economics&limit=200",
+      "status": "open",
+      "title": "Earlier session pages show constructed sample contracts, not API data"
+    },
+    {
+      "id": "F-16",
+      "impact": "No production calls are made by this build, so nothing is broken today. The README is corrected on this branch to show the official hosts and to keep the earlier text as a quoted, flagged claim.",
+      "observed": "README.md and js/data.js state https://trading-api.kalshi.com/trade-api/v2 as the production REST host and .../documentation as the docs URL. The official documentation names https://external-api.kalshi.com/trade-api/v2 and https://api.elections.kalshi.com/trade-api/v2 as the production base URLs; trading-api is not listed. A live request to https://external-api.kalshi.com/trade-api/v2/exchange/status on 2026-11-22 returned exchange_active=true; https://trading-api.kalshi.com/trade-api/v2 did not return a page.",
+      "source": "https://docs.kalshi.com/getting_started/api_environments",
+      "status": "resolved",
+      "title": "Earlier README lists trading-api.kalshi.com as the production endpoint"
+    },
+    {
+      "id": "F-17",
+      "impact": "Settlement-source columns on the earlier pages may mislead. The current topic pages show the settlement source that the series object itself returns, with a link to GET /series/{ticker}.",
+      "observed": "The earlier gas table cites EIA and \"Kalshi Rulebook Rule 502\" as the settlement source. Kalshi's own gas series list AAA (https://gasprices.aaa.com) as the settlement source and uses contract terms AAAGAS.pdf / AAAGASNEW.pdf. EIA is not the settlement source for the series returned by the API in this session.",
+      "source": "https://demo-api.kalshi.co/trade-api/v2/series/KXAAAGASD",
+      "status": "open",
+      "title": "Earlier pages pair Kalshi contracts with non-Kalshi source agencies"
+    },
+    {
+      "id": "F-18",
+      "impact": "Duplicate navigation exists by design so that no earlier work is deleted. A follow-up can retire the earlier pages once the reviewer is satisfied.",
+      "observed": "This branch merged origin/main, which already contained a dashboard from three earlier sessions. index.html now shows the current source-linked dashboard and a table linking every earlier page.",
+      "source": "https://github.com/kanlerxz87-cyber/Tradebot2/pulls?q=is%3Apr",
+      "status": "open",
+      "title": "Merge note: two dashboards now coexist"
+    },
+    {
+      "id": "F-19",
+      "impact": "The dashboard, collector and CI described in this repository would not be published. The work was re-submitted in a fresh PR instead of being assumed merged.",
+      "observed": "PR #5 was closed with the note that its files were preserved under archive/parallel-sessions/open-prs/pr5/ and that its ancestry was merged into PR #6. On origin/main that directory does not exist, PR #6 is still open, and none of the branch's files (collector/, topics/, performance.html, flagged.html, tools/verify_data.py) are present.",
+      "severity": "review",
+      "source": {
+        "label": "git ls-tree -r origin/main; gh pr view 5, 6",
+        "url": "https://github.com/kanlerxz87-cyber/Tradebot2/pulls?q=is%3Apr"
+      },
+      "status": "open",
+      "title": "A closed pull request claimed to preserve this branch's work; it did not"
+    }
+  ],
+  "generated_at": "2026-11-22T07:30:00Z",
+  "note": "Irregularities and unverified items found during this build. None block publication."
+}

@@ -1,5 +1,15 @@
-# Generated at build time by scripts/kalshi_collector.py (not committed)
+# Generated at build time by scripts/kalshi_collector.py and the collectors (not committed)
 site/data/
 state/
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+.venv/
+# Editor / OS
+.DS_Store
+Thumbs.db
+# Never commit credentials
+*.pem
+*.key
+secrets/
+.env

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elections · Tradebot2 Kalshi demo dashboard</title>
+<meta name="description" content="Elections: live Kalshi demo markets, order-book liquidity, ≥ $0.10 swing alerts and resolution status.">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>📈</text></svg>">
+</head>
+<body data-topic="elections">
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">Tradebot<span class="dot">2</span></a>
+    <a class="navlink" href="../index.html">Dashboard</a>
+    <a class="navlink" href="gas.html">Gas</a>
+    <a class="navlink" href="elections.html" aria-current="page">Elections</a>
+    <a class="navlink" href="culture.html">Culture</a>
+    <a class="navlink" href="crypto.html">Crypto</a>
+    <a class="navlink" href="golf.html">Golf</a>
+    <a class="navlink" href="../performance.html">Performance</a>
+    <a class="navlink" href="../resolutions.html">Resolutions</a>
+    <a class="navlink" href="../requirements.html">Requirements</a>
+    <a class="navlink" href="../sources.html">Sources</a>
+    <a class="navlink" href="../flagged.html">Flagged</a>
+    <span class="spacer"></span>
+    <span class="pill">topic · elections</span>
+  </div>
+</header>
+<main class="wrap">
+  <p class="small muted" style="margin:0"><a href="../index.html">Dashboard</a> / Elections</p>
+  <h1>Elections</h1>
+  <p class="lede" id="blurb">Election contracts: US and international elections, nominations, and leadership races.</p>
+
+  <div class="grid cards" id="kpis"></div>
+
+  <div class="section two">
+    <div class="card">
+      <h3 style="margin-top:0">How this topic is selected</h3>
+      <p class="small muted">A series belongs to this topic when any published rule below matches its
+        official Kalshi <code>category</code>, <code>categories</code> or subcategory <code>tags</code>.
+        Rules are published in <code>data/meta.json</code> by the collector, so the selection can be audited.</p>
+      <ul class="small" id="rules"></ul>
+      <p class="small muted"><span id="seriesCount">0</span> series matched · tickers:
+        <span id="seriesList" class="small"></span></p>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Swing feed · ≥ $0.10</h3>
+      <div class="chat" id="feed" style="height:300px"></div>
+    </div>
+  </div>
+
+  <div class="section" id="chartPanel" hidden>
+    <div class="filters">
+      <h2 style="margin:0" id="chartTitle">Chart</h2>
+      <span class="spacer" style="flex:1"></span>
+      <div class="seg" id="chartRanges" role="group" aria-label="Chart time range">
+        <button data-range="1m" aria-pressed="false">1 min</button>
+        <button data-range="5m" aria-pressed="false">5 min</button>
+        <button data-range="30m" aria-pressed="false">30 min</button>
+        <button data-range="1h" aria-pressed="true">1 hour</button>
+        <button data-range="6h" aria-pressed="false">6 hours</button>
+        <button data-range="24h" aria-pressed="false">24 hours</button>
+      </div>
+    </div>
+    <div class="two">
+      <div class="card"><canvas class="chart" id="chartCanvas"></canvas>
+        <p class="small muted" style="margin:8px 0 0">x = time (UTC), y = YES contract price. Dots mark captured ≥ $0.10 moves.</p></div>
+      <div class="card" id="chartBook"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="filters">
+      <h2 style="margin:0">Markets</h2>
+      <input type="search" id="search" placeholder="Filter this topic…" style="min-width:240px">
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr>
+        <th>Market</th><th class="num">YES bid / ask</th><th class="num">Mid</th>
+        <th class="num">Contracts at best ask</th><th class="num">Ask-side $</th>
+        <th class="num">Est. 24h $ volume</th><th class="num">Open interest</th>
+        <th>Result</th><th>Closes (UTC)</th><th>Source</th>
+      </tr></thead>
+      <tbody id="marketRows"><tr><td colspan="10" class="muted">loading…</td></tr></tbody>
+    </table></div>
+  </div>
+
+  <div class="section note">
+    <strong>Verification.</strong> Every row links to the exact API URL it was read from. Fields the
+    API did not return show “—” and are listed on the <a href="../flagged.html">Flagged for Review</a> page
+    when they matter. Contract rules (settlement source, strike) are shown on the
+    <a href="../sources.html">Sources</a> page per series.
+  </div>
+</main>
+<footer><div class="wrap">
+  Tradebot2 · Kalshi demo environment · <a href="../flagged.html">flagged items</a> ·
+  <a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener">official endpoints</a>
+</div></footer>
+<script src="../assets/js/util.js"></script>
+<script src="../assets/js/chart.js"></script>
+<script src="../assets/js/topic.js"></script>
+</body>
+</html>

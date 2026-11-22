@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resolution tracker · Tradebot2</title>
+<meta name="description" content="Every tracked Kalshi demo market followed to settlement, with the yes/no result taken from the exchange's own market object.">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<header class="site"><div class="wrap nav">
+  <a class="brand" href="index.html">Tradebot<span class="dot">2</span></a>
+  <a class="navlink" href="index.html">Dashboard</a>
+  <a class="navlink" href="topics/gas.html">Gas</a>
+  <a class="navlink" href="topics/elections.html">Elections</a>
+  <a class="navlink" href="topics/culture.html">Culture</a>
+  <a class="navlink" href="topics/crypto.html">Crypto</a>
+  <a class="navlink" href="topics/golf.html">Golf</a>
+  <a class="navlink" href="performance.html">Performance</a>
+  <a class="navlink" href="resolutions.html" aria-current="page">Resolutions</a>
+  <a class="navlink" href="requirements.html">Requirements</a>
+  <a class="navlink" href="sources.html">Sources</a>
+  <a class="navlink" href="flagged.html">Flagged</a>
+</div></header>
+<main class="wrap">
+  <h1>Resolution tracker</h1>
+  <p class="lede">
+    Each market is polled until it stops trading, then recorded with the settlement the exchange
+    published. A market counts as <strong>resolved</strong> only when its own <code>result</code>
+    field is <code>yes</code> or <code>no</code>; anything else stays in “awaiting result” rather
+    than being inferred.
+  </p>
+  <div class="grid cards" id="kpis"></div>
+
+  <div class="section filters">
+    <div class="seg" id="stateFilter" role="group" aria-label="Resolution state">
+      <button data-state="all" aria-pressed="true">All</button>
+      <button data-state="resolved" aria-pressed="false">Resolved</button>
+      <button data-state="yes" aria-pressed="false">Resolved yes</button>
+      <button data-state="no" aria-pressed="false">Resolved no</button>
+      <button data-state="open" aria-pressed="false">Still open</button>
+    </div>
+    <input type="search" id="search" placeholder="Filter by market, ticker or topic…" style="min-width:260px">
+  </div>
+
+  <div class="tablewrap"><table>
+    <thead><tr>
+      <th>Topic</th><th>Market</th><th>State</th><th>Result</th>
+      <th class="num">Settlement value</th><th>Resolved (UTC)</th><th>Closes (UTC)</th><th>Source</th>
+    </tr></thead>
+    <tbody id="rows"><tr><td colspan="8" class="muted">loading…</td></tr></tbody>
+  </table></div>
+
+  <div class="section note">
+    <strong>Where the result comes from.</strong> The collector re-reads
+    <code>GET /markets/{ticker}</code> for anything still open; the <code>result</code> and
+    <code>settlement_value_dollars</code> fields are copied verbatim.
+    See <a href="https://docs.kalshi.com/getting_started/market_lifecycle" target="_blank" rel="noopener">market lifecycle ↗</a>
+    and <a href="https://docs.kalshi.com/getting_started/market_settlement" target="_blank" rel="noopener">settlement ↗</a>.
+  </div>
+</main>
+<footer><div class="wrap">Tradebot2 · Kalshi demo · <a href="flagged.html">flagged items</a></div></footer>
+<script src="assets/js/util.js"></script>
+<script>
+(function () {
+  const TB = window.TB; const $ = (s) => document.querySelector(s);
+  let records = [], filter = 'all';
+  const match = (r) => {
+    if (filter === 'all') return true;
+    if (filter === 'resolved') return r.state === 'resolved';
+    if (filter === 'yes') return r.result === 'yes';
+    if (filter === 'no') return r.result === 'no';
+    if (filter === 'open') return r.state !== 'resolved';
+    return true;
+  };
+  function render() {
+    const q = ($('#search').value || '').trim().toLowerCase();
+    const rows = records.filter(match).filter((r) => !q || JSON.stringify(r).toLowerCase().includes(q));
+    $('#rows').innerHTML = rows.map((r) => `<tr>
+      <td>${TB.topicTag(r.topic)}</td>
+      <td>${TB.esc(r.title || r.ticker)}<div class="small muted">${TB.esc(r.subtitle || '')} · <code>${TB.esc(r.ticker)}</code></div></td>
+      <td><span class="tag">${TB.esc(r.state || 'open')}</span></td>
+      <td>${r.result ? `<span class="tag ${r.result}">${TB.esc(r.result)}</span>` : '<span class="muted">—</span>'}</td>
+      <td class="num">${r.settlement_value_dollars != null && r.settlement_value_dollars !== '' ? TB.fmtPrice(r.settlement_value_dollars) : '<span class="muted">—</span>'}</td>
+      <td class="small">${TB.utc(r.resolved_at || r.settlement_ts) || '—'}</td>
+      <td class="small">${TB.utc(r.close_time) || '—'}</td>
+      <td>${TB.sourceLink(r.source_url, 'API ↗')}</td></tr>`).join('')
+      || '<tr><td colspan="8" class="muted">No markets in this state.</td></tr>';
+  }
+  TB.bootResolution = async () => {
+    const doc = await TB.getJSON('data/resolutions.json');
+    records = doc.records || [];
+    const c = doc.counts || {};
+    $('#kpis').innerHTML = [
+      ['Tracked', TB.fmtNum(c.total), 'markets followed'], ['Resolved', TB.fmtNum(c.resolved), 'with a published result'],
+      ['Yes', TB.fmtNum(c.resolved_yes), 'settled yes'], ['No', TB.fmtNum(c.resolved_no), 'settled no'],
+      ['Awaiting result', TB.fmtNum(c.awaiting_result || 0), 'closed, result not published'],
+      ['Open', TB.fmtNum(c.open), 'still trading'],
+    ].map(([k, v, s]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
+    render();
+    document.querySelectorAll('#stateFilter button').forEach((b) => b.addEventListener('click', () => {
+      filter = b.dataset.state;
+      document.querySelectorAll('#stateFilter button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      render();
+    }));
+    $('#search').addEventListener('input', render);
+  };
+  document.addEventListener('DOMContentLoaded', TB.bootResolution);
+})();
+</script>
+</body>
+</html>
