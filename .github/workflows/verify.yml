@@ -1,0 +1,27 @@
+name: Verify site and engine
+
+on:
+  push:
+    branches: [main, "arena/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r app/requirements.txt pytest
+      - name: Unit and contract tests
+        run: python -m pytest -q
+      - name: Verify published data and local links
+        run: python tools/verify_site.py
