@@ -103,3 +103,10 @@ Branch-name note: the runtime fixes this session to ONE branch, `arena/9a725a07-
 - Pages source: still `legacy` (`main` `/`). The integration token cannot change it (HTTP 403). Manual step needed: Settings → Pages → Source → GitHub Actions. Until then the artifact deploy runs but the live URL keeps the legacy build.
 - Open PR #4 (`arena/b6135c8d-tradebot2`) overlaps this scope (`pages.yml`, `README.md`, `COORDINATION.md`, `index.html`). Not merged over. Second-merging PR must integrate the other's pipeline.
 - Node 20 deprecation notice on GitHub Actions (`actions/checkout@v4`, `actions/setup-python@v5`, `actions/cache@v4`, `actions/upload-pages-artifact@v3`, `actions/configure-pages@v5`). Upgrade pending.
+
+### PR record — arena-9a725a07
+
+- PR: https://github.com/kanlerxz87-cyber/Tradebot2/pull/9 (`arena/9a725a07-tradebot2` → `main`)
+- At PR time, `main` was `27c53fe` and PR #9 was MERGEABLE/CLEAN.
+- Other open PRs overlap this PR's shared files (`.github/workflows/pages.yml`, `README.md`, `COORDINATION.md`, `index.html`, `.gitignore`): #4 (`arena/b6135c8d-tradebot2`), #5 (`arena/1546d2b0-tradebot2`), #6 (`arena/d1222891-tradebot2`), #7 (`arena/93ec9646-tradebot2`), #8 (`arena/4f9ce955-tradebot2`). Those sessions must rebase onto `main` after #9 merges and integrate this pipeline, not replace it. Logged as a coordination request, not an edit.
+- Scope rule breached by the board as a whole: the board promised non-overlapping file scopes, but several sessions chose the same shared files. Recorded for the integration owner.
