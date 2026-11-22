@@ -125,15 +125,17 @@
               </tr>
               <tr id="F-13">
                 <td class="mono">F-13</td><td><span class="badge green">Fixed</span></td>
-                <td><strong>Golf rendered empty while 200+ open golf markets existed.</strong> The tournament markets use event families
-                  (<code>KXPGATOUR-THRC26-…</code>, <code>KXPGAMAKECUT-…</code>, <code>KXLPGATOUR-…</code>) whose titles are player names, so neither the
-                  series catalogue, a ticker prefix nor a keyword matched them. An intermediate probe looked healthy only because the API
-                  ignores an unknown <code>series_ticker</code> and returns the whole book.</td>
+                <td><strong>Golf rendered empty while hundreds of open golf markets existed.</strong> The tournament markets use event
+                  families (<code>KXPGATOUR-THRC26-…</code>, <code>KXPGAMAKECUT-…</code>, <code>KXLPGATOUR-…</code>) whose titles are player
+                  names (“The RSM Classic: Michael Thorbjornsen wins”), so keyword rules could not reach them. The collector now matches
+                  those families; golf tracks 407 open in scope / 27 selected. An intermediate claim that <code>KXPGATOUR</code> was not a
+                  real series ticker was wrong and is retracted: <code>GET /series/KXPGATOUR</code> returns 200 (<code>Sports</code>, tags
+                  <code>Golf</code>, “PGA Tour”).</td>
                 <td><span class="badge green">Verified</span></td>
                 <td><a href="data/coverage.json">data/coverage.json</a> · <code>app/topics.py</code> (<code>EVENT_FAMILY_PREFIXES</code>) ·
+                  <a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXPGATOUR" target="_blank" rel="noopener">GET /series/KXPGATOUR ↗</a> ·
                   <a href="https://docs.kalshi.com/api-reference/market/get-series-list.md" target="_blank" rel="noopener">Get Series List ↗</a></td>
-                <td>Done: golf now tracks 261 open markets / 27 selected (24h volume 751.4k contracts). Re-check if Kalshi renames the families;
-                  the coverage probe reports it before the board goes empty again.</td>
+                <td>Done. The coverage probe (<code>scripts/probe_coverage.py</code>) reports an empty topic before the board silently goes blank again.</td>
               </tr>
               <tr id="F-10">
                 <td class="mono">F-10</td><td><span class="badge warn">Medium</span></td>

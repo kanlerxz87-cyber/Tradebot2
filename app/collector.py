@@ -39,11 +39,13 @@ KNOWN_TOPIC_SERIES: dict[str, tuple[str, ...]] = {
         "NOBELLIT",
     ),
     "crypto": ("KXBTCY", "KXBTCMAXY", "KXBTC15M", "KXDEMOFUTHOURLY"),
-    # Verified against /series?category=Sports&tags=Golf on 2026-11-22
-    # (probe/coverage.json). KXPGATOUR and KXLPGATOUR are NOT real series
-    # tickers: an unknown series_ticker filter is ignored by the API and the
-    # whole book comes back, which reads as coverage that does not exist.
+    # Verified against GET /series/{ticker} and /series?category=Sports&tags=Golf
+    # on 2026-11-22: KXPGATOUR, KXLPGATOUR, KXPGAMAKECUT, KXPGATOP10, KXPGA,
+    # KXPRESCUP, etc. are all official Sports/Golf series.
     "golf": (
+        "KXPGATOUR",
+        "KXLPGATOUR",
+        "KXPGAMAKECUT",
         "KXPGA",
         "KXPRESCUP",
         "KXPGATOP10",

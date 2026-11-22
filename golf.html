@@ -117,23 +117,23 @@
     <section class="grid grid-2 section">
       <div class="card">
         <h2>Notes for a trader</h2>
-        <ul class="callout-list">        <li><b>Fixed 2026-11-22, with evidence:</b> the demo catalogue lists <b>134 golf series</b> under
-          <code>category=Sports&amp;tags=Golf</code>, but the tournament markets themselves use event families
-          (<code>KXPGATOUR-THRC26-…</code>, <code>KXPGAMAKECUT-…</code>, <code>KXLPGATOUR-…</code>) that matched no series ticker and no
-          keyword — the titles are player names. The classifier now matches those families, and this page tracks
-          <b>261 open golf markets / 27 selected</b> instead of zero. Evidence and history:
-          <a href="data/coverage.json">data/coverage.json</a>, <a href="flagged.html#F-13">F-13</a>.</li>
-        <li>An early probe queried <code>series_ticker=KXPGATOUR</code> and got 200 markets back — the API had silently ignored an unknown filter
-          and returned the whole book. Counts are only trusted next to their series ticker and cursor state.</li>
-        <ul class="callout-list">        <li>The collector queries the official Golf series list (KXPGA, KXPRESCUP, KXPGATOP10, KXLPGAR2LEAD, …) in addition to the paginated open-market scan, so golf outrights are not missed behind high-frequency contracts. Note: KXPGATOUR is <b>not</b> a real series ticker — an unknown <code>series_ticker</code> filter is ignored by the API.</li>
+        <ul class="callout-list">        <li><b>Fixed 2026-11-22, with evidence.</b> Earlier snapshots rendered this page empty while the demo exchange had
+          hundreds of open golf markets. The tournament markets use event families (<code>KXPGATOUR-THRC26-…</code>,
+          <code>KXPGAMAKECUT-…</code>, <code>KXLPGATOUR-…</code>) whose titles are player names, so nothing in the keyword rules could
+          reach them. The classifier now matches those families and this page tracks <b>261 open markets / 27 selected</b>.
+          See <a href="flagged.html#F-13">F-13</a>.</li>
+        <li><b>Correction:</b> an intermediate note here claimed <code>KXPGATOUR</code> was not a real series ticker. That was wrong —
+          <a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXPGATOUR" target="_blank" rel="noopener">GET /series/KXPGATOUR ↗</a>
+          returns 200 with <code>category: Sports</code>, <code>tags: ["Golf"]</code>, <code>title: "PGA Tour"</code>. The earlier
+          “200 markets for an unknown filter” reading was a bad inference from a cursor, not evidence.</li>
         <li>Tournament outrights can remain open for days; settlement requires the official tour result and any playoff rules in the contract.</li>
         <li>Team events use selection and captain’s-pick rules; read the contract, not the headline.</li></ul>
       </div>
       <div class="card">
         <h2>Flagged on this page</h2>
-        <div class="note warn">Golf is mapped from the official <code>series?category=Sports&amp;tags=Golf</code> catalogue
-          <em>plus</em> the event families those tournaments actually use; neither alone was sufficient. The correction, and the
-          earlier false “empty coverage” reading, are recorded in <a href="flagged.html#F-13">F-13</a>.</div>
+        <div class="note warn">Golf is isolated from the broad Sports category using the official golf series catalogue
+          (<code>series?category=Sports&amp;tags=Golf</code>) <em>and</em> the event families the tournaments actually use. The empty-board
+          period and its fix are recorded in <a href="flagged.html#F-13">F-13</a>.</div>
         <h3 style="margin-top:18px">Data provenance</h3>
         <table class="compact">
           <tbody>
