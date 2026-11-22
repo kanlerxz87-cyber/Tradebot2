@@ -44,3 +44,5 @@ GitHub Pages for this repository serves the **repository root**. Two sessions th
 superseded. `docs/`, `site/`, `dash/` and `pages/` are left intact and remain reachable at
 `/docs/`, `/site/`, `/dash/`, `/pages/` so nothing is lost and nothing is silently deleted.
 
+---
+

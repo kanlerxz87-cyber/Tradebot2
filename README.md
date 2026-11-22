@@ -1,3 +1,25 @@
+# Tradebot2 — verified Kalshi demo dashboard (five topics)
+
+> **Status — integration pass `arena/a32ec4d7-tradebot2` (2026-11-22).** The sections below are the
+> earlier sessions' README, kept verbatim. Two things in this repository are **not** verified and are
+> superseded by this pass:
+>
+> 1. The portfolio figures in the earlier dashboard (`Demo Cash Balance $9,693.00`, equity `$10,061.00`,
+>    `Sharpe 1.84`, `75% win rate`) are **placeholders, not a demo-account balance**. No API key existed in
+>    this environment, so `/portfolio/*` was never called. Trading is simulated only.
+> 2. Many tickers in the earlier pages (`GAS-24DEC-3.15`, `PRES-24-DJT`, `BTC-24DEC-100K`, `MASTERS-25-SCHEFFLER`, …)
+>    **do not exist on the Kalshi demo API**. The real series families are `KXAAAGAS*` (gas), `Elections`
+>    category (not `PRES-24-*`), `Culture` category, `KXBTC*`/`KXBTCD*` (crypto) and `KXPGA*`/`KXDPWT*`
+>    (golf). Each is linked to a live official query in the new site's verification log.
+>
+> The verified dashboard from this pass is published at the repository root (`index.html`) and under
+> `docs/`. It never shows a fabricated balance or ticker: every table row links to the official Kalshi URL
+> it came from, and anything the API did not return is blank and marked *unverified*.
+>
+> Gate: `python3 scripts/verify_site.py` → 41 checks, 0 failures.
+
+---
+
 # Kalshi Tradebot2: Live Alerting, Liquidity Depth & Automated Trading Dashboard
 
 [![GitHub Pages](https://img.shields.io/badge/Live%20Site-GitHub%20Pages-2ea043?style=for-the-badge&logo=github)](https://kanlerxz87-cyber.github.io/Tradebot2/)
@@ -161,3 +183,107 @@ source; all irregularities are published at `/dash/flagged/`.
 Verified data snapshot (machine-readable): `data/snapshot.json`. Line-by-line
 verification log: `dash/docs/verification.md`. Regenerate topic pages + run the
 whole-site link check with `node tools/build.js`.
+
+---
+
+**Live site:** https://kanlerxz87-cyber.github.io/Tradebot2/
+
+A read-only research dashboard for the Kalshi **demo** exchange covering exactly five topics —
+**gas prices, elections, culture, crypto, golf** — with:
+
+- a live feed that flags any contract-price move of **≥ $0.10 in either direction**,
+- **two scrolling alert feeds** (every alert / high-ROI only) instead of one noisy stream,
+- a price chart with **5 min · 15 min · 1 h · 4 h · 24 h** windows and **liquidity depth** per price level,
+- tracking of every open market **until the exchange marks it resolved (yes / no)**,
+- five **simulated** strategies by trade type, replayed only on recorded prices and charged the official fee,
+- and a verification log in which **every table row links to the official Kalshi URL it came from**.
+
+It holds no API key, sends no orders, and never fills in a number it could not read from an official source.
+
+---
+
+## Executive summary — the Kalshi demo API
+
+Full version with links: **[docs/summary.html](docs/summary.html)**
+
+| Area | What matters |
+| --- | --- |
+| Hosts | Demo REST `https://external-api.demo.kalshi.co/trade-api/v2` (alt `https://demo-api.kalshi.co/trade-api/v2`); prod `https://external-api.kalshi.com/trade-api/v2`. Demo WS `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2`. Source: [api_environments](https://docs.kalshi.com/getting_started/api_environments.md) |
+| Auth | Market data is public. Anything under `/portfolio` needs three headers: `KALSHI-ACCESS-KEY`, `-TIMESTAMP` (ms), `-SIGNATURE` (base64 RSA-PSS-SHA256 over `timestamp + METHOD + path`). **Every WebSocket connection needs it too, even for public channels.** |
+| Prices | Fixed-point **strings** — `yes_bid_dollars: "0.4200"`, `volume_fp: "13.00"`. Parse as decimal, never float. |
+| Order book | **Bids only**, ascending, best bid last. Best YES **ask** = `1 − best NO bid`. An empty book returns `200` with empty arrays, not `404`. |
+| Tick size | Comes from each market's `price_ranges: [{start,end,step}]`. Don't hard-code cents. |
+| Order direction | `bid ≡ yes`, `ask ≡ no`. Legacy `action`/`side` are deprecated. |
+| Orders | Legacy `/portfolio/orders` writes return **`410 Gone`**. Use **`POST /portfolio/events/orders`** (V2). A `201` means *accepted*, not *resting* — check `remaining_count`. |
+| Rate limits | Token buckets, `X-RateLimit-*` headers, and `429` carries **no** `Retry-After`. `/portfolio/balance` has its own bucket (1 req/s on Basic). |
+| Candlesticks | `period_interval` ∈ {1, 60, 1440} minutes, ≤ 5 000 periods per request, timestamps in **seconds**. |
+| Lifecycle | `initialized → active → closed → determined → finalized`; `result` (`yes`/`no`/`scalar`) is set at *determined*, money moves at *finalized*. After `close_time`, even cancels are rejected with `MARKET_INACTIVE`. |
+| Fees | Taker `0.07 × C × P × (1−P)`, maker `0.0175`, no settlement or membership fee. **The published table rounds up to the cent while the prose says centicent — see finding F-13.** |
+| Demo caveat | The demo uses mock funds and its prices may diverge from production. It is a build target, not a price source. |
+
+---
+
+## Topic taxonomy (verified, not guessed)
+
+| Topic | Official location | Evidence |
+| --- | --- | --- |
+| Gas prices | category `Economics` + tag `Oil and energy`, series `KXAAAGAS*`, settles from **AAA** | [live series query](https://external-api.demo.kalshi.co/trade-api/v2/series?category=Economics&tags=Oil+and+energy&limit=3) |
+| Elections | category `Elections` (`PRESPARTY*`, `KXSENATE*`, `KXGOV*`) | [live series query](https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections&limit=2) |
+| Culture | category `Culture` (`KXX*`) | [live series query](https://external-api.demo.kalshi.co/trade-api/v2/series?category=Culture&limit=2) |
+| Crypto | category `Crypto`, mostly settled from **CF Benchmarks** | [live series query](https://external-api.demo.kalshi.co/trade-api/v2/series?category=Crypto&limit=20) |
+| Golf | category `Sports` + **tag** `Golf` (`KXPGA*`, `KXDPWT*`) | [live series query](https://external-api.demo.kalshi.co/trade-api/v2/series?category=Sports&tags=Golf&limit=3) |
+
+`category=Gas` and `category=Golf` **do not exist** (they return `{"series": null}`) — those are tags, not categories.
+
+---
+
+## Repository layout
+
+```
+docs/                      the published site (GitHub Pages, workflow-driven)
+  index.html               live dashboard: alerts, chart, depth, topic table
+  topic-{gas,elections,culture,crypto,golf}.html
+  events.html              tracked → resolved (yes/no) with settlement values
+  strategies.html          five trade types, skip reasons, bucket analytics
+  summary.html             API executive summary + full source registry
+  verification.html        what was checked, how, and what remains unverified
+  suggestions.html         12 prioritised ideas, each tied to an API capability
+  flagged.html             13 findings that need a human decision
+  data/*.json              generated, deterministic, committed
+  js/live.js               browser API layer, detector, canvas charts
+engine/                    analysis code (stdlib only, no dependencies)
+  kalshi.py                read-only REST client, order-book + candle handling
+  topics.py                the five-topic mapping, with the basis for each row
+  alerts.py                the ≥ $0.10 detector and the published ROI score
+  paper.py                 fee model, five strategies, replay backtester
+  dataset.py               every verified record, with its source URL
+  build_data.py            regenerates docs/data/*.json
+scripts/verify_site.py     the publication gate (37 checks)
+archive/                   superseded artefacts kept for the review trail
+COORDINATION.md            shared task board across agent sessions
+```
+
+## Reproduce it
+
+```bash
+python3 -m engine.build_data      # rebuild docs/data/*.json from engine/dataset.py
+python3 scripts/verify_site.py    # 37 checks; exits 1 if anything is unverifiable
+python3 -m http.server -d docs 8000   # then open http://localhost:8000
+```
+
+`engine.build_data` is deterministic: CI rebuilds it and fails if the committed JSON differs.
+
+## Honest limits
+
+- **No API key existed in the build environment**, so `/portfolio/*` was never called and no account balance
+  appears anywhere. Every trade on the site is paper, filled only at prices that exist in recorded data.
+- **One instrument has usable recorded candles** (`KXELONMARS-99`, filed by Kalshi under *Politics*, not one of the
+  five topics). It is shown as a labelled worked example of the alert and depth machinery. Strategy results are
+  therefore a pipeline demonstration, not evidence of edge.
+- **The demo exchange's liquidity is not real liquidity.** Many tracked markets have a 0.00 bid, no offers and zero
+  volume. The dashboard shows depth next to every price precisely so this is visible.
+- **Live browser access is unverified from this sandbox** (no network egress). The dashboard runs the API call in
+  *your* browser and falls back to a timestamped snapshot, labelled, if it cannot.
+
+Everything that did not verify is published at
+**[docs/flagged.html](docs/flagged.html)** with the query that produced it — 13 findings, none of which block publish.

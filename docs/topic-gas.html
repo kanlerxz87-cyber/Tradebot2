@@ -46,10 +46,12 @@
   </table></div>
 
   <div class="notice">
-    <b>Why gas rows are sparse.</b> The demo exchange lists the gas ladder but almost never trades it:
-    three strikes were open with bids of 0.35–0.41 and daily volume under 13 contracts, and one strike had
-    no bid at all while its last trade printed at 0.90. That is exactly why the dashboard shows depth
-    instead of only a price.
+    <b>Why gas rows are thin — and one data trap.</b> The demo exchange lists the gas ladder but barely trades it:
+    three strikes of <code>KXAAAGASD-28SEP16</code> were open with bids of 0.35, 0.41 and 0.00, total volume of
+    8.16, 12.98 and 3.17 contracts, and <b>every one quoted a YES ask of 1.0000</b> because the NO bid side was
+    empty. Do <i>not</i> read the derived ask (<code>1 − no_bid</code> = 1.00) as a real offer — it means "nobody is
+    bidding NO", not "YES costs a dollar". One strike is worse: no bid, no offer, but a last trade at 0.90, so
+    its last price is stale and unquotable. That is why the dashboard shows depth next to every price.
   </div>
 </main>
 <div id="footer"></div>
