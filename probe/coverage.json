@@ -39,6 +39,20 @@
   "host": "https://external-api.demo.kalshi.co",
   "status": 200
  },
+ "golf_chain": {
+  "market": [],
+  "markets_http": 200,
+  "markets_seen": 0,
+  "series_count": 134,
+  "series_http": 200,
+  "series_tickers": [
+   "KXPGA",
+   "KXLIVH2H",
+   "KXPRESCUP",
+   "KXPGATOP10",
+   "KXLPGAR2LEAD"
+  ]
+ },
  "series": {
   "crypto": {
    "KXBTCD": {
