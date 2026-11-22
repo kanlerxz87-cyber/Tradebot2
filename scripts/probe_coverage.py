@@ -70,6 +70,38 @@ def main() -> int:
         out["series"][topic] = rows
         out["totals"][topic] = sum(r["open_markets"] for r in rows.values())
 
+    # Golf chain: does /series list golf, and do its markets' events point back
+    # at those series tickers? This is what the collector relies on.
+    chain: dict[str, object] = {}
+    status, series_page = get(base, "/series", {"category": "Sports", "tags": "Golf", "limit": "200"})
+    series_rows = (series_page or {}).get("series", []) if isinstance(series_page, dict) else []
+    chain["series_http"] = status
+    chain["series_count"] = len(series_rows)
+    chain["series_tickers"] = [r.get("ticker") for r in series_rows[:5]]
+    if series_rows:
+        first = str(series_rows[0].get("ticker"))
+        status, markets_page = get(base, "/markets", {"status": "open", "series_ticker": first, "limit": "2"})
+        markets = (markets_page or {}).get("markets", []) if isinstance(markets_page, dict) else []
+        chain["markets_http"] = status
+        chain["markets_seen"] = len(markets)
+        chain["market"] = [
+            {"ticker": m.get("ticker"), "event_ticker": m.get("event_ticker"),
+             "series_ticker": m.get("series_ticker"), "title": m.get("title")}
+            for m in markets[:2]
+        ]
+        if markets:
+            event_ticker = str(markets[0].get("event_ticker"))
+            status, events_page = get(base, "/events", {"event_ticker": event_ticker, "limit": "2"})
+            events = (events_page or {}).get("events", []) if isinstance(events_page, dict) else []
+            chain["event_http"] = status
+            chain["event"] = [
+                {"event_ticker": e.get("event_ticker"), "series_ticker": e.get("series_ticker"),
+                 "category": e.get("category"), "title": e.get("title")}
+                for e in events[:2]
+            ]
+    out["golf_chain"] = chain
+    print(json.dumps(chain, indent=1)[:1200])
+
     print(json.dumps(out["totals"], indent=1))
     for topic, rows in out["series"].items():
         for series, row in rows.items():
