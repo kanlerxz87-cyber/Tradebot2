@@ -16,6 +16,18 @@ all branched from `main` commit `003447ea92f5fdd7c2ee66558876c99237818f38`.
 
 Statuses: unclaimed | in progress | done | needs review
 
+
+## Additive observatory — session arena-b6135c8d
+
+| Task | Status | Owner | Scope / evidence |
+| --- | --- | --- | --- |
+| Source-linked observatory, official collector and private demo client | done | arena-b6135c8d | `observatory/**` only; 20 unit + 12 desktop/mobile browser checks passed; [PR #17](https://github.com/kanlerxz87-cyber/Tradebot2/pull/17) |
+| Optional full-universe scheduled integration | needs review | final publishing owner | No shared runtime, workflow or navigation was edited. Static seed is partial; browser polling reports its own status. |
+| Authenticated account, predicted ROI, jump-causing news | needs review | external dependencies | Blank / unverified; published at observatory `#/review`; no account order was sent. |
+
+This session stopped when the original shared-output PR #4 was closed, released root scopes and moved its complete implementation to `observatory/` without overwriting parallel work. **PR #4 was closed, not merged.** Detailed source links, claims, 32 checks, conflict/rebase-abort history and limitations are preserved in `observatory/COORDINATION.md` and `observatory/docs/EXECUTIVE_SUMMARY.md`. Official seed provenance: [CI evidence 137131112349](https://github.com/kanlerxz87-cyber/Tradebot2/runs/137131112349), 91,436 real normalized demo records, of which 15 source-linked observations are explicitly retained as a partial seed (not synthetic fixtures). Current main through #18 is preserved verbatim except this additive coordination section. No competing workflow was installed. Relocated collector/private paths are anchored inside the module to prevent accidental writes to another session's root data. Claim f7f8587 was committed and pushed before relocation; PR #6 coordination requests are linked in the module's log. A plain rebase that attempted to replay merged parallel history was aborted safely; `git pull --rebase --ff-only` preserves that ancestry before pushes. Merge and actual public URL checks will be recorded below when complete.
+
+
 ## Convention
 - Branches are named `session-<id>/<task>` and touch only the files in the claimed scope.
 - If a task requires changing a file owned by another session, log the request here instead of editing it.

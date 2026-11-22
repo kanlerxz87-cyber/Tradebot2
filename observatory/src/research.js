@@ -1,0 +1,272 @@
+export const sources = [
+  {
+    title: "Demo environments",
+    claim:
+      "Recommended and alternate REST / WebSocket hosts; demo uses mock funds, separate credentials, and may not reflect real markets.",
+    status: "Documentation checked · 2026-11-22",
+    url: "https://docs.kalshi.com/getting_started/demo_env",
+  },
+  {
+    title: "Markets / fixed-point fields",
+    claim:
+      "last_price_dollars, YES bid / ask, ask size, contract volume, open interest, notional value, status and result are documented fields. tickers-only queries are unpaged; responses may lag.",
+    status: "Documentation checked · 2026-11-22",
+    url: "https://docs.kalshi.com/api-reference/market/get-markets",
+  },
+  {
+    title: "Series taxonomy",
+    claim:
+      "Series categories, exact case-sensitive category filters, tags, product metadata and settlement sources; series category preferred over deprecated event category.",
+    status: "Documentation checked · 2026-11-22",
+    url: "https://docs.kalshi.com/api-reference/market/get-series-list",
+  },
+  {
+    title: "Gasoline taxonomy evidence",
+    claim:
+      "Demo series KXAAAGASM reports product_metadata.scope = Gasoline, category Economics, title US gas price and AAA as a settlement source. No market price is inferred from this.",
+    status: "API response checked · 2026-11-22",
+    url: "https://external-api.demo.kalshi.co/trade-api/v2/series/KXAAAGASM",
+  },
+  {
+    title: "Golf taxonomy evidence",
+    claim:
+      "Official demo series filter tags=Golf returns golf series with Golf tag and Sports primary category.",
+    status: "API response checked · 2026-11-22",
+    url: "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=Golf",
+  },
+  {
+    title: "Events / pagination",
+    claim:
+      "Get Events supports nested markets, status, cursor and a 200-event maximum page. It excludes multivariate events.",
+    status: "Documentation checked · 2026-11-22",
+    url: "https://docs.kalshi.com/api-reference/events/get-events",
+  },
+  {
+    title: "Order-book depth",
+    claim:
+      "Order book returns YES and NO bids, not asks; orderbook_fp has fixed-point dollar prices and contract counts.",
+    status: "Documentation checked · 2026-11-22",
+    url: "https://docs.kalshi.com/api-reference/market/get-market-orderbook",
+  },
+  {
+    title: "API authentication",
+    claim:
+      "Private-key signing with Ed25519 or RSA-PSS; timestamp + HTTP method + path without query. Credentials must stay private.",
+    status: "Documentation checked · 2026-11-22",
+    url: "https://docs.kalshi.com/getting_started/api_keys",
+  },
+  {
+    title: "WebSocket handshake",
+    claim:
+      "The connection itself requires API-key authentication headers, including when subscribing only to public market data.",
+    status: "Documentation checked · 2026-11-22",
+    url: "https://docs.kalshi.com/websockets/websocket-connection",
+  },
+  {
+    title: "Demo account balance",
+    claim:
+      "Authenticated balance endpoint returns available balance and portfolio value. These are not equivalent to independently reconciled net P&L.",
+    status: "Documentation checked · account unverified",
+    url: "https://docs.kalshi.com/api-reference/portfolio/get-balance",
+  },
+  {
+    title: "V2 order creation",
+    claim:
+      "POST /portfolio/events/orders uses bid / ask and fixed-point price / count. Legacy /portfolio/orders writes return 410. Acceptance is not proof of a fill.",
+    status: "Documentation checked · execution unverified",
+    url: "https://docs.kalshi.com/api-reference/orders/create-order-v2",
+  },
+  {
+    title: "Fill reconciliation",
+    claim:
+      "Authenticated fills expose fill IDs, quantities, directions, prices and fee_cost. Older fills require the historical endpoint.",
+    status: "Documentation checked · account unverified",
+    url: "https://docs.kalshi.com/api-reference/portfolio/get-fills",
+  },
+  {
+    title: "Market settlement",
+    claim:
+      "Simple YES / NO winners receive $1 per contract; settlement timing varies. Bounds/scalar payouts require actual reported settlement values.",
+    status: "Documentation checked · 2026-11-22",
+    url: "https://docs.kalshi.com/getting_started/market_settlement",
+  },
+  {
+    title: "GitHub Pages architecture",
+    claim:
+      "GitHub Pages is static hosting for HTML, CSS and JavaScript, not a private always-on process.",
+    status: "Documentation checked · 2026-11-22",
+    url: "https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages",
+  },
+  {
+    title: "Scheduled workflow limitations",
+    claim:
+      "GitHub documents scheduled workflow behavior. A requested five-minute cron is not a continuous WebSocket service or guaranteed execution time.",
+    status: "Official schedule reference; runtime not guaranteed",
+    url: "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule",
+  },
+];
+export const flags = [
+  {
+    title: "Demo account not connected",
+    detail:
+      "No Kalshi demo credentials were available. Account balances, account P&L, actual fills and account positions remain unavailable. Paper results must not be read as account performance.",
+    status: "Unverified / external dependency",
+    url: "https://docs.kalshi.com/api-reference/portfolio/get-balance",
+  },
+  {
+    title: "Authenticated execution not enabled",
+    detail:
+      "No orders were submitted. A demo-only signed client is included for a private host, but end-to-end authentication, fills and fee reconciliation cannot be verified without an account. There is no production execution path.",
+    status: "Needs review",
+    url: "https://docs.kalshi.com/api-reference/orders/create-order-v2",
+  },
+  {
+    title: "Continuous service / browser access",
+    detail:
+      "Public Pages cannot keep a secure authenticated WebSocket connection alive server-side. Browser polling depends on tab visibility, CORS and network access. Scheduled snapshots have gaps and are not live ticks.",
+    status: "Known limitation",
+    url: "https://docs.kalshi.com/websockets/websocket-connection",
+  },
+  {
+    title: "Dollar turnover unavailable",
+    detail:
+      "The dashboard ranks tracked events by derived open interest × contract notional. Exact executed dollar turnover is not confirmed and remains blank; contract volume is never relabeled dollar volume.",
+    status: "Needs review",
+    url: "https://docs.kalshi.com/api-reference/market/get-markets",
+  },
+  {
+    title: "High-ROI model not validated",
+    detail:
+      "Candidate alerts apply a transparent liquidity screen only. There is no calibrated probability model or out-of-sample ROI evidence. Expected ROI remains blank. No positive-return claim is made.",
+    status: "Unverified",
+    url: "https://docs.kalshi.com/api-reference/market/get-markets",
+  },
+  {
+    title: "News causes unverified",
+    detail:
+      "No verified event-specific causal attribution is available. Chart markers show observed swings only; news URL and cause fields remain blank. Generic settlement sources are not substituted for news evidence.",
+    status: "Unverified",
+    url: "https://docs.kalshi.com/api-reference/market/get-market",
+  },
+  {
+    title: "Topic and universe coverage",
+    detail:
+      "Only exact official taxonomy matches are included. Gasoline scope is exact; broad Oil & Gas and general Politics are not guessed into topics. Culture includes Entertainment by an explicit product mapping. Multivariate events are excluded. Discovery may be partial if requests fail.",
+    status: "Needs review",
+    url: "https://docs.kalshi.com/api-reference/market/get-series-list",
+  },
+  {
+    title: "Polling scope and alert gaps",
+    detail:
+      "Browser observes the top 100 active tracked contracts plus selected / open-paper contracts. Other events are snapshot-only. Alerts compare consecutive observations within 120 seconds; intrapoll swings or movements during larger gaps can be missed.",
+    status: "Known limitation",
+    url: "https://docs.kalshi.com/api-reference/market/get-markets",
+  },
+  {
+    title: "Simulated execution / fees",
+    detail:
+      "Paper trades assume entry at the reported YES ask with reported size, with no queue or execution guarantee. Fees stay blank and results are gross, not verified net returns. Paper strategies buy YES only.",
+    status: "Unverified execution assumptions",
+    url: "https://docs.kalshi.com/api-reference/portfolio/get-fills",
+  },
+  {
+    title: "Settlement and corrections",
+    detail:
+      "Closed markets are retained until official settled YES / NO outcome and settlement value. Missing or scalar-only outcomes remain unresolved in this simplified binary ledger. Reversals/corrections after settlement need a reconciliation service.",
+    status: "Needs review",
+    url: "https://docs.kalshi.com/getting_started/market_settlement",
+  },
+  {
+    title: "Durability and concurrent collectors",
+    detail:
+      "Scheduled history retains the top 100 overall / top 20 per topic plus open-paper and recent-alert contracts, up to 2,000 observations each. It is cached in Actions, not a durable financial database. Cache expiry or eviction can lose observations. The browser paper ledger is local and separate from the scheduled paper ledger. Clearing site storage loses local experiments.",
+    status: "Known limitation",
+    url: "https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows",
+  },
+  {
+    title: "Sandbox network restriction",
+    detail:
+      "Direct command-line access to Kalshi hosts is blocked in the development sandbox. Official docs and selected API responses were checked using the page-fetch tool; collector verification runs on GitHub-hosted CI instead. Browser access is separately reported at runtime.",
+    status: "Environment limitation",
+    url: "https://docs.kalshi.com/getting_started/demo_env",
+  },
+];
+export const requirements = [
+  {
+    title: "Clean landing page and topic subpages",
+    detail:
+      "Responsive dashboard with dedicated hash-linked gas prices, elections, culture, crypto and golf views, table search, event grouping and exports.",
+    status: "Implemented",
+    url: "https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages",
+  },
+  {
+    title: "Highest dollar live events",
+    detail:
+      "Tracked events ranked by derived face-value open interest. Exact dollar turnover cannot be confirmed and is not filled in.",
+    status: "Partial / proxy labeled",
+    url: "https://docs.kalshi.com/api-reference/market/get-markets",
+  },
+  {
+    title: "Two scrolling swing feeds",
+    detail:
+      "Observed ≥10¢ changes in either direction; all-swings and heuristic-candidate feeds. 120-second maximum observation interval, top-100 browser polling scope.",
+    status: "Implemented",
+    url: "https://docs.kalshi.com/api-reference/market/get-markets",
+  },
+  {
+    title: "High-ROI selective feed",
+    detail:
+      "Liquidity screen exists. Probability calibration, predicted edge and positive ROI are unverified; no values are inferred.",
+    status: "Needs review",
+    url: "https://docs.kalshi.com/api-reference/market/get-market",
+  },
+  {
+    title: "Live interactive price graph",
+    detail:
+      "UTC time X axis and dollar price Y axis. 60-second, 60-minute and 24-hour windows; observed points only, gaps preserved, swing markers with timestamps.",
+    status: "Implemented",
+    url: "https://docs.kalshi.com/api-reference/market/get-markets",
+  },
+  {
+    title: "Liquidity at each price",
+    detail:
+      "On-demand official order-book bids with quantities and observation timestamp. Unavailable data stays blank, not simulated.",
+    status: "Implemented",
+    url: "https://docs.kalshi.com/api-reference/market/get-market-orderbook",
+  },
+  {
+    title: "Monitor until YES / NO settlement",
+    detail:
+      "Retains previously seen contracts, including closed contracts. Binary paper exits require settled status, official result and settlement value.",
+    status: "Implemented",
+    url: "https://docs.kalshi.com/getting_started/market_settlement",
+  },
+  {
+    title: "Automated strategy experiments",
+    detail:
+      "Fresh-signal momentum and reversion paper strategies, capped allocation, trade journal, topic / strategy breakdown and gross P&L.",
+    status: "Implemented",
+    url: "https://docs.kalshi.com/api-reference/portfolio/get-fills",
+  },
+  {
+    title: "Demo-account execution and performance",
+    detail:
+      "Private demo-only signed client scaffold. Account credentials absent; execution, balances, reconciled net returns and private hosting are not enabled.",
+    status: "External dependency",
+    url: "https://docs.kalshi.com/api-reference/orders/create-order-v2",
+  },
+  {
+    title: "Sourced jump news and website links",
+    detail:
+      "Swing markers and official market links available. Verified jump-causing news absent; cause fields remain blank and flagged.",
+    status: "Needs review",
+    url: "https://docs.kalshi.com/api-reference/market/get-market",
+  },
+  {
+    title: "Verification and executive brief",
+    detail:
+      "Official source register, source-linked table rows, test suite, methodology, summary and dedicated Flagged for Review page.",
+    status: "Implemented",
+    url: "https://docs.kalshi.com/llms.txt",
+  },
+];
