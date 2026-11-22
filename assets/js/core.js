@@ -144,7 +144,7 @@
 
     let last = num(market.last_price_dollars);
     if (last === null && num(market.last_price) !== null) last = num(market.last_price) / 100;
-    if (last !== null && last >= 0 && last <= 1) return { price: last, basis: "last", bid: bid, ask: ask };
+    if (last !== null && last > 0 && last <= 1) return { price: last, basis: "last", bid: bid, ask: ask };
     return { price: null, basis: "none", bid: bid, ask: ask };
   }
 
