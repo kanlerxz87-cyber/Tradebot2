@@ -29,13 +29,29 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-BASE = os.environ.get("KALSHI_BASE", "https://external-api.kalshi.com/trade-api/v2").rstrip("/")
+# The brief asks for the Kalshi DEMO environment, so the demo REST host is the
+# default. Kalshi documents this host in
+# https://docs.kalshi.com/getting_started/demo_env .
+# Demo prices are simulated ("may not be reflective of those in real markets").
+BASE = os.environ.get("KALSHI_BASE", "https://external-api.demo.kalshi.co/trade-api/v2").rstrip("/")
 STATE_PATH = os.environ.get("STATE_PATH", "state/state.json")
 OUT_DIR = os.environ.get("OUT_DIR", "site/data")
 REQ_DELAY = float(os.environ.get("REQ_DELAY", "0.25"))
 MAX_SERIES_PER_TOPIC = int(os.environ.get("MAX_SERIES_PER_TOPIC", "40"))
 MAX_RESOLUTION_CHECKS = int(os.environ.get("MAX_RESOLUTION_CHECKS", "60"))
 ORDERBOOK_TOP_N = int(os.environ.get("ORDERBOOK_TOP_N", "25"))
+# The demo exchange lists >18k open markets at a time. Only markets that have
+# traded in the last 24h or that carry open interest are published, capped per
+# topic by activity, so the published JSON stays small and the tables stay usable.
+MAX_MARKETS_PER_TOPIC = int(os.environ.get("MAX_MARKETS_PER_TOPIC", "300"))
+# Real price history straight from the API: 1-minute candles (minutes/hours
+# ranges) and the trade tape (second-level points) for the most active markets.
+CANDLE_MARKETS = int(os.environ.get("CANDLE_MARKETS", "12"))
+TRADE_MARKETS = int(os.environ.get("TRADE_MARKETS", "12"))
+CANDLE_MINUTES = int(os.environ.get("CANDLE_MINUTES", "360"))     # 6h of 1-minute candles
+CANDLE_HOURS = int(os.environ.get("CANDLE_HOURS", "720"))         # 30d of 1-hour candles
+TAPE_HOURS = int(os.environ.get("TAPE_HOURS", "6"))               # trade tape window
+EVENT_ROWS = int(os.environ.get("EVENT_ROWS", "150"))
 
 ALERT_THRESHOLD = 0.10          # dollars per contract (prices are 0.00-1.00)
 HISTORY_CAP = 384               # snapshots kept per market (~4 days at 15-min runs)
@@ -430,11 +446,76 @@ def main():
         books[m["ticker"]] = {"ts": ts, "yes_bids": levels("yes_dollars"), "no_bids": levels("no_dollars"),
                               "source_url": url}
 
+    # ---- 5b. Real price history: 1-minute/1-hour candles + trade tape -------
+    by_activity = sorted(live.values(), key=lambda m: (m["volume_24h"] or 0, m["open_interest"] or 0), reverse=True)
+    candle_targets = by_activity[:CANDLE_MARKETS]
+    tape_targets = by_activity[:TRADE_MARKETS]
+    now_ts = int(started.timestamp())
+    candles_out = {"generated_at": ts, "interval_1m": {}, "interval_60m": {}}
+    for m in candle_targets:
+        for interval, seconds, key in ((1, CANDLE_MINUTES * 60, "interval_1m"), (60, CANDLE_HOURS * 3600, "interval_60m")):
+            try:
+                body, url = api_get(f"/series/{m['series_ticker']}/markets/{m['ticker']}/candlesticks",
+                                    {"start_ts": now_ts - seconds, "end_ts": now_ts, "period_interval": interval})
+            except Exception as e:  # noqa: BLE001 - one market must not stop the run
+                errors.append({"where": "candlesticks", "ticker": m["ticker"], "error": str(e)})
+                continue
+            if not body:
+                continue
+            rows = []
+            for c in body.get("candlesticks") or []:
+                price = c.get("price") or {}
+                bid = c.get("yes_bid") or {}
+                ask = c.get("yes_ask") or {}
+                rows.append({
+                    "ts": c.get("end_period_ts"),
+                    "open": num(price.get("open_dollars")), "high": num(price.get("high_dollars")),
+                    "low": num(price.get("low_dollars")), "close": num(price.get("close_dollars")),
+                    "mean": num(price.get("mean_dollars")), "previous": num(price.get("previous_dollars")),
+                    "bid": num(bid.get("close_dollars")), "ask": num(ask.get("close_dollars")),
+                    "volume": num(c.get("volume_fp")), "open_interest": num(c.get("open_interest_fp")),
+                })
+            candles_out[key][m["ticker"]] = {"series_ticker": m["series_ticker"], "topic": m["topic"],
+                                             "source_url": url, "candles": rows}
+
+    ticks_out = {"generated_at": ts, "markets": {}}
+    for m in tape_targets:
+        try:
+            body, url = api_get("/markets/trades", {"ticker": m["ticker"], "limit": 1000,
+                                                    "min_ts": now_ts - TAPE_HOURS * 3600})
+        except Exception as e:  # noqa: BLE001
+            errors.append({"where": "trades", "ticker": m["ticker"], "error": str(e)})
+            continue
+        if not body:
+            continue
+        rows = []
+        for tr in body.get("trades") or []:
+            rows.append({"ts": tr.get("created_time"), "price": num(tr.get("yes_price_dollars")),
+                         "count": num(tr.get("count_fp")), "taker_side": tr.get("taker_side"),
+                         "is_block": tr.get("is_block_trade")})
+        rows.sort(key=lambda r: r["ts"] or "")
+        ticks_out["markets"][m["ticker"]] = {"topic": m["topic"], "source_url": url, "trades": rows}
+
     # ---- 6. Write site data ------------------------------------------------
+    # Publish only markets with activity, capped per topic by activity.
+    published, omitted = [], {}
+    for topic_key in TOPICS:
+        rows = [m for m in live.values() if m["topic"] == topic_key]
+        active = [m for m in rows if (m["volume_24h"] or 0) > 0 or (m["open_interest"] or 0) > 0]
+        keep = active if active else rows[:25]
+        keep.sort(key=lambda m: (m["volume_24h"] or 0, m["open_interest"] or 0), reverse=True)
+        published.extend(keep[:MAX_MARKETS_PER_TOPIC])
+        omitted[topic_key] = max(0, len(rows) - len(keep[:MAX_MARKETS_PER_TOPIC]))
+    published_tickers = {m["ticker"] for m in published}
+
     markets_out = []
-    for t, m in live.items():
+    for m in published:
+        t = m["ticker"]
         h = state["history"].get(t, [])
         prev_last = h[-2][1] if len(h) >= 2 else None
+        vol24 = m["volume_24h"]
+        last = m["last"]
+        computed_dollar_volume = round(vol24 * last, 2) if (vol24 is not None and last) else None
         markets_out.append({
             **{k: m[k] for k in ("ticker", "topic", "topic_label", "series_ticker", "event_ticker",
                                   "event_title", "title", "yes_sub_title", "status", "close_time",
@@ -442,6 +523,11 @@ def main():
                                   "yes_ask_size", "volume", "volume_24h", "open_interest",
                                   "settlement_sources", "source_url", "events_source_url", "fetched_at")},
             "change_since_prev": round(m["last"] - prev_last, 4) if (prev_last is not None and m["last"] is not None) else None,
+            # Computed by this collector from two API fields, NOT an API field itself:
+            "dollar_volume_24h_computed": computed_dollar_volume,
+            "notional_open_interest_computed": round(m["open_interest"] * last, 2) if (m["open_interest"] and last) else None,
+            "ask_depth_dollars_computed": round(m["yes_ask_size"] * m["yes_ask"], 2) if (m["yes_ask_size"] and m["yes_ask"]) else None,
+            "has_traded": bool(vol24),
             "resolved": False,
             "result": None,
         })
@@ -473,8 +559,21 @@ def main():
                         "avg_pnl_per_contract": round(total / n_contracts, 4) if n_contracts else None})
         return out
 
+    START_CASH = 10000.0  # paper bankroll, NOT the Kalshi demo account balance
+    realized = round(sum(t["pnl"] for t in closed if t.get("pnl") is not None), 4)
+    unrealized = round(sum(t.get("unrealized_pnl") or 0 for t in opened), 4)
     trades_out = {
         "generated_at": ts,
+        "portfolio": {
+            "mode": "SIMULATED paper portfolio (no Kalshi account is connected)",
+            "starting_cash": START_CASH,
+            "realized_pnl": realized,
+            "unrealized_pnl": unrealized,
+            "equity": round(START_CASH + realized + unrealized, 4),
+            "open_positions": len(opened),
+            "closed_trades": len(closed),
+            "win_rate": round(len([t for t in closed if (t.get("pnl") or 0) > 0]) / len(closed), 4) if closed else None,
+        },
         "mode": "SIMULATED (paper) - no orders are placed",
         "assumptions": {"qty_per_trade": TRADE_QTY, "target_move": TARGET_MOVE,
                         "time_stop_hours": TIME_STOP_HOURS, "exit_price": "YES bid (conservative)",
@@ -491,7 +590,12 @@ def main():
         "runs": state["runs"],
         "first_run": state["first_run"],
         "alert_threshold_dollars": ALERT_THRESHOLD,
+        "environment": "demo" if "demo" in BASE else "production",
         "live_market_count": len(markets_out),
+        "open_markets_seen": len(live),
+        "markets_omitted_per_topic": omitted,
+        "candle_markets": len(candles_out["interval_1m"]),
+        "tape_markets": len(ticks_out["markets"]),
         "series_per_topic": series_seen,
         "topics": {k: {"label": v["label"], "note": v["note"], "filter": v["params"]} for k, v in TOPICS.items()},
         "orderbook_markets": len(books),
@@ -504,7 +608,38 @@ def main():
     alerts_out = list(reversed(state["alerts"]))[:500]
     history_out = {t: [{"ts": p[0], "last": p[1], "bid": p[2], "ask": p[3], "vol24": p[4], "oi": p[5]}
                        for p in state["history"].get(t, [])] for t in live}
+    # Event-level rollup (one row per event) for the "highest dollar amount" ranking.
+    events_map = {}
+    for m in markets_out:
+        key = (m["topic"], m["event_ticker"] or m["ticker"])
+        ev = events_map.setdefault(key, {
+            "topic": m["topic"], "topic_label": m["topic_label"],
+            "event_ticker": m["event_ticker"], "title": m["event_title"] or m["title"],
+            "markets": 0, "contracts_24h": 0.0, "dollar_volume_24h_computed": 0.0,
+            "open_interest": 0.0, "has_traded": False,
+            "source_url": m["events_source_url"], "close_time": m["close_time"],
+        })
+        ev["markets"] += 1
+        ev["contracts_24h"] += m["volume_24h"] or 0
+        ev["dollar_volume_24h_computed"] += m["dollar_volume_24h_computed"] or 0
+        ev["open_interest"] += m["open_interest"] or 0
+        ev["has_traded"] = ev["has_traded"] or m["has_traded"]
+        if m["close_time"] and (not ev["close_time"] or m["close_time"] < ev["close_time"]):
+            ev["close_time"] = m["close_time"]
+    events_out = sorted(events_map.values(),
+                        key=lambda e: (e["dollar_volume_24h_computed"], e["contracts_24h"]), reverse=True)[:EVENT_ROWS]
+    for i, e in enumerate(events_out):
+        e["rank_by_dollar_volume"] = i + 1
+        e["contracts_24h"] = round(e["contracts_24h"], 2)
+        e["dollar_volume_24h_computed"] = round(e["dollar_volume_24h_computed"], 2)
+        e["open_interest"] = round(e["open_interest"], 2)
+
     save_json(os.path.join(OUT_DIR, "markets.json"), {"generated_at": ts, "markets": markets_out})
+    save_json(os.path.join(OUT_DIR, "events.json"), {"generated_at": ts, "events": events_out,
+        "rank_note": "Ranked by dollar_volume_24h_computed = sum over the event's published markets of "
+                     "volume_24h_fp x last_price_dollars. Both inputs are API fields; the product is computed here."})
+    save_json(os.path.join(OUT_DIR, "candles.json"), candles_out)
+    save_json(os.path.join(OUT_DIR, "ticks.json"), ticks_out)
     save_json(os.path.join(OUT_DIR, "alerts.json"), {"generated_at": ts, "threshold": ALERT_THRESHOLD, "alerts": alerts_out})
     save_json(os.path.join(OUT_DIR, "history.json"), {"generated_at": ts, "series": history_out})
     save_json(os.path.join(OUT_DIR, "orderbooks.json"), {"generated_at": ts, "books": books})

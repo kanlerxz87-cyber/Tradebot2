@@ -6,10 +6,6 @@ name: Probe Kalshi demo API (read-only)
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "scripts/probe_demo.py"
-      - ".github/workflows/probe-demo.yml"
 
 permissions:
   contents: write
@@ -53,6 +49,27 @@ jobs:
           OUT_DIR: probe/site-data
           STATE_PATH: probe/state.json
         run: python3 scripts/kalshi_collector.py
+
+      - name: Summarise collected data
+        run: |
+          python3 - <<'PY'
+          import json
+          m = json.load(open("probe/site-data/markets.json"))
+          e = json.load(open("probe/site-data/events.json"))
+          c = json.load(open("probe/site-data/candles.json"))
+          t = json.load(open("probe/site-data/ticks.json"))
+          meta = json.load(open("probe/site-data/meta.json"))
+          print("markets:", len(m["markets"]), "events:", len(e["events"]),
+                "1m candle markets:", len(c["interval_1m"]), "60m:", len(c["interval_60m"]),
+                "tape markets:", len(t["markets"]))
+          print("meta:", {k: meta.get(k) for k in ("environment", "api_base", "open_markets_seen", "live_market_count", "markets_omitted_per_topic", "error_count")})
+          print("top events:", [(x["event_ticker"], x["dollar_volume_24h_computed"]) for x in e["events"][:5]])
+          k = next(iter(c["interval_1m"]), None)
+          print("sample candle keys:", list((c["interval_1m"].get(k) or {}).keys()), "n=", len((c["interval_1m"].get(k) or {}).get("candles") or []))
+          k2 = next(iter(t["markets"]), None)
+          print("sample tape:", k2, len((t["markets"].get(k2) or {}).get("trades") or []))
+          print("errors:", meta.get("errors")[:3])
+          PY
 
       - name: Commit probe evidence to the branch
         run: |
