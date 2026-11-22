@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tradebot2 · Kalshi demo live dashboard</title>
+<meta name="description" content="Live Kalshi demo dashboard for gas prices, elections, culture, crypto and golf: swing alerts ≥ $0.10, order-book liquidity, resolution tracking and simulated strategy performance.">
+<link rel="stylesheet" href="assets/css/main-site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>📈</text></svg>">
+</head>
+<body>
+<div style="background:#3a2a08;border-bottom:1px solid #b8860b;color:#ffd98a;font:13px/1.5 system-ui,sans-serif;padding:10px 16px;text-align:center">
+  <strong>Archive — session arena/1546d2b0 (main through 1c6e253).</strong> Retained for review; the canonical
+  site is <a style="color:#ffe6b0" href="index.html">index.html</a>. Data on this page is from that session's
+  snapshot and is not updated by the current pipeline.
+</div>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="index.html">Tradebot<span class="dot">2</span></a>
+    <a class="navlink" href="index.html" aria-current="page">Dashboard</a>
+    <a class="navlink" href="topics/gas.html">Gas</a>
+    <a class="navlink" href="topics/elections.html">Elections</a>
+    <a class="navlink" href="topics/culture.html">Culture</a>
+    <a class="navlink" href="topics/crypto.html">Crypto</a>
+    <a class="navlink" href="topics/golf.html">Golf</a>
+    <a class="navlink" href="performance.html">Performance</a>
+    <a class="navlink" href="resolutions.html">Resolutions</a>
+    <a class="navlink" href="requirements.html">Requirements</a>
+    <a class="navlink" href="sources.html">Sources</a>
+    <a class="navlink" href="flagged.html">Flagged</a>
+    <span class="spacer"></span>
+    <span class="pill live" id="livePill">loading…</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>Kalshi demo — live event dashboard</h1>
+  <p class="lede">
+    The five tracked topics — gas prices, elections, culture, crypto and golf — ranked by traded
+    dollar volume. Two scrolling feeds flag every contract move of <strong>$0.10 or more</strong> in
+    either direction: one with all events, one filtered to the moves the model scores as high ROI.
+    Prices, order books and results are read from the official Kalshi demo Trade API v2 and every
+    row links back to the response it came from.
+  </p>
+
+  <div class="filters">
+    <span class="pill" id="liveMode">probing API…</span>
+    <span class="pill" id="liveQuotes">live quotes idle</span>
+    <button class="btn" id="pauseFeed">Pause feed</button>
+    <input type="search" id="search" placeholder="Filter markets by name or ticker…" style="min-width:280px">
+    <div class="seg" id="topicFilter" role="group" aria-label="Topic filter">
+      <button data-topic="all" aria-pressed="true">All</button>
+      <button data-topic="gas" aria-pressed="false">Gas</button>
+      <button data-topic="elections" aria-pressed="false">Elections</button>
+      <button data-topic="culture" aria-pressed="false">Culture</button>
+      <button data-topic="crypto" aria-pressed="false">Crypto</button>
+      <button data-topic="golf" aria-pressed="false">Golf</button>
+    </div>
+  </div>
+
+  <div class="grid cards" id="kpis"></div>
+
+  <div class="section two">
+    <div>
+      <h2 style="margin-top:0">All-event swing feed
+        <span class="muted small">· every move ≥ $0.10</span></h2>
+      <div class="chat" id="chatAll" aria-live="polite" aria-label="All event alerts"></div>
+    </div>
+    <div>
+      <h2 style="margin-top:0">High-ROI feed
+        <span class="muted small">· model ROI on risk ≥ 25%</span></h2>
+      <div class="chat" id="chatRoi" aria-live="polite" aria-label="High ROI alerts"></div>
+      <p class="small muted">Filter rule: fade the move (mean reversion, 10 contracts, taker fee),
+        keep the alert only when ROI on risk is ≥ 25% and the entry price sits between $0.10 and
+        $0.90. Both numbers are computed, not asserted — see <a href="performance.html#strategies">strategies</a>.</p>
+    </div>
+  </div>
+
+  <div class="section" id="chartPanel" hidden>
+    <div class="filters">
+      <h2 style="margin:0" id="chartTitle">Chart</h2>
+      <span class="spacer" style="flex:1"></span>
+      <div class="seg" id="chartRanges" role="group" aria-label="Chart time range">
+        <button data-range="1m" aria-pressed="false">1 min</button>
+        <button data-range="5m" aria-pressed="false">5 min</button>
+        <button data-range="30m" aria-pressed="false">30 min</button>
+        <button data-range="1h" aria-pressed="true">1 hour</button>
+        <button data-range="6h" aria-pressed="false">6 hours</button>
+        <button data-range="24h" aria-pressed="false">24 hours</button>
+      </div>
+    </div>
+    <div class="two">
+      <div class="card">
+        <canvas class="chart" id="chartCanvas" aria-label="Contract price over time"></canvas>
+        <p class="small muted" style="margin:8px 0 0">
+          x = time (UTC), y = YES contract price $0.00–$1.00. Line = mid price, band = best bid/ask,
+          dots = captured moves ≥ $0.10.
+        </p>
+      </div>
+      <div class="card" id="chartBook"></div>
+    </div>
+  </div>
+
+  <div id="topicTables"></div>
+
+  <div class="section note">
+    <strong>How to read this dashboard.</strong> “Contracts at best ask” and “Ask-side $” come from the
+    captured order book: the last price level with resting size, in contracts and dollars.
+    “Est. 24h $ volume” is <code>volume_24h_fp × last price</code> — an estimate, because Kalshi
+    reports volume in contracts, not dollars. A dash (—) means the API did not return that field;
+    it is never filled in.
+  </div>
+
+  <div class="section">
+    <h2>Earlier dashboard build (kept for review)</h2>
+    <p class="lede small">The pages below were produced by earlier sessions on this repository. They are
+      preserved unchanged so nothing is lost; the pages above are the current, source-linked build.
+      Where the two disagree, the row-level source link on the current page is authoritative.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Page</th><th>What it contains</th></tr></thead>
+      <tbody>
+        <tr><td><a href="gas-prices.html">gas-prices.html</a></td><td>Earlier gas-prices view</td></tr>
+        <tr><td><a href="elections.html">elections.html</a></td><td>Earlier elections view</td></tr>
+        <tr><td><a href="culture.html">culture.html</a></td><td>Earlier culture view</td></tr>
+        <tr><td><a href="crypto.html">crypto.html</a></td><td>Earlier crypto view</td></tr>
+        <tr><td><a href="golf.html">golf.html</a></td><td>Earlier golf view</td></tr>
+        <tr><td><a href="strategies.html">strategies.html</a></td><td>Earlier strategy &amp; portfolio lab</td></tr>
+        <tr><td><a href="review.html">review.html</a></td><td>Earlier flagged-for-review page (current page: <a href="flagged.html#F-15">flagged.html#F-15</a>)</td></tr>
+        <tr><td><a href="EXECUTIVE_SUMMARY.md">EXECUTIVE_SUMMARY.md</a></td><td>Earlier executive summary</td></tr>
+        <tr><td><a href="earlier-dashboard.html">earlier-dashboard.html</a></td><td>The first dashboard build, preserved verbatim (it uses the annotated sample contracts described in flag <a href="flagged.html#F-15">F-15</a>)</td></tr>
+        <tr><td><a href="docs/index.html">docs/index.html</a></td><td>First-pass dashboard (published at <code>/docs/</code>)</td></tr>
+        <tr><td><a href="pages/gas-prices.html">pages/</a> · <a href="pages/portfolio-strategies.html">portfolio lab</a> · <a href="pages/api-reference.html">API reference</a> · <a href="pages/flagged-for-review.html">flagged (parallel)</a></td><td>Parallel session <code>arena-4f9ce955</code> pages, preserved</td></tr>
+        <tr><td><a href="site/index.html">site/</a> (published at <code>/monitor/</code>) · <a href="dash/index.html">dash/</a> (published at <code>/dash/</code>)</td><td>Other sessions' full dashboards, preserved and co-published</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section grid cards">
+    <a class="card" href="performance.html"><div class="k">Analytics</div>
+      <div class="v" style="font-size:16px">Strategy performance →</div>
+      <div class="s">Five simulated strategies, P&L by trade type, topic and side.</div></a>
+    <a class="card" href="resolutions.html"><div class="k">Lifecycle</div>
+      <div class="v" style="font-size:16px">Resolution tracker →</div>
+      <div class="s">Every tracked market, followed until it settles yes or no.</div></a>
+    <a class="card" href="requirements.html"><div class="k">Scope</div>
+      <div class="v" style="font-size:16px">Requirements →</div>
+      <div class="s">Each requirement, where it is implemented, and its status.</div></a>
+    <a class="card" href="sources.html"><div class="k">Evidence</div>
+      <div class="v" style="font-size:16px">Sources →</div>
+      <div class="s">Official documentation and captured API responses, with links.</div></a>
+  </div>
+</main>
+
+<footer><div class="wrap">
+  Tradebot2 · data from the Kalshi <strong>demo</strong> environment
+  (<a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener">official endpoints</a>).
+  Demo prices are not production prices · <a href="flagged.html#F-15">flagged items</a> ·
+  <a href="sources.html">sources</a>
+</div></footer>
+
+<script src="assets/js/util.js"></script>
+<script src="assets/js/chart.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

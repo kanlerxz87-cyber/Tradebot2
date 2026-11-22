@@ -1,0 +1,12 @@
+{
+  "counts": {
+    "awaiting_result": 0,
+    "open": 0,
+    "resolved": 0,
+    "resolved_no": 0,
+    "resolved_yes": 0,
+    "total": 0
+  },
+  "generated_at": null,
+  "records": []
+}

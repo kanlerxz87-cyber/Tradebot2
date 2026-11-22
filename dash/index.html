@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalshi Demo Dashboard — Live Events, Alerts & Simulated Trading</title>
+<meta name="description" content="Live Kalshi demo dashboard: highest-dollar live events in gas prices, elections, culture, crypto and golf, ≥$0.10 alert chats, interactive charts, orderbook depth and a simulated trading portfolio.">
+<link rel="stylesheet" href="./assets/style.css">
+</head>
+<body data-page="home">
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Kalshi Demo Dashboard</h1>
+    <p class="sub">Tracking the <b>highest-dollar live events</b> on the official Kalshi <b>demo</b> exchange across five topics — gas prices, elections, culture, crypto, golf — with real-time ≥$0.10 price-swing alert chats, interactive price charts with liquidity, and a fully <b>simulated</b> trading portfolio. Every number on this site was verified line-by-line against the official Kalshi API; anything unverified is left blank and flagged.</p>
+    <div class="stats" id="topstats"></div>
+  </div>
+
+  <div class="warnbar" id="demobar">
+    <b>Demo environment.</b> This dashboard reads the official <span class="mono">external-api.demo.kalshi.co</span> test environment (mock funds, synthetic activity). The demo carries a <b>limited subset</b> of Kalshi's full market universe — several series (e.g. EIA gas weekly, Ripple daily, Billboard awards) have <b>no demo markets</b> and are listed as verified-empty rather than guessed. See <a href="./flagged/">Flagged for Review</a>.
+  </div>
+
+  <div class="card">
+    <h2>Topics <span class="tag">separate topics, events grouped within each topic</span></h2>
+    <div id="topiccards"></div>
+  </div>
+
+  <div class="card">
+    <h2>Highest-dollar live events <span class="tag">ranked by verified notional volume (24h, falling back to total)</span></h2>
+    <div id="topevents"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Live alert feed — all events ≥ $0.10 <span class="tag">scrolling chat</span></h2>
+      <div class="chathead"><span class="dot" id="dotAll"></span><span class="note">Full feed: every verified swing ≥ $0.10 in either direction. Full page: <a href="./alerts/">Alerts &amp; two chats</a></span></div>
+      <div class="chatbox" id="chat-all-mini"></div>
+    </div>
+    <div class="card">
+      <h2>High-ROI model filter <span class="tag">scrolling chat</span></h2>
+      <div class="chathead"><span class="dot warn" id="dotRoi"></span><span class="note">Only swings that pass the transparent reversion model (K=0.6, edge ≥ $0.05, OI ≥ 1). <a href="./alerts/">Alerts page</a></span></div>
+      <div class="chatbox" id="chat-roi-mini"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Latest verified trade tape <span class="tag">KXBTC15M-26NOV201900-00 — official Get Trades endpoint</span></h2>
+    <div id="tapewrap"></div>
+  </div>
+
+  <div class="card">
+    <h2>On the official Kalshi demo site <span class="tag">display values shown by demo.kalshi.co itself, each linking to its official page</span></h2>
+    <div id="highlights"></div>
+  </div>
+
+  <div class="card">
+    <h2>Making the site more live &amp; interactive — suggestions <span class="tag">what to add next</span></h2>
+    <ul class="tight note">
+      <li><b>WebSocket push instead of 15s polling</b> — subscribe to the official <span class="mono">ticker</span> and <span class="mono">trade</span> channels (wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2) for sub-second updates; the REST poller is the degraded fallback.</li>
+      <li><b>Price heatmap grid</b> — 5 topics × active events, cells colored by 1-min Δ, so a trader sees the whole board move at once.</li>
+      <li><b>Drag-zoom + crosshair on charts</b> with the seconds/minutes/hours axis already selectable; add range-brush and OHLC cursor readout.</li>
+      <li><b>News-correlation overlay</b> — when a ≥$0.10 jump fires, auto-attach the market's official settlement-source link (already wired per market) and an optional RSS/keyword feed of likely causes, clearly labeled "possible cause, unverified".</li>
+      <li><b>Sound / TTS alerts</b> for the high-ROI chat, with per-topic mute and a quiet-hours schedule.</li>
+      <li><b>One-click simulated order ticket</b> — pick market + side + size, the paper engine (Portfolio page) executes against the live book and tracks it to settlement.</li>
+      <li><b>Event countdown + settlement watch</b> — auto-replay the exact settlement (yes/no, settlement_value_dollars) the moment a tracked market finalizes.</li>
+      <li><b>Multi-account paper comparison</b> — run 2–3 strategy parameter sets side by side (same engine, different K/edge/OI gates).</li>
+      <li><b>Keyboard shortcuts</b> — 1–5 switch topics, A for alerts, C for charts, / to focus search.</li>
+      <li><b>Snapshot scheduler</b> — a CI job that re-polls the demo API hourly, commits new data/snapshot.json, so the site never goes stale.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Verification &amp; sourcing</h2>
+    <p class="note">Every table row on this site links to (a) the exact official API query that verified it, (b) the official Kalshi website page when verified, and (c) the official settlement source(s) returned by the API. Values that could not be confirmed are shown as "–" and listed on the <a href="./flagged/">Flagged for Review</a> page. Full line-by-line log: <a href="./docs/">Executive summary &amp; verification</a>.</p>
+  </div>
+</div>
+
+<script src="./assets/data.js"></script>
+<script src="./assets/charts.js"></script>
+<script src="./assets/render.js"></script>
+<script src="./assets/live.js"></script>
+<script src="./assets/layout.js"></script>
+<script>
+(function(){
+  var D = window.KDATA, K = window.KRENDER;
+  // top stats
+  var ms = D.markets || [];
+  var live = ms.filter(function(m){return m.status==="active"||m.status==="open";});
+  var settled = ms.filter(function(m){return m.settledResult;});
+  var vol = ms.reduce(function(s,m){return s+(m.volume||0);},0);
+  var events = {}; ms.forEach(function(m){events[m.event]=1;});
+  document.getElementById("topstats").innerHTML =
+    '<div class="stat"><div class="k">Verified markets</div><div class="v">'+ms.length+'</div><div class="s">across '+Object.keys(events).length+' events · 5 topics</div></div>'+
+    '<div class="stat"><div class="k">Live now</div><div class="v" style="color:var(--green2)">'+live.length+'</div><div class="s">active at snapshot time</div></div>'+
+    '<div class="stat"><div class="k">Resolved tracked</div><div class="v">'+settled.length+'</div><div class="s">yes/no outcomes recorded</div></div>'+
+    '<div class="stat"><div class="k">Total notional</div><div class="v">'+K.fmtVol(vol)+'</div><div class="s">contracts × $1 (verified volumes)</div></div>'+
+    '<div class="stat"><div class="k">Alert threshold</div><div class="v">$0.10</div><div class="s">either direction, both chats</div></div>';
+  K.renderTopicCards("topiccards");
+  K.renderEvents("topevents", {});
+  K.renderHighlights("highlights");
+  // trade tape
+  var tr = D.trades;
+  if (tr) {
+    var h = '<table><thead><tr><th>Time (UTC)</th><th>Side (taker outcome)</th><th class="num">Price (YES)</th><th class="num">Size</th><th>Market</th><th>Source</th></tr></thead><tbody>';
+    tr.list.forEach(function(t){
+      h += '<tr><td class="mono">'+t.ts+'</td><td><span class="badge '+(t.side==="yes"?"open":"done")+'">'+t.side.toUpperCase()+'</span></td>'+
+        '<td class="num p">'+t.price.toFixed(3)+'</td><td class="num">'+t.size+'</td>'+
+        '<td class="mono note">'+t.ticker+'</td><td class="srcs"><a href="'+tr.src+'" target="_blank" rel="noopener">Get Trades</a></td></tr>';
+    });
+    h += '</tbody></table>';
+    document.getElementById("tapewrap").innerHTML = h;
+  }
+  // alert chats (mini)
+  window.KLIVE.initChats("chat-all-mini","chat-roi-mini");
+  var dotA = document.getElementById("dotAll"), dotR = document.getElementById("dotRoi");
+  window.onAlert = function(a){
+    dotA.classList.add("on"); setTimeout(function(){dotA.classList.remove("on");},1200);
+    if (a.roi && a.roi.pass){ dotR.classList.add("on"); setTimeout(function(){dotR.classList.remove("on");},1200); }
+  };
+  window.KLIVE.startLive(15000);
+  window.KLIVE.startReplay(2200);
+})();
+</script>
+</body>
+</html>

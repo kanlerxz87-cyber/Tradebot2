@@ -12,6 +12,13 @@
 > (first site) and [`site/`](site/index.html) (monitor prototype). Values on those
 > pages are historical; see [`flagged.html`](flagged.html).
 
+**Other generations in this repository (archives, not maintained):**
+[dash/](dash/index.html) · [pages/](pages/api-reference.html) · [topics/](topics/crypto.html) ·
+[docs/](docs/index.html) · [site/](site/index.html) · [main-site-index.html](main-site-index.html) ·
+[main-site-flagged.html](main-site-flagged.html). The canonical root site is the only one updated by
+`data.yml`; archived snapshots are frozen.
+
+
 [![GitHub Pages](https://img.shields.io/badge/Live%20Site-GitHub%20Pages-2ea043?style=for-the-badge&logo=github)](https://kanlerxz87-cyber.github.io/Tradebot2/)
 [![CFTC DCM](https://img.shields.io/badge/Regulation-CFTC%20Designated%20Contract%20Market-blue?style=for-the-badge)](https://www.cftc.gov/filings/contractlistings/kalshiexchange)
 [![Kalshi Demo API](https://img.shields.io/badge/API-Kalshi%20Trade%20API%20v2-8b949e?style=for-the-badge)](https://docs.kalshi.com)

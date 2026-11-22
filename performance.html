@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strategy performance · Tradebot2</title>
+<meta name="description" content="Simulated strategy performance on Kalshi demo markets: P&L by strategy, topic and side, with the official fee model.">
+<link rel="stylesheet" href="assets/css/main-site.css">
+</head>
+<body>
+<header class="site"><div class="wrap nav">
+  <a class="brand" href="index.html">Tradebot<span class="dot">2</span></a>
+  <a class="navlink" href="index.html">Dashboard</a>
+  <a class="navlink" href="topics/gas.html">Gas</a>
+  <a class="navlink" href="topics/elections.html">Elections</a>
+  <a class="navlink" href="topics/culture.html">Culture</a>
+  <a class="navlink" href="topics/crypto.html">Crypto</a>
+  <a class="navlink" href="topics/golf.html">Golf</a>
+  <a class="navlink" href="performance.html" aria-current="page">Performance</a>
+  <a class="navlink" href="resolutions.html">Resolutions</a>
+  <a class="navlink" href="requirements.html">Requirements</a>
+  <a class="navlink" href="sources.html">Sources</a>
+  <a class="navlink" href="flagged.html">Flagged</a>
+</div></header>
+<main class="wrap">
+  <h1>Simulated strategy performance</h1>
+  <p class="lede">
+    Every trade below is simulated against real demo-market prices. Entries are priced off the
+    captured order book, fees use Kalshi's published formula, and settlement uses the exchange's own
+    <code>result</code> field. Nothing is back-filled: a trade exists only from the cycle its rule fired.
+  </p>
+
+  <div class="grid cards" id="overall"></div>
+
+  <h2 id="strategies">Strategy buckets</h2>
+  <p class="lede">Each strategy is a stated rule with a fixed size, so results are attributable to the rule
+    rather than to position sizing.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Strategy</th><th>Rule</th><th class="num">Trades</th><th class="num">Open</th>
+      <th class="num">Settled</th><th class="num">Win rate</th><th class="num">Invested</th>
+      <th class="num">Realized P&amp;L</th><th class="num">ROI</th></tr></thead>
+    <tbody id="strategyRows"><tr><td colspan="9" class="muted">loading…</td></tr></tbody>
+  </table></div>
+
+  <div class="two section">
+    <div>
+      <h2 style="margin-top:0">By topic</h2>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Topic</th><th class="num">Trades</th><th class="num">Settled</th>
+          <th class="num">Wins</th><th class="num">P&amp;L</th><th class="num">ROI</th></tr></thead>
+        <tbody id="topicRows"></tbody></table></div>
+    </div>
+    <div>
+      <h2 style="margin-top:0">By side</h2>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Side</th><th class="num">Trades</th><th class="num">Settled</th>
+          <th class="num">Wins</th><th class="num">P&amp;L</th><th class="num">ROI</th></tr></thead>
+        <tbody id="sideRows"></tbody></table></div>
+      <h2>Fee model</h2>
+      <div class="card">
+        <div class="kv">
+          <dt>Formula</dt><dd id="feeModel">—</dd>
+          <dt>Verification</dt><dd>Reproduces all 42 values in the published table
+            (<a href="https://kalshi.com/docs/kalshi-fee-schedule.pdf" target="_blank" rel="noopener">fee schedule PDF ↗</a>),
+            checked by <code>tests/test_fees.py</code>.</dd>
+          <dt>Settlement</dt><dd>$1.00 per contract to the winning side
+            (<a href="https://docs.kalshi.com/getting_started/market_settlement" target="_blank" rel="noopener">docs ↗</a>)</dd>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Open positions</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Strategy</th><th>Topic</th><th>Market</th><th>Side</th>
+      <th class="num">Entry</th><th class="num">Contracts</th><th class="num">Cost + fee</th>
+      <th class="num">Max profit</th><th class="num">Max loss</th><th>Opened</th><th>Source</th></tr></thead>
+    <tbody id="openRows"></tbody></table></div>
+
+  <h2>Settled trades</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Strategy</th><th>Market</th><th>Side</th><th>Result</th>
+      <th class="num">Entry</th><th class="num">Contracts</th><th class="num">P&amp;L</th>
+      <th class="num">ROI</th><th>Settled</th><th>Source</th></tr></thead>
+    <tbody id="settledRows"></tbody></table></div>
+
+  <h2>Demo account</h2>
+  <div class="card" id="portfolio"><p class="muted">loading…</p></div>
+</main>
+<footer><div class="wrap">Tradebot2 · simulated results only, not investment advice ·
+  <a href="flagged.html">flagged items</a></div></footer>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/performance.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gas Prices — Kalshi Demo Dashboard</title>
+<meta name="description" content="Gas Prices events on the Kalshi demo exchange: verified live markets, prices, volume, liquidity and sources.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body data-page="gas">
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Gas Prices</h1>
+    <p class="sub">US retail gas and fuel markets. Live demo series: <b>KXAAAGASW</b> (AAA average US regular gas, daily strikes) — the only gas series with markets in the demo environment. The EIA-based series <b>KXGAS</b> (Gas weekly), <b>DIESEL</b> and <b>DIESELM</b> exist in the demo with official settlement sources but <b>zero markets</b> (verified empty, not inferred).</p>
+  </div>
+
+  <div class="card">
+    <h2>Live events — Gas Prices <span class="tag">active markets at snapshot, ranked by notional</span></h2>
+    <div id="live-table"></div>
+  </div>
+
+  <div class="card">
+    <h2>Resolved &amp; tracked to settlement — Gas Prices <span class="tag">yes/no outcomes</span></h2>
+    <div id="done-table"></div>
+  </div>
+
+
+      <div class="card">
+        <h2>AAA gas strike ladder <span class="tag">KXAAAGASW-26NOV23 · settles Nov 23, 2026 · notional by total volume</span></h2>
+        <div id="gasladder"></div>
+        <p class="note">Current AAA national regular price per the official demo site: <b>$3.65 (+0.5% 1D)</b> — <a href="https://demo.kalshi.co/markets/kxaaagasw/us-gas-price-up/kxaaagasw-26nov23" target="_blank" rel="noopener">demo.kalshi.co (verified)</a>. All six open strikes sit at $0.02 (≈2% implied probability), consistent with the current price well below the $3.84–$3.94 ladder.</p>
+      </div>
+      <div class="card">
+        <h2>Gas series census in the demo <span class="tag">verified via Get Series / Get Markets</span></h2>
+        <table><thead><tr><th>Series</th><th>Title (official)</th><th>Frequency</th><th>Settlement source (official)</th><th>Demo markets</th><th>Source</th></tr></thead><tbody>
+          <tr><td class="mono">KXAAAGASW</td><td>US gas price up (AAA)</td><td>daily</td><td><a href="https://www.aaa.com/gasprices/" target="_blank" rel="noopener">AAA gas prices</a></td><td><span class="badge open">LIVE — 6+ open strikes</span></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXAAAGASW&status=open&limit=6" target="_blank" rel="noopener">API query</a></td></tr>
+          <tr><td class="mono">KXGAS</td><td>Gas weekly</td><td>weekly</td><td><a href="https://www.eia.gov/dnav/pet/PET_PRI_GND_DCUS_NUS_W.htm" target="_blank" rel="noopener">U.S. EIA</a></td><td><span class="badge warn">0 markets (verified empty)</span></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/series/KXGAS" target="_blank" rel="noopener">series</a> · <a href="https://external-api.demo.kalshi.co/trade-api/v2/markets?series_ticker=KXGAS&limit=3" target="_blank" rel="noopener">markets</a></td></tr>
+          <tr><td class="mono">DIESEL</td><td>Diesel price this week</td><td>weekly</td><td><a href="https://www.eia.gov/dnav/pet/PET_PRI_SPT_S1_D.htm" target="_blank" rel="noopener">U.S. EIA</a></td><td><span class="badge warn">0 markets (verified empty)</span></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/series?tags=Gas&limit=10" target="_blank" rel="noopener">API query</a></td></tr>
+          <tr><td class="mono">DIESELM</td><td>Diesel price this month</td><td>monthly</td><td><a href="https://www.eia.gov/dnav/pet/PET_PRI_SPT_S1_D.htm" target="_blank" rel="noopener">U.S. EIA</a></td><td><span class="badge warn">0 markets (verified empty)</span></td><td class="srcs"><a href="https://external-api.demo.kalshi.co/trade-api/v2/series?tags=Gas&limit=10" target="_blank" rel="noopener">API query</a></td></tr>
+        </tbody></table>
+      </div>
+
+  <div class="card">
+    <h2>Events in this topic (grouped) <span class="tag">every event, every source link</span></h2>
+    <div id="event-groups"></div>
+  </div>
+</div>
+
+<script src="../../assets/data.js"></script>
+<script src="../../assets/charts.js"></script>
+<script src="../../assets/render.js"></script>
+<script src="../../assets/layout.js"></script>
+<script>
+(function(){
+  var D = window.KDATA, K = window.KRENDER, S = "gas";
+  K.renderMarkets("live-table", {onlyTopic:S, onlyStatus:"live", ranked:true});
+  K.renderMarkets("done-table", {onlyTopic:S, onlyStatus:"done", ranked:true});
+  K.renderEvents("event-groups", {onlyTopic:S});
+  var ms = (D.markets||[]).filter(function(m){return m.topic===S;});
+  (function(){
+    // topic-specific ladders
+    function ladder(containerId, items, titleKey){
+      if (!document.getElementById(containerId)) return;
+      var max = Math.max.apply(null, items.map(function(i){return i.vol;}).concat([1]));
+      var h = "";
+      items.forEach(function(i){
+        var pct = i.vol/max*100;
+        h += '<div class="bar-row"><div class="lbl">'+K.esc(i.label)+'</div>' +
+             '<div class="bar-track"><div class="bar-fill" style="width:'+Math.max(1.5,pct).toFixed(1)+'%"></div></div>' +
+             '<div class="val">'+K.fmtVol(i.vol)+' · last '+K.fmtP(i.last)+'</div></div>';
+      });
+      document.getElementById(containerId).innerHTML = h;
+    }
+    if (S === "gas") {
+      var gas = ms.filter(function(m){return m.series==="KXAAAGASW";});
+      gas.sort(function(a,b){return parseFloat(a.market.split("-").pop()) - parseFloat(b.market.split("-").pop());});
+      ladder("gasladder", gas.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+    }
+    if (S === "elections") {
+      var sm = ms.filter(function(m){return m.series==="KXSENMAJ";});
+      sm.sort(function(a,b){return (b.last||0)-(a.last||0);});
+      ladder("senmaj-ladder", sm.map(function(m){return {label: m.title.replace(" wins Senate Majority Leader",""), vol: m.oi||1, last: m.last};}));
+    }
+    if (S === "culture") {
+      var gta = ms.filter(function(m){return m.series==="KXGTAONLINE";});
+      gta.sort(function(a,b){return (a.closeTime||"").localeCompare(b.closeTime||"");});
+      ladder("gta-ladder", gta.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+      var nflx = ms.filter(function(m){return m.series==="KXNETFLIXRANKSHOWGLOBAL";});
+      nflx.sort(function(a,b){return (b.last||0)-(a.last||0);});
+      ladder("netflix-ladder", nflx.map(function(m){return {label: m.title, vol: (m.oi||0)+ (m.last? m.last*100:0), last: m.last};}));
+    }
+    if (S === "crypto") {
+      // candlestick chart
+      var cd = D.candlesticks;
+      var canvas = document.getElementById("btcchart");
+      if (canvas && cd) {
+        var pts = cd.candles.map(function(c){return {t:c.t, o:c.o, h:c.h, l:c.l, c:c.c, v:c.v};});
+        function draw(){
+          window.KCHART.drawPrice(canvas, {
+            points: pts,
+            granularity: parseInt(document.getElementById("btc-gran").value||"0",10),
+            showCandles: document.getElementById("btc-candles").checked,
+            title: "KXBTC15M-26NOV201900-00 — BTC up in next 15 min (settled NO @ 0.003)",
+            subtitle: "1-min candles · CF Benchmarks BRTI · target $58,870",
+            alertLevels: [{price:0.10, label:"alert zone $0.10"}]
+          });
+        }
+        document.getElementById("btc-gran").onchange = draw;
+        document.getElementById("btc-candles").onchange = draw;
+        window.addEventListener("resize", draw);
+        draw();
+      }
+      var bmax = ms.filter(function(m){return m.series==="KXBTCMAXY";});
+      bmax.sort(function(a,b){
+        var av = parseFloat(a.market.split("-").pop().replace(/D/g,""))||0;
+        var bv = parseFloat(b.market.split("-").pop().replace(/D/g,""))||0;
+        return av-bv;
+      });
+      ladder("btcmaxy-ladder", bmax.map(function(m){return {label: m.title, vol: m.volume||0, last: m.last};}));
+      var cs = ms.filter(function(m){return m.settledResult && (m.series||"").indexOf("15M")>0;});
+      var tb = document.getElementById("crypto-settled");
+      if (tb) tb.innerHTML = cs.map(function(m){
+        return '<tr><td class="mono note">'+m.market+'</td><td class="note">'+K.esc(m.rule.replace("then the market resolves to Yes.",""))+'</td>'+
+          '<td class="num p">'+(m.last!=null?m.last.toFixed(3):"–")+'</td><td class="num">'+K.fmtVol(m.volume)+'</td>'+
+          '<td><span class="badge '+(m.settledResult==="yes"?"open":"done")+'">'+m.settledResult.toUpperCase()+'</span></td>'+
+          '<td class="mono">'+(m.settledTs||"").substr(0,16)+'Z</td>'+
+          '<td class="srcs"><a href="'+m.src.api+'" target="_blank" rel="noopener">API (verified)</a></td></tr>';
+      }).join("");
+    }
+  })();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulated Portfolio — Strategies & Analysis — Kalshi Demo Dashboard</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-page="portfolio">
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Portfolio — Simulated Trading (Paper)</h1>
+    <p class="sub"><b>No real orders are placed.</b> This session has no Kalshi demo API keys, and the demo account's mock funds are not reachable from this sandbox — so all "trades" below are a deterministic simulation executed against the <b>verified snapshot data</b>. Every entry references a verified market and verified price; outcomes use the verified settlement where one occurred, and are marked OPEN otherwise. The point is to test and categorize strategies; see <a href="../docs/strategies/">strategy specs</a>.</p>
+  </div>
+
+  <div class="warnbar"><b>SIMULATED — paper engine only.</b> Results are projections for strategy research, not performance of any real account, and not a prediction of future results. Fees use the official quadratic fee formula (approximate — flagged). <a href="../flagged/">Flagged for Review</a>.</div>
+
+  <div class="stats" id="pfstats"></div>
+
+  <div class="card">
+    <h2>Equity curve <span class="tag">$10,000 starting paper cash · only closed (settled) P&amp;L applied</span></h2>
+    <div class="chartbox"><canvas id="eqchart" style="height:220px"></canvas></div>
+    <p class="legend" id="eqlegend"></p>
+  </div>
+
+  <div class="card">
+    <h2>Trade log — categorized by strategy <span class="tag">each row links to the verified market record</span></h2>
+    <div id="tradetable"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Strategy categories <span class="tag">counts, win rate, P&amp;L, ROI</span></h2>
+      <div id="catwrap"></div>
+    </div>
+    <div class="card">
+      <h2>Analysis &amp; findings <span class="tag">what the categorization suggests</span></h2>
+      <ul class="tight note" id="findings"></ul>
+      <p class="note">These findings are <b>hypotheses generated from the verified snapshot</b>, sized to a small sample (a few dozen markets). They are inputs to strategy research, not verified edge — each one is flagged as such on the <a href="../flagged/">Flagged for Review</a> page.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>How to grow this into a real strategy lab <span class="tag">roadmap</span></h2>
+    <ul class="tight note">
+      <li><b>1. Keys</b> — generate a Kalshi demo API key (docs: <a href="https://docs.kalshi.com/getting_started/api_keys" target="_blank" rel="noopener">API Keys</a>), then this same engine can place <b>real paper orders on the demo account</b> via the official order endpoints and reconcile fills through the <span class="mono">fill</span> websocket channel.</li>
+      <li><b>2. History</b> — ingest <span class="mono">/historical/markets</span> + 1-min/1-hour candlesticks for all five topics; re-run the four strategies over weeks of data before believing any win rate.</li>
+      <li><b>3. Walk-forward</b> — split data train/test, tune K (reversion) and the edge/OI gates, and report out-of-sample ROI only.</li>
+      <li><b>4. Risk</b> — add per-position sizing (Kelly fraction of model edge), daily loss limit, and the official <span class="mono">order-group</span> rolling-limit feature as a hard cap.</li>
+      <li><b>5. Reporting</b> — auto-generate this page hourly from <span class="mono">data/snapshot.json</span> so the category tables always reflect the latest verified data.</li>
+    </ul>
+  </div>
+</div>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/charts.js"></script>
+<script src="../assets/render.js"></script>
+<script src="../assets/sim.js"></script>
+<script src="../assets/layout.js"></script>
+<script>
+(function(){
+  var K = window.KRENDER;
+  var R = window.KSIM.run();
+  // stats
+  var closed = R.trades.filter(function(t){return t.pnl!=null;});
+  var wins = closed.filter(function(t){return t.pnl>0;});
+  document.getElementById("pfstats").innerHTML =
+    '<div class="stat"><div class="k">Paper cash</div><div class="v">$'+R.cash.toLocaleString('en-US',{maximumFractionDigits:2})+'</div><div class="s">start $10,000 · realized P&L $'+R.totalPnl.toFixed(2)+'</div></div>'+
+    '<div class="stat"><div class="k">Trades</div><div class="v">'+R.trades.length+'</div><div class="s">'+closed.length+' closed · '+R.trades.filter(function(t){return t.pnl==null;}).length+' open</div></div>'+
+    '<div class="stat"><div class="k">Win rate (closed)</div><div class="v">'+(closed.length?(100*wins.length/closed.length).toFixed(0):0)+'%</div><div class="s">'+wins.length+' of '+closed.length+'</div></div>'+
+    '<div class="stat"><div class="k">Cost basis (entries)</div><div class="v">$'+R.totalCost.toFixed(0)+'</div><div class="s">contracts × verified entry prices</div></div>';
+  // equity chart (simple line)
+  var eq = R.equity;
+  KCHART.drawPrice(document.getElementById("eqchart"), {
+    points: eq.map(function(p){ return {t: new Date(p.t).getTime()/1000, o: p.v, h: p.v, l: p.v, c: p.v, v: 0}; }),
+    granularity: 0, showCandles: false, height: 220,
+    title: "Paper equity", subtitle: "realized P&L on settled trades only"
+  });
+  document.getElementById("eqlegend").textContent = "Flat while positions are open (unrealized P&L is not booked — conservative).";
+  // trade table
+  var h = '<table><thead><tr><th>Strategy</th><th>Market</th><th>Side</th><th class="num">Entry</th><th class="num">Exit</th><th class="num">Qty</th><th class="num">Fee</th><th class="num">P&L</th><th class="num">ROI</th><th>Status</th><th>Notes &amp; source</th></tr></thead><tbody>';
+  R.trades.forEach(function(t){
+    var pnlTxt = t.pnl==null ? "–" : '<span class="p '+(t.pnl>=0?"up":"down")+'">'+(t.pnl>=0?"+":"")+"$"+t.pnl.toFixed(2)+"</span>";
+    var roiTxt = t.roi==null ? "–" : (100*t.roi).toFixed(1)+"%";
+    h += '<tr><td><span class="badge topic">'+K.esc(t.strategy)+'</span></td>'+
+      '<td class="mono note">'+K.esc(t.market)+'</td><td>'+K.esc(t.side)+'</td>'+
+      '<td class="num">'+t.entry.toFixed(3)+'</td><td class="num">'+(t.exit!=null?t.exit.toFixed(3):"–")+'</td>'+
+      '<td class="num">'+t.qty+'</td><td class="num">$'+t.fee.toFixed(2)+'</td>'+
+      '<td class="num">'+pnlTxt+'</td><td class="num">'+roiTxt+'</td>'+
+      '<td class="note">'+K.esc(t.status)+'</td>'+
+      '<td class="note">'+K.esc(t.note)+' <a href="'+K.esc(t.src)+'" target="_blank" rel="noopener">[verified record]</a></td></tr>';
+  });
+  h += '</tbody></table>';
+  document.getElementById("tradetable").innerHTML = h;
+  // categories
+  var ch = '<table><thead><tr><th>Strategy</th><th class="num">Trades</th><th class="num">Closed</th><th class="num">Wins</th><th class="num">Win %</th><th class="num">Realized P&L</th><th class="num">Avg ROI (closed)</th><th class="num">Worst loss</th></tr></thead><tbody>';
+  R.categories.forEach(function(c){
+    ch += '<tr><td><b>'+K.esc(c.name)+'</b></td><td class="num">'+c.n+'</td><td class="num">'+c.closed+'</td><td class="num">'+c.wins+'</td>'+
+      '<td class="num">'+(c.closed?(100*c.wins/c.closed).toFixed(0):"–")+'%</td>'+
+      '<td class="num p '+(c.pnl>=0?"up":"down")+'">'+(c.pnl>=0?"+":"")+'$'+c.pnl.toFixed(2)+'</td>'+
+      '<td class="num">'+(c.closed?(100*c.roiSum/c.closed).toFixed(1):"–")+'%</td>'+
+      '<td class="num">'+(c.maxDD<0?"$"+c.maxDD.toFixed(2):"–")+'</td></tr>';
+  });
+  ch += '</tbody></table>';
+  document.getElementById("catwrap").innerHTML = ch;
+  // findings (deterministic text from the computed data)
+  var f = [];
+  R.categories.forEach(function(c){
+    f.push('<li><b>'+K.esc(c.name)+'</b> — '+c.n+' trade(s), realized P&L '+(c.pnl>=0?"+":"")+'$'+c.pnl.toFixed(2)+
+      (c.closed? ', win rate '+(100*c.wins/c.closed).toFixed(0)+'%':'') + (c.open? ', '+c.open+' still open':'') +
+      '. Sample is tiny — treat as hypothesis, not edge.</li>');
+  });
+  f.push('<li><b>Finding 1 (documented, verified example):</b> buying YES into a ≥$0.10 collapse (S1) lost money on the verified BTC 15-min collapse (entry $0.025, settled NO at $0.003), while buying NO with the same signal (S2) won (+$0.983 → $1.000). In the 15-min crypto world, <b>momentum continued, it did not revert</b>, at least on this sample.</li>');
+  f.push('<li><b>Finding 2:</b> the longshot study (S3, GA-14 at $0.98) quantifies the classic trap: paying 98¢ for a "cheap" near-certainty that settled NO. Cheap-side value (S3 open gas legs at $0.02) is the symmetric bet — high variance, needs volume of samples before any conclusion.</li>');
+  f.push('<li><b>Finding 3:</b> favorites (S4) at $0.84–$0.92 with TP at +$0.05 are <b>open</b> — the snapshot predates their settlement, so the engine books nothing until a verified resolution exists. This is the discipline the whole site follows: <b>no inferred outcomes</b>.</li>');
+  document.getElementById("findings").innerHTML = f.join("");
+})();
+</script>
+</body>
+</html>

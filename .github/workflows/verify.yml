@@ -12,16 +12,25 @@ permissions:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: pip
       - name: Install dependencies
-        run: pip install -r app/requirements.txt pytest
-      - name: Unit and contract tests
+        run: pip install -r app/requirements.txt -r requirements.txt pytest
+      - name: Canonical engine tests
         run: python -m pytest -q
-      - name: Verify published data and local links
+      - name: Archived engine tests (session 1546d2b0)
+        run: |
+          python tests/test_fees.py
+          python tests/test_engine.py
+          python tests/test_pipeline.py
+          python tests/run_fixture_pipeline.py
+      - name: Canonical data, required pages and local links
         run: python tools/verify_site.py
+      - name: JavaScript syntax
+        run: |
+          for f in $(find assets/js js dash/assets -name '*.js' 2>/dev/null); do node --check "$f" || exit 1; done
+          echo "js ok"

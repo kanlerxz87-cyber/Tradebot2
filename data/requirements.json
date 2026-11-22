@@ -1,0 +1,190 @@
+{
+  "generated_at": "2026-11-22T07:30:00Z",
+  "note": "Requirement register: one row per requirement in the brief, with implementation, verification and an official source.",
+  "requirements": [
+    {
+      "id": "R-01",
+      "requirement": "Read the Kalshi demo REST Trade API at the documented base URL.",
+      "implementation": "collector/kalshi.py uses https://external-api.demo.kalshi.co/trade-api/v2 with fallback to https://demo-api.kalshi.co/trade-api/v2 (both documented).",
+      "verification": "Endpoint list read from official docs; live responses captured in data/verify-api.json by tools/probe_api.py.",
+      "status": "done",
+      "source": "https://docs.kalshi.com/getting_started/api_environments"
+    },
+    {
+      "id": "R-02",
+      "requirement": "Read the Kalshi demo WebSocket API at the documented URL.",
+      "implementation": "collector/kalshi_auth.py builds the documented handshake signature; tools/probe_api.py attempts both demo WS roots unauthenticated and (when secrets exist) authenticated.",
+      "verification": "Official docs state WebSocket connections require an authenticated handshake; the probe records the actual outcome rather than assuming it.",
+      "status": "review",
+      "source": "https://docs.kalshi.com/getting_started/quick_start_websockets"
+    },
+    {
+      "id": "R-03",
+      "requirement": "Track the highest dollar-amount live events.",
+      "implementation": "markets are ranked by est_volume_24h_dollars (volume_24h_fp \u00d7 last price) and displayed in that order on the dashboard and every topic page.",
+      "verification": "metric formula and caveat are printed in data/meta.json (volume_metric_note) and on the dashboard footer note.",
+      "status": "partial",
+      "source": "https://docs.kalshi.com/api-reference/market/get-markets"
+    },
+    {
+      "id": "R-04",
+      "requirement": "Restrict coverage to gas prices, elections, culture, crypto and golf only.",
+      "implementation": "collector/topics.py contains only these five topics; each has an explicit rule over official category/categories/tags fields and an explicit exclusion list.",
+      "verification": "Rules are published in data/meta.json; tests/test_pipeline.py asserts an unrelated sport (basketball) is not matched.",
+      "status": "done",
+      "source": "https://docs.kalshi.com/api-reference/market/get-series-list"
+    },
+    {
+      "id": "R-05",
+      "requirement": "Alert on contract price swings of at least $0.10 in either direction.",
+      "implementation": "collector/alerts.py detect(): |price_now \u2212 price_<window>| \u2265 0.10, per market, with a retrace-based re-arm latch.",
+      "verification": "tests/test_engine.py tests the exact $0.10 boundary, below-threshold silence, both directions, latch behaviour and re-arm.",
+      "status": "done",
+      "source": "https://docs.kalshi.com/api-reference/market/get-markets"
+    },
+    {
+      "id": "R-06",
+      "requirement": "Present the alerts as a simple real-time scrolling chat.",
+      "implementation": "index.html #chatAll \u2014 newest first, auto-refresh every 60 s, flash on newly arrived messages, pause button.",
+      "verification": "Rendered from data/alerts.json all_feed; every message links to its API source URL.",
+      "status": "done",
+      "source": "https://docs.kalshi.com/api-reference/market/get-trades"
+    },
+    {
+      "id": "R-07",
+      "requirement": "Provide a second filtered chat containing only the events the model scores as high ROI.",
+      "implementation": "index.html #chatRoi reads data/alerts.json high_roi_feed; the filter (ROI on risk \u2265 25% and entry in $0.10\u2013$0.90) is stated on the page.",
+      "verification": "collector/alerts.py qualifies() implements the filter; the threshold appears in data/alerts.json high_roi_rule.",
+      "status": "done",
+      "source": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+    },
+    {
+      "id": "R-08",
+      "requirement": "Keep tracking live events until they resolve, and record whether they resolved yes or no.",
+      "implementation": "collector/resolutions.py polls every tracked market and copies result / settlement_value_dollars verbatim; resolutions.html lists state and result.",
+      "verification": "Only result \u2208 {yes,no} sets state=resolved; tools/verify_data.py fails a resolved record without a yes/no result.",
+      "status": "done",
+      "source": "https://docs.kalshi.com/getting_started/market_settlement"
+    },
+    {
+      "id": "R-09",
+      "requirement": "Automate simulated trades to test different strategies.",
+      "implementation": "collector/strategy.py defines five strategies with fixed size and explicit rules; collector/trading.py opens, settles and summarises them each cycle.",
+      "verification": "tests/run_fixture_pipeline.py runs the whole engine offline; tests/test_engine.py checks the settlement arithmetic.",
+      "status": "done",
+      "source": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+    },
+    {
+      "id": "R-10",
+      "requirement": "Track portfolio performance on the Kalshi demo account.",
+      "implementation": "collector/trading.py sync_demo_portfolio() reads /portfolio/balance and /portfolio/positions with signed requests when secrets exist; otherwise portfolio.json records that it is unconfigured.",
+      "verification": "Requires repository secrets KALSHI_DEMO_API_KEY_ID and KALSHI_DEMO_PRIVATE_KEY, which this session cannot create. Published as a flagged item.",
+      "status": "review",
+      "source": "https://docs.kalshi.com/api-reference/portfolio/get-balance"
+    },
+    {
+      "id": "R-11",
+      "requirement": "Analyse results and categorise trades / build strategies by trade type.",
+      "implementation": "data/analytics.json breaks P&L, win rate, invested capital and ROI down by strategy, topic and side; performance.html renders all three tables.",
+      "verification": "summarise() computes each figure from settled trades only; verify_data.py requires all five strategy buckets to exist.",
+      "status": "done",
+      "source": "https://docs.kalshi.com/getting_started/market_settlement"
+    },
+    {
+      "id": "R-12",
+      "requirement": "Execute trades on events and track their performance.",
+      "implementation": "tools/execute_demo_order.py places a signed POST /portfolio/events/orders against the demo account when credentials exist; paper trades always run and are performance-tracked.",
+      "verification": "Order endpoint and payload shape taken from the official Create Order (V2) reference. Real execution is untested here because no demo credentials exist in this session.",
+      "status": "review",
+      "source": "https://docs.kalshi.com/api-reference/orders/create-order-v2"
+    },
+    {
+      "id": "R-13",
+      "requirement": "Live interactive dashboard with price graphs; x axis time with seconds/minutes/hours ranges, y axis contract price.",
+      "implementation": "assets/js/chart.js PriceChart: y fixed $0.00\u2013$1.00, x = UTC time, ranges 1m/5m/30m/1h/6h/24h, bid/ask band and swing dots.",
+      "verification": "Range list and y-domain are in the code and mirrored by the on-page caption; data comes from data/history/<ticker>.json.",
+      "status": "done",
+      "source": "https://docs.kalshi.com/api-reference/market/get-market-candlesticks"
+    },
+    {
+      "id": "R-14",
+      "requirement": "Show current liquidity and how many contracts are available at a given price.",
+      "implementation": "collector/collect.py capture_orderbook() stores both book sides as [price, contracts] with totals and notional; tables show 'contracts at best ask' and order-book panels show levels.",
+      "verification": "Order book structure per official docs (bids only; YES asks implied as 1 \u2212 NO bid).",
+      "status": "done",
+      "source": "https://docs.kalshi.com/api-reference/market/get-market-orderbook"
+    },
+    {
+      "id": "R-15",
+      "requirement": "Suggest improvements to make the site more live and interactive.",
+      "implementation": "docs/IMPROVEMENTS.md lists 12 concrete suggestions with the constraint that each is either implemented or explicitly deferred with a reason.",
+      "verification": "Each suggestion states its current state; nothing is claimed as live unless it is.",
+      "status": "done",
+      "source": "https://docs.kalshi.com/getting_started/api_environments"
+    },
+    {
+      "id": "R-16",
+      "requirement": "Simplified graphs and charts, including which events/links may have caused a jump \u2265 $0.10.",
+      "implementation": "Every alert links to the Kalshi API row and to the topic page; docs/IMPROVEMENTS.md explains the news-attribution limit. No news feed is asserted.",
+      "verification": "The project has no verified news-source feed; attributing a jump to a news story would be inference, so the column stays empty and is flagged.",
+      "status": "review",
+      "source": "https://docs.kalshi.com/api-reference/market/get-trades"
+    },
+    {
+      "id": "R-17",
+      "requirement": "Organise and simplify: topics separate, events within a topic grouped together.",
+      "implementation": "One page per topic (topics/*.html); dashboard groups tables by topic; events are the grouping key for markets in data/events.json.",
+      "verification": "tools/check_site.py asserts every topic page exists and every nav link resolves.",
+      "status": "done",
+      "source": "https://docs.kalshi.com/api-reference/market/get-series-list"
+    },
+    {
+      "id": "R-18",
+      "requirement": "No manual input: the pipeline must run itself.",
+      "implementation": ".github/workflows/collect.yml runs every 5 minutes, commits refreshed data, and re-runs verification; .github/workflows/probe-api.yml refreshes the API evidence every 6 hours.",
+      "verification": "Workflow files are in the repo; run history is visible under the Actions tab.",
+      "status": "partial",
+      "source": "https://docs.kalshi.com/getting_started/rate_limits"
+    },
+    {
+      "id": "R-19",
+      "requirement": "Review the repo line by line and flag irregularities.",
+      "implementation": "README.md 'Repo review' section; flagged.html lists every irregularity with a source link.",
+      "verification": "Repo consisted of a one-line README at commit 003447e; findings recorded.",
+      "status": "done",
+      "source": "https://github.com/kanlerxz87-cyber/Tradebot2/commit/003447ea92f5fdd7c2ee66558876c99237818f38"
+    },
+    {
+      "id": "R-20",
+      "requirement": "Publish a GitHub Pages site: clean landing page, subpages by category, tables with sources.",
+      "implementation": "Static site at repo root served by Pages; index.html + topics/*.html + performance/resolutions/requirements/sources/flagged.",
+      "verification": "tools/check_site.py validates internal links, required pages and required table headers; Pages deploy confirmed after merge.",
+      "status": "done",
+      "source": "https://docs.github.com/en/pages"
+    },
+    {
+      "id": "R-21",
+      "requirement": "Every table row must carry a source link to an official site; unconfirmable values left blank and flagged.",
+      "implementation": "Every market, alert, resolution and trade row renders a source link to its Kalshi API URL; tools/verify_data.py rejects a row without one.",
+      "verification": "verify_data.py runs in CI on every push and fails the build on a missing/non-official source.",
+      "status": "done",
+      "source": "https://docs.kalshi.com/getting_started/api_environments"
+    },
+    {
+      "id": "R-22",
+      "requirement": "Coordinate with parallel sessions via COORDINATION.md.",
+      "implementation": "COORDINATION.md holds the task board, ownership, file scopes, branch policy and the log.",
+      "verification": "Board was created before any work began; no other session's claim was present.",
+      "status": "done",
+      "source": "https://github.com/kanlerxz87-cyber/Tradebot2/blob/main/COORDINATION.md"
+    },
+    {
+      "id": "R-23",
+      "requirement": "Create an executive summary outlining important details.",
+      "implementation": "docs/EXECUTIVE_SUMMARY.md; linked from the dashboard and sources page.",
+      "verification": "Every factual statement in it links to the source it came from.",
+      "status": "done",
+      "source": "https://docs.kalshi.com/getting_started/api_environments"
+    }
+  ]
+}

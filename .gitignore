@@ -18,3 +18,7 @@ site/data/
 state/
 *.pyc
 # Generated at build time (not committed)
+*.pem
+*.key
+secrets/
+Thumbs.db
