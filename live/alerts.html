@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alerts · Tradebot2 Kalshi demo</title>
+<meta name="description" content="Two live scrolling alert chats: every ≥$0.10 Kalshi price move, and the high-ROI screen.">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body data-page="alerts">
+<header id="site-head"></header>
+<main class="wrap">
+  <div class="row" id="statusbar" style="margin-bottom:.7rem"></div>
+  <div id="errbox"></div>
+
+  <h1>Price-swing alerts <span class="tag">threshold $0.10 either direction</span></h1>
+  <p class="hint">Two scrolling chats below. Chat 1 is every recorded move of $0.10 or more; Chat 2 is the same feed filtered by a
+    transparent reversion screen. Both update live as the dashboard refreshes.</p>
+
+  <section class="card">
+    <div class="row">
+      <div class="seg" id="topicFilter" role="group" aria-label="Filter by topic">
+        <button data-t="" aria-pressed="true">All topics</button>
+        <button data-t="gas" aria-pressed="false">⛽ Gas</button>
+        <button data-t="elections" aria-pressed="false">🗳️ Elections</button>
+        <button data-t="culture" aria-pressed="false">🎭 Culture</button>
+        <button data-t="crypto" aria-pressed="false">🪙 Crypto</button>
+        <button data-t="golf" aria-pressed="false">⛳ Golf</button>
+      </div>
+      <div class="seg" id="dirFilter" role="group" aria-label="Filter by direction">
+        <button data-d="" aria-pressed="true">Both</button>
+        <button data-d="up" aria-pressed="false">▲ Up</button>
+        <button data-d="down" aria-pressed="false">▼ Down</button>
+      </div>
+      <label class="chk"><input type="checkbox" id="soundChk"> sound on new alert</label>
+      <button class="btn" id="refreshBtn">↻ Refresh</button>
+      <button class="btn" id="clearBtn">Clear local alert history</button>
+      <button class="btn" id="alertCsv">Export CSV</button>
+    </div>
+    <p class="hint" style="margin-top:.5rem">Alerts live in this browser only (localStorage). They are produced by comparing successive live refreshes,
+      so the “time” shown is the bracket between those two reads, not a per-second tape.</p>
+  </section>
+
+  <section class="grid g2">
+    <div class="card" style="margin-bottom:0">
+      <div class="spread"><h2>Chat 1 · all events</h2><span class="pill live"><span class="dot"></span><span id="nAll">0</span></span></div>
+      <p class="hint">Every recorded move ≥ $0.10. This is the complete feed.</p>
+      <div class="chat tall" id="chatAll" aria-live="polite"></div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="spread"><h2>Chat 2 · high-ROI screen</h2><span class="pill warn"><span id="nRoi">0</span> passing</span></div>
+      <p class="hint">Only moves whose post-cost edge passes the reversion screen. Fewer messages by design.</p>
+      <div class="chat tall" id="chatRoi" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="card" id="model" style="margin-top:1rem">
+    <h2>The screen behind Chat 2 <span class="tag">explicit, testable, not a validated model</span></h2>
+    <p>For each recorded move the site computes, in cents per contract:</p>
+    <ul class="tight">
+      <li><b>reversion target</b> = 0.5 × previous price + 0.5 × new price (a 50% retrace of the move).</li>
+      <li><b>gross edge</b> = |target − new price|.</li>
+      <li><b>cost</b> = half the quoted spread + the official taker fee per contract at that price
+        (<span class="mono">ceil(0.07 × C × P × (1−P))</span>, from the Kalshi fee schedule).</li>
+      <li><b>score</b> = gross edge − cost. A move enters Chat 2 only when score ≥ 2¢ <i>and</i>
+        price is between 5¢ and 95¢, spread ≤ 5¢, top-of-book size ≥ 20 contracts, 24h volume ≥ 20, and open interest ≥ 1.</li>
+    </ul>
+    <p class="banner warn" style="margin-top:.6rem"><b>Honesty note.</b> This is a hypothesis stated up front so it can be tested, not a proven edge.
+      Every paper trade opened from Chat 2 is recorded on the <a href="portfolio.html">portfolio page</a>, where its realised result is what actually judges the idea.</p>
+    <p class="src">Fee formula: <a href="https://kalshi.com/docs/kalshi-fee-schedule.pdf">kalshi.com/docs/kalshi-fee-schedule.pdf</a> ·
+      Orderbook/liquidity: <a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook">Get Market Orderbook</a> ·
+      Price fields: <a href="https://docs.kalshi.com/api-reference/market/get-markets">Get Markets</a></p>
+  </section>
+
+  <section class="card">
+    <h2>All recorded alerts (table)</h2>
+    <div id="alertTable"></div>
+  </section>
+</main>
+<footer id="site-foot"></footer>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/charts.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/page-alerts.js"></script>
+</body>
+</html>

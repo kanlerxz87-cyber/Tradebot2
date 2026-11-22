@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market detail · Tradebot2 Kalshi demo</title>
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body data-page="market">
+<header id="site-head"></header>
+<main class="wrap">
+  <div class="row" id="statusbar" style="margin-bottom:.7rem"></div>
+  <div id="errbox"></div>
+  <div id="head"></div>
+
+  <section class="grid" style="grid-template-columns:minmax(0,2fr) minmax(300px,1fr)">
+    <div class="stack">
+      <div class="card" style="margin-bottom:0">
+        <div class="spread"><h2>Price history</h2><div class="seg" id="span" role="group" aria-label="Window">
+          <button data-min="60" aria-pressed="true">1h</button>
+          <button data-min="360" aria-pressed="false">6h</button>
+          <button data-min="1440" aria-pressed="false">24h</button>
+          <button data-min="10080" aria-pressed="false">7d</button>
+        </div></div>
+        <div class="chart-box tall"><canvas id="chart" height="380"></canvas></div>
+        <div class="chart-legend"><span><i style="background:#0b6b56"></i>close</span><span><i style="background:rgba(11,107,86,.25)"></i>volume</span></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2>Rules (from the API's <span class="mono">rules_primary</span>)</h2>
+        <div id="rules" class="src">—</div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2>Recent trades</h2>
+        <div id="trades" class="t-blank">—</div>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card" style="margin-bottom:0">
+        <h2>Order book</h2>
+        <div id="ladder" class="t-blank">Loading…</div>
+        <div id="liq" class="src" style="margin-top:.5rem"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2>Simulated order</h2>
+        <p class="hint">Paper only. Prices come from the live book; nothing is sent to Kalshi.</p>
+        <div class="stack">
+          <div class="row"><label class="chk"><input type="radio" name="side" value="yes" checked> Buy YES</label>
+            <label class="chk"><input type="radio" name="side" value="no"> Buy NO</label></div>
+          <div class="row"><label>Qty <input type="text" id="qty" value="10" size="6"></label>
+            <span class="src" id="pxHint"></span></div>
+          <div class="row"><button class="btn primary" id="buyBtn">Place simulated order</button></div>
+          <div id="orderMsg" class="src"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2>Sources</h2>
+        <div id="sources" class="src"></div>
+      </div>
+    </div>
+  </section>
+  <p class="src" style="margin-top:1rem">Data source: <span class="mono">external-api.demo.kalshi.co/trade-api/v2</span> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-markets">get-markets</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks">candlesticks</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook">orderbook</a> ·
+    <a href="https://docs.kalshi.com/api-reference/market/get-trades">trades</a>.
+    Fields the API does not return are shown as “—”. <a href="verification.html">Full source list</a>.</p>
+</main>
+<footer id="site-foot"></footer>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/charts.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/page-market.js"></script>
+</body>
+</html>

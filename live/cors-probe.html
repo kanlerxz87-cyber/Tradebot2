@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CORS probe · Tradebot2</title>
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+<header id="site-head"></header>
+<main class="wrap narrow">
+  <h1>Browser CORS probe</h1>
+  <p class="hint">This page asks <b>your</b> browser to call the official Kalshi demo API directly and prints exactly what
+    happened — status, latency and the <span class="mono">Access-Control-Allow-Origin</span> header if the browser exposes it.
+    A server-side probe (a CI runner) can succeed while a browser is blocked, or vice-versa, so this is measured in the place
+    the dashboard actually runs.</p>
+  <div class="row"><button class="btn primary" id="run">Run probe</button><span class="src" id="stat"></span></div>
+  <div id="out" style="margin-top:1rem"></div>
+  <p class="src" style="margin-top:1rem">The previous CI measurement is committed at
+    <a href="../data/probe.json">data/probe.json</a> (server-side, records <span class="mono">access-control-allow-origin</span> for the
+    Pages origin). Official docs note that market-data responses are cached for a short time:
+    <a href="https://docs.kalshi.com/getting_started/quick_start_market_data">quick_start_market_data</a>.</p>
+</main>
+<footer id="site-foot"></footer>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/ui.js"></script>
+<script>
+TB.renderHeader(null); TB.renderFooter();
+const HOSTS = [
+  ['recommended demo', 'https://external-api.demo.kalshi.co/trade-api/v2'],
+  ['alternative demo', 'https://demo-api.kalshi.co/trade-api/v2'],
+  ['production (read-only)', 'https://external-api.kalshi.com/trade-api/v2']
+];
+const PATHS = ['/exchange/status', '/markets?status=open&limit=1&mve_filter=exclude'];
+document.getElementById('run').addEventListener('click', async () => {
+  const out = document.getElementById('out'); const stat = document.getElementById('stat');
+  stat.textContent = 'running…'; out.innerHTML = '';
+  const rows = [];
+  for (const [label, base] of HOSTS) {
+    for (const p of PATHS) {
+      const t0 = performance.now();
+      let r;
+      try {
+        const res = await fetch(base + p, { headers: { accept: 'application/json' } });
+        const ms = Math.round(performance.now() - t0);
+        const cors = res.headers.get('access-control-allow-origin');
+        let body = ''; try { const j = await res.json(); body = p.startsWith('/markets') ? ((j.markets||[]).length + ' markets') : ('exchange_active=' + j.exchange_active); } catch(e) { body = '(unreadable body)'; }
+        r = { label, base, p, ok: res.ok, status: res.status, ms, cors, body };
+      } catch (e) {
+        r = { label, base, p, ok: false, status: 'threw', ms: Math.round(performance.now() - t0), cors: null, body: e.message };
+      }
+      rows.push(r);
+    }
+  }
+  const blocked = rows.filter(r => r.status === 'threw').length;
+  stat.textContent = blocked ? `${blocked} of ${rows.length} calls blocked by the browser` : `all ${rows.length} calls completed`;
+  out.innerHTML = `<div class="banner ${blocked ? 'warn' : 'ok'}">${blocked
+      ? 'The browser blocked at least one call (network or CORS). The dashboard will show an error rather than invented data.'
+      : 'The browser completed every call. If a header shows “not exposed”, the request still succeeded.'}</div>
+    <div class="table-wrap"><table><thead><tr><th>Host</th><th>Path</th><th>Result</th><th class="num">ms</th><th>Access-Control-Allow-Origin</th><th>Body</th></tr></thead><tbody>
+    ${rows.map(r => `<tr><td>${TB.esc(r.label)}<div class="s mono" style="word-break:break-all">${TB.esc(r.base)}</div></td>
+      <td class="mono">${TB.esc(r.p)}</td>
+      <td>${r.status === 'threw' ? '<span class="pill down sm">blocked</span>' : (r.ok ? '<span class="pill live sm">200</span>' : '<span class="pill warn sm">' + r.status + '</span>')}</td>
+      <td class="num">${r.ms}</td><td class="src">${TB.esc(r.cors || 'not exposed')}</td><td class="src">${TB.esc(r.body)}</td></tr>`).join('')}
+    </tbody></table></div>`;
+  try { TB.store.set('tb.corsprobe', { at: Date.now(), rows }); } catch(e) {}
+});
+</script>
+</body>
+</html>

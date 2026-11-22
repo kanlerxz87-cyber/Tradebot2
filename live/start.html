@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tradebot2 · Kalshi demo dashboard</title>
+<meta name="description" content="A verified live dashboard for the Kalshi demo exchange: five topics, ≥$0.10 swing alerts, dual scrolling chats, price and liquidity charts, resolutions and simulated strategy testing.">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body data-page="start">
+<header id="site-head"></header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="row" style="justify-content:space-between;align-items:flex-start">
+      <div style="max-width:70ch">
+        <div class="row" style="margin-bottom:.5rem">
+          <span class="pill live"><span class="dot"></span>Live data from the official Kalshi demo API</span>
+          <span class="pill muted">Read-only</span>
+          <span class="pill muted">Simulated trading</span>
+        </div>
+        <h1>Kalshi demo, read carefully.</h1>
+        <p>A live dashboard for the <b>Kalshi demo exchange</b> across five topics — gas prices, elections, culture, crypto and golf.
+          It ranks the highest-dollar live events, fires alerts on every <b>≥ $0.10</b> price swing into two scrolling chats,
+          charts price against order-book liquidity, follows each event to its YES/NO resolution, and tests four trading
+          strategies with simulated money.</p>
+        <p style="font-size:.86rem">Every figure on the site is fetched from the official Trade API when you load the page, and every table row links
+          to the exact endpoint behind it. Where the API returns nothing, the site shows “—” and records why on the
+          <a href="flagged.html">Flagged for review</a> page instead of filling the gap.</p>
+        <div class="row" style="margin-top:.9rem">
+          <a class="btn primary" href="index.html" style="font-size:.95rem;padding:.5rem .9rem">Open the live dashboard →</a>
+          <a class="btn" href="executive-summary.html">Executive summary</a>
+          <a class="btn" href="verification.html">Sources</a>
+        </div>
+      </div>
+      <div class="stack" style="min-width:250px">
+        <div class="kpi" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:#eaf0f7">
+          <div class="k" style="color:#8fa1b3">API environment</div>
+          <div class="v" style="font-size:1rem;color:#fff" class="mono">external-api.demo.kalshi.co</div>
+          <div class="d" style="color:#8fa1b3">Trade API v2 · mock funds</div>
+        </div>
+        <div class="kpi" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:#eaf0f7">
+          <div class="k" style="color:#8fa1b3">Alert threshold</div>
+          <div class="v" style="color:#fff">$0.10</div>
+          <div class="d" style="color:#8fa1b3">either direction, both chats</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid g3">
+    <a class="topic-card" href="topics/gas.html">
+      <div class="ic">⛽</div><div class="nm">Gas prices</div>
+      <div class="st">Category “Commodities”, tag “Oil &amp; Gas”. Includes crude and heating oil — the API has no retail-gasoline tag (F-02).</div>
+    </a>
+    <a class="topic-card" href="topics/elections.html">
+      <div class="ic">🗳️</div><div class="nm">Elections</div>
+      <div class="st">Category “Elections”: Senate, House, governors, referendums and international races.</div>
+    </a>
+    <a class="topic-card" href="topics/culture.html">
+      <div class="ic">🎭</div><div class="nm">Culture</div>
+      <div class="st">Mapped to category “Entertainment”: awards, music, TV/film, video games (F-03).</div>
+    </a>
+    <a class="topic-card" href="topics/crypto.html">
+      <div class="ic">🪙</div><div class="nm">Crypto</div>
+      <div class="st">Category “Crypto”: BTC, ETH, SOL and other CF Benchmarks-referenced prices.</div>
+    </a>
+    <a class="topic-card" href="topics/golf.html">
+      <div class="ic">⛳</div><div class="nm">Golf</div>
+      <div class="st">Category “Sports”, tag “Golf”: PGA Tour, majors, Presidents Cup.</div>
+    </a>
+    <a class="topic-card" href="alerts.html" style="border-color:#cfe0f0">
+      <div class="ic">🔔</div><div class="nm">Alerts — two chats</div>
+      <div class="st">Chat 1: every move ≥ $0.10. Chat 2: only moves that pass a documented, testable high-ROI screen.</div>
+    </a>
+  </section>
+
+  <section class="grid g2" style="margin-top:1rem">
+    <div class="card" style="margin-bottom:0">
+      <h2>What is inside</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><td><a href="index.html"><b>Dashboard</b></a></td><td>Highest-dollar live events, KPIs, both chats, quick chart and ladder, simulated portfolio and recent resolutions — one page.</td></tr>
+        <tr><td><a href="alerts.html"><b>Alerts</b></a></td><td>Two full-height scrolling chats with topic and direction filters, sound, CSV export and the model written out.</td></tr>
+        <tr><td><a href="liquidity.html"><b>Charts &amp; liquidity</b></a></td><td>Official 1/60/1440-minute candles, 15-minute to 3-day windows, full-depth ladder and the recent trade tape.</td></tr>
+        <tr><td><a href="portfolio.html"><b>Portfolio &amp; strategies</b></a></td><td>Four strategies with written theses, fee-aware simulated fills, and analysis by strategy, topic, side and price band.</td></tr>
+        <tr><td><a href="resolutions.html"><b>Resolutions</b></a></td><td>Every tracked market past its close, then its final YES/NO result and settlement source.</td></tr>
+        <tr><td><a href="executive-summary.html"><b>Executive summary</b></a></td><td>The verified facts, the topic mapping, the limitations and what a trader should do with it.</td></tr>
+        <tr><td><a href="verification.html"><b>Sources &amp; verification</b></a></td><td>All 18 official documents, the exact endpoint behind every column, a live API check and the request log.</td></tr>
+        <tr><td><a href="flagged.html"><b>Flagged for review</b></a></td><td>15 open items — including the fabricated data found in the old root dashboard — each with its source.</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="stack">
+      <div class="card" style="margin-bottom:0">
+        <h2>Why this page exists</h2>
+        <p>The repository used to publish a dashboard that showed <b>invented</b> Kalshi markets as live — tickers that do not exist,
+          made-up news “catalysts” and a portfolio P&amp;L built on top of them. That is the one thing a trading tool must never do.</p>
+        <p>This site is rebuilt around a single rule: <b>if the official API did not return it, it does not appear</b>.
+          The old pages are preserved, clearly marked, under <span class="mono">/legacy/</span>.</p>
+        <p><a href="flagged.html">See the full flag list →</a></p>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2>Verified endpoints</h2>
+        <div class="table-wrap"><table><tbody>
+          <tr><th>Demo REST</th><td class="mono" style="word-break:break-all">external-api.demo.kalshi.co/trade-api/v2</td></tr>
+          <tr><th>Demo REST (alt)</th><td class="mono" style="word-break:break-all">demo-api.kalshi.co/trade-api/v2</td></tr>
+          <tr><th>Demo WS</th><td class="mono" style="word-break:break-all">external-api-ws.demo.kalshi.co/trade-api/ws/v2</td></tr>
+          <tr><th>Production REST</th><td class="mono" style="word-break:break-all">external-api.kalshi.com/trade-api/v2</td></tr>
+        </tbody></table></div>
+        <p class="src">Source: <a href="https://docs.kalshi.com/getting_started/demo_env">demo_env</a> ·
+          <a href="https://docs.kalshi.com/getting_started/api_environments">api_environments</a> ·
+          <a href="https://docs.kalshi.com/getting_started/quick_start_websockets">quick_start_websockets</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:1rem">
+    <h2>Honest limits, up front</h2>
+    <div class="grid g3">
+      <div><h3>Moves, not causes</h3><p class="hint">Kalshi publishes prices and trades, not news. This site never claims a headline caused a move.</p></div>
+      <div><h3>Demo ≠ production</h3><p class="hint">Kalshi states demo prices may not reflect real markets, and the demo carries a subset of markets.</p></div>
+      <div><h3>Simulated money</h3><p class="hint">Trades are local, fee-aware paper trades. Reading a real demo-account balance needs signed API keys.</p></div>
+    </div>
+  </section>
+
+</main>
+<footer id="site-foot"></footer>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/ui.js"></script>
+<script>
+  TB.renderHeader(null);
+  TB.renderFooter();
+  /* keep the header's "Dashboard" link pointing at the live dashboard, not this overview */
+</script>
+</body>
+</html>

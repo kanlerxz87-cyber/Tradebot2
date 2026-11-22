@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tradebot2 · Kalshi demo live dashboard</title>
+<meta name="description" content="Live Kalshi demo dashboard for gas prices, elections, culture, crypto and golf: ≥$0.10 swing alerts, dual scrolling alert chats, price charts, order-book liquidity, resolutions and simulated trading.">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body data-page="dashboard">
+<header id="site-head"></header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="row" style="justify-content:space-between">
+      <div>
+        <h1>Kalshi demo · live event dashboard</h1>
+        <p>Highest-dollar live events on the Kalshi <b>demo</b> exchange in five topics — gas prices, elections,
+        culture, crypto and golf. Every number is read from the official Trade API at the moment shown; each row links
+        to the exact endpoint that produced it. Trades on this site are <b>simulated</b>.</p>
+      </div>
+      <div class="stack" style="min-width:220px">
+        <div class="row" id="statusbar"></div>
+        <div class="row">
+          <button class="btn primary" id="refreshBtn" title="Refresh now">↻ Refresh now</button>
+          <label class="chk" title="Refresh automatically"><input type="checkbox" id="autoChk" checked> auto</label>
+          <select id="pollSel" title="Auto-refresh interval">
+            <option value="30">30 s</option>
+            <option value="60" selected>60 s</option>
+            <option value="120">2 min</option>
+            <option value="300">5 min</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="errbox"></div>
+  <div id="truncbox"></div>
+
+  <section class="grid g4" id="kpis" aria-label="Key figures"></section>
+
+  <section class="card">
+    <h2>Topics <span class="tag">kept separate · events grouped inside each</span></h2>
+    <p class="hint">Each topic maps to a real Kalshi category/tag. Click through for that topic's live markets, grouped by event.</p>
+    <div class="grid g3" id="topics"></div>
+  </section>
+
+  <section class="card">
+    <div class="spread">
+      <h2>Highest-dollar live events <span class="tag">ranked by 24h traded notional</span></h2>
+      <div class="row">
+        <input type="search" id="evSearch" placeholder="Filter events…" aria-label="Filter events by text">
+        <button class="btn" id="evCsv">Export CSV</button>
+      </div>
+    </div>
+    <p class="hint">Notional = contracts traded × $1 contract value (docs.kalshi.com/getting_started/market_settlement).
+      “24h” uses <span class="mono">volume_24h_fp</span>; the total uses <span class="mono">volume_fp</span>. Both are reported by the API.</p>
+    <div id="events"></div>
+  </section>
+
+  <section class="grid g2">
+    <div class="card" style="margin-bottom:0">
+      <div class="spread">
+        <h2>Chat 1 · all ≥ $0.10 moves</h2>
+        <span class="pill live"><span class="dot"></span><span id="allCount">0</span></span>
+      </div>
+      <p class="hint">Every move of $0.10 or more in either direction, measured between two refreshes.</p>
+      <div class="chat" id="chatAll" aria-live="polite"></div>
+      <div class="row" style="margin-top:.5rem"><a class="btn" href="alerts.html">Open full alerts page →</a>
+      <button class="btn" id="testAlert">Insert demo alert</button></div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="spread">
+        <h2>Chat 2 · high-ROI screen</h2>
+        <span class="pill warn"><span id="roiCount">0</span> passing</span>
+      </div>
+      <p class="hint">Only moves that pass the transparent reversion screen (score ≥ 2¢ after fees and spread). A hypothesis, not a validated edge.</p>
+      <div class="chat" id="chatRoi" aria-live="polite"></div>
+      <div class="row" style="margin-top:.5rem"><a class="btn" href="alerts.html#model">How the screen works →</a></div>
+    </div>
+  </section>
+
+  <section class="grid g2" style="margin-top:1rem">
+    <div class="card" style="margin-bottom:0">
+      <h2>Price chart</h2>
+      <p class="hint">Pick a market to chart. The series is built from live snapshots plus official 1-minute candlesticks.</p>
+      <div class="row" style="margin-bottom:.5rem">
+        <select id="chartPick" style="min-width:280px" aria-label="Market to chart"></select>
+        <div class="seg" id="chartSpan" role="group" aria-label="Chart window">
+          <button data-min="15" aria-pressed="false">15m</button>
+          <button data-min="60" aria-pressed="true">1h</button>
+          <button data-min="240" aria-pressed="false">4h</button>
+          <button data-min="1440" aria-pressed="false">24h</button>
+        </div>
+        <div class="seg" id="chartInterval" role="group" aria-label="Candle interval">
+          <button data-iv="1" aria-pressed="true">1m candles</button>
+          <button data-iv="60" aria-pressed="false">1h candles</button>
+          <button data-iv="1440" aria-pressed="false">1d candles</button>
+        </div>
+      </div>
+      <div class="chart-box"><canvas id="dashChart" height="320" aria-label="Contract price over time"></canvas></div>
+      <div class="chart-legend">
+        <span><i style="background:#0b6b56"></i>YES price (¢)</span>
+        <span><i style="background:rgba(11,107,86,.25)"></i>volume</span>
+        <span><i style="background:#0a7d4f"></i>▲ ≥10¢ up-move</span>
+        <span><i style="background:#b3261e"></i>▼ ≥10¢ down-move</span>
+        <a href="liquidity.html" style="margin-left:auto">Full chart &amp; liquidity page →</a>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <h2>Liquidity at a glance <span class="tag">contracts available at each price</span></h2>
+      <p class="hint">Resting orders within the returned depth. “Ask” levels are derived from official NO bids (1 − p), as Kalshi returns bids only.</p>
+      <div id="dashLadder"><div class="t-blank">Select a market above.</div></div>
+      <div id="dashLiqMeta" class="src" style="margin-top:.5rem"></div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:1rem">
+    <div class="spread">
+      <h2>Simulated portfolio</h2>
+      <div class="row">
+        <span class="pill muted" id="paperMode">manual</span>
+        <label class="chk" title="Let the four strategies trade automatically on new alerts"><input type="checkbox" id="autoTradeChk"> auto-trade</label>
+        <a class="btn" href="portfolio.html">Portfolio &amp; strategy analysis →</a>
+      </div>
+    </div>
+    <p class="hint">$10,000 simulated starting cash. Fills pay the official taker fee. No real order is ever placed — this account is local to your browser.</p>
+    <div class="grid g4" id="paperKpis"></div>
+    <div style="margin-top:.8rem" id="paperOpen"></div>
+  </section>
+
+  <section class="card">
+    <h2>Recently resolved</h2>
+    <p class="hint">Final YES/NO results as reported by the API (<span class="mono">status=finalized</span>, <span class="mono">result</span>).</p>
+    <div id="resolvedMini"></div>
+    <div class="row" style="margin-top:.5rem"><a class="btn" href="resolutions.html">All resolutions →</a></div>
+  </section>
+
+  <section class="card">
+    <h2>What this dashboard can and cannot tell you</h2>
+    <ul class="tight">
+      <li><b>Moves, not causes.</b> The API reports prices and trades, not news. The site never claims a headline caused a move; where a candidate cause is shown it is clearly labelled as a reference and unlinked to the price data.</li>
+      <li><b>Demo ≠ production.</b> Kalshi states demo prices may not reflect real markets, and the demo carries a subset of markets. Some series are empty here by design.</li>
+      <li><b>Refresh cadence.</b> Alerts compare consecutive refreshes (default 60 s), not a per-second tape. Intra-minute moves between two refreshes can be missed; the 1-minute candles show them after the fact.</li>
+      <li><b>Paper trading.</b> Simulated, browser-local, fee-aware. Not a Kalshi demo-account balance — that needs signed API keys.</li>
+    </ul>
+    <p class="src">Sources: <a href="https://docs.kalshi.com/getting_started/demo_env">demo_env</a> ·
+      <a href="https://docs.kalshi.com/api-reference/market/get-markets">get-markets</a> ·
+      <a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks">candlesticks</a> ·
+      <a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook">orderbook</a> ·
+      <a href="https://kalshi.com/docs/kalshi-fee-schedule.pdf">fee schedule</a> · <a href="verification.html">full list</a></p>
+  </section>
+
+</main>
+<footer id="site-foot"></footer>
+
+<script src="assets/js/core.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/charts.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/page-dashboard.js"></script>
+</body>
+</html>
