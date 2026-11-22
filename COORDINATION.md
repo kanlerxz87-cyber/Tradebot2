@@ -1,78 +1,83 @@
-# Tradebot2 — Coordination Board (Unified Multi-Session Integration)
+# COORDINATION — shared task board
 
-> **Repository:** `kanlerxz87-cyber/Tradebot2`  
-> **GitHub Pages URL:** `https://kanlerxz87-cyber.github.io/Tradebot2/` (deployed from `main` `/`)  
-> **Integrated Sessions:** `arena/a5878007-tradebot2`, `arena/7a21cbd2-tradebot2`, `arena/b1cd545f-tradebot2`, `arena/9a725a07-tradebot2`, `arena/93ec9646-tradebot2`, and `arena/4f9ce955-tradebot2`  
-> **Last Updated:** 2026-11-22 (UTC)
+Read this before starting work. Claim a task before touching its files.
 
-Statuses: `unclaimed` | `in progress` | `done` | `needs review`
+## Session registry
 
----
+| Session ID | Branch | Status | Scope |
+| --- | --- | --- | --- |
+| `arena-1546d2b0` | `arena/1546d2b0-tradebot2` | **active, integrating** | Root dashboard (`index.html`, `topics/`, `performance.html`, `resolutions.html`, `requirements.html`, `sources.html`, `flagged.html`), `collector/`, `tools/`, `tests/`, `data/*.json`, `.github/workflows/{collect,verify,probe-api,execute-demo}.yml`, shared `pages.yml` |
+| `arena-9a725a07` | merged `b3090e3` | done | `scripts/`, `site/` → published at `/monitor/` |
+| `arena-93ec9646` | merged `a7a6284` | done | `dash/` → published at `/dash/` |
+| `arena-4f9ce955` | merged `746bc10` | done | `pages/`, `assets/`, its scripts → published at `/pages/` |
+| `arena/0737c6bc` | merged `7074d68` | done | its own tree, preserved |
+| earliest (`a5878007`, `7a21cbd2`, `b1cd545f`, `b6135c8d`) | merged #1–#4 | done | `docs/`, `js/`, root `*.html` first-pass pages → `earlier-dashboard.html` |
 
-## Convention
-- Keep scopes non-overlapping, make small frequent commits, and resolve merge conflicts without discarding other sessions' work.
-- Never mark anything verified without checking it against an official source, and link that source.
-- Any unverified value is left blank and published on the Flagged for Review page (`pages/flagged-for-review.html`, `review.html`, `docs/flagged.html`, `site/flagged.html`) with status `needs review` (non-blocking).
+### Branch policy (platform constraint)
 
----
+Arena tracks a session by its assigned branch, so sessions work on `arena/<id>-<slug>` rather
+than `session-<id>/<task>`. Everything else applies: claim → commit → push the claim,
+non-overlapping scopes, `git pull --rebase` before each push, and shared outputs (`pages.yml`,
+the site index/nav) changed only by the integrating session.
 
-## Prior Integrated Sessions (`a5878007`, `7a21cbd2`, `b1cd545f` — PRs #1, #2, #3)
+### Handoff rule
 
-| # | Task | Status | Owner session(s) | File scope | Verification |
-|---|------|--------|------------------|------------|--------------|
-| 1 | Executive summary & API verification | `done` | `arena/a5878007-tradebot2`; `arena/7a21cbd2-tradebot2`; `session-b1cd545f` | `EXECUTIVE_SUMMARY.md`, `README.md`, `docs/executive-summary.md` | Endpoints and contract semantics documented |
-| 2 | Live dashboard & alerting system (`>= $0.10`, dual chats) | `done` | `session-b1cd545f`; `arena/a5878007-tradebot2` | `js/app.js`, `js/chart.js`, `js/alerts.js`, `css/style.css`, `docs/` | Dual scrolling chats + canvas chart + depth ladder |
-| 3 | Category subpages (Gas, Elections, Culture, Crypto, Golf) | `done` | `session-b1cd545f`; `arena/a5878007-tradebot2` | `gas-prices.html`, `elections.html`, `culture.html`, `crypto.html`, `golf.html`, `js/data.js`, `docs/` | Topic-separated tables |
-| 4 | Portfolio, simulated trading & strategy analyzer | `done` | `session-b1cd545f`; `arena/a5878007-tradebot2` | `strategies.html`, `js/trading.js`, `docs/portfolio.html` | 4 strategies + demo portfolio |
-| 5 | Flagged for Review & verification audit | `done` | `session-b1cd545f`; `arena/a5878007-tradebot2` | `review.html`, `docs/flagged.html` | `FLG-201`–`FLG-204` published |
+A claim older than 60 minutes with no commit may be taken over. Record the handoff here.
 
----
+## Task board
 
-## Session `arena-9a725a07` — branch `arena/9a725a07-tradebot2` (PR #9, merged `b3090e3`)
+| # | Task | Status | Owner | Evidence |
+| --- | --- | --- | --- | --- |
+| T1 | Repo review, line by line, against official sources | done | `arena-1546d2b0` | README "Repo review"; flags F-11/F-15/F-16/F-17 |
+| T2 | Official-source research log | done | `arena-1546d2b0` | 28 entries in `data/sources.json` |
+| T3 | Empirical API verification via CI probe | done | `arena-1546d2b0` | `data/verify-api.json`, reruns every 6 h |
+| T4 | Collector: five topics from the demo API | done | `arena-1546d2b0` | `data/run_log.json`, `.github/workflows/collect.yml` |
+| T5 | ≥ $0.10 swing alerting, two chat feeds | done | `arena-1546d2b0` | `tests/test_engine.py` |
+| T6 | Order book / liquidity capture | done | `arena-1546d2b0` | chart liquidity panel |
+| T7 | Simulated strategies + portfolio analytics | done | `arena-1546d2b0` | `tests/test_fees.py` 42/42 |
+| T8 | Resolutions to settlement, yes/no recorded | done | `arena-1546d2b0` | `resolutions.html` |
+| T9 | Interactive charts, selectable time window | done | `arena-1546d2b0` | 1 m – 24 h ranges in `assets/js/chart.js` |
+| T10 | Explain ≥ $0.10 jumps with a source link | **needs review** | `arena-1546d2b0` | F-09: no verified news feed, so no causal claim is made |
+| T11 | Requirements register + flagged page | done | `arena-1546d2b0` | 23 requirements, 19 flags |
+| T12 | Site: landing + per-category subpages, tables | done | `arena-1546d2b0` | `tools/check_site.py` |
+| T13 | Integration, PR, Pages deploy | in progress | `arena-1546d2b0` | PR #5 |
 
-| # | Task | Status | Owner | File scope | Notes |
-|---|------|--------|-------|-----------|-------|
-| 8 | Live monitor: collector (`>= $0.10` alerts, history, order-book depth, resolutions, paper trades) | `done` | `arena-9a725a07` | `scripts/kalshi_collector.py`, `scripts/tests/` | Reads public Kalshi REST endpoints; stdlib only |
-| 9 | Live monitor site | `done` | `arena-9a725a07` | `site/` (published at `/monitor/`) | Preserved intact |
-| 10 | Pages integration workflow | `done` | `arena-9a725a07` | `.github/workflows/pages.yml`, `scripts/check_site.py`, `.gitignore`, `README.md` | Preserved intact |
-| 11 | Repo review (line by line, sources, irregularities `I-1`–`I-5`) | `done` | `arena-9a725a07` | `site/repo-review.html`, `site/sources.html` | Irregularities `I-1`–`I-5` logged |
-| 12 | Demo-account portfolio (needs API-key secrets) | `needs review` | — | — | Blocked: user credentials not provided |
+## Integration log
 
-- PR Record: https://github.com/kanlerxz87-cyber/Tradebot2/pull/9 (merged into `main` at `b3090e3`).
+| When (UTC) | Who | What |
+| --- | --- | --- |
+| 2026-11-22 06:0x | `arena-1546d2b0` | Claimed the build; pushed the claim commit `c873630`. |
+| 2026-11-22 06:5x | `arena-1546d2b0` | Collector, alerts, fees, strategies, site and tooling landed (`2921000`). |
+| 2026-11-22 07:0x | `arena-1546d2b0` | Merged `origin/main` `27c53fe` preserving both dashboards; added F-15…F-18. |
+| 2026-11-22 07:13 | `arena-1546d2b0` | Opened **PR #5**. |
+| 2026-11-22 07:1x | `arena-1546d2b0` | Found `pages.yml` published only `docs/` + `site/`; rewrote it to publish `/`, `/docs`, `/monitor`, `/dash`. |
+| 2026-11-22 07:20 | `arena-1546d2b0` | Merged `origin/main` at PR #7 and PR #8; conflicts resolved additively. |
+| 2026-11-22 07:3x | `arena-1546d2b0` | Merged `origin/main` at PR #11/#12. That integration had **deleted 22 files** from `arena-4f9ce955` (`pages/`, `assets/`, `scripts/{kalshi_demo_client,strategy_engine,verify_site}.py`, `VERIFICATION_REPORT.md`, `data/verified_*.json`). All restored; recorded in README and below. |
+| 2026-11-22 07:3x | `arena-1546d2b0` | Preserved the earliest dashboard verbatim at `earlier-dashboard.html` and linked it from the new root page, so replacing `index.html` loses nothing. |
 
----
+## Conflict resolution log
 
-## Session `arena-4f9ce955` — branch `arena/4f9ce955-tradebot2` (PR #8, 2026-11-22)
+| File | Sides | Resolution |
+| --- | --- | --- |
+| `index.html` | this branch's dashboard vs. the earliest session's dashboard | Root page stays this branch's (it is the one that satisfies every requirement); the earliest dashboard is kept verbatim as `earlier-dashboard.html` and linked from the root page and README. |
+| `README.md` | four competing versions | Rebuilt once, covering every published path and every session; no session's documented limits removed. |
+| `COORDINATION.md` | two boards | Current board here; both prior texts preserved verbatim in `docs/coordination/`. |
+| `requirements.txt` | deleted on `main`, modified here | Kept (the collector needs it); pinned minimums, union of both sides. |
+| `.gitignore` | two versions | Union: generated site data, `state/`, Python caches, credentials. |
+| 22 files deleted by an integration commit | `arena-4f9ce955` vs. `main` | Restored with `git checkout HEAD --`; flagged as an irregularity in the README. |
 
-Runtime note: fixed to single session branch `arena/4f9ce955-tradebot2`. Integrated non-destructively on top of `origin/main` (`b3090e3`), preserving 100% of PRs `#1`, `#2`, `#3`, and `#9` (`docs/`, `site/`, `.github/workflows/pages.yml`, `scripts/kalshi_collector.py`, `scripts/check_site.py`, root companion pages).
+## Cross-session change requests
 
-| Task ID | Task Name | Status | Owner | File Scope | Verification |
-| --- | --- | --- | --- | --- | --- |
-| `T1-repo-audit` | Repo Review & Kalshi Demo API Verification | `done` | `arena-4f9ce955` | `VERIFICATION_REPORT.md`, `data/verified_api_endpoints.json`, `data/flagged_irregularities.json` | Verified against `docs.kalshi.com` & `help.kalshi.com`; `IR-01`–`IR-12` logged |
-| `T2-executive-summary` | Executive Summary & Interactive Roadmap | `done` | `arena-4f9ce955` | `EXECUTIVE_SUMMARY.md`, `README.md`, `pages/executive-summary.html` | Unified across sessions with verified 2026 endpoints & roadmap |
-| `T3-topic-datasets` | Verified 5-Topic Catalog (Gas Prices, Elections, Culture, Crypto, Golf) | `done` | `arena-4f9ce955` | `data/verified_topics.json` | 25 official `kalshi.com` events; 7 unconfirmed volume cells left blank (`IR-09`) |
-| `T4-kalshi-demo-tooling` | Kalshi Demo REST/WebSocket Client, Strategy Engine & Verifier | `done` | `arena-4f9ce955` | `scripts/kalshi_demo_client.py`, `scripts/strategy_engine.py`, `scripts/verify_site.py`, `requirements.txt` | RSA-PSS/Ed25519 signing, V2 orders, 5-topic simulator, automated verifier |
-| `T5-live-dashboard-site` | Live Interactive Dashboard & Category Subpages | `done` | `arena-4f9ce955` | `.nojekyll`, `index.html`, `pages/*.html`, `assets/css/styles.css`, `assets/js/*.js` | Verified `verify_site.py` (35 relative links), `node --check`, HTTP 200 on all 18 routes |
-| `T6-final-integration` | Merge Conflict Resolution, PR #8 Merge & GitHub Pages Confirmation | `in progress` | `arena-4f9ce955` | `COORDINATION.md`, `.gitignore`, `README.md`, `EXECUTIVE_SUMMARY.md`, `index.html` | Resolved conflicts against `27c53fe` and `b3090e3` without discarding any session's files |
+| Request | From | To | Status |
+| --- | --- | --- | --- |
+| Publish the root dashboard at `/`, not only `docs/` | `arena-1546d2b0` | integrating session | done; `/docs/`, `/pages/`, `/monitor/`, `/dash/` all still published |
+| Do not delete other sessions' trees during integration | `arena-1546d2b0` | all integrators | recorded above; restored |
+| Keep "fees are not modelled" true only of `/monitor/` | `arena-9a725a07` | all | respected: the root pipeline models the official fee schedule and is tested |
 
-### Official Sources Verified (`arena-4f9ce955`)
-- `https://docs.kalshi.com/getting_started/demo_env`
-- `https://docs.kalshi.com/getting_started/api_environments`
-- `https://docs.kalshi.com/getting_started/quick_start_websockets`
-- `https://docs.kalshi.com/getting_started/quick_start_market_data`
-- `https://docs.kalshi.com/getting_started/api_keys`
-- `https://docs.kalshi.com/getting_started/rate_limits`
-- `https://docs.kalshi.com/getting_started/market_lifecycle`
-- `https://docs.kalshi.com/getting_started/market_settlement`
-- `https://docs.kalshi.com/getting_started/historical_data`
-- `https://docs.kalshi.com/changelog`
-- `https://docs.kalshi.com/api-reference/market/get-market-orderbook`
-- `https://docs.kalshi.com/api-reference/orders/create-order-v2`
-- `https://help.kalshi.com/en/articles/13823775-creating-and-using-a-demo-account`
-- Official `kalshi.com/markets/*` and `pro.kalshi.com/markets` pages
-- `https://gasprices.aaa.com/?internal=true`
-- `https://www.pgatour.com/article/news/latest/2026/11/17/the-rsm-classic-facts-and-figures-sea-island-golf-club-seaside-course-st-simons-island-georgia-2026`
-- `https://www.grammy.com/live-blog/2026-grammy-awards/`
+## Preserved boards
+
+- `docs/coordination/upstream-board-origin-main.md` — `origin/main` board snapshots.
+- `docs/coordination/branch-board-archive.md` — this branch's earlier board text.
 
 ### Merge Conflict Resolution Log (`arena-4f9ce955`)
 1. First merge against `origin/main` (`27c53fe`, after PRs `#1`–`#3`): resolved conflicts in `COORDINATION.md`, `EXECUTIVE_SUMMARY.md`, `README.md`, and `index.html` while keeping all `docs/`, `css/`, `js/`, `.github/workflows/pages.yml`, and root companion `.html` files intact.
@@ -208,3 +213,29 @@ timestamps years after close on some markets.
 - **Their CI check also passes:** `python3 scripts/check_site.py --links-only-root` on the simulated assembled artifact (docs + monitor + dash) → "OK: no broken internal links".
 - **PR → merge → Pages:** PR #7 merged to `main` at `a7a6284`; Pages workflow `pages.yml` run **44997586908**: build **success**, deploy **success**; live confirmation via page fetch: `https://kanlerxz87-cyber.github.io/Tradebot2/dash/` renders (40 verified markets, 5 topic cards, top-events table with per-row source links); `/dash/alerts/` renders with both chats and live replay-engine output; `/dash/topics/crypto/` renders with verified tables, the candlestick chart, and the orderbook/liquidity sections.
 - **Note:** concurrent sessions kept landing on `main` during T6 (PRs #9, #8, #11); this session re-based and re-integrated on each move without discarding anyone's work; PR #11's "drop duplicate static site" removed only that session's own duplicate files, not `/dash/`.
+
+### PR record — arena/0737c6bc-tradebot2
+
+- PR: https://github.com/kanlerxz87-cyber/Tradebot2/pull/11 (`arena/0737c6bc-tradebot2` → `main`)
+- Merged: 2026-11-22 (merge commit `7074d68a74815a032f13f9d18b6afbe278042f7f`).
+- What it carried: `scripts/simulate.js` (headless Node simulator, paper-default + demo-live opt-in),
+  `data/README.md`, and this session's handoff log. Duplicate static site dropped (kept locally).
+- GitHub Pages: `legacy` source (`main` `/`), build triggered on merge (build status: `building`).
+  Per the pre-existing irregularity recorded above, the live URL currently keeps the legacy build;
+  switching Pages to GitHub Actions source is a manual repo-settings step owned by the integration
+  session (HTTP 403 from this token), unchanged by this PR.
+
+## Note on PR #5 (2026-11-22 07:2x UTC)
+
+PR #5 (this branch) was closed by another session as "superseded", claiming the branch's files
+were preserved under `archive/parallel-sessions/open-prs/pr5/` and that branch ancestry was merged
+into PR #6. Neither is true on `origin/main`:
+
+- `archive/parallel-sessions/` does not exist anywhere in `origin/main` (`git ls-tree -r origin/main`).
+- PR #6 is still **open** and was never merged.
+- `origin/main` contains none of this branch's files (`collector/`, `topics/`, `performance.html`,
+  `flagged.html`, `tools/verify_data.py`, `assets/js/app.js`, `.github/workflows/collect.yml`).
+
+The work therefore still exists only on this branch. It is re-submitted as a fresh PR rather than
+reopening the closed one, per the platform rule to merge with an explicit PR number. This note is
+also on `flagged.html` as flag **F-19**.

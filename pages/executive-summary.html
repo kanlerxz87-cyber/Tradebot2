@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Executive Summary — Tradebot2 Kalshi Demo</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <header id="site-header" class="site-header"></header>
+
+  <main class="container">
+    <section class="page-hero">
+      <div>
+        <h1>Executive Summary &amp; Interactive Platform Roadmap</h1>
+        <p>
+          High-level architecture, verified Kalshi Demo API findings, 5-topic market focus,
+          and actionable suggestions to make the dashboard even more live and interactive.
+        </p>
+      </div>
+      <div class="control-group">
+        <a href="api-reference.html" class="btn">Verified API Reference</a>
+        <a href="flagged-for-review.html" class="btn btn-amber">Flagged for Review</a>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">1. Project Mission &amp; Strict 5-Topic Scope</h2>
+        </div>
+        <p>
+          <strong>Tradebot2</strong> collects, organizes, and analyzes highest dollar volume prediction contracts on Kalshi
+          across <strong>five strictly separated topics only</strong>:
+        </p>
+        <ul>
+          <li><a href="gas-prices.html"><strong>Gas Prices</strong></a> — U.S. national &amp; state retail regular fuel averages (verified against <a href="https://gasprices.aaa.com/?internal=true" target="_blank" rel="noopener">AAA Fuel Prices ↗</a>).</li>
+          <li><a href="elections.html"><strong>Elections</strong></a> — Major U.S. and international presidential/legislative control races.</li>
+          <li><a href="culture.html"><strong>Culture</strong></a> — Oscars, Grammys, The Game Awards, and major pop-culture milestones.</li>
+          <li><a href="crypto.html"><strong>Crypto</strong></a> — High-volume BTC &amp; ETH price threshold contracts.</li>
+          <li><a href="golf.html"><strong>Golf</strong></a> — PGA Tour tournaments &amp; Majors (verified against <a href="https://www.pgatour.com/article/news/latest/2026/11/17/the-rsm-classic-facts-and-figures-sea-island-golf-club-seaside-course-st-simons-island-georgia-2026" target="_blank" rel="noopener">PGA TOUR ↗</a>).</li>
+        </ul>
+        <p style="color:var(--text-muted);">
+          Events remain organized within their own topic and are tracked from active trading through official
+          <strong>YES / NO</strong> determination and settlement (<a href="https://docs.kalshi.com/getting_started/market_settlement" target="_blank" rel="noopener">Kalshi Settlement Docs ↗</a>).
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">2. Verified Kalshi Demo API Highlights</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Surface</th>
+                <th>Verified Recommended Demo URL</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>REST Trade API</td>
+                <td class="mono">https://external-api.demo.kalshi.co/trade-api/v2</td>
+                <td><a href="https://docs.kalshi.com/getting_started/demo_env" target="_blank" rel="noopener">Docs ↗</a></td>
+              </tr>
+              <tr>
+                <td>REST (Legacy Shared)</td>
+                <td class="mono">https://demo-api.kalshi.co/trade-api/v2</td>
+                <td><a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener">Docs ↗</a></td>
+              </tr>
+              <tr>
+                <td>WebSocket API</td>
+                <td class="mono">wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2</td>
+                <td><a href="https://docs.kalshi.com/getting_started/quick_start_websockets" target="_blank" rel="noopener">Docs ↗</a></td>
+              </tr>
+              <tr>
+                <td>WebSocket (Legacy)</td>
+                <td class="mono">wss://demo-api.kalshi.co/trade-api/ws/v2</td>
+                <td><a href="https://docs.kalshi.com/getting_started/api_environments" target="_blank" rel="noopener">Docs ↗</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:10px;font-size:12.5px;color:var(--text-muted);">
+          Critical API findings verified from official changelog: (1) <code>liquidity_dollars</code> on <code>/markets</code> is deprecated and returns <code>0</code> — real liquidity must be read from <code>/orderbook</code>; (2) REST candlesticks support <code>1m / 1h / 1d</code> only (seconds are aggregated live from stream ticks); (3) V2 order placement (<code>POST /portfolio/events/orders</code>) avoids the 10x write rate-limit penalty on legacy order writes.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">3. Core Live Trading &amp; Alerting Workflows Implemented</h2>
+          <p class="card-subtitle">Built for fast, uncluttered trader decision-making across active and resolving markets.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="strategy-box">
+          <strong>Dual &ge; $0.10 Scrolling Alert Chats</strong>
+          <div style="color:var(--text-muted);font-size:12.5px;">
+            Stream 1 alerts every sudden contract jump or drop &ge; $0.10 across all 5 topics.
+            Stream 2 filters exclusively to opportunities passing our transparent High-ROI scoring model
+            (Score &ge; 68/100, spread &le; $0.05, depth &ge; 150 contracts).
+          </div>
+        </div>
+        <div class="strategy-box">
+          <strong>Interactive Chart + Catalyst Links + Liquidity</strong>
+          <div style="color:var(--text-muted);font-size:12.5px;">
+            Switch X-axis between <strong>Seconds</strong>, <strong>Minutes</strong>, and <strong>Hours</strong>;
+            hover any tick for exact contract pricing ($0.00–$1.00); click verified external catalyst links attached
+            to &ge; $0.10 jumps; inspect available contract counts at every bid/ask price level.
+          </div>
+        </div>
+        <div class="strategy-box">
+          <strong>Automated Strategies &amp; Demo Portfolio</strong>
+          <div style="color:var(--text-muted);font-size:12.5px;">
+            Run automated simulated strategies (*Swing Mean-Reversion*, *Momentum Breakout*, *Selective High-ROI*,
+            *Liquidity Imbalance*), categorize trades by topic and setup, resolve open positions YES/NO, and create
+            custom rules based on realized results.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">4. Suggestions to Make the Site Even More Live &amp; Interactive</h2>
+          <p class="card-subtitle">Prioritized engineering recommendations grounded in verified Kalshi API capabilities.</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Enhancement</th>
+              <th>Trader Benefit</th>
+              <th>Kalshi API / Technical Enabler</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">1</td>
+              <td><strong>Authenticated WebSocket-to-SSE Relay</strong></td>
+              <td>True sub-second live browser ticks, orderbook deltas, and instant fill notifications without exposing private keys in client JS.</td>
+              <td>Bridges <a href="https://docs.kalshi.com/getting_started/quick_start_websockets" target="_blank" rel="noopener"><code>wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2</code> ↗</a> + <code>wss://user-ws.demo.kalshi.co/trade-api/ws/v2</code>.</td>
+            </tr>
+            <tr>
+              <td class="mono">2</td>
+              <td><strong>Automated News-to-Swing Catalyst Matching</strong></td>
+              <td>Automatically pairs every &ge; $0.10 price shock with timestamped headlines &amp; official links (AAA daily fuel drop, PGA leaderboard shift, AP election calls, BTC exchange alerts).</td>
+              <td>Event-driven ingestion correlated against <code>ticker</code> &amp; <code>trade</code> timestamps.</td>
+            </tr>
+            <tr>
+              <td class="mono">3</td>
+              <td><strong>Multi-Outcome Probability Overlay Charts</strong></td>
+              <td>Plot top 3–4 competing contracts inside one event (e.g., 2028 Election or Masters leaders) on one chart to spot sum-of-odds arbitrage.</td>
+              <td><a href="https://docs.kalshi.com/api-reference/events/get-event-candlesticks" target="_blank" rel="noopener"><code>GET /series/{series_ticker}/events/{ticker}/candlesticks</code> ↗</a>.</td>
+            </tr>
+            <tr>
+              <td class="mono">4</td>
+              <td><strong>Batch Orderbook Liquidity Heatmap</strong></td>
+              <td>Monitor live spread &amp; contract availability across all 25+ tracked contracts simultaneously in a single API call.</td>
+              <td><a href="https://docs.kalshi.com/changelog" target="_blank" rel="noopener"><code>GET /markets/orderbooks?tickers=...</code> (up to 100 tickers) ↗</a>.</td>
+            </tr>
+            <tr>
+              <td class="mono">5</td>
+              <td><strong>Browser Push, Discord &amp; Slack Swing Alerts</strong></td>
+              <td>Alert traders away from their desk whenever a Selective High-ROI &ge; $0.10 swing fires or a tracked contract transitions to <code>determined</code> / <code>finalized</code>.</td>
+              <td>WebSocket <a href="https://docs.kalshi.com/getting_started/market_lifecycle" target="_blank" rel="noopener"><code>market_lifecycle_v2</code> ↗</a> channel + Web Notifications API.</td>
+            </tr>
+            <tr>
+              <td class="mono">6</td>
+              <td><strong>Historical Replay &amp; Walk-Forward Strategy Lab</strong></td>
+              <td>Replay real settled markets across the historical cutoff boundary at 1x–20x speed to validate automated strategies before Demo execution.</td>
+              <td><a href="https://docs.kalshi.com/getting_started/historical_data" target="_blank" rel="noopener"><code>GET /historical/cutoff</code> &amp; <code>/historical/markets/{ticker}/candlesticks</code> ↗</a>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+  <script src="../assets/js/app-core.js"></script>
+  <script>
+    (async function () {
+      const C = window.TradebotCore;
+      C.renderLayout("executive-summary");
+      const flagged = await C.loadJson("data/flagged_irregularities.json");
+      const el = document.getElementById("nav-flagged-count");
+      if (el) el.textContent = String(flagged.items.length);
+    })();
+  </script>
+</body>
+</html>
