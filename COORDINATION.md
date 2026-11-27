@@ -380,3 +380,13 @@ Base: `main` @ `b379d02`.
 | A2 | Fix `app/alerts.py`, `app/collector.py`, and `app/backtest.py` so `seed_alerts` and `run_backtest` inspect both `1m` and `60m` candlesticks as well as intra-bar `open -> close` moves `>= $0.10` (deduplicated within 1h) | done | `arena/10428a57-tradebot2` | `app/alerts.py`, `app/collector.py`, `app/backtest.py`, `tests/test_alerts.py` | `56` deduplicated `>= $0.10` seed alerts across all 5 topics (`19` crypto, `18` gas_prices, `10` culture, `8` elections, `1` golf); `data/backtest.json` tests `17` markets / `4,797` candle cells (`209` closed trades, `8` open positions) |
 | A3 | Fix `tools/build_category_pages.py` nav template (`Sources` link), `site/*.html` internal `../data/probe.json` links (`scripts/check_site.py`), and `collector/kalshi.py` optional `requests` import; clean up `flagged.html` non-official link warnings | done | `arena/10428a57-tradebot2` | `tools/build_category_pages.py`, `site/{alerts,findings,flagged,sources}.html`, `collector/kalshi.py`, `flagged.html`, `.github/workflows/data.yml` | Zero warnings/failures in `tools/verify_site.py`, `tools/check_site.py --root . --strict`, `scripts/check_site.py`, `scripts/verify_site.py`, `live/tests/check_live.py`, and `tests/run_fixture_pipeline.py` |
 
+
+---
+
+## Session `arena/a32cdd24-tradebot2` — verification and repository audit
+
+Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `aca6cc8`); it cannot be renamed or moved to the requested `session-<id>/<task>` naming convention. No other task in this board is being taken over. This session claims only an independent final audit and recording of findings; it will not change canonical page/data ownership or execute any demo-account trade.
+
+| Task | Status | Owner | File scope | Method |
+|---|---|---|---|---|
+| A32-1 | in progress | `arena/a32cdd24-tradebot2` | `VERIFICATION_REPORT.md`, this section of `COORDINATION.md` | Run existing repo/site/data/test gates, review source provenance and public pages; record verified outcomes and residual irregularities without inferring live market values. |
