@@ -9,6 +9,12 @@
 > therefore could not affect the live URL; `.github/workflows/pages.yml` is now a verification workflow.
 > `docs/` (first site) and `site/` (monitor prototype) are retained unchanged as archives and linked
 > from the root. No session's files were deleted. See the integration section at the end of this file.
+>
+> **CURRENT PUBLISHING STATE — 2026-11-27 (supersedes the historical path description above):** GitHub Pages is still
+> `build_type: legacy`, `main:/`. At 19:44 UTC the Pages API reported commit `037d65b93f7c5aa415b4315ddcd185301f1bc58f`
+> (PR #39 close-out) as `built`. The root `index.html` is now a landing page; the current interactive dashboard and its
+> operational pages are under `live/`. The old root flat dashboard/topic/portfolio pages and the other generations are retained
+> for audit, not current market truth. See the latest audit in `VERIFICATION_REPORT.md` and the current handoff below.
 
 Shared task board for parallel agent sessions. This board records the combined work of
 sessions `arena/a5878007-tradebot2`, `arena/7a21cbd2-tradebot2`, and `arena/b1cd545f-tradebot2`,
@@ -44,15 +50,34 @@ The runtime fixes this session to branch `arena/4a7cc110-tradebot2` (base `aca6c
 
 | Task | Status | Owner | File scope |
 |---|---|---|---|
-| D1 — reconcile published-entry-point documentation and executive summary | in progress | `arena/4a7cc110-tradebot2` | `README.md`, `EXECUTIVE_SUMMARY.md`, `COORDINATION.md` (claim/log only) |
+| D1 — coordinate published-documentation audit and release overlapping scope | done (handoff) | `arena/4a7cc110-tradebot2` | `COORDINATION.md` claim/handoff log only |
 
-Handoff: PR [#14](https://github.com/kanlerxz87-cyber/Tradebot2/pull/14) also touched `README.md`; its last recorded update is 2026-11-22, over 60 minutes before this claim. This session takes over only the documentation-consistency portion and will not modify the PR's other files. Active branches `arena/a32cdd24-tradebot2` (root/site findings) and `arena/bce83713-tradebot2` (collector claim) are left untouched.
+Handoff: PR [#14](https://github.com/kanlerxz87-cyber/Tradebot2/pull/14) was stale (>60 minutes without updates) when the initial claim was made. Before any documentation change was committed, current PR [#40](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40) opened and claimed `README.md`, `EXECUTIVE_SUMMARY.md`, `live/executive-summary.html`, `live/verification.html` and `COORDINATION.md`. This session restored its uncommitted README/summary draft and released those files; PR #40 owns that documentation integration. The session `arena/a32cdd24-tradebot2` completed via merged PR #38/#39. Current PR [#41](https://github.com/kanlerxz87-cyber/Tradebot2/pull/41) claims `live/assets/js/data.js`; this session will not modify that runtime. Coordination comments: [PR #40 handoff](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40#issuecomment-7226903877) · [PR #41 notional request](https://github.com/kanlerxz87-cyber/Tradebot2/pull/41#issuecomment-7226904228).
+
+### D1 close-out — 2026-11-27
+
+- Audited the published-path documentation and drafted a README/summary reconciliation, then released that scope when PR #40 opened with overlapping ownership. The draft was not committed and those two files were restored; PR #40 is the active documentation integration.
+- Independently found the separate manual-only demo-order workflow: `.github/workflows/execute-demo.yml` takes explicit `ticker`, `side`, `count`, `price` inputs and passes `--confirm`. The `/live/` browser portfolio is simulated. No workflow was dispatched, and repository-secret availability was not checked. This disclosure was sent to PR #40.
+- Corrected this board's current official endpoint list: the documented production REST host is `external-api.kalshi.com`; `trading-api.kalshi.com` is retained only as a historical unverified reference and is not labelled official.
+- Sources: [GitHub Pages configuration API](https://api.github.com/repos/kanlerxz87-cyber/Tradebot2/pages), [latest Pages build API](https://api.github.com/repos/kanlerxz87-cyber/Tradebot2/pages/builds/latest), [Kalshi demo environment](https://docs.kalshi.com/getting_started/demo_env), [Kalshi API environments](https://docs.kalshi.com/getting_started/api_environments), and the official endpoint references in `live/verification.html`.
+- Freshly measured in this session: after PR #39, the Pages API reported `build_type=legacy`, `source=main:/`, `status=built` for commit `037d65b93f7c5aa415b4315ddcd185301f1bc58f` at 19:44 UTC on 2026-11-27. Kalshi documentation hosts were not fetched during this turn; API-semantic links above were already in the repository source register and prior verification log. No new Kalshi market values were introduced.
+- Verification on the repository/app state before PR #40/#41: `tools/check_site.py --root . --strict` (14 pages / 406 links, OK); `tools/verify_site.py` (12 pages / 373 links, 128 markets, 44,192 resolutions, OK); `tools/verify_data.py --data-dir data` (OK; no current published feed rows); `scripts/check_site.py` (18 pages, no broken links; archived `site/data` absent so archived data-row checks skipped); `live/tests/check_live.py` (16 pages, 0 failures); `node live/tests/smoke.mjs` (87/87); `pytest` (69 passed); Python/JavaScript syntax checks; local Markdown links; `git diff --check`. This is a local audit result, not the post-merge check for PR #40 or #41.
+
+### Unclaimed final-integration requests (do not edit another session's scope)
+
+| ID | Status | Request | Evidence / requested action |
+|---|---|---|---|
+| D2 | unclaimed | Make event-notional aggregation fail closed when official `notional_value_dollars` is missing | `live/assets/js/data.js` uses `num(m.notional_value_dollars) || 1` in fallback loading and `(m.notional || 1)` in stats/ranking. It also marks events containing non-binary `market_type` as `scalar` but the aggregate does not use that marker; CSV conversion can turn `null` into `0`. A request was posted to PR [#41](https://github.com/kanlerxz87-cyber/Tradebot2/pull/41#issuecomment-7226904228), which currently owns `data.js`; request null-safe aggregation, a missing/scalar regression test, accurate display text and a visible review item. This session did not edit runtime/table/index/flagged files. |
+| D3 | unclaimed | Add current source-supported recommendations under `/live/` and link them from the live navigation | `live/suggestions.html` does not exist. Root `suggestions.html` advertises 5-second polling, second-level ticks and three strategy sleeves as already shipped; the current `/live/` page uses 30–300-second polling, no tick stream and four paper strategies. Do not copy its “already shipped” claims. |
+
+PRs [#38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38) and [#39](https://github.com/kanlerxz87-cyber/Tradebot2/pull/39) from `arena/a32cdd24-tradebot2` are merged. PR #40 currently owns documentation files and PR #41 currently owns `live/assets/js/data.js`; this session has not edited either scope. D2/D3 remain unclaimed coordination requests. Once the final integrator publishes these findings on the live flagged page, their status can move to `needs review`; until then they remain open requests, not published flags.
 
 ## Official sources (to be verified line by line)
 - Demo REST: https://external-api.demo.kalshi.co/trade-api/v2 and https://demo-api.kalshi.co/trade-api/v2
 - Demo WebSocket: wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2 and wss://demo-api.kalshi.co/trade-api/ws/v2
-- Production REST: https://external-api.kalshi.com/trade-api/v2 and https://trading-api.kalshi.com/trade-api/v2
-- Kalshi Rulebook & Documentation: https://trading-api.kalshi.com/trade-api/v2/documentation
+- Production REST: https://external-api.kalshi.com/trade-api/v2 — [official API environments documentation](https://docs.kalshi.com/getting_started/api_environments)
+- Kalshi API documentation: https://docs.kalshi.com/
+- **Historical endpoint warning:** `trading-api.kalshi.com` and its `/documentation` path are not in the current documented endpoint list; do not treat them as official endpoints. The older references remain in the historical log and are flagged in `live/flagged.html`.
 - CFTC DCM Listing Notice: https://www.cftc.gov/filings/contractlistings/kalshiexchange
 - EIA Gasoline & Diesel: https://www.eia.gov/petroleum/gasdiesel/
 - Federal Election Commission: https://www.fec.gov/
