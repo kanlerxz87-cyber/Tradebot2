@@ -16,9 +16,14 @@ on:
 permissions:
   contents: write
 
+# Do not cancel in progress: this job commits and pushes `data/`, which re-triggers
+# the workflow on its own `paths` filter. With cancel-in-progress the freshly
+# triggered run cancelled the run that had just validated the data, so the required
+# check never went green ("Canceling since a higher priority waiting request for
+# kalshi-data exists"). Separate group so it cannot kill the collector either.
 concurrency:
-  group: kalshi-data
-  cancel-in-progress: true
+  group: kalshi-snapshot
+  cancel-in-progress: false
 
 jobs:
   collect:

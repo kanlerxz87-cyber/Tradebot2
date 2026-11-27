@@ -13,10 +13,12 @@
 # is exactly how the previous revision broke publishing).
 name: Verify published site
 
+# `pull_request` was removed: `push` already covers every branch in this repository, and
+# the duplicate started a second identical job that this cancel-in-progress group then
+# cancelled, leaving a cancelled (red) check on a green commit.
 on:
   push:
     branches: [main, "arena/**"]
-  pull_request:
   workflow_dispatch:
 
 permissions:

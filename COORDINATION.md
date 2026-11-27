@@ -598,9 +598,12 @@ That is recorded here rather than glossed over.
 * **Two pipelines write `data/`, and only one trims** (F-31). `collect.yml` → `collector/run.py` (no trim);
   `data.yml` → `tools/build_snapshot.py` (trims to 50 resolutions per topic). A run of the first produced a 29.1 MB
   snapshot on this branch. Aligning them changes which pipeline owns `data/`, so it is logged as a request.
-* **The 5-minute `collect.yml` vs daily `data.yml` concurrency overlap still exists on `main`** (group
-  `kalshi-data`, `data.yml` cancelling in progress). #45 made `collect.yml` fit inside its timeout, which removes
-  the symptom; the coupling itself is unchanged and is noted rather than edited here.
+* **The concurrency coupling is now fixed** (F-32). #45 made `collect.yml` fit inside its timeout, which hid the
+  symptom, but the coupling remained: both workflows declared `concurrency.group: kalshi-data` while `data.yml`
+  cancelled in progress. Observed live twice on this branch — a `collect.yml` run and the `data.yml` run cancelled
+  within 30 seconds of each other, and *both* of a pair of daily runs cancelled. `collect.yml` → `kalshi-collect`,
+  `data.yml` → `kalshi-snapshot`, neither cancelling, and the redundant `pull_request` trigger on `pages.yml` was
+  removed because `push` already covers every branch.
 
 ### Gates run on the rebuilt branch (all against `main` + these three additions)
 

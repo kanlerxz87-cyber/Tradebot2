@@ -235,6 +235,13 @@
                 <td><code>tools/audit_data.py</code> now fails any <code>snapshot.json</code> over 1.6 MB and states why. Evidence for the ceiling: <code>trim_resolutions(..., limit_per_topic=50)</code> and <code>meta.resolutions_note</code> in <code>app/collector.py</code>. The 29.1 MB file was measured with <code>git cat-file -s</code> and is not published.</td>
                 <td>Align the writers: either have <code>collector/run.py</code> call <code>trim_resolutions</code> before committing, or point <code>collect.yml</code> at <code>tools/build_snapshot.py</code>. Not changed here because it alters which pipeline owns <code>data/</code>.</td>
               </tr>
+              <tr id="F-32">
+                <td class="mono">F-32</td><td><span class="badge green">Fixed</span></td>
+                <td><strong>Two workflows shared a cancellation group, so a daily job killed the 5-minute collector, and each daily run then cancelled itself.</strong> <code>collect.yml</code> and <code>data.yml</code> both declared <code>concurrency.group: kalshi-data</code> while <code>data.yml</code> set <code>cancel-in-progress: true</code>. The collector was therefore cancelled mid-run, and once the daily job began pushing its own <code>data/</code> commit — which re-triggers it on its own <code>paths</code> filter — the fresh run cancelled the run that had just validated the data, so the required check never turned green. Observed live on this branch: two runs of each cancelled within 30 seconds of each other.</td>
+                <td><span class="badge green">Fixed</span></td>
+                <td>Separate groups (<code>kalshi-collect</code>, <code>kalshi-snapshot</code>), neither cancelling; the redundant <code>pull_request</code> trigger on <code>pages.yml</code> was removed because <code>push</code> already covers every branch. Annotations quoted on the run pages; same signature as the earlier F-24.</td>
+                <td>Closed in the workflow configs.</td>
+              </tr>
             </tbody>
           </table>
         </div>
