@@ -398,3 +398,11 @@ Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `ac
 - **Corrections:** removed false claim that archived pages live under `/legacy/`; corrected root landing statement that all archives were bannered; reopened root F-18 because `docs/index.html` lacks an archive warning.
 - **Irregularities:** data-feed collections checked by `tools/verify_data.py` were empty (0 rows); root collector metadata is dated Nov 22 with `api_requests: 0`; live API wasn't re-tested; 11/22 fallback is static and explicitly not live; archive warnings are incomplete; demo-account credentials, order status and causal news attribution remain unverified. No demo trade sent.
 - **No conflict:** edits were limited to the audit report, root landing warning, review pages and this close-out. Branch name remains workbench-fixed `arena/a32cdd24-tradebot2`; task claim was pushed immediately before implementation.
+
+### PR and Pages record
+
+| PR | Result |
+|---|---|
+| [#38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38) | Merged 2026-11-27 19:42:04 UTC as `260c43274dc6210148ebaaac9389a865851d6ee3`. PR checks `tests` and `verify` passed. |
+| GitHub Pages | `build_type: legacy`, source `main:/`; Pages build for merge commit `260c43274dc6210148ebaaac9389a865851d6ee3` reported `built` at 19:42:34 UTC. Build workflow: [run 46058528998](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058528998). The sandbox could not fetch `github.io` directly (TLS `SSL_ERROR_SYSCALL`), so HTTP content-level deployment was not independently confirmed here. |
+| Post-merge verify workflow | `Verify site and engine` passed: [run 46058529505](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058529505). A separate published-site run was cancelled by GitHub concurrency (`higher priority waiting request`); it is not reported as a test failure. PR checks themselves had passed before merge. |
