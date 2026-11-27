@@ -132,8 +132,8 @@ def check_nav():
 def check_flow_guard():
     """The alert threshold must be compared in one unit only (dollars vs cents bug)."""
     data = (LIVE / "assets" / "js" / "data.js").read_text(encoding="utf-8")
-    if "thresholdDollars" not in data:
-        errors.append("data.js: threshold unit conversion guard missing")
+    if "Math.abs(delta) >= TB.ALERT_THRESHOLD * 100" not in data:
+        errors.append("data.js: mandatory dollar-to-cents threshold comparison missing")
     if re.search(r"num\(cur\.threshold\)\s*\|\|\s*TB\.ALERT_THRESHOLD\s*\*\s*100", data):
         errors.append("data.js: threshold is compared in mixed units")
 

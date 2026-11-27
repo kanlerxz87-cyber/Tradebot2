@@ -101,14 +101,20 @@ var TBChart = (() => {
     const plotH = h - padT - padB;
 
     const xs = pts.map(p => p.t);
-    let x0 = Math.min(...xs), x1 = Math.max(...xs);
-    if (x1 - x0 < 60e3) x1 = x0 + 60e3;
+    let x0 = Number.isFinite(o.start) ? o.start : Math.min(...xs);
+    let x1 = Number.isFinite(o.end) ? o.end : Math.max(...xs);
+    if (x1 <= x0) x1 = x0 + 1000;
+    const fmtPrice = o.unit === 'usd' ? v => TB.dollar(v, 2) : fmtCents;
     const ps = pts.map(p => p.p);
     let yMin = Math.min(...ps), yMax = Math.max(...ps);
     const padY = o.yPad != null ? o.yPad : Math.max(0.5, (yMax - yMin) * 0.15);
-    yMin = Math.max(0, Math.floor((yMin - padY) * 2) / 2);
-    yMax = Math.min(100, Math.ceil((yMax + padY) * 2) / 2);
-    if (yMax - yMin < 6) { const mid = (yMax + yMin) / 2; yMin = Math.max(0, mid - 3); yMax = Math.min(100, mid + 3); }
+    if (o.unit === 'usd') {
+      yMin -= Math.max(0.01, padY); yMax += Math.max(0.01, padY);
+    } else {
+      yMin = Math.max(0, Math.floor((yMin - padY) * 2) / 2);
+      yMax = Math.min(100, Math.ceil((yMax + padY) * 2) / 2);
+      if (yMax - yMin < 6) { const mid = (yMax + yMin) / 2; yMin = Math.max(0, mid - 3); yMax = Math.min(100, mid + 3); }
+    }
 
     const X = t => padL + ((t - x0) / (x1 - x0)) * plotW;
     const Y = p => padT + (1 - (p - yMin) / (yMax - yMin)) * plotH;
@@ -119,7 +125,7 @@ var TBChart = (() => {
     for (const tick of niceTicks(yMin, yMax, 5)) {
       const y = Math.round(Y(tick)) + .5;
       ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
-      ctx.fillText(fmtCents(tick), padL - 8, y);
+      ctx.fillText(fmtPrice(tick), padL - 8, y);
     }
     /* x labels */
     ctx.textAlign = 'center'; ctx.textBaseline = 'top';
@@ -196,7 +202,7 @@ var TBChart = (() => {
     }
 
     /* interactivity: crosshair + tooltip */
-    canvas._chart = { pts, X, Y, x0, x1, padL, padR, padT, plotH, w, h, drawBase: () => line(canvas, o) };
+    canvas._chart = { pts, X, Y, x0, x1, padL, padR, padT, plotH, w, h, fmtPrice, drawBase: () => line(canvas, o) };
     if (!canvas._bound) {
       canvas._bound = true;
       let tip = null;
@@ -228,7 +234,7 @@ var TBChart = (() => {
         ctx2.fillStyle = '#fff'; ctx2.beginPath(); ctx2.arc(x, y, 1.8, 0, Math.PI * 2); ctx2.fill();
         ctx2.restore();
         const tipEl = ensureTip();
-        tipEl.innerHTML = `${fmtCents(best.p)}<br><span style="color:#9aa4b0">${new Date(best.t).toLocaleString()}${Number.isFinite(best.v) ? '<br>vol ' + Math.round(best.v) : ''}</span>`;
+        tipEl.innerHTML = `${ch.fmtPrice(best.p)}<br><span style="color:#9aa4b0">${new Date(best.t).toLocaleString()}${Number.isFinite(best.v) ? '<br>vol ' + Math.round(best.v) : ''}</span>`;
         const left = Math.min(ch.w - 150, Math.max(0, x + 12));
         tipEl.style.left = left + 'px';
         tipEl.style.top = Math.max(4, y - 54) + 'px';
@@ -282,50 +288,36 @@ var TBChart = (() => {
        ASK side  = 1 - no_bid price (size from that no bid level)
        BID side  = yes bid price    (size from that yes bid level)
      ====================================================================== */
-  function ladder(host, ob, opts) {
-    const o = Object.assign({ levels: 8, yesBid: null, yesAsk: null }, opts || {});
-    if (!host) return;
-    const fp = ob && (ob.orderbook_fp || ob.orderbook);
-    if (!fp) { host.innerHTML = '<div class="t-blank">No order book returned.</div>'; return; }
-    const yesLevels = (fp.yes_dollars || []).map(l => ({ p: Number(l[0]), q: Number(l[1]) })).filter(l => Number.isFinite(l.p) && Number.isFinite(l.q));
-    const noLevels = (fp.no_dollars || []).map(l => ({ p: Number(l[0]), q: Number(l[1]) })).filter(l => Number.isFinite(l.p) && Number.isFinite(l.q));
-    /* asks (yes side) come from NO bids: price = 1 - noBidPrice */
-    const asks = noLevels.map(l => ({ p: Math.round((1 - l.p) * 10000) / 10000, q: l.q }))
-      .filter(l => l.p > 0 && l.p < 1)
-      .sort((a, b) => b.p - a.p).slice(0, o.levels);              // best (lowest) ask last
-    asks.sort((a, b) => a.p - b.p);
-    const bids = yesLevels.slice(-o.levels);                       // ascending, best last
-    const maxQ = Math.max(...asks.concat(bids).map(l => l.q), 1);
-    const f = p => (Math.round(p * 10000) / 100) + '¢';
-    const q = n => n.toLocaleString(undefined, { maximumFractionDigits: 2 });
-    let html = '';
-    for (const a of asks.slice().reverse()) {
-      html += `<div class="lvl ask"><div class="p">${f(a.p)}</div><div class="bar"><span style="width:${(a.q / maxQ * 100).toFixed(1)}%"></span></div><div class="q">${q(a.q)}</div></div>`;
-    }
-    const spread = (o.yesBid != null && o.yesAsk != null) ? ((o.yesAsk - o.yesBid) * 100).toFixed(2) : null;
-    html += `<div class="mid">spread ${spread != null ? spread + '¢' : '—'} · ${bids.length} bid / ${asks.length} ask levels returned</div>`;
-    for (const b of bids.slice().reverse()) {
-      html += `<div class="lvl bid"><div class="p">${f(b.p)}</div><div class="bar"><span style="width:${(b.q / maxQ * 100).toFixed(1)}%"></span></div><div class="q">${q(b.q)}</div></div>`;
-    }
-    if (!asks.length && !bids.length) html = '<div class="t-blank">Order book is empty (no resting orders).</div>';
-    host.className = 'ladder';
-    host.innerHTML = html;
-  }
-
-  /** Sum resting contracts within N cents of the mid — a simple liquidity measure. */
-  function liquidity(ob, yesBid, yesAsk) {
-    const fp = ob && (ob.orderbook_fp || ob.orderbook);
+  function bookLevels(ob) {
+    const fp = ob && ob.orderbook_fp;
     if (!fp) return null;
-    const yes = (fp.yes_dollars || []).map(l => ({ p: Number(l[0]), q: Number(l[1]) }));
-    const no = (fp.no_dollars || []).map(l => ({ p: Number(l[0]), q: Number(l[1]) }));
-    const total = a => a.reduce((s, l) => s + (Number.isFinite(l.q) ? l.q : 0), 0);
-    return {
-      bidContracts: total(yes), askContracts: total(no),
-      bidLevels: yes.length, askLevels: no.length,
-      yesBid, yesAsk,
-      bestBid: yes.length ? yes[yes.length - 1].p : null,
-      bestAsk: no.length ? Math.round((1 - no[no.length - 1].p) * 10000) / 10000 : null
-    };
+    const levels = xs => (xs || []).map(l => ({ p: TB.num(l[0]), q: TB.num(l[1]) }))
+      .filter(l => l.p !== null && l.q !== null && l.p >= 0 && l.p <= 1 && l.q > 0)
+      .sort((a, b) => b.p - a.p);
+    return { bids: levels(fp.yes_dollars), asks: levels(fp.no_dollars)
+      .map(l => ({ p: Math.round((1 - l.p) * 10000) / 10000, q: l.q })).sort((a, b) => a.p - b.p) };
+  }
+  function ladder(host, ob, opts) {
+    if (!host) return;
+    const o = Object.assign({ levels: 8 }, opts), book = bookLevels(ob);
+    if (!book) { host.innerHTML = '<div class="t-blank">No verified order book returned.</div>'; return; }
+    const bids = book.bids.slice(0, o.levels), asks = book.asks.slice(0, o.levels);
+    host.className = 'ladder table-wrap';
+    const src = o.source || 'https://docs.kalshi.com/api-reference/market/get-market-orderbook';
+    if (!bids.length && !asks.length) { host.innerHTML = '<div class="t-blank">No resting orders in returned depth.</div>'; return; }
+    const row = (l, side) => `<tr class="${side}"><td>${side === 'ask' ? 'YES ask*' : 'YES bid'}</td>
+      <td class="num">${fmtCents(l.p * 100)}</td><td class="num">${TB.compact(l.q)}</td>
+      <td class="src"><a href="${esc(src)}" target="_blank" rel="noopener">book API</a></td></tr>`;
+    host.innerHTML = `<table><thead><tr><th>Side</th><th>Price</th><th>Contracts</th><th>Source</th></tr></thead><tbody>
+      ${asks.slice().reverse().map(l => row(l, 'ask')).join('')}${bids.map(l => row(l, 'bid')).join('')}</tbody></table>
+      <p class="src">*YES ask = 1 − NO bid (calculated). Nearest ${o.levels} returned levels per side; not guaranteed fills.</p>`;
+  }
+  function liquidity(ob) {
+    const book = bookLevels(ob); if (!book) return null;
+    const sum = a => a.reduce((s, l) => s + l.q, 0);
+    return { bidContracts: sum(book.bids), askContracts: sum(book.asks), bidLevels: book.bids.length,
+      askLevels: book.asks.length, bestBid: book.bids.length ? book.bids[0].p : null,
+      bestAsk: book.asks.length ? book.asks[0].p : null };
   }
 
   return { line, spark, bars, ladder, liquidity, fmtCents, empty, C };

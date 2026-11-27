@@ -30,6 +30,9 @@ jobs:
           python tests/run_fixture_pipeline.py
       - name: Canonical data, required pages and local links
         run: python tools/verify_site.py
+
+      - name: Data integrity (empty datasets and count drift fail here)
+        run: python tools/audit_data.py --data-dir data
       - name: JavaScript syntax
         run: |
           for f in $(find assets/js js dash/assets -name '*.js' 2>/dev/null); do node --check "$f" || exit 1; done

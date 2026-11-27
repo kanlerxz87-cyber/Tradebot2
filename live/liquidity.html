@@ -22,11 +22,13 @@
     <div class="row">
       <select id="mkt" style="min-width:340px" aria-label="Market"></select>
       <div class="seg" id="span" role="group" aria-label="Window">
-        <button data-min="15" aria-pressed="false">15 min</button>
-        <button data-min="60" aria-pressed="true">1 hour</button>
-        <button data-min="360" aria-pressed="false">6 hours</button>
-        <button data-min="1440" aria-pressed="false">24 hours</button>
-        <button data-min="4320" aria-pressed="false">3 days</button>
+        <button data-seconds="30" aria-pressed="false">30 sec</button>
+        <button data-seconds="60" aria-pressed="false">60 sec</button>
+        <button data-seconds="900" aria-pressed="false">15 min</button>
+        <button data-seconds="3600" aria-pressed="true">1 hour</button>
+        <button data-seconds="21600" aria-pressed="false">6 hours</button>
+        <button data-seconds="86400" aria-pressed="false">24 hours</button>
+        <button data-seconds="259200" aria-pressed="false">3 days</button>
       </div>
       <div class="seg" id="iv" role="group" aria-label="Candle interval">
         <button data-iv="1" aria-pressed="true">1m</button>
@@ -35,7 +37,7 @@
       </div>
       <label class="chk"><input type="checkbox" id="autoChk" checked> auto-refresh</label>
     </div>
-    <p class="hint" style="margin-top:.4rem">Time axis: <b>seconds/minutes/hours</b> are chosen by the window; the axis labels follow the window length.
+    <p class="hint" style="margin-top:.4rem">Time axis: choose a true <b>30/60-second</b>, minute or hour window. Short windows use actual 5-second REST observations while this page is open; candles are never represented as second-level data.
       Price axis: cents of the YES contract (0¢–100¢). Volume bars are contracts traded in each candle.</p>
   </section>
 
@@ -68,6 +70,7 @@
       </div>
     </div>
   </section>
+  <section class="card" id="move-context"><h2>Observed jumps &amp; reference websites</h2><div id="moveContext"></div></section>
   <p class="src" style="margin-top:1rem">Data source: <span class="mono">external-api.demo.kalshi.co/trade-api/v2</span> ·
     <a href="https://docs.kalshi.com/api-reference/market/get-markets">get-markets</a> ·
     <a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks">candlesticks</a> ·
@@ -80,6 +83,7 @@
 <script src="assets/js/data.js"></script>
 <script src="assets/js/charts.js"></script>
 <script src="assets/js/ui.js"></script>
+<script src="assets/js/market-view.js"></script>
 <script src="assets/js/page-liquidity.js"></script>
 </body>
 </html>

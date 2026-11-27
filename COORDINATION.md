@@ -549,6 +549,58 @@ Base: `main` @ `aca6cc8` (merged `origin/main` through `f5df412`; branch fixed b
 
 ---
 
+## Final integration — session `arena/600a5dcd-tradebot2` (claimed 2026-11-27T19:41Z)
+
+Current branch is fixed by the session runtime: `arena/600a5dcd-tradebot2` (base `aca6cc8`); no other branches/worktrees will be created. This is the final integration owner for the canonical `/live/` site and shared entry/navigation outputs. The previous integration claims above are over 60 minutes stale (2026-11-22); their merged work and archived generations will be retained. Open PRs #6/#14/#16 are not assumed verified or merged, and will not be overwritten.
+
+| Task | Status | Owner | File scope | Verification / handoff |
+|---|---|---|---|---|
+| R1 — Canonical dashboard correctness and source provenance | done | `arena/600a5dcd-tradebot2` | `live/**` | Audit quote freshness, ranking units, source-per-row, seconds-scale chart windows, resolution retention, offline state, simulated fills/fees. Preserve dated API data; never invent missing account values. |
+| R2 — One canonical landing, summary, release gates and snapshot adapter | done | `arena/600a5dcd-tradebot2` | `index.html`, `README.md`, `EXECUTIVE_SUMMARY.md`, `tools/build_live_snapshot.py` (new), `tests/test_live_snapshot.py` (new), `.github/workflows/{pages,data}.yml` | Small browser payload derived from official collected records, explicit partial coverage, official documentation/source checks, regression and rendered-row gates. Other archived pages stay intact. |
+| R3 — Release and live deployment verification | in progress | `arena/600a5dcd-tradebot2` | `COORDINATION.md`, `live/release-verification.json` (new) | Re-verify, open PR to main, merge without waiting for review only after checks pass, confirm legacy Pages build. Record PR/build evidence here. |
+
+Baseline inspection (not a claim that all requirements are complete): 69 Python tests, 87/87 existing browser-fixture checks, 16 live-page static checks and `tools/verify_site.py` pass. These tests do not prove network access or account execution. Official API capture `data/snapshot.json` is dated `2026-11-27T19:03:10Z`; `data/probe.json` records public REST CORS allowed and unsigned WS rejected with 401. Sandbox outbound access does not allow the Kalshi hosts; fresh API verification will use a GitHub Actions runner with retained provenance. No credentials have been requested or read; account values remain unverified until the existing secret-backed integration can confirm them.
+
+Sources to re-check: [official API environments](https://docs.kalshi.com/getting_started/api_environments), [Get Markets](https://docs.kalshi.com/api-reference/market/get-markets), [Get Events](https://docs.kalshi.com/api-reference/events/get-events), [candlesticks](https://docs.kalshi.com/api-reference/market/get-market-candlesticks), [orderbook](https://docs.kalshi.com/api-reference/market/get-market-orderbook), [authenticated requests](https://docs.kalshi.com/getting_started/quick_start_authenticated_requests), [official fee schedule](https://kalshi.com/docs/kalshi-fee-schedule.pdf). Items requiring unavailable credentials or causal evidence will be published as **needs review**, not filled with assumptions.
+
+### R1/R2 implementation checkpoint — 2026-11-27T20:01Z
+
+- Official documentation was actually fetched/re-read this turn: [environments](https://docs.kalshi.com/getting_started/api_environments), [Get Market](https://docs.kalshi.com/api-reference/market/get-market.md), [Get Markets](https://docs.kalshi.com/api-reference/market/get-markets.md), [series](https://docs.kalshi.com/api-reference/market/get-series-list.md), [candles](https://docs.kalshi.com/api-reference/market/get-market-candlesticks.md), [book](https://docs.kalshi.com/api-reference/market/get-market-orderbook), [lifecycle](https://docs.kalshi.com/getting_started/market_lifecycle.md), [balance units](https://docs.kalshi.com/api-reference/portfolio/get-balance.md), [WS auth](https://docs.kalshi.com/getting_started/quick_start_websockets.md), [fee schedule](https://kalshi.com/docs/kalshi-fee-schedule.pdf). Public [demo exchange status](https://external-api.demo.kalshi.co/trade-api/v2/exchange/status) returned exchange/trading active through the page-fetch tool; this alone is not price verification.
+- Fixed undocumented source URLs (`/series/{s}/markets`, `/events?tickers=`), topic-depth navigation/fallback paths, `ttl:0` cache bypass, 429 cooldown, stale-quote chart timestamps, worst-vs-nearest ladder levels, cross-environment/basis alert mixing, and table settlement-value inference.
+- Browser now polls a selected five-topic cohort directly using documented `/markets?tickers=` batches; unresolved watched tickers persist across cohort changes, with rotating current/historical rechecks. Coverage and read times are explicit; no exchange-wide highest-cash-volume claim.
+- Paper engine version 2 defaults to simulation-only automation, caps visible size/risk, uses ask entry / side-bid marks and exits, buys NO for downward momentum, refuses missing/stale/paused/closed quotes, and waits for finalized settlement without a settlement fee. General M=1 fees / 50% retrace are disclosed scenarios, not verified account fees or predicted ROI. Account panel stays blank + unverified; secret-list permission returned HTTP 403 (integration permission), and no credentials or account order were accessed.
+- `tools/build_live_snapshot.py` projects official fields without defaults, producing a 446,229-byte dated capture (128 selected, 178 per-topic sampled resolutions). Network verification mode requires every selected ticker to be returned with matching identity and records exact source URLs, observation times, input hash and Actions run. New data workflow step will re-read source values on the runner.
+- Local gates currently pass: **77 pytest**, **143/143 DOM/fixture assertions**, 16-page live link/JS/fabrication gate, canonical data/link schema gate. Fixture tests are explicitly not live source verification.
+- Coordination: PR [#38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38) has merged; its archive corrections will be integrated, not discarded. Session `arena/bce83713` owns only collector-safety files/report; no changes to those files in this session. Release/main/Pages verification is still in progress.
+
+### Concurrent merge conflict and resolution — 2026-11-27T20:05Z
+
+`origin/main` advanced to `a718fd7` while this integration was implementing its already-pushed claim. This brought merged PRs #38/#40/#41/#42/#43/#45, including overlapping live-code/summary/workflow changes. A real merge conflict was stopped and inspected file by file; no reset/force-push or blanket ours/theirs checkout was used. The complete upstream coordination board, audit report, collector safeguards, root trader UI/strategy sandbox, data compaction, fresh collector cycle, `.gitignore` and other non-conflicting changes are preserved.
+
+For overlapping files, the final implementation combines behavior: #41's `quotedPrice` empty-zero guard is retained in `core.js`; synthetic messages remain visibly badged defensively, while the insertion button is removed and new storage excludes synthetic signals; NO paper fills require the explicit NO ask and confirmed YES-bid-side quantity (a missing quote cannot coerce to $1), and NO marks use the actual NO bid rather than a last-price complement. #45's exchange-timestamped trade-print overlay is moved into the shared chart layer and never mixed with midpoint history. #41's **event/ref-scoped** workflow concurrency is retained, along with its quote-regression and no-legacy-link gates. Quote regression assertions are being adapted to exercise the new behavior instead of requiring superseded source-code strings. All previous summary/audit limitations are covered on the new source-linked summary/review pages; exact historical ticker probes are explicitly not claimed repeated.
+
+**Ladder clarification against the earlier retraction:** ten ascending NO bid prices 0.80…0.89 imply YES asks 0.20…0.11. The best two are 0.11 and 0.12, not 0.20/0.19. The prior regression expected 20¢ to survive at depth two, inadvertently protecting the worst-level selection. Final integration explicitly sorts complementary asks ascending *before* truncation, and tests the 11¢ best ask. This is arithmetic from the [official bids-only book definition](https://docs.kalshi.com/api-reference/market/get-market-orderbook), not an inferred market quote. Both the earlier retraction and this correction remain logged.
+
+Post-conflict combined-tree checks: **88 pytest + 2 subtests**, **143 DOM assertions**, **33 executable quote-integrity checks**, 16-page live static gate, `tools/verify_site.py` (13 pages / 410 links / 128 markets / 218 sampled resolutions), and `tools/check_site.py --strict` all passed. Incoming compact `data/snapshot.json` and full official resolution counts were retained; the browser adapter was regenerated with the new input hash. The inherited orphan `>>>>>>> origin/main` line in the upstream board was removed without deleting any entry. The only canonical gate warnings are workflow-evidence links on root `sources.html` classified as non-market sources; they are GitHub Actions links, not claimed official price values.
+
+Push synchronization note: plain `git pull --rebase origin arena/600a5dcd-tradebot2` attempted to replay already-integrated parallel history (20 commits) and conflicted at `e642b9f`. The replay was **aborted**, restoring the verified merge `c503f4c` unchanged. As in the earlier integration handoff, `git pull --rebase --ff-only` safely confirms the remote session tip is an ancestor without flattening its integrated merge ancestry. All subsequent pushes use that ancestry-preserving pull; no remote work was force-pushed, skipped or discarded.
+
+### R2 landing audit and R3 fresh public proof — 2026-11-27T20:09Z
+
+- The existing root inline script still prefixed navigation URLs after the new shared core already emitted absolute project-safe URLs. This produced broken `live/https://…` links even though the static gate passed. Removed that obsolete prefixing, added runtime-root navigation/source-row assertions, and replaced landing overclaims (“every figure fetched”, “every swing”, exhaustive dollar rank) with actual coverage/latency/account limits. Root terminal/custom lab and archive links remain intact.
+- Both NO bid and NO ask now share the empty-zero guard using their complementary YES-side sizes. Negative/above-$1 prices cannot be normalized as valid binary quotes. New regressions cover those paths. Combined live suite: **149/149**; quote rules: **37/37**. Python remains **88 +2 subtests**, all site gates pass. Updated README and executive summary distinguish the maintained desk from the parallel snapshot terminal, including different ledgers and model assumptions.
+- **Official re-read succeeded**, not just a fixture: [runner 46060999027](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46060999027), completed success; source commit `7bd40b7`. It selected at `2026-11-27T20:07:40.191123Z`, re-read **all 128** exact selected identities (gas25/elections26/culture25/crypto27/golf25) at `20:07:43.427447Z`–`20:07:43.799150Z`, finished reference checks at `20:07:51.761882Z`; input SHA-256 `440485d3a0347e3e48ec70371c3aaafd0f7be007a4f7aeff66276740dc216e08`. Selected statuses all active at that read. Notional/type/side sizes were present on each selected record; settlement values were **absent on all 128**, kept null. This is selected-cohort proof, not exhaustive market coverage or an authenticated account check. Job logs could not be downloaded via the sandbox's blocked Actions-results host; success/job-step API and the committed provenance are available and linked instead.
+- Opened final integration [PR #47](https://github.com/kanlerxz87-cyber/Tradebot2/pull/47). Commented on [#44](https://github.com/kanlerxz87-cyber/Tradebot2/pull/44#issuecomment-7227166635) and [#46](https://github.com/kanlerxz87-cyber/Tradebot2/pull/46#issuecomment-7227167061) to coordinate preservation of their active audit/root-terminal scopes. They are not silently overwritten or treated as merged. Main release/Pages check remains outstanding.
+
+### R3 read-only account availability check — claimed 2026-11-27T20:13Z
+
+Scope extension under this final-integration claim: new `tools/verify_demo_account.py`, `tests/test_demo_account_verification.py`, `live/data/account-verification.json`, the existing owned `.github/workflows/data.yml` and `/live/` account-panel reader. This is **read-only**: reuse the collector's signed GET helper without editing `collector/**`, never place an order or expose keys, and record whether credentials are available **to the Actions job**, not via secret enumeration. No credentials/failed-auth result will remain blank + flagged; a confirmed signed capture remains distinct from paper performance. This is needed because the other collection run was cancelled by cross-workflow concurrency and the older `configured:false` file is not a current credential check. Existing secret-backed manual order tools stay unchanged.
+
+Fresh capture handoff exposed a brittle parallel frontend regression: it hard-coded old `44,192` / `41,260` counts. Actual current source reports `43,724` / `40,740`; the UI was correct. Updated the regression to compare rendered totals to the exact current source fields (and ensure full count ≥ sample), and added it to the Pages headless gate. It now passes: 35 captured alerts / 23 root model picks. These remain the parallel terminal's historical seed feed, **not** injected `/live/` alerts. Its owner T5 scope is marked done in the merged board; no active task was taken over.
+
+R3 account-probe implementation: added a four-minute, **GET-only** independent job inside the already-owned data workflow. It calls the existing `collector.trading.sync_demo_portfolio` in an isolated temporary directory; no collector source/order tool was changed. The public record allowlists balance/positions, uses the actual official base, strips exception messages/unknown fields, records credential availability for that job only, and explicitly records **zero orders submitted**. Missing/failed authentication leaves values null; present keys with failed authentication do not become “absent keys.” Four privacy/fail-closed unit tests pass. `/live/portfolio.html` reads this separate record rather than importing an old account status or a paper ledger; it checks exact official endpoint paths and a valid capture time. This job has not run until the next push; pending JSON is truthfully labeled.
+
+After pulling official capture `7bd40b7`, all combined tests pass: **92 pytest +2 subtests /149 DOM /37 quote**, parallel frontend (35 captured seed alerts /23 root model picks), 16 live pages, canonical 13-page schema gate and strict 14-page link gate. The new browser bootstrap is 532,527 bytes, 128 selected +200 sampled resolutions; input hash matches exactly. `live/release-verification.json` now contains real public runner provenance but still does **not** assert the pending main merge/Pages release or account access.
 ## Session `arena/ac928922-tradebot2` — Python Trade API v2 signing, Order V2 contract, paper NO-side valuation & strategy quote guards (claimed 2026-11-27)
 
 Base: `main` @ `a718fd7` (branch fixed by runtime to `arena/ac928922-tradebot2`). Earlier pre-`a718fd7` root-page scopes were released cleanly after `arena/33fd30e7` (PR #45) merged snapshot compaction and root chrome fixes; this session claims **only** the untouched Python engine modules below, verified to have zero overlap with open PR #44 (`arena/20d918dc`) and active branches `arena/600a5dcd` / `arena/4a7cc110`.
@@ -563,6 +615,96 @@ Base: `main` @ `a718fd7` (branch fixed by runtime to `arena/ac928922-tradebot2`)
 ### Coordination requests to other owners (not edited by this session)
 - **`flagged.html` / `live/flagged.html`:** Official Kalshi settlement docs ([`market_settlement#fees`](https://docs.kalshi.com/getting_started/market_settlement#fees)) explicitly state settlement fees are zero for simple YES/NO determinations (fees/whole-cent rounding apply only to sub-cent scalar settlements). Root F-05 can cite this official statement on a future pass.
 
+
+Final integration merge checkpoint 2026-11-27T20:15Z: merged completed docs PR #46 with its explicit PR number; fetched `main` at `d78483a`. This also brought the concurrently completed `arena/ac928922` Python signing/Order-V2/paper-side guards. All incoming engine/test/report changes are preserved; the only conflict was append-vs-append in this board, resolved by retaining **both complete session entries**. Those source files were not independently edited by this session. Extra official references now actually re-read: [signed requests](https://docs.kalshi.com/getting_started/quick_start_authenticated_requests), [demo warnings](https://docs.kalshi.com/getting_started/demo_env), [trade timestamps/pagination](https://docs.kalshi.com/api-reference/market/get-trades.md), and [fixed-point grids/quantities](https://docs.kalshi.com/getting_started/fixed_point_migration). The secret-context read-only account job has completed successfully, but its committed result has not yet been pulled/inspected at this checkpoint.
+
+Account verification **completed and inspected**, not inferred from the denied secret-list API: [Actions 46062187383, read-only account job](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062187383) wrote `live/data/account-verification.json` at `2026-11-27T20:13:59.431121Z`. `credentials_available_to_job:false`, `configured:false`, `verified_account_read:false`, `orders_submitted:0`; all balance/positions fields null. No signed request or demo order was sent, and no key value appeared in code/chat/logs. This proves only that this job lacked the configured inputs, not that credentials are globally absent. Existing manual execution remains uninvoked, appropriate when authentication is unavailable.
+
+After incoming PR #48, the local environment lacked FastAPI (now imported by its new test); installed the already-declared dependencies, then **100 pytest +2 subtests** passed. Four FastAPI `on_event` deprecation warnings are non-blocking and do not affect static Pages; app/server ownership remains with that session. Source also re-read: [simple YES/NO settlement fees are zero](https://docs.kalshi.com/getting_started/market_settlement#fees). Plain pull-rebase again tried replaying merge-side AC claims; aborted it without dropping any commit, merged the runner's account evidence, and confirmed ancestry with `pull --rebase --ff-only`. R1/R2 are marked done; R3 still waits for PR #44 integrity integration and final green main/Pages verification.
+## Session `arena/20d918dc-tradebot2` — overlapping discovery, then a narrowed, non-duplicating contribution
+
+Branch is fixed by the runtime to `arena/20d918dc-tradebot2`. This section is deliberately short because **most of
+what this session found was fixed on `main` by session `arena/33fd30e7` (PR #45) while this session was running.**
+That is recorded here rather than glossed over.
+
+### What happened
+
+1. From base `aca6cc8` this session independently verified five defects and fixed them on its own branch
+   (`tools/audit_data.py`, a `resolved_markets_30d` count fix, a `quotePrice()` shape fix for the model chat, the
+   `$0.10–$0.90` entry band, and a `collect.yml`/`data.yml` concurrency fix). PR
+   [#44](https://github.com/kanlerxz87-cyber/Tradebot2/pull/44) was opened.
+2. PR #44 then showed `CONFLICTING`. Rebasing onto `origin/main` revealed PR #45 (`arena/33fd30e7`) had already
+   landed fixes for three of the same five items. The rebase was **aborted** rather than resolved by preferring
+   either side, and the branch was rebuilt on current `main` with only what `main` still lacked.
+3. No work from any session was discarded: the old branch head is preserved as tag `myold` (`22202aa`).
+
+### What `main` had already fixed (so this session dropped its version)
+
+| Finding | Fixed on `main` by #45 | This session's action |
+|---|---|---|
+| `resolved_markets_30d` published a 40-row display cap | yes — full 30-day counts, `resolutions[]` trimmed to 50/topic with a `meta.resolutions_note` | dropped its own data repair entirely |
+| `quotePrice()` ignored the snapshot's `prices` object, so chat 2 was empty | yes — `quotePrice()` now reads `prices` and `liquidity`; `tests/test_frontend.mjs` asserts 13 model picks | dropped |
+| `collect.yml` cancelled at its 25-minute timeout | yes, but by a different route — bulk discovery with `with_nested_markets=true`, so the scan fits in 1m30s | dropped |
+| `data/*.json` zero-row files | partially — `resolutions[]` trimming is documented | kept the "empty file must say why" rule in the new gate |
+
+### What `main` still lacked, and what this session added
+
+| Task | Status | File scope | Verification |
+|---|---|---|---|
+| `20D-A` Integrity gate | done | `tools/audit_data.py` (new), `.github/workflows/{verify,pages}.yml` | Re-derives what the pages print and fails on 8 classes of drift: empty snapshot/alerts, `error_count` mismatch, array totals, `topics[].resolved_markets_30d` vs `stats.settled_markets_in_scope`, a resolution without YES/NO or an official link, a duplicate/untagged/unsourced market, a seed below the advertised threshold, and a zero-row file with no explanation. Each class was re-introduced in a scratch copy and the gate caught all four tested. Currently **PASS** on `main`'s data. |
+| `20D-B` Entry band | done | `assets/js/core.js`, `assets/js/dashboard.js`, `tests/js/model-feed.test.mjs` (new) | `evaluate()` applied no `$0.10–$0.90` bound although the page and `collector/alerts.py` both publish one. With the band absent, seeded feeds produced `$0.004` entries reporting 6,214% "ROI". Now every one of the 13 picks lands between `$0.26` and `$0.72`; asserted in CI. |
+| `20D-C` Flagged record | done | `flagged.html` | F-29 (entry band) and F-30 (the missing integrity gate) with their evidence. |
+
+| `20D-D` Snapshot size guard | done | `tools/audit_data.py`, `flagged.html` | A CI run on this very branch committed a **29.1 MB** `snapshot.json` (43,792 untrimmed resolution records) because the 1.5 MB trim lives in `tools/build_snapshot.py` while `collect.yml` commits from `collector/run.py`, which never calls `trim_resolutions`. The gate now fails anything over 1.6 MB. Published as **F-31**. The untrimmed file was removed from this branch: `main`'s trimmed 1 MB snapshot is used, and both versions were audited (untrimmed → FAIL, trimmed → PASS). |
+
+### What this session verified but did **not** change
+
+* **The retired pages fabricate their charts.** `assets/js/app-core.js` `buildTimeSeries()` generates price history
+  from a seeded PRNG (`seed * 16807 % 2147483647`) and injects a scripted "≥ $0.10 jump" with a catalyst label.
+  It is reachable only from the archived `pages/` generation, never from the canonical root, but it is worth
+  deleting when the archive is retired.
+* **Backtest `avg_roi` is a per-premium ratio, not a comparable return.** `app/paper.py` `roi() = pnl / cost`, so a
+  $0.01 contract turns a 1¢ gain into +100%. The P&L itself (−$252.40 momentum, +$239.41 mean reversion, −$12.99
+  over 37 trades) is sound; the percentage is not an equity return.
+* **Two archived pages still print fabricated tickers** (`docs/index.html`: `OSCAR-BESTPIC-25`,
+  `MASTERS-25-SCHEFFLER`); the fabrication gate in `live/tests/check_live.py` only scans `live/`.
+* **Two pipelines write `data/`, and only one trims** (F-31). `collect.yml` → `collector/run.py` (no trim);
+  `data.yml` → `tools/build_snapshot.py` (trims to 50 resolutions per topic). A run of the first produced a 29.1 MB
+  snapshot on this branch. Aligning them changes which pipeline owns `data/`, so it is logged as a request.
+* **The concurrency coupling is now fixed** (F-32). #45 made `collect.yml` fit inside its timeout, which hid the
+  symptom, but the coupling remained: both workflows declared `concurrency.group: kalshi-data` while `data.yml`
+  cancelled in progress. Observed live twice on this branch — a `collect.yml` run and the `data.yml` run cancelled
+  within 30 seconds of each other, and *both* of a pair of daily runs cancelled. `collect.yml` → `kalshi-collect`,
+  `data.yml` → `kalshi-snapshot`, neither cancelling, and the redundant `pull_request` trigger on `pages.yml` was
+  removed because `push` already covers every branch.
+
+### Gates run on the rebuilt branch (all against `main` + these three additions)
+
+`tools/audit_data.py` PASS · `tools/verify_data.py` PASS · `tools/verify_site.py` PASS ·
+`tools/check_site.py --root . --strict` PASS (427 internal links) · `scripts/check_site.py` PASS ·
+`live/tests/check_live.py` PASS · `pytest` 69 passed · `tests/test_frontend.mjs` PASS (36 alerts, 13 model picks) ·
+`live/tests/smoke.mjs` 87/87 · `node tests/js/model-feed.test.mjs` PASS · `node --check` on every JS file PASS.
+
+### Limits, stated plainly
+
+* This sandbox has **no route to `*.kalshi.co`** (curl exit 35, TLS closed), the limitation F-01 records. No live
+  market value was fetched or inferred in this session; the gate compares published files against each other.
+* Demo-account balance, positions and order entry remain unverified (F-01). No credentials were supplied or
+  requested.
+
+### Open item for the owner
+
+`collect.yml` and `data.yml` should still not share a cancellation group. If scheduled freshness matters, give
+them separate `concurrency.group` values. Logged as a request rather than edited here because #45 already changed
+that workflow and the owner may prefer its current behaviour.
+
+### PR #44 integrated on the final branch — 2026-11-27T20:18Z
+
+The exact completed `9eff3c3` head passed dispatched [Pages 46062350915](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062350915) and [engine 46062354682](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062354682). Direct GitHub merge was conflicting after #46/#48. Per [handoff comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/44#issuecomment-7227357349), merged its **complete commit history** into the current integration branch instead of pushing to its owner's branch. Conflicts resolved as follows: retained both entire coordination entries; retained both headless suites and the new integrity gate; kept `pull_request` verification because forks need checks (event/ref scoping prevents cancellation); combined separate snapshot/collector concurrency names with per-ref scoping and no cancellation. The snapshot/data conflict temporarily retains the coherent 20:07 snapshot + verified bootstrap pair, not a mismatched 20:09 hash; the incoming 20:09 capture is retained in its original commit history and is superseded by our just-completed newer official re-verification run when pulled. Root model entry-band guard, audit findings F-20+ and all new audit/test code are retained unchanged. No fabricated numbers or inferred results were used to resolve a data conflict.
+
+Final behavior/published-tree pass after PR #44 integration: dashboard event ranking now has five separate topic groups (contracts remain grouped by event inside each); every missing series/count/settlement field is explicitly blank + review-linked; passed close time blocks both new paper entries **and exits/marks** while venue status catches up. No-selection views clear old liquidity/trades/context rather than implying an empty-ticker source. Added targeted regressions: **155/155 DOM**, **37/37 quote**, **100 Python +2 subtests**, both root frontend/model-feed suites and the new data integrity audit pass. The latest coherent runner capture at `20:17:22Z` is **531,231 bytes**, with full input hash and 128 independently re-read selected markets; its count/sample changes are source changes, not defaulted values.
+
+The **actual published-tree** gate then found 3 broken incoming root-audit links that the checkout-only gate missed: tests/tools/collector source files are intentionally not in the Pages tree. Replaced those three with exact GitHub source links and added `tools/check_site.py --published` to Pages CI. Root audit F-31/F-32 were qualified, not silently repeated: current `collector/` contains no snapshot writer, and the daily app/tools `paths` filter does not prove a data-only self-trigger. Historical bloat/cancellation observations remain in their commits/board, but writer/trigger causal attribution is marked unverified. This avoids “fixing” an inferred architecture problem. Complete PR #44 history is preserved; only final-integration findings and links were corrected.
 ---
 
 ## Session `arena/ba08e592-tradebot2` — requirements register audit (claimed 2026-11-27)
@@ -659,6 +801,13 @@ old all-zero state as fact. Source: [market lifecycle](https://docs.kalshi.com/g
    (canonical pages → `sources.html` → `requirements.html`) and is not in the main nav; adding it
    to the shared nav is likewise logged for the integration owner rather than edited here.
 
+Main integration cutoff, 2026-11-27T20:23Z: fetched `d44bc77`, retaining merged #49 requirements-register/root resolution-tracker fixes and #50's append-only #48 deployment close-out. The only code/data conflicts were concurrent capture JSON; kept our **newer** `20:17:16Z` source plus its independently re-read bootstrap/hash, rather than the incoming `20:17:05Z` copy (same published totals). Both capture histories remain accessible. Both entire board appendices are retained. No edits were made to the #49-owned requirements data/page or its resolution implementation. Upcoming final release checks are against this combined tree, not just a previous test base. Future independent work should preserve this release's explicit demo/paper/account/provenance separation.
+
+R3 final network gate added within the owned Pages workflow: optional read-only `verify_deployment` dispatch compares **actual served HTTPS bytes** for root + all `/live/` HTML/JS/CSS with checkout SHA-256, waits for CDN propagation, and validates the served capture/account JSON without requiring old prices after a newer collector update. It sends **no Kalshi/account order** and retains a deployment-proof artifact/job summary. This closes the gap between “checkout links pass” and “the deployed site serves the right code,” despite sandbox Pages egress restrictions. It will be dispatched after the final main Pages build; no deployment success is asserted merely by adding the gate.
+
+All candidate runner jobs are now green at `3b5ffa6`: [site/155 DOM/37 quotes/integrity 46063598684](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598684), [engine 46063598565](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598565), [full public snapshot + GET-only account check 46063598553](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598553), and [scheduled-style collector 46063598575](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598575). The previous `c9961fc` data job failed specifically at its **commit/push** step while integration advanced the branch, not in source collection; the new run retried collection/validation/commit successfully under separated concurrency. No failed source response was silently labeled verified.
+
+Pulled the new `20:29:54Z` independently re-read bootstrap (128 selected, input SHA-256 `a9d8ee7c40792879154328eca78d55f90006a3d729e5e6e7c30d00f334e3fbb4`, exact matching committed input). Then integrated #44's late bot-only `ba1b005` collector cycle to preserve its complete PR tip. Concurrent raw-data conflicts keep the newer completed 20:27 cycle; **89 conflicted history files union exact timestamped points from both cycles**, and resolution records retain both sets of tickers with the newer original `last_seen` record for duplicates (no API read/result inferred). Forked paper ledgers are not summed into fictitious account performance; the older simulation remains in its original commit. Both original commit histories remain intact. This integration does not change collector code or its strategy assumptions.
 ### PR and deploy record — arena/ba08e592-tradebot2
 
 | Item | Result |
@@ -671,3 +820,5 @@ old all-zero state as fact. Source: [market lifecycle](https://docs.kalshi.com/g
 | Live content checks | `…/Tradebot2/resolutions.html` serves the new tracker (KPI Resolved (30d) 45,386 from the freshest snapshot, open markets first, API + Kalshi links per row, em-dash awaiting); `…/Tradebot2/requirements.html` serves the audited register (23 rows, 17 implemented / 2 partial / 4 needs review / 0 not built, source link on every row, audit-provenance line) — both fetched from the live URL after the build |
 | Verification at merge | `check_site --strict` 14 pages/422 links OK · `verify_site` OK · `verify_data` OK · `pytest` 88 passed · `smoke` 87/87 · `check_live` 0 failures · `node --check` all `assets/js` |
 | Conflicts | Two `COORDINATION.md` rebase conflicts during the session (against PRs #45/#46/#48 content); both resolved by keeping every session's text. No other session's files were edited. |
+
+Merged main's #51 close-out at `33601f7`; both complete board appendices retained. Newer `20:29` verified snapshot/input pair is kept over its older daily capture. #49/#51 requirements/tracker code and records remain intact. All functionality is now frozen for final quality/merge/deploy; unverified archive/causality/account/coverage items remain review flags, not blockers or invented values.

@@ -16,8 +16,11 @@ on:
 permissions:
   contents: write
 
+# This workflow must not share a cancellation group with data.yml.
+# They previously shared `kalshi-data` while data.yml set cancel-in-progress: true, so
+# the daily job cancelled this 5-minute collector mid-run. Separate groups now.
 concurrency:
-  group: kalshi-data
+  group: kalshi-collect-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:

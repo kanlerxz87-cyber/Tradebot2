@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T19:55:36Z",
+  "generated_at": "2026-11-27T20:26:17Z",
   "source": "https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories",
   "tags_by_categories": {
     "AI": null,
@@ -10,11 +10,10 @@
       "Rain",
       "Natural disasters",
       "Events",
-      "Ski Resorts",
       "Snow",
+      "Ski Resorts",
       "Climate change",
       "Hurricanes",
-      "Hourly temperature",
       "Cold",
       "Degree days",
       "Wind"
@@ -143,7 +142,7 @@
       "The Voice",
       "Daily Views",
       "Eurovision",
-      "Pok\u00e9mon",
+      "Pokémon",
       "Singles",
       "Streamer Awards",
       "Weekly Views"
@@ -153,8 +152,8 @@
       "Companies",
       "Markets",
       "Indices",
-      "Foreign Exchange",
       "Industries",
+      "Foreign Exchange",
       "Interest Rates",
       "Company metrics",
       "Credit Card Spend",
@@ -193,8 +192,8 @@
       "Congress",
       "Local",
       "SCOTUS & courts",
-      "Recurring",
       "State laws",
+      "Recurring",
       "NYC",
       "Departures",
       "Economy",

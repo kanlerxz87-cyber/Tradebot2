@@ -16,9 +16,11 @@ on:
 permissions:
   contents: write
 
+# Snapshot and scheduled collector use distinct, ref-scoped groups. A capture
+# must not be cancelled halfway through by another workflow or branch push.
 concurrency:
-  group: kalshi-data
-  cancel-in-progress: true
+  group: kalshi-snapshot-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   collect:
@@ -36,6 +38,7 @@ jobs:
         run: |
           python tools/build_snapshot.py --out data
           python tools/build_category_pages.py
+          python tools/build_live_snapshot.py --verify-live
       - name: Validate snapshot schema and source links
         run: |
           python - <<'PY'
@@ -62,11 +65,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: kalshi-data
-          path: data/
+          path: |
+            data/
+            live/data/fallback-snapshot.json
           retention-days: 14
       - name: Commit refreshed snapshot to this branch
         run: |
-          git add -A data gas-prices.html elections.html culture.html crypto.html golf.html
+          git add -A data live/data/fallback-snapshot.json gas-prices.html elections.html culture.html crypto.html golf.html
           if git diff --cached --quiet; then
             echo "no data changes"
             exit 0
@@ -95,4 +100,47 @@ jobs:
           for t in snap['topics']:
               print(f"| {t['label']} | {t['open_markets']} | {t['tracked_markets']} | {t['volume_24h_contracts']:.0f} | {t['resolved_markets_30d']} |")
           print(f"\nCollector errors: **{snap['meta']['error_count']}**")
+          PY
+
+  account-read:
+    name: Verify DEMO account availability (read-only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install signed GET dependencies
+        run: pip install requests cryptography
+      - name: Verify without submitting an order or exposing credentials
+        env:
+          KALSHI_DEMO_API_KEY_ID: ${{ secrets.KALSHI_DEMO_API_KEY_ID }}
+          KALSHI_DEMO_PRIVATE_KEY: ${{ secrets.KALSHI_DEMO_PRIVATE_KEY }}
+        run: python tools/verify_demo_account.py
+      - name: Upload read-only evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo-account-verification
+          path: live/data/account-verification.json
+          retention-days: 14
+      - name: Commit verification status to this branch
+        run: |
+          git config user.name "tradebot2-account-read"
+          git config user.email "actions@users.noreply.github.com"
+          git add live/data/account-verification.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "data: read-only demo account verification [skip ci]"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+      - name: Read-only summary
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('live/data/account-verification.json'))
+          print('## DEMO account check (read-only)\n')
+          print('- Status: `' + d['status'] + '`')
+          print('- Verified signed account read:', d['verified_account_read'])
+          print('- Orders submitted: **0**')
+          print('- Missing values remain blank. Credential availability is specific to this job.')
           PY

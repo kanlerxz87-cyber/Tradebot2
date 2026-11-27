@@ -11,12 +11,36 @@
       "t": "2026-11-27T19:55:36Z",
       "ts": 1795809336,
       "vol": 118479.66
+    },
+    {
+      "ask": 0.04,
+      "bid": 0.03,
+      "bid_depth": 50001.36,
+      "last": 0.04,
+      "mid": 0.035,
+      "oi": 94125.93,
+      "spread": 0.01,
+      "t": "2026-11-27T20:21:59Z",
+      "ts": 1795810919,
+      "vol": 118479.66
+    },
+    {
+      "ask": 0.04,
+      "bid": 0.03,
+      "bid_depth": 50001.36,
+      "last": 0.04,
+      "mid": 0.035,
+      "oi": 94125.93,
+      "spread": 0.01,
+      "t": "2026-11-27T20:26:16Z",
+      "ts": 1795811176,
+      "vol": 118479.66
     }
   ],
   "series_ticker": "KXTIME",
   "subtitle": "Bad Bunny",
   "ticker": "KXTIME-26-BAD",
-  "title": "TIME\u2019s Person of the Year",
+  "title": "TIME’s Person of the Year",
   "topic": "culture",
   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-BAD"
 }

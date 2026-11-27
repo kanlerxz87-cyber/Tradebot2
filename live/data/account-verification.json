@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "environment": "demo",
+  "generated_at": "2026-11-27T20:26:18.208999Z",
+  "configured": false,
+  "verified_account_read": false,
+  "read_only": true,
+  "orders_submitted": 0,
+  "credentials_available_to_job": false,
+  "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598553",
+  "balance_source_url": "https://external-api.demo.kalshi.co/trade-api/v2/portfolio/balance",
+  "positions_source_url": "https://external-api.demo.kalshi.co/trade-api/v2/portfolio/positions?settlement_status=all&limit=200",
+  "docs": "https://docs.kalshi.com/getting_started/quick_start_authenticated_requests",
+  "balance": null,
+  "balance_dollars": null,
+  "portfolio_value": null,
+  "updated_ts": null,
+  "market_positions": null,
+  "event_positions": null,
+  "status": "no_credentials_available_to_this_job",
+  "note": "Demo credentials were not available to this Actions job. No signed request or account order was sent; account values remain unverified."
+}

@@ -11,12 +11,36 @@
       "t": "2026-11-27T19:55:36Z",
       "ts": 1795809336,
       "vol": 58356.39
+    },
+    {
+      "ask": 0.22,
+      "bid": 0.21,
+      "bid_depth": 5068.34,
+      "last": 0.22,
+      "mid": 0.215,
+      "oi": 43380.87,
+      "spread": 0.01,
+      "t": "2026-11-27T20:21:59Z",
+      "ts": 1795810919,
+      "vol": 58356.39
+    },
+    {
+      "ask": 0.22,
+      "bid": 0.21,
+      "bid_depth": 5088.34,
+      "last": 0.22,
+      "mid": 0.215,
+      "oi": 43380.87,
+      "spread": 0.01,
+      "t": "2026-11-27T20:26:16Z",
+      "ts": 1795811176,
+      "vol": 58356.39
     }
   ],
   "series_ticker": "KXTIME",
   "subtitle": "Annie Andrews",
   "ticker": "KXTIME-26-ANN",
-  "title": "TIME\u2019s Person of the Year",
+  "title": "TIME’s Person of the Year",
   "topic": "culture",
   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-ANN"
 }

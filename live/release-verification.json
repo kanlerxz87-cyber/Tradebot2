@@ -1,0 +1,76 @@
+{
+  "session": "arena/600a5dcd-tradebot2",
+  "status": "candidate checks passed; PR/main/Pages verification pending",
+  "documentation_checked_at": "2026-11-27",
+  "official_documentation": [
+    "https://docs.kalshi.com/getting_started/api_environments",
+    "https://docs.kalshi.com/api-reference/market/get-markets",
+    "https://docs.kalshi.com/api-reference/market/get-market",
+    "https://docs.kalshi.com/api-reference/market/get-market-candlesticks",
+    "https://docs.kalshi.com/api-reference/market/get-market-orderbook",
+    "https://docs.kalshi.com/getting_started/market_lifecycle",
+    "https://kalshi.com/docs/kalshi-fee-schedule.pdf",
+    "https://docs.kalshi.com/getting_started/quick_start_authenticated_requests",
+    "https://docs.kalshi.com/api-reference/events/get-event",
+    "https://docs.kalshi.com/api-reference/market/get-trades",
+    "https://docs.kalshi.com/getting_started/fixed_point_migration",
+    "https://docs.kalshi.com/getting_started/market_settlement"
+  ],
+  "live_api_evidence": "See live/data/fallback-snapshot.json provenance and dated data/probe.json; fixture tests are not API verification.",
+  "account_execution": "Read-only Actions check found no demo credentials available to that job; no signed request or account order sent. All account values remain blank. Not a claim that keys are globally absent.",
+  "pull_request": "https://github.com/kanlerxz87-cyber/Tradebot2/pull/47",
+  "public_demo_capture": {
+    "input": "data/snapshot.json",
+    "sha256": "a9d8ee7c40792879154328eca78d55f90006a3d729e5e6e7c30d00f334e3fbb4",
+    "selection_at": "2026-11-27T20:29:46.894616Z",
+    "reverified_at": "2026-11-27T20:29:54.445276Z",
+    "mode": "official REST re-read",
+    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598553",
+    "selected_markets": 128,
+    "topics": {
+      "gas": 25,
+      "elections": 26,
+      "culture": 25,
+      "crypto": 27,
+      "golf": 25
+    },
+    "bytes": 531239,
+    "resolution_sample": 200,
+    "qualification": "Only the selected cohort was independently re-read. Counts and resolution sample are dated collector output; not full exchange or authenticated account verification."
+  },
+  "local_checks": {
+    "python_tests": 100,
+    "python_subtests": 2,
+    "live_dom_assertions": 155,
+    "quote_integrity_checks": 37,
+    "parallel_frontend": "passed against current capture; seed counts are dated input, not injected /live/ signals",
+    "live_static_pages": 16,
+    "canonical_and_archive_links": "passed including actual 95-page published tree; GitHub source/workflow evidence is not official price evidence",
+    "data_integrity": "passed new non-empty/count/size gate"
+  },
+  "account_evidence": "data/account-verification.json",
+  "publish_target": {
+    "mode": "legacy",
+    "branch": "main",
+    "path": "/",
+    "url": "https://kanlerxz87-cyber.github.io/Tradebot2/",
+    "outcome": "not yet asserted for this candidate"
+  },
+  "account_verification": {
+    "generated_at": "2026-11-27T20:26:18.208999Z",
+    "status": "no_credentials_available_to_this_job",
+    "configured": false,
+    "verified_account_read": false,
+    "credentials_available_to_job": false,
+    "orders_submitted": 0,
+    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598553"
+  },
+  "candidate_ci": {
+    "verified_code_commit": "3b5ffa600b0b1bba124b273d83f8486a4aed1184",
+    "site": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598684",
+    "engine": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598565",
+    "public_capture_and_account": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598553",
+    "scheduled_collector": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598575",
+    "conclusion": "success"
+  }
+}

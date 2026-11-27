@@ -8,6 +8,12 @@ const require = createRequire(import.meta.url);
 const { JSDOM } = require("jsdom");
 
 const root = process.cwd();
+// The committed official capture changes on every successful data run. Assert
+// the rendered value against its source field, never a past capture's number.
+const snapshot = JSON.parse(fs.readFileSync(path.join(root, "data/snapshot.json"), "utf8"));
+const fmt = n => Number(n).toLocaleString("en-US");
+const resolvedTotal = fmt(snapshot.stats.resolutions);
+const cryptoTotal = fmt(snapshot.topics.find(t => t.key === "crypto").resolved_markets_30d);
 
 function makeFetch(url) {
   const clean = String(url).split("?")[0].replace(/^https?:\/\/[^/]+\//, "").replace(/^\.\//, "");
@@ -55,7 +61,8 @@ const allMsgs = dash.doc.querySelectorAll("#chat-all .msg").length;
 const modelMsgs = dash.doc.querySelectorAll("#chat-model .msg").length;
 assert.ok(allMsgs > 0, "expected seeded swing alerts in #chat-all");
 assert.ok(modelMsgs > 0, "expected seeded model picks in #chat-model (was 0 before normalized-quote fix)");
-assert.equal(dash.doc.querySelector("#kpi-resolutions").textContent, "44,192");
+assert.equal(dash.doc.querySelector("#kpi-resolutions").textContent, resolvedTotal);
+assert.ok(snapshot.stats.resolutions >= snapshot.resolutions.length, "full count cannot be below the sample");
 assert.equal(dash.doc.querySelectorAll("#market-table .topic-group-row").length, 5);
 dash.doc.querySelector("#sim-qty").value = "4";
 dash.doc.querySelector("#sim-submit").click();
@@ -70,7 +77,7 @@ dash.win.close();
 // 2. Topic pages display true 30d totals instead of capped 40/50 counts
 const crypto = await bootPage("crypto.html");
 assert.equal(crypto.errors.length, 0);
-assert.equal(crypto.doc.querySelector("[data-topic-resolved]").textContent, "41,260");
+assert.equal(crypto.doc.querySelector("[data-topic-resolved]").textContent, cryptoTotal);
 crypto.win.close();
 
 // 3. Portfolio custom strategy builder backtests snapshot candles and creates a live paper sleeve
@@ -87,7 +94,7 @@ pf.win.close();
 const src = await bootPage("sources.html");
 assert.equal(src.errors.length, 0);
 assert.ok(src.doc.querySelectorAll("#rows tr").length >= 10);
-assert.match(src.doc.querySelector("#st-snapshot").textContent, /44,192 resolved/);
+assert.ok(src.doc.querySelector("#st-snapshot").textContent.includes(resolvedTotal + " resolved"));
 src.win.close();
 
-console.log(`PASS frontend regression suite: dashboard (${allMsgs} alerts, ${modelMsgs} model picks), crypto (41,260 30d), portfolio custom lab, sources`);
+console.log(`PASS frontend regression suite: dashboard (${allMsgs} alerts, ${modelMsgs} model picks), crypto (${cryptoTotal} 30d from source), portfolio custom lab, sources`);
