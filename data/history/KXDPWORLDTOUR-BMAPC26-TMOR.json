@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.01,
+      "bid": 0.003,
+      "bid_depth": 305615.54,
+      "last": 0.01,
+      "mid": 0.0065,
+      "oi": 53466.94,
+      "spread": 0.007,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 55707.25
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "Tommy Morrison",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-TMOR",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-TMOR"
+}

@@ -71,8 +71,8 @@ var TBUI = (() => {
   }
   function alertMessage(a, opts) {
     const t = topicById(a.topic), up = a.delta > 0, sc = a.score || {};
-    return `<div class="msg ${up ? 'up' : 'down'}" data-id="${esc(a.id)}"><div class="top">
-      <span>${dateShort(a.at)} · ${timeShort(a.fromTs, true)} → ${timeShort(a.at, true)}</span>
+    return `<div class="msg ${up ? 'up' : 'down'}${a.demo ? ' demo' : ''}" data-id="${esc(a.id)}"><div class="top">
+      <span>${dateShort(a.at)} · ${timeShort(a.fromTs, true)} → ${timeShort(a.at, true)}</span>${a.demo ? '<span class="pill warn sm">DEMO · synthetic, not an observed move</span>' : ''}
       ${t ? `<span class="tag">${t.icon} ${esc(t.name)}</span>` : ''}<span class="spread"></span>
       <span class="src">${link(a.sourceUrl || api.url(`/markets/${encodeURIComponent(a.ticker)}`), 'market API')}</span></div>
       <div><span class="tk">${esc(a.ticker)}</span> <span class="mv ${up ? 'up' : 'down'}">${up ? '▲ +' : '▼ −'}${Math.abs(a.delta).toFixed(2)}¢</span>

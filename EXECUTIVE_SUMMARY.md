@@ -1,92 +1,27 @@
-# Executive summary — Tradebot2 (Kalshi demo desk)
+# Executive summary — Kalshi demo dashboard
 
-**Site:** https://kanlerxz87-cyber.github.io/Tradebot2/ · **Pages model:** legacy build of `main:/` (repository root)
-**Venue:** Kalshi **demo** environment · **Data:** public, unauthenticated Kalshi REST reads · **Orders:** none
+**Published site:** https://kanlerxz87-cyber.github.io/Tradebot2/ · [Live dashboard](live/index.html) · [Flagged for review](live/flagged.html) · [Sources and limitations](live/verification.html)
 
-> This file mirrors the published [executive summary page](executive-summary.html). If the two ever disagree, the page and the
-> live data in `data/` win; this file is the repository copy.
+The project monitors **gas prices, elections, culture, crypto and golf** on Kalshi's demo exchange. The browser dashboard offers event tables, two feeds for observed price changes of at least $0.10 in either direction, price charts, order-book depth, available resolutions and experimental paper strategies. The selective feed is a rule-based hypothesis, not a validated high-ROI prediction. Demo prices may not reflect production prices ([Kalshi demo documentation](https://docs.kalshi.com/getting_started/demo_env)).
 
-## 1. What it is
+## Official environments
 
-A monitoring and paper-trading desk for five topics on the Kalshi demo exchange: **gas prices, elections, culture, crypto,
-golf**. It does five things:
-
-1. **Ranks live events by flow** so the highest-dollar events are visible first.
-2. **Alerts on ≥ $0.10 contract moves** in either direction, in two scrolling feeds — all swings, and the model's high-ROI
-   subset.
-3. **Charts price against time** with an order-book depth ladder (contracts available at each price, both sides).
-4. **Paper-trades** the alerts and reports performance by strategy, topic and side, with settlement at the API's resolution.
-5. **Tracks each event to resolution** — YES or NO, taken from `result`, never inferred.
-
-Every row links to the Kalshi API record it came from. Unconfirmed values are blank and flagged.
-
-## 2. Environment (verified 2026-11-22)
-
-| Item | Value |
-|---|---|
-| Demo REST (recommended) | `https://external-api.demo.kalshi.co/trade-api/v2` |
-| Demo REST (also supported) | `https://demo-api.kalshi.co/trade-api/v2` |
-| Demo WebSocket (recommended) | `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2` |
-| Demo WebSocket (also supported) | `wss://demo-api.kalshi.co/trade-api/ws/v2` |
-| Production REST (not used) | `https://external-api.kalshi.com/trade-api/v2` |
-| Exchange status at check time | `exchange_active: true`, `trading_active: true` |
-| Browser CORS | Allowed for this site's origin: `Access-Control-Allow-Origin: https://kanlerxz87-cyber.github.io` on GET; 204 preflight (`data/probe.json`) |
-| WebSocket without signing | Rejected, HTTP 401 `token_authentication_failure` (`data/probe.json`) |
-
-Sources: [Demo environment](https://docs.kalshi.com/getting_started/demo_env) ·
-[API environments](https://docs.kalshi.com/getting_started/api_environments) ·
-[live status](https://external-api.demo.kalshi.co/trade-api/v2/exchange/status)
-
-## 3. Topic filters (official taxonomy)
-
-| Topic | Filter | Caveat |
+| Environment | Endpoint | Official source |
 |---|---|---|
-| Gas prices | `category=Commodities&tags=Oil & Gas` | No gasoline category exists; includes crude, natural gas, heating oil |
-| Elections | `category=Elections` | Exact |
-| Culture | `category=Entertainment` | No “Culture” category |
-| Crypto | `category=Crypto` | Exact |
-| Golf | `category=Sports&tags=Golf` | Exact |
+| Demo REST | `https://external-api.demo.kalshi.co/trade-api/v2` | [Demo environment](https://docs.kalshi.com/getting_started/demo_env) |
+| Demo REST alternative | `https://demo-api.kalshi.co/trade-api/v2` | [API environments](https://docs.kalshi.com/getting_started/api_environments) |
+| Demo WebSocket | `wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2` | [API environments](https://docs.kalshi.com/getting_started/api_environments) |
+| Demo WebSocket alternative | `wss://demo-api.kalshi.co/trade-api/ws/v2` | [API environments](https://docs.kalshi.com/getting_started/api_environments) |
 
-Source: [tags_by_categories](https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories).
+## Important limitations
 
-## 4. Method
+- Event discovery has page caps, and the browser's series discovery is not fully paginated. Rankings cover loaded data only; contract volume multiplied by contract notional is a payout-notional proxy, not verified dollars paid. Some missing inputs are defaulted in the current calculation. Do not assume the ranking is exhaustive. [Market fields](https://docs.kalshi.com/api-reference/market/get-markets).
+- Polling detects changes between observations, not every trade or a swing that reverses between polls; it cannot monitor continuously while the browser is closed. The fallback snapshot is historical, not live. WebSocket connections require a signed handshake ([WebSocket quick start](https://docs.kalshi.com/getting_started/quick_start_websockets)).
+- Available binary results are displayed, but capped collection and the [historical cutoff](https://docs.kalshi.com/getting_started/historical_data) mean every event is not guaranteed to be tracked to resolution. A winning YES or NO contract pays $1 and the losing side pays $0 in simple binary markets ([settlement](https://docs.kalshi.com/getting_started/market_settlement)).
+- Paper fills and results are hypothetical; the browser can simulate an exit at the last price when a market closes, which is not evidence of executable liquidity. [Order book reference](https://docs.kalshi.com/api-reference/market/get-market-orderbook).
+- A signed demo-account balance, positions, and an actual submitted demo order were not verified; the published portfolio is a simulation. Demo and production credentials are separate ([demo documentation](https://docs.kalshi.com/getting_started/demo_env), [order API](https://docs.kalshi.com/api-reference/orders/create-order-v2)).
+- No causal attribution for a price jump is established. Topic mappings are project choices, not a guarantee of complete official coverage ([series list](https://docs.kalshi.com/api-reference/market/get-series-list)).
 
-* Collect public series/events/markets, order books, candles and resolutions on a schedule; publish JSON into `data/`.
-* Price history: 1-minute and 1-hour candlesticks plus the trade tape for the most active markets; snapshots elsewhere.
-* Alerts: |Δ last| ≥ $0.10 between observations. Model feed: published rule set (spread, size at the ask, 24h volume, price
-  band). Feeds are labelled; the model feed is **not** a validated edge.
-* Paper broker: simulated fills with the documented trading fee; settlement from `result`. Fees at settlement and queue
-  position are not modelled.
-* Verification: `pages.yml` gates every merge/PR on the canonical pages, their mount points, internal links and required data
-  files; `tools/verify_data.py` checks every published row carries an official source.
+## Audit, 27 November 2026
 
-## 5. Verified / not verified
-
-**Verified against official docs and measured live:** demo and production base URLs; `/exchange/status`; `/series`;
-`/events`; `/markets/{ticker}`; `/markets/{ticker}/orderbook`; candlesticks (1 / 60 / 1440-minute intervals); `/markets/trades`
-(limit ≤ 1000, sub-second timestamps); the category/tag taxonomy; and the CORS/WS behaviour above.
-
-**Not verified / not claimed (published as F-01 … on `flagged.html`):**
-
-1. **Demo-account balance, positions, orders** — no API key was supplied; nothing was signed against the account.
-2. **WebSocket streaming** — not used by the static site; it needs a signed handshake.
-3. **Demo prices are simulated** and may not reflect production markets.
-4. **Culture / gas mappings** are approximations of Kalshi's taxonomy.
-5. **The model feed and paper P&L** — rule-based, small-sample, fee-approximate; not evidence of an edge.
-6. **Causes of price moves** — never asserted; the API publishes none.
-
-## 6. Repository state and corrections
-
-* Canonical site = root pages; generated data = `data/*.json`; pipeline = `collector/` + `tools/build_snapshot.py`.
-* Archived generations (`docs/`, `site/`, `dash/`, `pages/`, `topics/`, `observatory/`, `main-site-*.html`) are frozen and
-  labelled; earlier builds included hand-written “live” data (tickers, catalysts, a $10,000 demo portfolio and Sharpe 1.84)
-  that was never API output. They are flagged, not cited.
-* An earlier README claimed tick-stream ingestion, four quantitative strategies, verified news catalysts and a live demo
-  account. Those claims were not supported by the code and were removed in this integration pass.
-* The repository's site gate (`tools/check_site.py`) referenced mount points from a different page generation; it now checks
-  the pages that are actually published, so a missing mount point fails the build instead of passing unnoticed.
-* Pages is `build_type: legacy` from `main:/`; the Pages settings API returned 403 for this integration token, so the
-  repository root is the contract that is verified on every push.
-
-Open items, evidence and the condition that would close each one: **`flagged.html`**. Task ownership and history:
-**`COORDINATION.md`**.
+The repository's committed `data/snapshot.json` reports a 19:03:10 UTC snapshot; it is not a current independent API verification. Its companion `data/probe.json` records successful demo REST checks and unauthenticated WebSocket HTTP 401 responses at the recorded time. Sandbox egress prevented independently repeating the live API probe in this session. Tests passed: `tools/verify_site.py`, `tools/check_site.py --strict`, `live/tests/check_live.py`, 69 Python tests, and 87 browser smoke assertions. These tests do not establish that every row, archive, external link or current live market was verified. The [review page](live/flagged.html), [verification page](live/verification.html), and `COORDINATION.md` retain limitations and audit history for manual review.

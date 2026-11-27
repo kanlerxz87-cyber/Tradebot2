@@ -132,10 +132,16 @@
 
   /* ---------------- quotes ---------------- */
   function quotePrice(market) {
+    const mp = (market && market.prices) || {};
+    const ml = (market && market.liquidity) || {};
     let bid = num(market.yes_bid_dollars);
     let ask = num(market.yes_ask_dollars);
     if (bid === null && num(market.yes_bid) !== null) bid = num(market.yes_bid) / 100;
     if (ask === null && num(market.yes_ask) !== null) ask = num(market.yes_ask) / 100;
+    if (bid === null && num(mp.yes_bid) !== null) bid = num(mp.yes_bid);
+    if (ask === null && num(mp.yes_ask) !== null) ask = num(mp.yes_ask);
+    if ((bid === null || bid <= 0) && num(ml.best_yes_bid) !== null) bid = num(ml.best_yes_bid);
+    if ((ask === null || ask >= 1) && num(ml.best_yes_ask) !== null) ask = num(ml.best_yes_ask);
     if (bid !== null && ask !== null && bid > 0 && bid <= ask && ask <= 1 && ask - bid <= 0.25) {
       return { price: Math.round(((bid + ask) / 2) * 1e6) / 1e6, basis: "mid", bid: bid, ask: ask };
     }
@@ -144,6 +150,7 @@
 
     let last = num(market.last_price_dollars);
     if (last === null && num(market.last_price) !== null) last = num(market.last_price) / 100;
+    if (last === null && num(mp.last) !== null) last = num(mp.last);
     if (last !== null && last > 0 && last <= 1) return { price: last, basis: "last", bid: bid, ask: ask };
     return { price: null, basis: "none", bid: bid, ask: ask };
   }
@@ -151,6 +158,27 @@
   function bookMetrics(book) {
     const out = { yes: [], no: [], bestYesBid: null, bestNoBid: null, bestYesAsk: null, bestNoAsk: null, spread: null, yesDepth: null, noDepth: null };
     if (!book) return out;
+    // Accept normalized snapshot market.liquidity shape directly
+    if (Array.isArray(book.yes_levels) || Array.isArray(book.no_levels) || book.best_yes_bid !== undefined || book.best_yes_ask !== undefined) {
+      const normLevels = (arr) => (arr || []).map((r) => ({
+        price: Math.round((num(r.price) || 0) * 1e4) / 1e4,
+        contracts: Math.round((num(r.contracts) || 0) * 100) / 100
+      })).filter((r) => r.price > 0 && r.contracts > 0).sort((a, b) => a.price - b.price);
+      out.yes = normLevels(book.yes_levels);
+      out.no = normLevels(book.no_levels);
+      out.bestYesBid = num(book.best_yes_bid);
+      out.bestYesAsk = num(book.best_yes_ask);
+      out.bestNoBid = num(book.best_no_bid);
+      out.bestNoAsk = num(book.best_no_ask);
+      if (out.bestYesBid === null && out.yes.length) out.bestYesBid = out.yes[out.yes.length - 1].price;
+      if (out.bestNoBid === null && out.no.length) out.bestNoBid = out.no[out.no.length - 1].price;
+      if (out.bestYesAsk === null && out.bestNoBid !== null) out.bestYesAsk = Math.round((1 - out.bestNoBid) * 1e4) / 1e4;
+      if (out.bestNoAsk === null && out.bestYesBid !== null) out.bestNoAsk = Math.round((1 - out.bestYesBid) * 1e4) / 1e4;
+      out.yesDepth = num(book.yes_depth_at_best) !== null ? num(book.yes_depth_at_best) : (out.yes.length ? out.yes[out.yes.length - 1].contracts : null);
+      out.noDepth = num(book.no_depth_at_best) !== null ? num(book.no_depth_at_best) : (out.no.length ? out.no[out.no.length - 1].contracts : null);
+      if (out.bestYesAsk !== null && out.bestYesBid !== null) out.spread = Math.round((out.bestYesAsk - out.bestYesBid) * 1e4) / 1e4;
+      return out;
+    }
     const fp = book.orderbook_fp || book.orderbook || book;
     const parse = (levels) => {
       const rows = [];
@@ -225,12 +253,13 @@
     if (!cfg || !market || !market.ticker) return null;
     let q = quotePrice(market);
     let bid = q.bid; let ask = q.ask;
-    const liq = bookMetrics(market.__book);
+    const liq = bookMetrics(market.__book || market.liquidity);
     if (liq.bestYesBid !== null) bid = liq.bestYesBid;
     if (liq.bestYesAsk !== null) ask = liq.bestYesAsk;
     if (bid === null || ask === null || ask <= 0 || ask >= 1 || ask < bid) return null;
     const mid = (bid + ask) / 2;
     const spread = ask - bid;
+    if (spread > 0.25) return null;
     const delta = alert ? alert.delta : 0;
     const absDelta = Math.abs(delta);
     let modelProb; let side;
@@ -260,7 +289,7 @@
     const depth = side === "yes" ? (liq.yesDepth || 0) : (liq.noDepth || 0);
     const depthScore = clamp(Math.log10(depth + 1) / 2, 0, 1);
     const spreadScore = clamp(1 - spread / 0.2, 0, 1);
-    const volume = num(market.volume_24h_fp) || 0;
+    const volume = num(market.volume_24h_fp) !== null ? num(market.volume_24h_fp) : ((market.volume && num(market.volume.last_24h_contracts)) || 0);
     const volumeScore = clamp(Math.log10(volume + 1) / 3, 0, 1);
     const hours = hoursToClose(market);
     let timeScore = 0.4;
@@ -283,14 +312,180 @@
       ticker: market.ticker, topic: market.topic || "", title: market.title || market.ticker,
       strategy: strategy, strategyLabel: cfg.label, side: side, entry, modelProb,
       marketProb: side === "yes" ? mid : 1 - mid, edge, estRoi, score, reasons,
-      liquidity: liq, target, stop, hoursToClose: hours, alertTs: alert ? alert.ts : null
+      liquidity: liq, target, stop, hoursToClose: hours,
+      alertTs: alert ? alert.ts : null,
+      ts: alert && alert.ts ? alert.ts : Math.floor(Date.now() / 1000)
     };
   }
 
   function bestOpportunity(market, alert) {
+    const custom = loadCustomStrategies();
     const results = Object.keys(STRATEGIES).map((s) => evaluate(market, alert, s)).filter(Boolean);
+    custom.forEach((rule) => {
+      const hit = evaluateCustom(market, alert, rule);
+      if (hit) results.push(hit);
+    });
     results.sort((a, b) => b.score - a.score);
     return results[0] || null;
+  }
+
+  /* ---------------- custom strategy builder & candle backtest ---------------- */
+  const CUSTOM_KEY = "tb2.custom_strategies.v1";
+  function loadCustomStrategies() {
+    try {
+      const raw = localStorage.getItem(CUSTOM_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) { return []; }
+  }
+  function saveCustomStrategies(list) {
+    try { localStorage.setItem(CUSTOM_KEY, JSON.stringify(list || [])); } catch (e) { /* private mode */ }
+  }
+  function evaluateCustom(market, alert, rule) {
+    if (!rule || !market || !market.ticker) return null;
+    if (rule.topic && rule.topic !== "all" && market.topic !== rule.topic) return null;
+    const q = quotePrice(market);
+    const liq = bookMetrics(market.__book || market.liquidity);
+    let bid = liq.bestYesBid !== null ? liq.bestYesBid : q.bid;
+    let ask = liq.bestYesAsk !== null ? liq.bestYesAsk : q.ask;
+    if (bid === null || ask === null || ask <= 0 || ask >= 1 || ask < bid || ask - bid > 0.25) return null;
+    const mid = (bid + ask) / 2;
+    const minC = clamp(num(rule.minPrice) || 0.02, 0.01, 0.98);
+    const maxC = clamp(num(rule.maxPrice) || 0.98, 0.02, 0.99);
+    const minMove = clamp(num(rule.minMove) || 0.10, 0.05, 0.50);
+    const delta = alert ? alert.delta : 0;
+    const absDelta = Math.abs(delta);
+    let side = rule.side || "auto";
+    if (rule.kind === "momentum") {
+      if (!alert || absDelta + 1e-9 < minMove) return null;
+      if (side === "auto") side = delta > 0 ? "yes" : "no";
+    } else if (rule.kind === "mean_reversion") {
+      if (!alert || absDelta + 1e-9 < minMove) return null;
+      if (side === "auto") side = delta > 0 ? "no" : "yes";
+    } else {
+      // price_band_carry
+      if (side === "auto") side = mid >= 0.5 ? "yes" : "no";
+    }
+    const entry = side === "yes" ? ask : Math.round((1 - bid) * 1e4) / 1e4;
+    if (entry < minC || entry > maxC || entry <= 0 || entry >= 1) return null;
+    const tp = clamp(num(rule.takeProfit) || 0.15, 0.02, 0.50);
+    const sl = clamp(num(rule.stopLoss) || 0.10, 0.02, 0.50);
+    const fee = orderFee(1, entry);
+    const edge = rule.kind === "price_band_carry" ? 0.05 : Math.min(0.22, absDelta * 0.45);
+    const estRoi = (edge - fee) / entry;
+    if (estRoi <= 0) return null;
+    const depth = side === "yes" ? (liq.yesDepth || 0) : (liq.noDepth || 0);
+    const score = clamp(50 + estRoi * 120 + Math.min(15, Math.log10(depth + 1) * 7), 0, 99);
+    return {
+      ticker: market.ticker, topic: market.topic || "", title: market.title || market.ticker,
+      strategy: rule.id, strategyLabel: rule.name || rule.id, side: side, entry: entry,
+      modelProb: clamp(entry + edge, 0.01, 0.99),
+      marketProb: side === "yes" ? mid : 1 - mid,
+      edge: edge, estRoi: estRoi, score: score,
+      reasons: [
+        "custom rule (" + rule.kind + ")",
+        (side === "yes" ? "YES" : "NO") + " @" + money(entry) + " inside " + cents(minC) + "–" + cents(maxC),
+        "TP +" + cents(tp) + " / SL −" + cents(sl)
+      ],
+      liquidity: liq,
+      target: Math.round(clamp(entry + tp, 0.01, 0.99) * 1e4) / 1e4,
+      stop: Math.round(clamp(entry - sl, 0.01, 0.99) * 1e4) / 1e4,
+      tpDelta: tp, slDelta: sl, customRule: true,
+      ts: alert && alert.ts ? alert.ts : Math.floor(Date.now() / 1000)
+    };
+  }
+  function backtestCustom(snapshot, rule) {
+    const markets = (snapshot && snapshot.markets) || [];
+    const tp = clamp(num(rule.takeProfit) || 0.15, 0.02, 0.50);
+    const sl = clamp(num(rule.stopLoss) || 0.10, 0.02, 0.50);
+    const minMove = clamp(num(rule.minMove) || 0.10, 0.05, 0.50);
+    const minC = clamp(num(rule.minPrice) || 0.02, 0.01, 0.98);
+    const maxC = clamp(num(rule.maxPrice) || 0.98, 0.02, 0.99);
+    const trades = [];
+    let equity = CONFIG.paperCash;
+    let peak = equity;
+    let maxDd = 0;
+    const curve = [{ ts: 0, equity: equity }];
+
+    markets.forEach((m) => {
+      if (rule.topic && rule.topic !== "all" && m.topic !== rule.topic) return;
+      const rows = (m.candles && m.candles["1m"]) || [];
+      if (rows.length < 3) return;
+      let pos = null;
+      let prevClose = null;
+      rows.forEach((row) => {
+        const ts = row[0];
+        const close = row[1];
+        const bid = row[2] !== null && row[2] !== undefined ? row[2] : (close !== null ? Math.max(0.01, close - 0.01) : null);
+        const ask = row[3] !== null && row[3] !== undefined ? row[3] : (close !== null ? Math.min(0.99, close + 0.01) : null);
+        if (close === null || close === undefined) return;
+        if (pos) {
+          const mark = pos.side === "yes" ? (bid !== null ? bid : close) : (ask !== null ? 1 - ask : 1 - close);
+          const diff = mark - pos.entry;
+          if (diff >= tp || diff <= -sl) {
+            const exitFee = orderFee(pos.contracts, mark);
+            const pnl = pos.contracts * mark - exitFee - pos.cost;
+            equity += pos.contracts * mark - exitFee;
+            peak = Math.max(peak, equity);
+            if (peak > 0) maxDd = Math.max(maxDd, (peak - equity) / peak);
+            trades.push({
+              ticker: m.ticker, topic: m.topic, side: pos.side, contracts: pos.contracts,
+              entry: pos.entry, exit: mark, pnl: Math.round(pnl * 100) / 100,
+              reason: diff >= tp ? "take profit" : "stop loss", ts: ts
+            });
+            curve.push({ ts: ts, equity: Math.round(equity * 100) / 100 });
+            pos = null;
+          }
+        } else if (prevClose !== null) {
+          const delta = close - prevClose;
+          let side = null;
+          if (rule.kind === "momentum" && Math.abs(delta) + 1e-9 >= minMove) {
+            side = rule.side && rule.side !== "auto" ? rule.side : (delta > 0 ? "yes" : "no");
+          } else if (rule.kind === "mean_reversion" && Math.abs(delta) + 1e-9 >= minMove) {
+            side = rule.side && rule.side !== "auto" ? rule.side : (delta > 0 ? "no" : "yes");
+          } else if (rule.kind === "price_band_carry") {
+            const pick = rule.side && rule.side !== "auto" ? rule.side : (close >= 0.5 ? "yes" : "no");
+            side = pick;
+          }
+          if (side) {
+            const entry = side === "yes" ? ask : (bid !== null ? 1 - bid : 1 - close);
+            if (entry !== null && entry >= minC && entry <= maxC && entry > 0 && entry < 1) {
+              const contracts = Math.min(25, Math.max(1, Math.floor((equity * 0.02) / sl)));
+              const fee = orderFee(contracts, entry);
+              const cost = contracts * entry + fee;
+              if (cost <= equity) {
+                equity -= cost;
+                pos = { side: side, entry: entry, contracts: contracts, cost: cost };
+              }
+            }
+          }
+        }
+        prevClose = close;
+      });
+      if (pos && prevClose !== null) {
+        const mark = pos.side === "yes" ? prevClose : 1 - prevClose;
+        const exitFee = orderFee(pos.contracts, mark);
+        const pnl = pos.contracts * mark - exitFee - pos.cost;
+        equity += pos.contracts * mark - exitFee;
+        trades.push({
+          ticker: m.ticker, topic: m.topic, side: pos.side, contracts: pos.contracts,
+          entry: pos.entry, exit: mark, pnl: Math.round(pnl * 100) / 100,
+          reason: "end of window", ts: rows[rows.length - 1][0]
+        });
+        curve.push({ ts: rows[rows.length - 1][0], equity: Math.round(equity * 100) / 100 });
+      }
+    });
+    const wins = trades.filter((t) => t.pnl > 0).length;
+    const totalPnl = trades.reduce((a, t) => a + t.pnl, 0);
+    return {
+      trades: trades.length, wins: wins,
+      winRate: trades.length ? wins / trades.length : 0,
+      totalPnl: Math.round(totalPnl * 100) / 100,
+      maxDrawdownPct: Math.round(maxDd * 1000) / 10,
+      curve: curve,
+      sample: trades.slice(-15).reverse()
+    };
   }
 
   function positionSize(opp, bankroll) {
@@ -305,10 +500,19 @@
 
   /* ---------------- paper broker ---------------- */
   const STORE_KEY = "tb2.paper.v2";
+  function ensureAccount(state, strategyId) {
+    if (!state.accounts[strategyId]) {
+      state.accounts[strategyId] = { strategy: strategyId, starting_cash: CONFIG.paperCash, cash: CONFIG.paperCash, realized_pnl: 0, positions: [], history: [] };
+    }
+    return state.accounts[strategyId];
+  }
   function blankState() {
     const accounts = {};
     Object.keys(STRATEGIES).forEach((s) => {
       accounts[s] = { strategy: s, starting_cash: CONFIG.paperCash, cash: CONFIG.paperCash, realized_pnl: 0, positions: [], history: [] };
+    });
+    loadCustomStrategies().forEach((c) => {
+      accounts[c.id] = { strategy: c.id, starting_cash: CONFIG.paperCash, cash: CONFIG.paperCash, realized_pnl: 0, positions: [], history: [] };
     });
     return { version: 2, created_at: Math.floor(Date.now() / 1000), accounts: accounts };
   }
@@ -318,7 +522,8 @@
       if (!raw) return blankState();
       const parsed = JSON.parse(raw);
       if (!parsed || parsed.version !== 2) return blankState();
-      Object.keys(STRATEGIES).forEach((s) => { if (!parsed.accounts[s]) parsed.accounts[s] = blankState().accounts[s]; });
+      Object.keys(STRATEGIES).forEach((s) => ensureAccount(parsed, s));
+      loadCustomStrategies().forEach((c) => ensureAccount(parsed, c.id));
       return parsed;
     } catch (e) { return blankState(); }
   }
@@ -335,7 +540,7 @@
     return value;
   }
   function openTrade(state, opp, quotes) {
-    const acct = state.accounts[opp.strategy];
+    const acct = ensureAccount(state, opp.strategy);
     if (!acct) return null;
     if (acct.positions.length >= CONFIG.maxOpenPerStrategy) return null;
     if (acct.positions.some((p) => p.ticker === opp.ticker)) return null;
@@ -355,6 +560,7 @@
       ticker: opp.ticker, topic: opp.topic, title: opp.title, strategy: opp.strategy,
       side: opp.side, contracts: contracts, entry_price: opp.entry, entry_fee: fee,
       opened_ts: Math.floor(Date.now() / 1000), target: opp.target, stop: opp.stop,
+      tp_delta: opp.tpDelta || 0.15, sl_delta: opp.slDelta || 0.10,
       score: Math.round(opp.score * 10) / 10, est_roi: opp.estRoi, status: "open"
     };
     acct.cash -= cost;
@@ -414,6 +620,35 @@
     if (settled.length) saveState(state);
     return settled;
   }
+  function openManualTrade(state, market, side, contracts, strategyId, quote) {
+    if (!market || !market.ticker) return { error: "Select a valid market." };
+    const strat = strategyId || "manual";
+    const acct = ensureAccount(state, strat);
+    const q = quotePrice(market);
+    const bid = quote && num(quote.bid) !== null ? num(quote.bid) : q.bid;
+    const ask = quote && num(quote.ask) !== null ? num(quote.ask) : q.ask;
+    const entry = side === "yes"
+      ? (ask !== null && ask > 0 && ask < 1 ? ask : q.price)
+      : (bid !== null && bid > 0 && bid < 1 ? Math.round((1 - bid) * 1e4) / 1e4 : (q.price !== null ? Math.round((1 - q.price) * 1e4) / 1e4 : null));
+    if (entry === null || entry <= 0 || entry >= 1) return { error: "No executable quote available for this side." };
+    const qty = clamp(Math.floor(num(contracts) || 0), 1, CONFIG.maxContracts);
+    const fee = orderFee(qty, entry);
+    const cost = qty * entry + fee;
+    if (cost > acct.cash) return { error: "Insufficient simulated cash in sleeve (" + money(acct.cash, 2) + ")." };
+    const pos = {
+      id: "p" + Math.random().toString(36).slice(2, 10),
+      ticker: market.ticker, topic: market.topic || "", title: market.title || market.ticker,
+      strategy: strat, side: side, contracts: qty, entry_price: entry, entry_fee: fee,
+      opened_ts: Math.floor(Date.now() / 1000),
+      target: Math.round(clamp(entry + 0.15, 0.01, 0.99) * 1e4) / 1e4,
+      stop: Math.round(clamp(entry - 0.10, 0.01, 0.99) * 1e4) / 1e4,
+      tp_delta: 0.15, sl_delta: 0.10, score: null, est_roi: null, status: "open"
+    };
+    acct.cash -= cost;
+    acct.positions.push(pos);
+    saveState(state);
+    return { position: pos };
+  }
   function markTrades(state, quotes) {
     const closed = [];
     Object.keys(state.accounts).forEach((s) => {
@@ -423,8 +658,10 @@
         if (!q || q.mid === null || q.mid === undefined) return;
         const mark = pos.side === "yes" ? q.mid : 1 - q.mid;
         const gain = mark - pos.entry_price;
-        if (gain >= 0.15) closed.push(closeTrade(state, s, pos.id, mark, "take profit"));
-        else if (gain <= -0.10) closed.push(closeTrade(state, s, pos.id, mark, "stop loss"));
+        const tp = num(pos.tp_delta) || 0.15;
+        const sl = num(pos.sl_delta) || 0.10;
+        if (gain >= tp) closed.push(closeTrade(state, s, pos.id, mark, "take profit"));
+        else if (gain <= -sl) closed.push(closeTrade(state, s, pos.id, mark, "stop loss"));
       });
     });
     return closed.filter(Boolean);
@@ -602,9 +839,13 @@
     CONFIG, TOPICS, STRATEGIES,
     num, clamp, money, cents, pct, signed, compact, esc, isoDate, clock, relative, hoursToClose, snapshotPrice,
     quotePrice, bookMetrics, SwingDetector, orderFee, evaluate, bestOpportunity, positionSize,
+    customStrategies: {
+      load: loadCustomStrategies, save: saveCustomStrategies,
+      evaluate: evaluateCustom, backtest: backtestCustom
+    },
     paper: {
-      key: STORE_KEY, blankState, loadState, saveState, accountEquity,
-      openTrade, closeTrade, settleTrades, markTrades, analytics
+      key: STORE_KEY, ensureAccount, blankState, loadState, saveState, accountEquity,
+      openTrade, openManualTrade, closeTrade, settleTrades, markTrades, analytics
     },
     drawChart, attachCrosshair
   };

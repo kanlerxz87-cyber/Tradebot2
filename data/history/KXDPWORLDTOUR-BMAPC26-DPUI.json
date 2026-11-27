@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.03,
+      "bid": 0.01,
+      "bid_depth": 56138.5,
+      "last": 0.03,
+      "mid": 0.02,
+      "oi": 45948.38,
+      "spread": 0.02,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 53766.46
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "David Puig",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-DPUI",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-DPUI"
+}

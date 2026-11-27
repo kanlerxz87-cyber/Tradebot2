@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.11,
+      "bid": 0.1,
+      "bid_depth": 8266.36,
+      "last": 0.11,
+      "mid": 0.105,
+      "oi": 40225.5,
+      "spread": 0.01,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 42476.78
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "Min Woo Lee",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-MLEE",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-MLEE"
+}

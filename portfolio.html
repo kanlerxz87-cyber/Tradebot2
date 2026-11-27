@@ -57,7 +57,7 @@
     <section class="kpi-row section" aria-label="Paper portfolio metrics">
       <div class="card kpi-card kpi"><div class="label">Simulated equity</div><div class="value" id="pf-equity">—</div><div class="foot" id="pf-start">starting cash per strategy</div></div>
       <div class="card kpi-card kpi"><div class="label">Realised + open P&amp;L</div><div class="value" id="pf-pnl">—</div><div class="foot">after fees</div></div>
-      <div class="card kpi-card kpi"><div class="label">Win rate</div><div class="value" id="pf-winrate">—</div><div class="foot" id="pf-trades">0 closed</div></div>
+      <div class="card kpi-card kpi"><div class="label">Win rate</div><div class="value" id="pf-winrate">—</div><div class="foot" id="pf-trades-foot">0 closed</div></div>
       <div class="card kpi-card kpi"><div class="label">Expectancy</div><div class="value" id="pf-expectancy">—</div><div class="foot">per closed trade</div></div>
       <div class="card kpi-card kpi"><div class="label">Max drawdown</div><div class="value" id="pf-dd">—</div><div class="foot">on realised equity</div></div>
     </section>
@@ -121,6 +121,68 @@
             <thead><tr><th>Strategy</th><th>Entry trigger</th><th>Exit</th><th>Sizing</th><th class="num">Backtest trades</th><th class="num">Backtest win</th><th class="num">Backtest P&amp;L</th></tr></thead>
             <tbody><tr><td colspan="7"><div class="empty">Backtest loading…</div></td></tr></tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="strategy-builder">
+      <div class="section-head">
+        <div>
+          <h2>Custom strategy lab</h2>
+          <div class="sub">Build a rule by trade type, test it against the snapshot’s real 1-minute candles, or save it as an active simulated sleeve.</div>
+        </div>
+        <span class="badge blue">Trader sandbox</span>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Create &amp; test strategy rule</h3>
+          <div class="grid grid-2" style="gap:10px; margin-top:10px">
+            <div>
+              <label class="field" for="cs-name">Strategy name</label>
+              <input id="cs-name" type="text" value="Gas fade 15c" style="width:100%; padding:7px 9px; background:var(--bg-soft); color:var(--text); border:1px solid var(--line); border-radius:8px; font:inherit; font-size:13px">
+            </div>
+            <div>
+              <label class="field" for="cs-kind">Trade type</label>
+              <select id="cs-kind" style="width:100%"><option value="mean_reversion">Mean reversion (fade swing)</option><option value="momentum">Momentum (follow swing)</option><option value="price_band_carry">Price band carry (level entry)</option></select>
+            </div>
+            <div>
+              <label class="field" for="cs-topic">Topic scope</label>
+              <select id="cs-topic" style="width:100%"><option value="all">All 5 topics</option><option value="gas_prices">Gas prices</option><option value="elections">Elections</option><option value="culture">Culture</option><option value="crypto">Crypto</option><option value="golf">Golf</option></select>
+            </div>
+            <div>
+              <label class="field" for="cs-side">Side bias</label>
+              <select id="cs-side" style="width:100%"><option value="auto">Signal direction</option><option value="yes">YES only</option><option value="no">NO only</option></select>
+            </div>
+            <div>
+              <label class="field" for="cs-move">Min swing ($)</label>
+              <input id="cs-move" type="number" step="0.01" min="0.05" max="0.50" value="0.15" style="width:100%; padding:7px 9px; background:var(--bg-soft); color:var(--text); border:1px solid var(--line); border-radius:8px; font:inherit; font-size:13px">
+            </div>
+            <div>
+              <label class="field" for="cs-band">Price band (min – max $)</label>
+              <div class="btn-row">
+                <input id="cs-min" type="number" step="0.05" min="0.01" max="0.95" value="0.15" style="width:74px; padding:7px 8px; background:var(--bg-soft); color:var(--text); border:1px solid var(--line); border-radius:8px; font:inherit; font-size:13px">
+                <span class="muted">–</span>
+                <input id="cs-max" type="number" step="0.05" min="0.05" max="0.99" value="0.85" style="width:74px; padding:7px 8px; background:var(--bg-soft); color:var(--text); border:1px solid var(--line); border-radius:8px; font:inherit; font-size:13px">
+              </div>
+            </div>
+            <div>
+              <label class="field" for="cs-tp">Take profit ($)</label>
+              <input id="cs-tp" type="number" step="0.01" min="0.02" max="0.50" value="0.12" style="width:100%; padding:7px 9px; background:var(--bg-soft); color:var(--text); border:1px solid var(--line); border-radius:8px; font:inherit; font-size:13px">
+            </div>
+            <div>
+              <label class="field" for="cs-sl">Stop loss ($)</label>
+              <input id="cs-sl" type="number" step="0.01" min="0.02" max="0.50" value="0.08" style="width:100%; padding:7px 9px; background:var(--bg-soft); color:var(--text); border:1px solid var(--line); border-radius:8px; font:inherit; font-size:13px">
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:14px">
+            <button class="btn active" id="cs-test" type="button">Backtest on 1m candles</button>
+            <button class="btn" id="cs-save" type="button">Save &amp; activate sleeve</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Custom backtest output &amp; saved sleeves</h3>
+          <div id="cs-result" class="small muted">Click “Backtest on 1m candles” to test your rule against the committed snapshot candles with Kalshi taker fees applied.</div>
+          <div id="cs-saved" style="margin-top:12px"></div>
         </div>
       </div>
     </section>

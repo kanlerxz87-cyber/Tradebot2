@@ -22,8 +22,20 @@ on:
 permissions:
   contents: read
 
+# One group per ref + event, NOT one global group.
+#
+# With a single global `verify-pages` group, every push to any branch cancelled the
+# verification run of every other branch. That is not harmless: a cancelled PR check
+# is reported as a failed check, which hides real failures and blocks merges for
+# reasons unrelated to the code. It bit this very PR (run 46059135289 cancelled at
+# `actions/setup-node@v4` while another session pushed to its own branch).
+#
+# Scoping by ref keeps the property the original group was for — a newer push to the
+# SAME branch cancels its own stale run — without cross-branch cancellation.
+# `pull_request` gets its own suffix so the PR run and the push run for the same
+# commit do not cancel each other either.
 concurrency:
-  group: verify-pages-${{ github.ref }}
+  group: verify-pages-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -60,6 +72,27 @@ jobs:
 
       - name: Live dashboard links, assets and fabrication check
         run: python3 live/tests/check_live.py
+
+      # Added by session arena/d06c45b3: a quoted zero is an absent order, not a 0c
+      # price, and a synthetic demo alert must stay badged. Both were real defects.
+      - name: Quote rules — zero is not a price, no phantom fills, demo alerts badged
+        run: node live/tests/quote_rules.mjs
+
+      - name: No published page claims a directory that does not exist
+        run: |
+          python3 - <<'PY'
+          import re, pathlib, sys
+          root = pathlib.Path('.')
+          bad = []
+          for p in list(root.glob('live/*.html')) + [root / 'index.html']:
+              text = p.read_text(encoding='utf-8')
+              for m in re.finditer(r'href="[^"]*?/?(legacy)/', text):
+                  if not (root / 'legacy').exists():
+                      bad.append(f'{p}: claims /legacy/ which is not in the repository')
+          for line in sorted(set(bad)):
+              print(line)
+          sys.exit(1 if bad else 0)
+          PY
 
       - name: Confirm the root is the publish target
         run: |

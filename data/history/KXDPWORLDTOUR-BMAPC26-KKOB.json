@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.068,
+      "bid": 0.065,
+      "bid_depth": 7813.76,
+      "last": 0.068,
+      "mid": 0.0665,
+      "oi": 191263.37,
+      "spread": 0.003,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 204289.95
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "Kazuma Kobori",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-KKOB",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-KKOB"
+}

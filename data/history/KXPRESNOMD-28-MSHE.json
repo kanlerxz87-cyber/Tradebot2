@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.003,
+      "bid": 0.002,
+      "bid_depth": 749999.97,
+      "last": 0.003,
+      "mid": 0.0025,
+      "oi": 472276.15,
+      "spread": 0.001,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 826112.32
+    }
+  ],
+  "series_ticker": "KXPRESNOMD",
+  "subtitle": "Mikie Sherrill",
+  "ticker": "KXPRESNOMD-28-MSHE",
+  "title": "Democratic Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-MSHE"
+}

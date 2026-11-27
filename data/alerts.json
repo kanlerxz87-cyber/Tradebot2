@@ -6,9 +6,11 @@
     "high_roi": 0,
     "up": 0
   },
-  "generated_at": null,
+  "generated_at": "2026-11-27T19:56:23Z",
   "high_roi_feed": [],
-  "high_roi_rule": "model ROI on risk >= 25% and entry price between $0.10 and $0.90",
+  "high_roi_rule": "model ROI on risk >= 25% and entry price between $0.10 and $0.90 (mean-reversion reference trade, 10 contracts, taker fee)",
+  "rearm_dollars": 0.02,
   "threshold_dollars": 0.1,
-  "window_points": 6
+  "window_points": 6,
+  "window_semantics": "window_points = number of snapshots back that each price is compared against; the collector runs every 5 minutes, so 6 points = 30 minutes."
 }

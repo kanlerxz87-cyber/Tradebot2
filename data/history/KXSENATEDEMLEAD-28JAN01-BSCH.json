@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.04,
+      "bid": 0.01,
+      "bid_depth": 16666.66,
+      "last": 0.04,
+      "mid": 0.025,
+      "oi": 205647.66,
+      "spread": 0.03,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 557724.63
+    }
+  ],
+  "series_ticker": "KXSENATEDEMLEAD",
+  "subtitle": "Brian Schatz",
+  "ticker": "KXSENATEDEMLEAD-28JAN01-BSCH",
+  "title": "Who will win the next Senate Democratic Leader election?",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXSENATEDEMLEAD-28JAN01-BSCH"
+}

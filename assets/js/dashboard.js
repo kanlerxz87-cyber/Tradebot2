@@ -13,6 +13,7 @@
     selected: null,
     window: "15m",
     tableTopic: "all",
+    grouped: true,
     search: "",
     sort: "notional",
     paper: TB.paper.loadState(),
@@ -112,8 +113,54 @@
     if (search) search.addEventListener("input", () => { state.search = search.value.trim().toLowerCase(); renderTable(); });
     const sort = $("#market-sort");
     if (sort) sort.addEventListener("change", () => { state.sort = sort.value; renderTable(); });
+    const groupBtn = $("#group-toggle");
+    if (groupBtn) groupBtn.addEventListener("click", () => {
+      state.grouped = !state.grouped;
+      groupBtn.classList.toggle("active", state.grouped);
+      groupBtn.setAttribute("aria-pressed", state.grouped ? "true" : "false");
+      groupBtn.textContent = state.grouped ? "Grouped by topic & event" : "Flat table";
+      renderTable();
+    });
     const select = $("#market-select");
     if (select) select.addEventListener("change", () => selectMarket(select.value));
+
+    const simSide = $("#sim-side");
+    const simQty = $("#sim-qty");
+    const simStrat = $("#sim-strategy");
+    const simSubmit = $("#sim-submit");
+    if (simStrat) {
+      TB.customStrategies.load().forEach((rule) => {
+        const opt = document.createElement("option");
+        opt.value = rule.id;
+        opt.textContent = rule.name + " (custom)";
+        simStrat.appendChild(opt);
+      });
+    }
+    if (simSide) simSide.addEventListener("change", updateTradeTicket);
+    if (simQty) simQty.addEventListener("input", updateTradeTicket);
+    if (simSubmit) simSubmit.addEventListener("click", submitManualTrade);
+
+    // Keyboard shortcuts (j / k) to step through tracked markets
+    document.addEventListener("keydown", (e) => {
+      if (e.target && /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+      if (e.key !== "j" && e.key !== "k") return;
+      const rows = Array.prototype.slice.call(document.querySelectorAll("#market-table tr[data-ticker]"));
+      if (!rows.length) return;
+      const idx = state.selected ? rows.findIndex((r) => r.getAttribute("data-ticker") === state.selected.ticker) : -1;
+      const next = e.key === "j" ? Math.min(rows.length - 1, idx + 1) : Math.max(0, idx - 1);
+      const ticker = rows[next] && rows[next].getAttribute("data-ticker");
+      if (ticker) selectMarket(ticker);
+    });
+
+    // Make ticker bar items click-to-select
+    $all(".ticker-item").forEach((el) => {
+      el.style.cursor = "pointer";
+      el.addEventListener("click", (e) => {
+        if (e.target.closest("a")) return;
+        const t = el.getAttribute("data-ticker");
+        if (t) selectMarket(t);
+      });
+    });
 
     const pause = $("#pause-btn");
     if (pause) pause.addEventListener("click", () => {
@@ -157,7 +204,7 @@
       const rows = (groups[topic] || []).slice().sort((a, b) => (b.volume.notional_24h_est || 0) - (a.volume.notional_24h_est || 0));
       if (!rows.length) return "";
       return '<optgroup label="' + TB.esc(TB.TOPICS[topic].label) + '">' + rows.map((m) =>
-        '<option value="' + TB.esc(m.ticker) + '">' + TB.esc(m.title) + " — " + TB.cents(m.prices && m.prices.mid) + "</option>"
+        '<option value="' + TB.esc(m.ticker) + '">' + TB.esc(m.title) + " — " + TB.cents(TB.snapshotPrice(m).price) + "</option>"
       ).join("") + "</optgroup>";
     }).join("");
   }
@@ -175,6 +222,8 @@
       row.style.background = row.getAttribute("data-ticker") === ticker ? "rgba(47,227,176,0.06)" : "";
     });
     updateQuoteMeta(market, state.feed && state.feed.quotes[market.ticker]);
+    renderSwingContext(market);
+    updateTradeTicket();
     loadOrderbook(market);
     ensureCandles(market).then(() => renderChart(true));
     renderChart(true);
@@ -182,15 +231,21 @@
 
   async function ensureCandles(market) {
     if (state.chartCache[market.ticker]) return;
-    state.chartCache[market.ticker] = { oneMin: [], hour: [], loading: true };
+    state.chartCache[market.ticker] = { oneMin: [], hour: [], trades: [], loading: true };
     const cache = state.chartCache[market.ticker];
     try {
-      const [oneMin, hour] = await Promise.all([
+      const [oneMin, hour, trades] = await Promise.all([
         state.feed.fetchCandles(market, 24, 1).catch(() => null),
-        state.feed.fetchCandles(market, 24 * 7, 60).catch(() => null)
+        state.feed.fetchCandles(market, 24 * 7, 60).catch(() => null),
+        state.feed.fetchTrades ? state.feed.fetchTrades(market.ticker, 100).catch(() => []) : Promise.resolve([])
       ]);
       cache.oneMin = oneMin ? TBLive.candlePoints(oneMin) : [];
       cache.hour = hour ? TBLive.candlePoints(hour) : [];
+      cache.trades = (trades || []).map((t) => {
+        const ts = Date.parse(t.created_time || "") / 1000;
+        const p = TB.num(t.yes_price_dollars) !== null ? TB.num(t.yes_price_dollars) : (TB.num(t.yes_price) !== null ? TB.num(t.yes_price) / 100 : null);
+        return Number.isFinite(ts) && p !== null ? { ts: ts, price: p } : null;
+      }).filter(Boolean).sort((a, b) => a.ts - b.ts);
     } catch (e) { /* fall back to snapshot */ }
     cache.loading = false;
     if (state.selected && state.selected.ticker === market.ticker) renderChart(true);
@@ -219,6 +274,11 @@
         addCandles(snapshotCandles["60m"]);
       }
     }
+    if (cfg.seconds <= 300) {
+      (cache.trades || []).filter((t) => t.ts >= start).forEach((t) => {
+        points.set(Math.round(t.ts * 10) / 10, { ts: t.ts, price: t.price });
+      });
+    }
     const ticks = (state.feed ? state.feed.getTicks(market.ticker) : []).filter((t) => t.ts >= start);
     ticks.forEach((t) => points.set(Math.round(t.ts * 10) / 10, { ts: t.ts, price: t.price }));
     let list = Array.from(points.values()).sort((a, b) => a.ts - b.ts);
@@ -242,7 +302,7 @@
     const svg = $("#price-chart");
     const tip = $("#chart-tip");
     const quote = (state.feed && state.feed.quotes[market.ticker]) || null;
-    const mid = quote && quote.mid !== null ? quote.mid : (market.prices || {}).mid;
+    const mid = quote && quote.mid !== null ? quote.mid : TB.snapshotPrice(market).price;
     const bid = quote && quote.bid !== null ? quote.bid : (market.prices || {}).yes_bid;
     const ask = quote && quote.ask !== null ? quote.ask : (market.prices || {}).yes_ask;
     $("#chart-empty").classList.add("hidden");
@@ -250,7 +310,7 @@
       svg.innerHTML = "";
       $("#chart-empty").classList.remove("hidden");
       $("#chart-empty").textContent = cfg.tickOnly
-        ? "Collecting live ticks: this window starts empty and gains one point per poll (" + (TB.CONFIG.pollMs / 1000) + "s)."
+        ? "Collecting live ticks & trade prints: this 30s window displays real exchange prints and 5s live polls."
         : "No candle history is available for this market yet. The table below still shows the latest quote.";
     } else {
       const end = cfg.tickOnly ? now / 1000 : Math.max(now / 1000, points[points.length - 1].ts);
@@ -274,11 +334,12 @@
     $("#chart-ask").textContent = TB.money(ask);
     $("#chart-spread").textContent = (bid !== null && ask !== null && bid !== undefined && ask !== undefined) ? TB.money(ask - bid) : "—";
     $("#chart-window-label").textContent = cfg.label;
-    $("#chart-source").textContent = cfg.tickOnly ? "live ticks" : "1-min candles + live ticks";
+    $("#chart-source").textContent = cfg.tickOnly ? "trade prints + live ticks" : (cfg.seconds <= 300 ? "1-min candles + trade prints + ticks" : "1-min candles + live ticks");
   }
 
   function updateQuoteMeta(market, quote) {
-    const price = quote && quote.mid !== null ? quote.mid : (market.prices || {}).mid;
+    const snapQ = TB.snapshotPrice(market);
+    const price = quote && quote.mid !== null ? quote.mid : snapQ.price;
     const bid = quote && quote.bid !== null ? quote.bid : (market.prices || {}).yes_bid;
     const ask = quote && quote.ask !== null ? quote.ask : (market.prices || {}).yes_ask;
     $("#chart-price").textContent = TB.money(price);
@@ -286,6 +347,62 @@
     $("#chart-ask").textContent = TB.money(ask);
     $("#chart-spread").textContent = (bid !== null && ask !== null && bid !== undefined && ask !== undefined) ? TB.money(ask - bid) : "—";
     if (quote) $("#chart-updated").textContent = "quote " + TB.relative(quote.ts);
+    updateTradeTicket();
+  }
+
+  function renderSwingContext(market) {
+    const box = $("#chart-swings");
+    if (!box || !market) return;
+    const all = (state.feed ? state.feed.alerts : []).concat(state.snapshot.alerts_seed || [])
+      .filter((a) => a.ticker === market.ticker)
+      .sort((a, b) => (b.ts || 0) - (a.ts || 0))
+      .slice(0, 6);
+    const linksHtml = UI.linkChips(market.links, { api: true, news: true, maxSources: 2 });
+    if (!all.length) {
+      box.innerHTML = '<div class="muted">No ≥ $0.10 swings observed on this contract in the loaded 1m window.</div>' +
+        '<div style="margin-top:6px">' + linksHtml + ' <span class="muted">(Context links only — not causal attributions)</span></div>';
+      return;
+    }
+    box.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">' + all.map((a) =>
+      '<span class="badge ' + (a.delta > 0 ? "up" : "down") + '">' + TB.clock(a.ts) + " · " +
+      TB.money(a.before) + " → " + TB.money(a.after) + " (" + (a.delta > 0 ? "+" : "") + TB.money(a.delta) + ")</span>"
+    ).join("") + '</div><div>' + linksHtml + ' <span class="muted">(Context links only — not causal attributions)</span></div>';
+  }
+
+  function updateTradeTicket() {
+    const prev = $("#sim-preview");
+    if (!prev || !state.selected) return;
+    const side = ($("#sim-side") && $("#sim-side").value) || "yes";
+    const qty = TB.clamp(Math.floor(TB.num($("#sim-qty") && $("#sim-qty").value) || 10), 1, TB.CONFIG.maxContracts);
+    const liveQ = state.feed && state.feed.quotes[state.selected.ticker];
+    const snapQ = TB.snapshotPrice(state.selected);
+    const bid = liveQ && liveQ.bid !== null ? liveQ.bid : (state.selected.prices || {}).yes_bid;
+    const ask = liveQ && liveQ.ask !== null ? liveQ.ask : (state.selected.prices || {}).yes_ask;
+    const entry = side === "yes"
+      ? (ask !== null && ask > 0 && ask < 1 ? ask : snapQ.price)
+      : (bid !== null && bid > 0 && bid < 1 ? Math.round((1 - bid) * 1e4) / 1e4 : (snapQ.price !== null ? Math.round((1 - snapQ.price) * 1e4) / 1e4 : null));
+    if (entry === null || entry <= 0 || entry >= 1) {
+      prev.textContent = "no executable quote";
+      return;
+    }
+    const fee = TB.orderFee(qty, entry);
+    prev.textContent = "Est. entry " + TB.money(entry) + " × " + qty + " = " + TB.money(qty * entry, 2) + " + fee " + TB.money(fee, 2);
+  }
+
+  function submitManualTrade() {
+    if (!state.selected) return;
+    const side = ($("#sim-side") && $("#sim-side").value) || "yes";
+    const qty = ($("#sim-qty") && $("#sim-qty").value) || 10;
+    const strat = ($("#sim-strategy") && $("#sim-strategy").value) || "manual";
+    const liveQ = state.feed && state.feed.quotes[state.selected.ticker];
+    const res = TB.paper.openManualTrade(state.paper, state.selected, side, qty, strat, liveQ);
+    if (res.error) {
+      UI.toast(res.error, "warn");
+      return;
+    }
+    updatePaper(true);
+    const pos = res.position;
+    UI.toast("Simulated " + pos.side.toUpperCase() + " " + pos.contracts + " × " + pos.ticker + " @ " + TB.money(pos.entry_price) + " (fee " + TB.money(pos.entry_fee, 2) + ")", "ok");
   }
 
   /* ---------------- liquidity ---------------- */
@@ -356,7 +473,8 @@
       body.innerHTML = '<tr><td colspan="10"><div class="empty">No tracked markets match this filter. The data workflow selects the top markets per topic by 24h volume and open interest.</div></td></tr>';
       return;
     }
-    body.innerHTML = rows.map((m) => {
+
+    const renderMarketRow = (m) => {
       const price = m.prices || {};
       const move = move24h(m);
       const liq = m.liquidity || {};
@@ -374,7 +492,40 @@
         '<td class="num js-spread">' + (spread === null || spread === undefined || spread <= 0 ? "—" : TB.money(spread)) + '<span class="sub">' + (liq.yes_depth_at_best !== undefined && liq.yes_depth_at_best !== null ? TB.compact(liq.yes_depth_at_best) + " at touch" : "depth n/a") + "</span></td>" +
         '<td class="small"><span class="source-links"><a href="' + TB.esc(m.links.market_api) + '" target="_blank" rel="noopener">API ↗</a><a href="' + TB.esc(m.links.kalshi) + '" target="_blank" rel="noopener">Kalshi ↗</a></span></td>' +
         "</tr>";
-    }).join("");
+    };
+
+    if (!state.grouped) {
+      body.innerHTML = rows.map(renderMarketRow).join("");
+    } else {
+      const topicOrder = state.tableTopic === "all" ? Object.keys(TB.TOPICS) : [state.tableTopic];
+      let html = "";
+      topicOrder.forEach((topicKey) => {
+        const tRows = rows.filter((m) => m.topic === topicKey);
+        if (!tRows.length) return;
+        const topicMeta = TB.TOPICS[topicKey] || { label: topicKey };
+        const evGroups = new Map();
+        tRows.forEach((m) => {
+          const evKey = m.event_ticker || m.ticker;
+          if (!evGroups.has(evKey)) evGroups.set(evKey, { key: evKey, title: m.event_title || m.title, rows: [], score: 0 });
+          const grp = evGroups.get(evKey);
+          grp.rows.push(m);
+          grp.score = Math.max(grp.score, sorters[state.sort](m));
+        });
+        const sortedEvents = Array.from(evGroups.values()).sort((a, b) => b.score - a.score);
+        if (state.tableTopic === "all") {
+          html += '<tr class="topic-group-row" style="background:rgba(47,227,176,0.06)"><td colspan="10"><strong style="color:var(--accent)">' +
+            TB.esc(topicMeta.label) + '</strong> <span class="muted small">(' + tRows.length + " contracts across " + sortedEvents.length + " events)</span></td></tr>";
+        }
+        sortedEvents.forEach((ev) => {
+          if (ev.rows.length > 1) {
+            html += '<tr class="event-group-row" style="background:rgba(106,169,255,0.04)"><td colspan="10" class="small"><span class="badge blue">Event</span> <strong>' +
+              TB.esc(ev.title) + '</strong> <span class="mono muted">(' + TB.esc(ev.key) + " · " + ev.rows.length + " strikes)</span></td></tr>";
+          }
+          html += ev.rows.map(renderMarketRow).join("");
+        });
+      });
+      body.innerHTML = html;
+    }
     body.querySelectorAll("tr[data-ticker]").forEach((row) => {
       row.addEventListener("click", (event) => {
         if (event.target.closest("a")) return;
@@ -409,7 +560,10 @@
     $("#kpi-markets-foot").textContent = (stats.open_markets_in_scope || 0) + " in-scope open · " + (stats.open_markets_total || 0) + " demo total";
     $("#kpi-alerts").textContent = state.counts.all;
     $("#kpi-model").textContent = state.counts.model;
-    $("#kpi-resolutions").textContent = state.snapshot.resolutions ? state.snapshot.resolutions.length : 0;
+    const totalRes = stats.resolutions !== undefined && stats.resolutions !== null
+      ? stats.resolutions
+      : (state.snapshot.resolutions ? state.snapshot.resolutions.length : 0);
+    $("#kpi-resolutions").textContent = Number(totalRes).toLocaleString();
     updatePaper(true);
   }
 
@@ -513,15 +667,16 @@
     }
     const market = marketFor(alert.ticker);
     if (market) {
-      const enriched = Object.assign({}, market, { __book: market.__book });
+      const enriched = Object.assign({}, market, { __book: market.__book || market.liquidity });
       const opp = TB.bestOpportunity(enriched, alert);
       if (opp && opp.score >= TB.CONFIG.modelScoreFloor && opp.estRoi >= TB.CONFIG.modelRoiFloor) {
         opp.links = market.links;
-        addChatMessage("#chat-model", opp, true, false);
+        addChatMessage("#chat-model", opp, true, history);
         state.counts.model += 1;
         if (!history) autoPaper(opp);
       }
     }
+    if (state.selected && state.selected.ticker === alert.ticker) renderSwingContext(state.selected);
     updateChatCounts();
     $("#kpi-alerts").textContent = state.counts.all;
     $("#kpi-model").textContent = state.counts.model;
@@ -576,11 +731,21 @@
     const msg = document.createElement("div");
     const dir = isModel ? "up" : payload.direction;
     msg.className = "msg " + (isModel ? "model" : dir) + (history ? " history" : "");
+    if (payload.ticker) {
+      msg.setAttribute("data-ticker", payload.ticker);
+      msg.style.cursor = "pointer";
+      msg.title = "Click to inspect " + payload.ticker + " chart & orderbook";
+      msg.addEventListener("click", (ev) => {
+        if (ev.target.closest("a")) return;
+        selectMarket(payload.ticker);
+      });
+    }
     if (isModel) {
       const opp = payload;
       msg.innerHTML =
-        '<div class="meta"><span class="time">' + TB.clock(opp.ts) + '</span><span class="badge blue">SCORE ' + Math.round(opp.score) + "</span>" +
-        '<span class="badge neutral">' + TB.esc(opp.strategyLabel) + "</span><span>" + TB.esc((TB.TOPICS[opp.topic] || {}).label || opp.topic) + "</span></div>" +
+        '<div class="meta"><span class="time">' + TB.clock(opp.ts || opp.alertTs) + '</span><span class="badge blue">SCORE ' + Math.round(opp.score) + "</span>" +
+        '<span class="badge neutral">' + TB.esc(opp.strategyLabel) + "</span><span>" + TB.esc((TB.TOPICS[opp.topic] || {}).label || opp.topic) + "</span>" +
+        (history ? '<span class="badge neutral">seed</span>' : '<span class="badge green">live</span>') + "</div>" +
         '<div class="headline">' + TB.esc(opp.title) + "</div>" +
         '<div class="numbers"><span>' + (opp.side === "yes" ? "BUY YES" : "BUY NO") + " @" + TB.money(opp.entry) + "</span>" +
         "<span>model " + TB.pct(opp.modelProb, 0) + "</span><span>edge " + TB.money(opp.edge) + "</span>" +

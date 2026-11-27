@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.02,
+      "bid": 0.01,
+      "bid_depth": 16666.66,
+      "last": 0.02,
+      "mid": 0.015,
+      "oi": 21388.88,
+      "spread": 0.01,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 21388.88
+    }
+  ],
+  "series_ticker": "KXRT",
+  "subtitle": "Above 90",
+  "ticker": "KXRT-VIO-90",
+  "title": "Rotten Tomatoes Scores",
+  "topic": "culture",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXRT-VIO-90"
+}

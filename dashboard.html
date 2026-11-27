@@ -123,6 +123,9 @@
           <span class="muted">Source: <span id="chart-source-label">Kalshi public candlesticks + live quotes</span></span>
         </div>
 
+        <h3 style="margin-top:20px">≥ $0.10 swings &amp; context links</h3>
+        <div id="chart-swings" class="small muted">Select a market to see ≥ $0.10 moves and reference links.</div>
+
         <h3 style="margin-top:20px">Liquidity &amp; contracts available</h3>
         <div class="liq-strip" id="liq-strip">
           <div class="liq-cell"><div class="k">Best YES bid</div><div class="v">—</div></div>
@@ -132,6 +135,26 @@
         </div>
         <div class="book" id="book"></div>
         <p class="liq-note">Kalshi returns <strong>bids only</strong>; a YES ask is implied by the best NO bid at 1 − price (and vice versa). Values come from the public orderbook endpoint, refreshed every 15s for the selected market.</p>
+
+        <div id="trade-ticket" style="margin-top:16px; padding-top:14px; border-top:1px solid var(--line-soft)">
+          <div class="card-head" style="margin-bottom:8px">
+            <div><h3 style="margin:0">Simulate trade on selected contract</h3><div class="sub">Fills locally at quoted ask/bid with official taker fees; never sent to Kalshi.</div></div>
+            <a class="card-link" href="portfolio.html">View portfolio →</a>
+          </div>
+          <div class="btn-row" style="gap:8px">
+            <select id="sim-side" aria-label="Trade side"><option value="yes">Buy YES (at ask)</option><option value="no">Buy NO (at 1 − bid)</option></select>
+            <label class="field" for="sim-qty" style="margin:0">Qty</label>
+            <input id="sim-qty" type="number" min="1" max="250" value="10" style="width:76px; padding:6px 8px; background:var(--bg-soft); color:var(--text); border:1px solid var(--line); border-radius:8px; font:inherit; font-size:12px">
+            <select id="sim-strategy" aria-label="Strategy category">
+              <option value="manual">Manual / discretionary</option>
+              <option value="momentum">Momentum</option>
+              <option value="mean_reversion">Mean reversion</option>
+              <option value="favorite_drift">Favorite drift</option>
+            </select>
+            <button class="btn active" id="sim-submit" type="button">Simulate Fill</button>
+            <span class="small muted mono" id="sim-preview">—</span>
+          </div>
+        </div>
       </div>
 
       <div class="grid" style="grid-template-columns:1fr; gap:16px; align-content:start">
@@ -181,6 +204,7 @@
               <button class="btn js-topic-tab" data-topic="golf" type="button">Golf</button>
             </div>
             <div class="grow"></div>
+            <button class="btn active" id="group-toggle" type="button" aria-pressed="true" title="Keep topics separate and group sibling markets by event">Grouped by topic &amp; event</button>
             <input id="market-search" type="search" title="Filter title or ticker" aria-label="Filter markets">
             <label class="field" for="market-sort" style="margin:0">Sort</label>
             <select id="market-sort" aria-label="Sort markets">

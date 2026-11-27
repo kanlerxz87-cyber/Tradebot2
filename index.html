@@ -28,7 +28,8 @@
       exact endpoint behind it. Where the API returns nothing, the page shows “—” and the reason is recorded on
       <a href="live/flagged.html">Flagged for review</a> — nothing is filled in.</p>
     <div class="row" style="margin-top:.9rem">
-      <a class="btn primary" href="live/index.html" style="font-size:.95rem;padding:.5rem .9rem">Open the live dashboard →</a>
+      <a class="btn primary" href="live/index.html" style="font-size:.95rem;padding:.5rem .9rem">Open browser-live desk (/live/) →</a>
+      <a class="btn" href="dashboard.html">Open canonical terminal (/dashboard.html) →</a>
       <a class="btn" href="live/executive-summary.html">Executive summary</a>
       <a class="btn" href="live/verification.html">Sources &amp; verification</a>
       <a class="btn" href="live/flagged.html">Flagged for review</a>
@@ -36,12 +37,13 @@
   </section>
 
   <div class="banner warn">
-    <b>About the other pages in this repository.</b> Earlier sessions published several dashboards
-    (<a href="dashboard.html">/dashboard.html</a>, <a href="dash/">/dash/</a>, <a href="docs/index.html">/docs/</a>,
-    <a href="monitor/">/monitor/</a>, <a href="pages/">/pages/</a>) whose data was either recorded at a fixed time or generated
-    by a different pipeline. An earlier generation of the root pages presented market identifiers that do not exist in the Kalshi API.
-    Those pages are kept for the audit trail and are labelled as such; <b>the verified live dashboard is <a href="live/index.html">/live/</a></b>.
-    The audit is on the <a href="live/flagged.html">Flagged for review</a> page.
+    <b>Two verified live interfaces + audit archives.</b> Both <a href="live/index.html">/live/</a> (browser-direct) and
+    <a href="dashboard.html">/dashboard.html</a> (snapshot-backed live terminal with 1m/60m candles, custom strategy sandbox &amp; 44,192 30d resolutions)
+    read directly from the official Kalshi demo API. Earlier static generations remain at their original paths
+    (<a href="dash/">/dash/</a>, <a href="docs/index.html">/docs/</a>, <a href="pages/">/pages/</a>); not every archived page
+    carries a visible archive banner, there is no <code>/legacy/</code> or <code>/monitor/</code> directory, and some archived
+    files contain previously unverified tickers or illustrative numbers. See <a href="flagged.html">Flagged for review</a> and
+    <a href="live/flagged.html">/live/flagged.html</a> for the full audit trail.
   </div>
 
   <section class="grid g3">

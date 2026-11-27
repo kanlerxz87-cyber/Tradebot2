@@ -30,6 +30,7 @@ REQUIRED_PAGES = [
     "portfolio.html",
     "executive-summary.html",
     "methodology.html",
+    "sources.html",
     "suggestions.html",
     "flagged.html",
     "gas-prices.html",

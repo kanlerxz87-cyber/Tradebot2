@@ -374,6 +374,15 @@ var TBData = (() => {
         } catch (e) { message = 'Candles unavailable: ' + e.message + '. '; }
       }
     }
+    if (!state.fallback && spanSeconds <= 3600 && m.priceKind === 'last') {
+      try {
+        const tape = await api.trades({ ticker: m.ticker, limit: 100 });
+        for (const trade of tape.trades || []) {
+          const t = Date.parse(trade.created_time), p = TB.cents(trade.yes_price_dollars);
+          if (Number.isFinite(t) && p !== null) points.push({ t, p, exchangeTrade: true });
+        }
+      } catch (e) { message += 'Trade-print overlay unavailable; only observed reads shown. '; }
+    }
     // Never splice a midpoint into a last-trade line. Never place a dated quote
     // at Date.now(). Observations retain the time of the actual REST read.
     points.push(...historyFor(m.ticker).filter(h => h.kind === m.priceKind));
@@ -383,7 +392,7 @@ var TBData = (() => {
     return { points, start, end, interval: iv,
       label: `${m.ticker} · ${m.priceKind === 'mid' ? 'observed bid/ask mid' : 'last-trade observations / candle closes'}`,
       note: message + (state.fallback ? 'Dated capture — not live. ' : '') +
-        (spanSeconds <= 60 ? '5-second REST samples while this page is open; no second-by-second tape. ' : `${iv}-minute candles plus compatible REST observations. `) +
+        (spanSeconds <= 60 ? '5-second REST samples plus returned exchange-timestamped trade prints; not a complete second-by-second tape. ' : `${iv}-minute candles plus compatible REST observations. `) +
         'Missing periods are not interpolated into trades.' };
   }
 

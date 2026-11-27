@@ -26,11 +26,11 @@ import time
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
-from kalshi import KalshiClient, as_float, demo_client, read_json, write_json
-
 try:  # package import when run as `python -m collector.collect`
+    from .kalshi import KalshiClient, as_float, demo_client, read_json, write_json
     from .topics import TOPICS, TOPIC_INDEX, classify
 except ImportError:  # direct execution from the collector/ directory
+    from kalshi import KalshiClient, as_float, demo_client, read_json, write_json  # type: ignore
     from topics import TOPICS, TOPIC_INDEX, classify  # type: ignore
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -47,7 +47,7 @@ MAX_HISTORY_POINTS = 4000           # ~2.8 days at one snapshot/minute
 MAX_MARKETS_PER_TOPIC = 60
 MAX_ORDERBOOKS = 90
 TOPIC_CATEGORY_SEED = [
-    "Economics", "Commodities", "Elections", "Culture", "Entertainment", "Mentions",
+    "Economics", "Commodities", "Elections", "Entertainment", "Mentions",
     "Crypto", "Sports", "Politics", "Financials",
 ]
 
@@ -178,8 +178,10 @@ def market_row(m: dict, topic: str, host: str, series: dict) -> dict:
     yes_ask = as_float(m.get("yes_ask_dollars"))
     last = as_float(m.get("last_price_dollars"))
     mid = None
-    if yes_bid is not None and yes_ask is not None and yes_ask > 0:
+    if yes_bid is not None and yes_ask is not None and 0 < yes_bid <= yes_ask <= 1 and (yes_ask - yes_bid) <= 0.25:
         mid = round((yes_bid + yes_ask) / 2, 4)
+    elif last is not None and last > 0:
+        mid = last
     return {
         "ticker": ticker,
         "event_ticker": m.get("event_ticker"),
@@ -383,11 +385,46 @@ def main() -> int:
         series_out[s["ticker"]] = rec
 
     # Open events for the series we track.
+    # In live mode, paging /events?status=open&with_nested_markets=true once
+    # covers thousands of markets in seconds, avoiding >25m serial per-series
+    # and per-event loops that repeatedly timed out collect.yml.
     tracking = sorted({s["ticker"] for s in series_raw if classify(s)})
     events: dict[str, dict] = {}
-    for st in tracking:
+    covered_series: set[str] = set()
+    if not isinstance(client, FixtureClient):
         try:
-            for e in client.events(series_ticker=st, status="open"):
+            for e in client.events(status="open", with_nested_markets="true", max_pages=15):
+                st = e.get("series_ticker") or ""
+                if st in series_out:
+                    e["_series"] = st
+                    e["_host"] = client.host
+                    events[e["event_ticker"]] = e
+                    covered_series.add(st)
+        except Exception as exc:  # noqa: BLE001
+            log["warnings"].append(f"events bulk scan failed: {exc}")
+
+    # Supplement with targeted per-series queries for uncovered tracked series
+    # (prioritizing niche topics & highest volume) within a strict time budget.
+    remaining = [
+        st for st in tracking if st not in covered_series
+    ]
+    if not isinstance(client, FixtureClient):
+        remaining.sort(
+            key=lambda st: (
+                0 if any(t in ("gas", "golf", "culture") for t in series_out[st]["topics"]) else 1,
+                -(as_float(series_out[st].get("volume_fp"), 0.0) or 0.0),
+            )
+        )
+        remaining = remaining[:60]
+    for st in remaining:
+        if not isinstance(client, FixtureClient) and (time.time() - started) > 180:
+            log["warnings"].append("per-series event scan stopped at 180s time budget")
+            break
+        try:
+            params = {"series_ticker": st, "status": "open"}
+            if not isinstance(client, FixtureClient):
+                params["with_nested_markets"] = "true"
+            for e in client.events(**params):
                 e["_series"] = st
                 e["_host"] = client.host
                 events[e["event_ticker"]] = e
@@ -395,11 +432,13 @@ def main() -> int:
             log["warnings"].append(f"events series={st} failed: {exc}")
     log["open_events"] = len(events)
 
-    # Markets per event (single event_ticker filter returns all markets unpaged).
+    # Markets per event: use nested markets when present; query /markets?event_ticker
+    # only when an event was returned without nested markets.
     markets: list[dict] = []
     for et, e in events.items():
         try:
-            raw = client.markets(event_ticker=et)
+            nested = e.get("markets")
+            raw = nested if isinstance(nested, list) and nested else client.markets(event_ticker=et)
             series = series_out.get(e.get("_series"), {})
             topics = series.get("topics") or []
             if not topics:

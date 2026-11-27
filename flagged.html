@@ -40,10 +40,10 @@
         <p class="lede">Everything that is unconfirmed, assumed, limited or was corrected. Flagged items do not block the site; they are published here with evidence so they can be reviewed and, where possible, closed with a credential or a longer measurement window.</p>
       </div>
       <div class="statusbar">
-        <span class="badge down">1 unverified credential area</span>
-        <span class="badge warn">6 assumptions</span>
-        <span class="badge green">8 corrected defects</span>
-        <span class="badge neutral">Reviewed 22 Nov 2026</span>
+        <span class="badge down">2 open credential items</span>
+        <span class="badge warn">5 documented assumptions</span>
+        <span class="badge green">11 closed / verified</span>
+        <span class="badge neutral">Reviewed 27 Nov 2026</span>
       </div>
     </div>
 
@@ -158,8 +158,8 @@
                 <td><a href="https://docs.kalshi.com/api-reference/orders/create-order-v2" target="_blank" rel="noopener">Create Order V2 ↗</a> · implementation in <code>app/kalshi.py</code>.</td>
                 <td>Same as F-01: one signed demo order with a minimal size, then record request and response.</td>
               </tr>
-              <tr id="F-13">
-                <td class="mono">F-13</td><td><span class="badge warn">Medium</span></td>
+              <tr id="F-20">
+                <td class="mono">F-20</td><td><span class="badge warn">Medium</span></td>
                 <td><strong>Backtest execution is optimistic by construction:</strong> candle-close fills, no latency, no queue position, no market impact, short window, and settlement fees not modelled.</td>
                 <td><span class="badge blue">Documented</span></td>
                 <td><a href="portfolio.html#backtest">Backtest section ↗</a> · <a href="methodology.html#paper">assumptions ↗</a>.</td>
@@ -196,18 +196,29 @@
               <tr id="F-18">
                 <td class="mono">F-18</td><td><span class="badge down">High</span></td>
                 <td><strong>Earlier parallel-session pages publish illustrative performance as if it were real.</strong> The archived page shows a $10,248 equity, +$248 (+2.48%), 75% win rate and Sharpe 1.84 with no demo account, fills or source behind them.</td>
-                <td><span class="badge green">Superseded</span></td>
-                <td>Archived copy: <a href="docs/index.html">docs/index.html</a> (lines with <code>portEquity</code>, <code>portWinRate</code>, <code>portSharpe</code>). Canonical portfolio: <a href="portfolio.html">portfolio.html</a>.</td>
-                <td>Closed by replacing the root site and marking the archive pages with a visible notice. Do not treat those numbers as results. A demo key would allow a real balance to be shown (F-01).</td>
+                <td><span class="badge warn">Review needed</span></td>
+                <td>Archived copy: <a href="docs/index.html">docs/index.html</a> (lines with <code>portEquity</code>, <code>portWinRate</code>, <code>portSharpe</code>). Canonical portfolio: <a href="live/portfolio.html">live/portfolio.html</a>.</td>
+                <td>The root landing page now directs visitors to <code>/live/</code>, but this archive remains at its original path and lacks a visible warning. There is no <code>/legacy/</code> directory. Do not treat those numbers as results; the archive warning gap is recorded in <a href="live/flagged.html">F-01</a>. A demo key would allow a real balance to be shown (F-06).</td>
               </tr>
               <tr id="F-19">
                 <td class="mono">F-19</td><td><span class="badge blue">Low</span></td>
-                <td><strong>Three site generations are kept in the repository</strong> (canonical root, <code>docs/</code>, <code>site/</code>). Only the root is maintained; the others are archives and may contain stale links or values.</td>
+                <td><strong>Multiple site generations are kept in the repository</strong> (canonical root, <code>live/</code>, <code>docs/</code>, <code>site/</code>). Root and <code>live/</code> are maintained; earlier trees are archives.</td>
                 <td><span class="badge blue">Documented</span></td>
-                <td><a href="docs/index.html">docs/ archive ↗</a> · <a href="site/index.html">site/ archive ↗</a> · <a href="COORDINATION.md">coordination board ↗</a>.</td>
-                <td>Delete the archives only after an explicit decision; they are retained now so no session’s work is discarded.</td>
+                <td><a href="live/index.html">live/ desk ↗</a> · <a href="docs/index.html">docs/ archive ↗</a> · <a href="site/index.html">site/ archive ↗</a> · <a href="COORDINATION.md">coordination board ↗</a>.</td>
+                <td>Delete old archives only after an explicit decision; they are retained now so no session’s work is discarded.</td>
+              </tr>
+              <tr id="F-21">
+                <td class="mono">F-21</td><td><span class="badge green">Fixed</span></td>
+                <td><strong>Taxonomy wording (“Entertainment” vs “Culture”), snapshot resolution cap, wide-book mid parity, and HTML repairs:</strong> verified via live <code>GET /search/tags_by_categories</code> that Kalshi publishes <code>Entertainment</code> (no category literally named <code>Culture</code>); trimmed committed <code>data/snapshot.json</code> <code>resolutions[]</code> to the newest 50/topic (~1 MB) while preserving full 30d counts (44,192 total) in <code>stats</code> &amp; <code>topics[]</code>; aligned <code>app/alerts.py</code> &amp; <code>app/collector.py</code> to reject mids on &gt;25¢ books; fixed unclosed table &amp; duplicate ID <code>F-13</code> here.</td>
+                <td><span class="badge green">Verified</span></td>
+                <td><a href="https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories" target="_blank" rel="noopener">GET /search/tags_by_categories ↗</a> · <code>app/topics.py</code> · <code>app/collector.py</code> · <code>app/alerts.py</code> · <a href="data/snapshot.json">data/snapshot.json</a>.</td>
+                <td>Closed and covered by regression tests and static HTML checks.</td>
               </tr>
             </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
     <section class="grid grid-2 section">
       <div class="card">
@@ -228,6 +239,7 @@
       <div class="card">
         <h2>Review log</h2>
         <ul class="callout-list small">
+          <li><strong>27 Nov 2026 · session 33fd30e7.</strong> Live-verified Kalshi demo API categories (<code>Entertainment</code>, not <code>Culture</code>); fixed <code>dashboard.js</code> zero-seed <code>#chat-model</code> bug caused by normalized snapshot keys; enforced 25¢ spread cap across Python <code>app/alerts.py</code>, <code>app/collector.py</code>, and <code>collector/collect.py</code>; fixed <code>collect.yml</code> 25m CI timeout via bulk <code>with_nested_markets=true</code>; trimmed <code>data/snapshot.json</code> from 28 MB to ~1 MB (50 newest resolutions/topic logged, exact 30d topic totals preserved: 44,192 total); fixed <code>flagged.html</code> unclosed table &amp; duplicate <code>F-13</code>, unified <code>sources.html</code> chrome, fixed broken <code>monitor/</code> link on <code>index.html</code>, and added custom strategy lab, grouped events, trade-print seconds windows, and manual trade simulation.</li>
           <li><strong>22 Nov 2026 · session c504d30a.</strong> Rebuilt the data pipeline from live demo responses; added the CORS/WS probes, the swing engine, the model feed and the paper broker; published the site at the repository root after finding the Pages defect (F-11); added this register.</li>
           <li><strong>22 Nov 2026 · sessions a5878007 / 7a21cbd2.</strong> First site under <code>docs/</code>, endpoint dossier and flagged page. Data values were left at zero/null because the build sandbox could not reach the API; that limitation is superseded by the Actions-runner snapshot (F-15).</li>
           <li><strong>22 Nov 2026 · integration.</strong> Merged both histories, preserved the <code>docs/</code> and <code>site/</code> archives, unified the coordination board.</li>
