@@ -4,9 +4,10 @@ Assumptions, all surfaced on the site:
   * Buys pay the current YES ask (or the NO ask implied by 1 - YES bid).
   * Sells receive the current YES bid (or 1 - YES ask); no price improvement.
   * The general taker fee applies (0.07 x C x P x (1-P), rounded up to 1e-6).
-  * Settlement pays $1 per winning contract and $0, with no settlement fee
-    modelled. Kalshi does not charge a trading fee on settlement AFAIK, but
-    this is flagged rather than asserted.
+  * Settlement pays $1 per winning contract and $0 otherwise. Per official Kalshi
+    settlement docs (https://docs.kalshi.com/getting_started/market_settlement#fees),
+    settlement fees are zero for simple YES/NO determinations (fees/whole-cent
+    rounding apply only to sub-cent scalar settlements).
   * Visible depth caps the fill size; no partial-fill queue simulation.
 """
 
@@ -120,12 +121,18 @@ class StrategyAccount:
     history: list[Position] = field(default_factory=list)
     realized_pnl: float = 0.0
 
+    def _position_mark(pos: Position, marks: dict[str, float]) -> float:
+        yes_mark = marks.get(pos.ticker)
+        if yes_mark is None:
+            return pos.entry_price
+        return yes_mark if pos.side == "yes" else round(1.0 - yes_mark, 6)
+
     def equity(self, marks: dict[str, float] | None = None) -> float:
         marks = marks or {}
         value = self.cash
         for pos in self.positions.values():
             if pos.status == "open":
-                mark = marks.get(pos.ticker) or pos.entry_price
+                mark = StrategyAccount._position_mark(pos, marks)
                 value += pos.contracts * mark
         return value
 
@@ -277,7 +284,12 @@ class PaperBroker:
         marks = marks or {}
         accounts = []
         for acct in self.accounts.values():
-            open_positions = [p.to_dict(marks.get(p.ticker)) for p in acct.positions.values()]
+            open_positions = [
+                p.to_dict(
+                    StrategyAccount._position_mark(p, marks) if p.ticker in marks else None
+                )
+                for p in acct.positions.values()
+            ]
             eq = acct.equity(marks)
             accounts.append(
                 {
