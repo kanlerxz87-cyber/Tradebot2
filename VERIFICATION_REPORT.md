@@ -104,3 +104,51 @@ All commands below completed on this branch after installing test-only dependenc
 ### PR and deploy result
 
 PR [#38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38) merged on 2026-11-27 at 19:42:04 UTC as `260c43274dc6210148ebaaac9389a865851d6ee3`; its required `tests` and `verify` checks passed before merge. GitHub Pages is configured as legacy `main:/`; the Pages build for that merge commit reported **built** at 19:42:34 UTC ([workflow run 46058528998](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058528998)). The post-merge `Verify site and engine` run passed ([run 46058529505](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058529505)). The separate published-site workflow run was cancelled by GitHub concurrency because a higher-priority request was waiting; PR checks passed and this is recorded as cancellation, not as a site-test failure. An HTTP request to the GitHub Pages host could not be made from this sandbox (TLS `SSL_ERROR_SYSCALL`), so deployment status is verified from GitHub's Pages build API, not by fetching rendered public HTML.
+
+---
+
+## 8. Demo collector safety follow-up (2026-11-27 UTC)
+
+**Scope.** This follow-up implements the stale collector-safety task from PR [#16](https://github.com/kanlerxz87-cyber/Tradebot2/pull/16) on the fixed branch `arena/bce83713-tradebot2`. It is a targeted code and page audit, not a line-by-line re-verification of every historical file, every market row, or every external link. The branch was rebased as `main` advanced to `037d65b` after PR #39, `565df69` after PR #41, `4517d1c` after PR #40, and `6b9b25c` after PR #43 recorded #40's Pages deployment. Each append-only coordination conflict was resolved by retaining all upstream audit/session/deployment records and this task's record. No file or session work was discarded.
+
+### Official facts checked
+
+- Kalshi's [demo environment documentation](https://docs.kalshi.com/getting_started/demo_env) identifies `https://external-api.demo.kalshi.co/trade-api/v2` as the recommended REST root and `https://demo-api.kalshi.co/trade-api/v2` as also supported. It also says demo credentials are separate from production and demo prices may not reflect real markets.
+- Kalshi's [market lifecycle documentation](https://docs.kalshi.com/getting_started/market_lifecycle) maps the `GET /events?status=open` filter to child markets with REST status `active`; an event may contain other child statuses. It describes `determined` as a result that can still be disputed or amended, and `finalized` as settlement complete, with `settlement_ts` populated in REST.
+- The [Get Market reference](https://docs.kalshi.com/api-reference/market/get-market) is linked from the updated resolution page. Documentation was fetched in this session; this does not constitute a fresh market-value API request.
+
+### Changes made
+
+- The read-only collector now defaults to the documented demo host and a separate `state/demo-state.json`; non-demo overrides get a separate `custom-state.json` by default. Existing state files with no matching `api_base` are rejected without modification, rather than silently mixing prices or paper positions across environments.
+- Nested event children are collected only when their own status is `active`.
+- A binary resolution and paper-settlement exit are recorded only for `status=finalized` and `result=yes|no`. `resolved_at` / `settlement_ts` use the official timestamp, left blank when absent; `resolution_observed_at` records when collection first saw the final result. The previous active-market price is labelled as the last observed value, not as an exact pre-settlement trade.
+- Pending resolution checks are sorted by the last attempted check and the attempt time is recorded before the request, so an API error in an early batch does not permanently starve later markets.
+- The archived resolved-events table now separates “Settled (API time)” from “First observed” and links the API record. Its Flagged for Review row cites the official lifecycle and market references.
+
+### Verification performed
+
+| Check | Result |
+|---|---|
+| `/tmp/tradebot2-venv/bin/python -m pytest -q` | **74 passed**, 2 subtests passed. Temporary venv; no dependency manifest changed. |
+| `python3 -m unittest discover -s scripts/tests -p 'test_*.py' -v` | **5 passed**, including environment isolation, active-child filtering, finalized-only YES/NO settlement, timestamp separation, and resolution-check rotation. |
+| `python3 tools/verify_site.py` | Pass; 12 pages, 374 local links, 128 markets, 44,192 resolution rows; source URL/schema checks passed. |
+| `python3 tools/check_site.py --root . --strict` | Pass; 14 canonical pages, 407 internal links. |
+| `python3 scripts/verify_site.py` | Pass; JSON schema, five topics, official host patterns, 54 relative links. |
+| `python3 scripts/check_site.py` | Pass; 18 pages, **0 data records checked**. Ignored `site/data/` is absent, so the archived data checks were skipped; the tool reports each archived table empty and no broken internal links. |
+| `python3 tools/verify_data.py --data-dir data` | Pass, but all separate `all_feed`, `high_roi_feed`, `markets`, `orderbooks`, `resolutions`, and `trades` collections are **0 rows**. This validates no records; it does not prove a populated feed. |
+| `python3 tests/run_fixture_pipeline.py` | Pass; fixture-only pipeline: 3 alerts, 3 simulated trades, 10 tracked markets. Fixtures are tests, not live data. |
+| `node live/tests/smoke.mjs` | **87/87** DOM checks passed using mocked official-shaped API responses; this is not an independent live-browser API call. |
+| Archived resolution view smoke | **6/6** checks passed with a synthetic test row: official settlement time, first-observed time, last active price, source link, and real `$0.00` retained. No synthetic value was committed. |
+| `python3 live/tests/check_live.py` | Pass; 16 pages, 0 failures. |
+| Python compilation, JavaScript `node --check`, `git diff --check` | Pass. |
+
+### Data, deployment, and remaining limits
+
+- The committed `data/snapshot.json` states `generated_at=2026-11-27T19:03:10Z`, with 128 markets and 44,192 resolutions. All snapshot row-source checks pass, but this audit did not request those market records directly from Kalshi; stored values are not represented as a fresh API read.
+- The committed `data/probe.json` states it was recorded by GitHub Actions at `2026-11-27T19:03:13Z`: both demo REST hosts returned HTTP 200 and the GitHub Pages origin was allowed by the observed CORS headers; unauthenticated WebSocket handshakes returned HTTP 401. This is recorded runner evidence, not a new probe executed by this session.
+- `site/data/` is ignored and absent, so the archived collector's data-backed pages could not be tested against a current collected dataset. The live `/live/` dashboard instead polls Kalshi from the browser and uses a separately labelled static fallback if requests fail. Its 87/87 smoke test uses fixtures; the browser-fetch tool used here does not execute the dashboard JavaScript.
+- GitHub's Pages API reported `build_type=legacy`, `main:/`, and `status=built` for main commit `037d65b` at 19:44:27Z. The public-page fetch tool retrieved the root landing page, `/live/index.html`, `/live/flagged.html`, and `/live/executive-summary.html`; the fetched dashboard text still contains the static “loading…” placeholder because the fetcher does not run JavaScript. The new collector changes have not yet been merged or deployed at the time of this report.
+- No signed demo-account balance or order request was made. The current GitHub integration returned HTTP 403 for secret-name enumeration; no secret value was read. Demo-account state, order fills, and actual account performance therefore remain unverified. No order was sent.
+- News causation remains unverified and is intentionally not inferred. The browser's polling interval can miss intrapoll moves. The high-ROI screen and paper results are hypotheses, not guaranteed returns.
+
+**Coordination.** The stale PR #16 remains open until the replacement PR is merged. Open dashboard redesign PRs #6 and #14 are not copied because they build alternative site generations; their old branches are not used. PR [#40](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40) owns separate executive-summary/verification documentation and PR [#41](https://github.com/kanlerxz87-cyber/Tradebot2/pull/41) owns `live/**` dashboard fixes; this session left those files untouched and recorded scope handoffs in [the PR #40 comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40#issuecomment-7226875761) and [the PR #41 comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/41#issuecomment-7226895836). This branch's pull request, merge, and post-merge Pages build are pending.

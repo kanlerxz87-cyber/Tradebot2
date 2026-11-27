@@ -10,6 +10,10 @@ Standard library only. Uses ONLY unauthenticated, documented, read-only endpoint
 Every value written to site/data/*.json carries the API URL it came from, so each
 table row can link to its official source.
 
+Only active child markets are tracked. Resolution is recorded only when the
+market status is finalized and the result is yes/no. resolved_at mirrors the
+exchange's settlement_ts; resolution_observed_at is when this collector saw it.
+
 Paper trades are SIMULATED. No orders are placed. Kalshi fees are not modelled.
 Authenticated demo-account (portfolio) tracking is NOT implemented here: it needs
 API-key credentials that must not be committed or pasted into chat.
@@ -18,6 +22,7 @@ Sources (verified by the agent, see site/sources.html):
   https://docs.kalshi.com/api-reference/events/get-events
   https://docs.kalshi.com/api-reference/market/get-series-list
   https://docs.kalshi.com/api-reference/market/get-market-orderbook
+  https://docs.kalshi.com/getting_started/market_lifecycle
   https://docs.kalshi.com/getting_started/rate_limits
 """
 import datetime as dt
@@ -34,7 +39,19 @@ import urllib.request
 # https://docs.kalshi.com/getting_started/demo_env .
 # Demo prices are simulated ("may not be reflective of those in real markets").
 BASE = os.environ.get("KALSHI_BASE", "https://external-api.demo.kalshi.co/trade-api/v2").rstrip("/")
-STATE_PATH = os.environ.get("STATE_PATH", "state/state.json")
+
+# Keep demo state isolated from state collected against another API host. The
+# api_base stored inside the state file is checked again by load_state().
+_DEMO_API_HOSTS = {"external-api.demo.kalshi.co", "demo-api.kalshi.co"}
+
+
+def _default_state_path(base: str) -> str:
+    host = urllib.parse.urlparse(base).hostname or ""
+    environment = "demo" if host in _DEMO_API_HOSTS else "custom"
+    return f"state/{environment}-state.json"
+
+
+STATE_PATH = os.environ.get("STATE_PATH", _default_state_path(BASE))
 OUT_DIR = os.environ.get("OUT_DIR", "site/data")
 REQ_DELAY = float(os.environ.get("REQ_DELAY", "0.25"))
 MAX_SERIES_PER_TOPIC = int(os.environ.get("MAX_SERIES_PER_TOPIC", "40"))
@@ -144,9 +161,17 @@ def api_get(path, params=None, retries=4):
 def load_state():
     if os.path.exists(STATE_PATH):
         with open(STATE_PATH, encoding="utf-8") as f:
-            return json.load(f)
-    return {"history": {}, "markets": {}, "alerts": [], "processed_alerts": [],
-            "trades": [], "runs": 0, "first_run": None}
+            state = json.load(f)
+        if not isinstance(state, dict):
+            raise ValueError("Collector state must be a JSON object; existing state was not modified.")
+        if state.get("api_base") != BASE:
+            raise ValueError(
+                "Collector state has no matching API base; use a separate STATE_PATH "
+                "rather than mixing demo and other-environment data. Existing state was not modified."
+            )
+        return state
+    return {"api_base": BASE, "history": {}, "markets": {}, "alerts": [],
+            "processed_alerts": [], "trades": [], "runs": 0, "first_run": None}
 
 
 def save_json(path, data, compact=False):
@@ -267,7 +292,9 @@ def main():
                               for x in ev.get("settlement_sources", []) if x.get("url")]
                 for mk in ev.get("markets", []):
                     t = mk.get("ticker")
-                    if not t or t in live:
+                    # An open event may contain closed, settled, or paused children.
+                    # The lifecycle docs map status=open to market status=active.
+                    if not t or t in live or mk.get("status") != "active":
                         continue
                     live[t] = {
                         "ticker": t,
@@ -347,18 +374,21 @@ def main():
 
     # ---- 3. Remember markets, check resolutions ----------------------------
     for t, m in live.items():
-        state["markets"][t] = {k: m[k] for k in (
+        rec = state["markets"].setdefault(t, {})
+        rec.update({k: m[k] for k in (
             "ticker", "topic", "topic_label", "series_ticker", "event_ticker", "event_title",
-            "title", "yes_sub_title", "close_time", "settlement_sources", "source_url")}
-        state["markets"][t]["last_seen"] = ts
-        state["markets"][t]["result"] = state["markets"][t].get("result")
-        state["markets"][t]["resolved"] = state["markets"][t].get("resolved", False)
+            "title", "yes_sub_title", "status", "close_time", "settlement_sources", "source_url")})
+        rec["last_seen"] = ts
+        rec.setdefault("resolved", False)
 
-    checks = 0
-    for t, rec in state["markets"].items():
-        if t in live or rec.get("resolved") or checks >= MAX_RESOLUTION_CHECKS:
-            continue
-        checks += 1
+    # Rotate through pending markets by their last attempted check. Recording an
+    # attempt before the request also prevents a failing first batch from
+    # permanently starving later markets when the per-run limit is reached.
+    pending = [(t, rec) for t, rec in state["markets"].items()
+               if t not in live and not rec.get("resolved")]
+    pending.sort(key=lambda item: (item[1].get("api_status_checked_at") or "", item[0]))
+    for t, rec in pending[:MAX_RESOLUTION_CHECKS]:
+        rec["api_status_checked_at"] = ts
         try:
             body, url = api_get(f"/markets/{t}")
         except Exception as e:
@@ -369,14 +399,19 @@ def main():
             continue
         mk = body["market"]
         rec["status"] = mk.get("status")
-        rec["api_status_checked_at"] = ts
         rec["api_source_url"] = url
-        if mk.get("result") in ("yes", "no"):
+        rec["settlement_ts"] = mk.get("settlement_ts")
+        # A determined result can still be disputed or amended. Only the
+        # finalized state means settlement is complete in Kalshi's REST API.
+        if mk.get("status") == "finalized" and mk.get("result") in ("yes", "no"):
             rec["result"] = mk["result"]
             rec["resolved"] = True
-            rec["resolved_at"] = ts
+            # Keep the exchange's timestamp separate from when this collector
+            # first observed final settlement; don't invent a settlement time.
+            rec["resolved_at"] = mk.get("settlement_ts")
+            rec["resolution_observed_at"] = ts
             rec["settlement_value"] = num(mk.get("settlement_value_dollars"))
-            rec["last_before_resolution"] = (state["history"].get(t) or [[None, None]])[-1][1]
+            rec["last_observed_while_active"] = (state["history"].get(t) or [[None, None]])[-1][1]
     # ---- 4. Paper trades (simulated) --------------------------------------
     trades = state.get("trades", [])
     open_trades = [tr for tr in trades if tr["status"] == "open"]
@@ -407,7 +442,8 @@ def main():
         mrec = state["markets"].get(t, {})
         if mrec.get("resolved"):
             exit_px = 1.0 if mrec.get("result") == "yes" else 0.0
-            tr.update(status="closed", exit=exit_px, exit_at=ts, exit_reason="settled")
+            tr.update(status="closed", exit=exit_px, exit_at=mrec.get("resolved_at"),
+                      exit_observed_at=ts, exit_reason="settled")
         elif m and m["yes_bid"] is not None:
             bid = m["yes_bid"]
             opened = dt.datetime.strptime(tr["opened_at"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=dt.timezone.utc)
@@ -536,9 +572,10 @@ def main():
             "result": None,
         })
     resolved_out = [
-        {"ticker": t, **{k: r.get(k) for k in ("topic", "topic_label", "title", "event_title", "result",
-                                              "resolved_at", "settlement_value", "last_before_resolution",
-                                              "close_time", "source_url", "api_source_url")}}
+        {"ticker": t, **{k: r.get(k) for k in ("topic", "topic_label", "title", "event_title", "status", "result",
+                                              "resolved_at", "settlement_ts", "resolution_observed_at",
+                                              "settlement_value", "last_observed_while_active", "close_time",
+                                              "source_url", "api_source_url")}}
         for t, r in state["markets"].items() if r.get("resolved")
     ]
     for r in resolved_out:
@@ -594,7 +631,7 @@ def main():
         "runs": state["runs"],
         "first_run": state["first_run"],
         "alert_threshold_dollars": ALERT_THRESHOLD,
-        "environment": "demo" if "demo" in BASE else "production",
+        "environment": "demo" if urllib.parse.urlparse(BASE).hostname in _DEMO_API_HOSTS else "custom/override",
         "live_market_count": len(markets_out),
         "open_markets_seen": len(live),
         "markets_omitted_per_topic": omitted,
@@ -606,6 +643,7 @@ def main():
         "errors": errors[-200:],
         "error_count": len(errors),
         "snapshot_interval_note": "Snapshots happen once per scheduled run (about every 15 min), so a 'sudden' move is measured between runs.",
+        "resolution_rule": "Only status=finalized with result=yes/no is a resolution; resolved_at/settlement_ts is the API time and resolution_observed_at is the collector observation time.",
         "screen": {"max_spread": SCREEN_MAX_SPREAD, "min_ask_size": SCREEN_MIN_ASK_SIZE,
                    "min_volume_24h": SCREEN_MIN_VOLUME_24H, "entry_range": [SCREEN_PRICE_MIN, SCREEN_PRICE_MAX]},
     }

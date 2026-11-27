@@ -70,10 +70,12 @@ budget against a published number.</td><td>Unverified</td><td>Ask Kalshi support
 <tr><td>F13</td><td><b>Markets with no 24h trade show last price 0 in the API.</b> The site renders “no trade” rather than $0.00 to
 avoid implying a price.</td><td>Handled</td><td>None; this is a display decision, documented on the Markets page.</td>
 <td><a href="https://docs.kalshi.com/api-reference/market/get-markets" target="_blank" rel="noopener noreferrer">Get Markets</a></td></tr>
-<tr><td>F14</td><td><b>Resolution timestamps are “first seen by this collector”,</b> not the exchange's official settlement time;
-the API's <code>settlement_ts</code> is shown only when returned.</td><td>Documented limit</td>
-<td>Read <code>settlement_ts</code> and <code>settlement_value_dollars</code> where present.</td>
-<td><a href="https://docs.kalshi.com/api-reference/market/get-market" target="_blank" rel="noopener noreferrer">Get Market</a></td></tr>
+<tr><td>F14</td><td><b>Settlement time and observation time are separate.</b> A binary result is recorded only when status is
+<code>finalized</code>. <code>resolved_at</code> mirrors the API's <code>settlement_ts</code> and stays blank if the API omits it;
+<code>resolution_observed_at</code> is when this collector first saw final settlement.</td><td>Documented limit</td>
+<td>Verify the final market response; do not substitute a collection timestamp for a missing settlement time.</td>
+<td><a href="https://docs.kalshi.com/getting_started/market_lifecycle" target="_blank" rel="noopener noreferrer">Market Lifecycle</a> ·
+<a href="https://docs.kalshi.com/api-reference/market/get-market" target="_blank" rel="noopener noreferrer">Get Market</a></td></tr>
 </tbody></table></div>
 
 </main>
