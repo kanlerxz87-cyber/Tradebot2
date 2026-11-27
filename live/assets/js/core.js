@@ -253,11 +253,35 @@ var TB = (() => {
     initialized: 'Not open', inactive: 'Paused', active: 'Trading', closed: 'Closed',
     determined: 'Determined', disputed: 'Disputed', amended: 'Amended', finalized: 'Settled'
   };
+  /**
+   * A quoted zero is not a price.
+   *
+   * The API returns fixed-point strings, and an ABSENT resting order is sent as
+   * "0.0000" with a size of "0.00" — it is not a bid at zero cents. Measured on
+   * the demo host 2026-11-27T19:42Z, GET /markets?status=open&series_ticker=KXBTCMAXY
+   * returns yes_bid_dollars "0.0000", yes_bid_size_fp "0.00" on a market that last
+   * traded at 0.0700-0.5000, and
+   * GET /markets/KXBTCMAXY-26DEC31-109999.99/orderbook returns "yes_dollars": [].
+   * docs.kalshi.com/api-reference/market/get-markets
+   *
+   * Printing "0¢" there invents a $0.10 move off a real quote, so a zero is only
+   * kept as a price when the API also reports a non-zero size behind it. Anything
+   * else becomes null, and every caller renders that as "—".
+   */
+  function quotedPrice(price, size) {
+    const p = num(price);
+    if (p === null) return null;
+    if (p <= 0) {
+      const q = num(size);
+      return (q !== null && q > 0) ? p : null;
+    }
+    return p;
+  }
   function normMarket(m, ctx) {
-    const yesBid = num(m.yes_bid_dollars);
-    const yesAsk = num(m.yes_ask_dollars);
-    const last = num(m.last_price_dollars);
-    const prev = num(m.previous_price_dollars);
+    const yesBid = quotedPrice(m.yes_bid_dollars, m.yes_bid_size_fp);
+    const yesAsk = quotedPrice(m.yes_ask_dollars, m.yes_ask_size_fp);
+    const last = quotedPrice(m.last_price_dollars, null);
+    const prev = quotedPrice(m.previous_price_dollars, null);
     const mid = (yesBid !== null && yesAsk !== null && yesAsk >= yesBid) ? Math.round((yesBid + yesAsk) / 2 * 10000) / 10000 : null;
     return {
       ticker: m.ticker,
@@ -275,6 +299,8 @@ var TB = (() => {
       /* price used for swings/charts: last trade if present, else bid/ask mid. Tagged with which. */
       price: last !== null ? last : mid,
       priceKind: last !== null ? 'last' : (mid !== null ? 'mid' : null),
+      /* The spread is only knowable when BOTH sides are quoted; an absent side is
+         not a 100¢ book. Null -> the UI prints "—" (see quotedPrice above). */
       spread: (yesBid !== null && yesAsk !== null) ? Math.round((yesAsk - yesBid) * 10000) / 10000 : null,
       volume: num(m.volume_fp),
       volume24h: num(m.volume_24h_fp),
@@ -396,7 +422,7 @@ var TB = (() => {
     ENVS, TOPICS, topicById, ALERT_THRESHOLD, DEFAULTS, LS,
     num, cents, dollar, centsLabel, compact, pct, timeShort, dateShort, relTime, esc, el, qs, qsa,
     store, settings, saveSettings,
-    api, normMarket, STATUS_MAP, isLive, isClosed, isSettled,
+    api, normMarket, quotedPrice, STATUS_MAP, isLive, isClosed, isSettled,
     freshness, NAV, renderHeader, renderFooter, pageShell, setStatusPill, noDataRow, copyText,
     startedAt
   };

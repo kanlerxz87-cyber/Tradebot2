@@ -7,3 +7,6 @@ __pycache__/
 # Node deps used only for the headless test harness (never shipped)
 node_modules/
 package-lock.json
+
+# Local Python env used only to run the test gates (never shipped)
+.venv/

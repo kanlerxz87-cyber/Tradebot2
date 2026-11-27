@@ -18,10 +18,11 @@
 
   <div class="banner warn">
     <b>Read this first — F-01.</b> The repository previously published a root dashboard presenting <b>fabricated</b> Kalshi data as live:
-    tickers that do not exist in the API (e.g. <span class="mono">GAS-24DEC-3.15</span>, <span class="mono">PRES-24-DJT</span>,
-    <span class="mono">OSCAR-BESTPIC-25</span>), invented “catalysts” for price moves, and a portfolio P&amp;L derived from them
-    (“Win rate 75%”, “Sharpe 1.84”). Those pages have been moved to <span class="mono">/legacy/</span> behind a warning banner and are
-    no longer linked from the landing page. The dashboard you are on now reads the live API and shows “—” where data is missing.
+    previously flagged example tickers (e.g. <span class="mono">GAS-24DEC-3.15</span>, <span class="mono">PRES-24-DJT</span>,
+    <span class="mono">OSCAR-BESTPIC-25</span>), unsupported “catalysts” for price moves, and illustrative portfolio figures
+    (“Win rate 75%”, “Sharpe 1.84”). The files remain at their original paths; there is no <span class="mono">/legacy/</span> directory,
+    and not every archived page has a warning banner. The <a href="../index.html">root landing page</a> links to the canonical dashboard at
+    <a href="index.html">/live/</a>. The historical ticker findings were recorded by prior API probes; this session did not re-probe those IDs.
   </div>
 
   <section class="card">
@@ -32,8 +33,8 @@
 
         <tr><td class="mono">F-01</td>
           <td><b>Fabricated data in the legacy root dashboard</b></td>
-          <td>The former root pages (<span class="mono">docs/</span>, <span class="mono">index.html</span>, <span class="mono">gas-prices.html</span>, …) showed non-existent tickers, invented news catalysts for moves and a P&amp;L computed from them. Moved to <span class="mono">/legacy/</span> with a banner; not linked from navigation.</td>
-          <td><a href="https://kanlerxz87-cyber.github.io/Tradebot2/legacy/">archived pages</a> · <a href="https://docs.kalshi.com/api-reference/market/get-markets">get-markets</a></td></tr>
+          <td>Earlier dashboard generations included example tickers and illustrative performance presented as live. Those files remain at their original paths; there is no <span class="mono">/legacy/</span> directory, and some archived files do not have a warning banner. The current root landing page points to <span class="mono">/live/</span>. Specific ticker existence findings cited here were recorded by earlier API probes and were not repeated during this audit.</td>
+          <td><a href="../docs/index.html">archived dashboard file</a> · <a href="../earlier-dashboard.html">earlier root dashboard</a> · <a href="https://docs.kalshi.com/api-reference/market/get-markets">get-markets endpoint</a></td></tr>
 
         <tr><td class="mono">F-02</td>
           <td><b>“Gas prices” is a proxy, not retail gasoline</b></td>

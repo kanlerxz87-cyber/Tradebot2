@@ -13,14 +13,14 @@
 <main>
 
 <h1>Resolved events</h1>
-<p class="lead">Markets are tracked after they leave the open listing and are re-checked with <code>GET /markets/{ticker}</code>
-until the API reports <code>result</code> = <b>yes</b> or <b>no</b>. That result, and the settlement value when present, are shown here.</p>
+<p class="lead">Markets are tracked after they leave the open listing and are re-checked with <code>GET /markets/{ticker}</code>.
+A binary result is shown only after the API reports <code>status=finalized</code> with <code>result</code> = <b>yes</b> or <b>no</b>.</p>
 <div class="freshness" id="fresh"></div>
 <div class="kpis" id="res-kpi"></div>
 <div id="res-table"></div>
-<p class="note">Resolution comes from the market object's <code>result</code> field
-(<a href="https://docs.kalshi.com/api-reference/market/get-market" target="_blank" rel="noopener noreferrer">official docs ↗</a>).
-Where the API returns an empty result, the market stays open on this list and no outcome is inferred.</p>
+<p class="note">The settlement time is the API's <code>settlement_ts</code>; if it is missing, this table leaves it blank and separately shows when the collector first observed the finalized result.
+See Kalshi's <a href="https://docs.kalshi.com/getting_started/market_lifecycle" target="_blank" rel="noopener noreferrer">Market Lifecycle ↗</a> and
+<a href="https://docs.kalshi.com/api-reference/market/get-market" target="_blank" rel="noopener noreferrer">Get Market ↗</a>.</p>
 
 </main>
 <footer>Kalshi <b>Demo</b> Desk · read-only public demo data · paper trades only · not financial advice · <a href="sources.html">Sources</a> · <a href="repo-review.html">Repo review</a> · <a href="flagged.html">Flagged for review</a></footer>

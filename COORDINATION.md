@@ -383,26 +383,165 @@ Base: `main` @ `b379d02`.
 
 ---
 
+## Session `arena/b4e1fe8a-tradebot2` — final integration verification (claimed 2026-11-27)
+
+Base: `main` @ `aca6cc8` (branch `arena/b4e1fe8a-tradebot2`). This session acts as the final integration session per the brief: line-by-line verification against official Kalshi docs, site build check, PR to `main`, merge without waiting, Pages deploy confirmation.
+
+| Task | Status | Owner | File scope |
+|---|---|---|---|
+| `J1-official-verification` | done | `arena/b4e1fe8a-tradebot2` | `COORDINATION.md`, `EXECUTIVE_SUMMARY.md`, `live/executive-summary.html`, `live/verification.html`, `live/flagged.html`, `README.md` (verification appendix only) |
+| `J2-site-gate` | done | `arena/b4e1fe8a-tradebot2` | `tools/verify_site.py`, `live/tests/check_live.py` (run only; edits only if gate is broken) |
+| `J3-pr-merge-deploy` | done | `arena/b4e1fe8a-tradebot2` | PR to `main`, Pages build check |
+
+Scope rule: this session edits only the files in `J1` scope. If a fix requires a file outside that scope, it will be logged here as a request instead of edited. Open PRs #16, #14, #6 (2026-11-22) predate this base and their claims are >60 minutes old with no commits on this branch; this session proceeds as final integration and notes any handoff here. No other session's files will be deleted.
+
+Official sources re-verified 2026-11-27 via docs.kalshi.com (fetch): `getting_started/demo_env`, `getting_started/api_environments`, `getting_started/quick_start_websockets`, `api-reference/market/get-market-candlesticks`, `api-reference/market/get-market-orderbook`, `getting_started/market_settlement`, `getting_started/market_lifecycle`, `api-reference/orders/create-order-v2`, `api-reference/market/get-markets`, `getting_started/api_keys`, `getting_started/rate_limits`, `api-reference/search/get-tags-for-series-categories`. Findings recorded in `J1` completion below.
+
+
+### J1 close-out and handoff — 27 November 2026
+
+Rechecked the official references listed above, plus [trades](https://docs.kalshi.com/api-reference/market/get-trades), [historical data](https://docs.kalshi.com/getting_started/historical_data), and [fixed-point migration](https://docs.kalshi.com/getting_started/fixed_point_migration). Updated the executive summaries, README and live verification page to distinguish the recorded probe from a current independent probe, correct settlement and trade-limit wording, and disclose incomplete discovery, notional proxy and defaulted inputs, missed between-poll moves, and hypothetical paper exits. These checks do not establish complete line-by-line verification of all published and archived content.
+
+**Parallel session coordination:** independently discovered active [PR #38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38), owner `arena/a32cdd24-tradebot2`, whose branch claims `live/flagged.html`, `flagged.html`, `index.html`, and `VERIFICATION_REPORT.md`. Its claim was not in our base when J1 was pushed. We reverted our local changes to its `live/flagged.html` and requested via [comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38#issuecomment-7226784894) that its owner document the audit limitations on the flagged page and fix duplicate F-13 IDs. No other session's work was discarded. Its PR independently corrects the broken `/legacy/` link and archive warning claims.
+
+**Unverified:** live API re-probe blocked by sandbox egress; demo credentials/orders absent; not every external link or archived page verified. Gate results are recorded at J2 below. Branch naming is fixed by runtime to `arena/b4e1fe8a-tradebot2`.
+
+---
+
+>>>>>>> origin/main
 ## Session `arena/a32cdd24-tradebot2` — verification and repository audit
 
 Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `aca6cc8`); it cannot be renamed or moved to the requested `session-<id>/<task>` naming convention. No other task in this board is being taken over. This session claims only an independent final audit and recording of findings; it will not change canonical page/data ownership or execute any demo-account trade.
 
 | Task | Status | Owner | File scope | Method |
 |---|---|---|---|---|
-| A32-1 | in progress | `arena/a32cdd24-tradebot2` | `VERIFICATION_REPORT.md`, this section of `COORDINATION.md` | Run existing repo/site/data/test gates, review source provenance and public pages; record verified outcomes and residual irregularities without inferring live market values. |
+| A32-1 | done | `arena/a32cdd24-tradebot2` | `VERIFICATION_REPORT.md`, `index.html`, `live/flagged.html`, `flagged.html`, this section of `COORDINATION.md` | Independent static audit and test gates; corrected inaccurate `/legacy/`/archive-warning claims and recorded residuals. No live API values inferred. |
+
+### A32-1 close-out (2026-11-27)
+
+- **Official sources:** [Kalshi demo environment](https://docs.kalshi.com/getting_started/demo_env), [API environments](https://docs.kalshi.com/getting_started/api_environments), [events](https://docs.kalshi.com/api-reference/events/get-events), [markets](https://docs.kalshi.com/api-reference/market/get-markets), [order book](https://docs.kalshi.com/api-reference/market/get-market-orderbook), [candlesticks](https://docs.kalshi.com/api-reference/market/get-market-candlesticks), [trades](https://docs.kalshi.com/api-reference/market/get-trades), [settlement](https://docs.kalshi.com/getting_started/market_settlement). They are manual-review references; this session could not independently re-probe current Kalshi API values.
+- **Verification:** `tools/verify_data.py` and `tools/check_site.py --strict` passed; script schema/link checks passed; `pytest` passed 69 tests; archived fixture tests passed; JavaScript syntax passed; live UI smoke passed 87/87; live link/content check passed for 16 pages. Detail and exact outputs are in `VERIFICATION_REPORT.md`.
+- **Corrections:** removed false claim that archived pages live under `/legacy/`; corrected root landing statement that all archives were bannered; reopened root F-18 because `docs/index.html` lacks an archive warning.
+- **Irregularities:** data-feed collections checked by `tools/verify_data.py` were empty (0 rows); root collector metadata is dated Nov 22 with `api_requests: 0`; live API wasn't re-tested; 11/22 fallback is static and explicitly not live; archive warnings are incomplete; demo-account credentials, order status and causal news attribution remain unverified. No demo trade sent.
+- **No conflict:** edits were limited to the audit report, root landing warning, review pages and this close-out. Branch name remains workbench-fixed `arena/a32cdd24-tradebot2`; task claim was pushed immediately before implementation.
+
+### Conflict and integration handoff — 27 November 2026
+
+PR #38 merged to main during this session. Its and our independently appended board sections conflicted during integration; both sections were retained without discarding either session. Discovered later session `arena/600a5dcd-tradebot2` claimed `live/**`, `README.md`, and `EXECUTIVE_SUMMARY.md` at 19:41 UTC, after this session's 19:39 claim but from the same older base and without seeing it. Our documentation edits were already committed before discovering that scope. Handoff requested to that session to preserve or supersede the audit disclosures while it continues its code work.
+
+J2 gate: `tools/verify_site.py` (12 pages, 373 links, 128 markets, 44,192 resolutions); `tools/check_site.py --strict` (14 pages, 406 links); `live/tests/check_live.py` (16 pages); `pytest` (69 passed); live jsdom smoke (87/87); and JS syntax checks passed. `verify_data.py` checked zero rows in the separate feed files and does not verify the full snapshot or current market values. Neither these checks nor the independent documentation review establish every external link or all requirements are complete.
+
+**J3 PR:** [#40](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40) created with sources, gate results, and unresolved items. Session `arena/600a5dcd-tradebot2` was notified of the earlier J1 claim and overlapping R1/R2 scopes in [the coordination handoff](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38#issuecomment-7226812700); that session is continuing functional integration. Merge and Pages verification are pending.
+
+### PR and Pages record
+
+| PR | Result |
+|---|---|
+| [#38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38) | Merged 2026-11-27 19:42:04 UTC as `260c43274dc6210148ebaaac9389a865851d6ee3`. PR checks `tests` and `verify` passed. |
+| GitHub Pages | `build_type: legacy`, source `main:/`; Pages build for merge commit `260c43274dc6210148ebaaac9389a865851d6ee3` reported `built` at 19:42:34 UTC. Build workflow: [run 46058528998](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058528998). The sandbox could not fetch `github.io` directly (TLS `SSL_ERROR_SYSCALL`), so HTTP content-level deployment was not independently confirmed here. |
+| Post-merge verify workflow | `Verify site and engine` passed: [run 46058529505](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058529505). A separate published-site run was cancelled by GitHub concurrency (`higher priority waiting request`); it is not reported as a test failure. PR checks themselves had passed before merge. |
+
+**Second board conflict:** PR #39 appended a deployment record concurrently. Both records were retained when merging `origin/main`; no other session changes were discarded. The global Pages workflow concurrency group cancelled the first PR #40 run; rerun 46058740196 passed, and a request to scope concurrency per ref was sent to the workflow owner.
+
+---
+
+## Session `arena/d06c45b3-tradebot2` — live-dashboard data-integrity fixes (claimed 2026-11-27)
+
+Base: `main` @ `aca6cc898a8abb16bb36928648e1dcda90be7e78` (this branch was created at that commit and
+`main` had not advanced when the claim was written). The runtime fixes this session to
+`arena/d06c45b3-tradebot2`; all work stays on that branch.
+
+This session picks up the **data-integrity defects in the published `/live/` dashboard** that no other
+sweep in the board log had claimed: a real zero-bid/zero-trade bug and a zero-as-spread bug. Both were
+proven with a unit-level reproduction against the live API payload shape before being claimed, and both
+are in files outside every other session's claimed scope.
+
+| Task | Status | Owner | File scope | Source of truth |
+|---|---|---|---|---|
+| `D1 zero-is-not-a-price` | in progress | `arena/d06c45b3-tradebot2` | `live/assets/js/core.js`, `live/tests/check_live.py`, `live/tests/zero_quote.mjs` | [get-markets](https://docs.kalshi.com/api-reference/market/get-markets), [get-market-orderbook](https://docs.kalshi.com/api-reference/market/get-market-orderbook) |
+| `D2 no-fabricated-input-button` | in progress | `arena/d06c45b3-tradebot2` | `live/assets/js/page-dashboard.js`, `live/index.html`, `live/tests/smoke.mjs` | [get-trades](https://docs.kalshi.com/api-reference/market/get-trades) |
+| `D3 dead-payload-field` | in progress | `arena/d06c45b3-tradebot2` | `live/assets/js/data.js` | [get-trades](https://docs.kalshi.com/api-reference/market/get-trades) |
+
+### Claimed scope rule
+
+This session edits **only** the files listed above. `live/flagged.html` is claimed by
+`arena/a32cdd24-tradebot2` and is **not** edited here; the `/legacy/` defect found there is logged as a
+request below, not fixed. `COORDINATION.md` is appended only (no other section edited). No market value
+is inferred, no order is placed, and no credential is used.
+
+### Requests to other owners (not edited by this session)
+
+- **`live/flagged.html` → `arena/a32cdd24-tradebot2`.** F-01 and its banner say the fabricated pages were
+  "moved to `/legacy/`" and link `https://kanlerxz87-cyber.github.io/Tradebot2/legacy/`. There is no
+  `legacy/` directory in the repository (`ls legacy` → no such file), so that link is dead. `live/start.html`
+  makes the same claim (that line is in this session's scope and is corrected here). The a32cdd24 commit
+  `895d390` claims to fix this class of statement; recommend confirming all three occurrences.
+- **`live/start.html`.** Corrected by this session (`D3`) to describe the real archive location.
+
+### Evidence captured while claiming (live demo API, 2026-11-27T19:42Z)
+
+| What was read | Official endpoint | Value returned | Why it matters |
+|---|---|---|---|
+| Exchange status | `GET /exchange/status` | `exchange_active:true`, `trading_active:true` | The demo exchange was up when the claim was written. |
+| Tag taxonomy | `GET /search/tags_by_categories` | categories include `Commodities`, `Elections`, `Culture`? → **no**; `Entertainment`, `Crypto`, `Sports` | Confirms F-02/F-03: the five topic filters in `core.js` match the official strings, and there is no "Culture" category. |
+| Golf filter | `GET /series?category=Sports&tags=Golf` | `KXPRESCUPPTS`, `KXPGAACTION`, `KXDPWORLDTOUR…` | Topic filter is real. |
+| Gas filter | `GET /series?category=Commodities&tags=Oil %26 Gas` | `KXWTIH`, `KXWTIW`, `KXHOILW`, `KXTTFW` | Topic filter is real. |
+| Empty-book market | `GET /markets?status=open&series_ticker=KXBTCMAXY` | `yes_bid_dollars` `0.0000`, `yes_bid_size_fp` `0.00`, `last_price_dollars` `0.0700`… `0.5000` | Proves a zero float cannot be told apart from "no bid". |
+| Multi-level book | `GET /markets/KXDPWORLDTOUR-BMAPC26-TMOR/orderbook` | `no_dollars` `[[0.9880,…],[0.9890,…],[0.9900,…]]`, `yes_dollars` `[[0.0010,…],[0.0020,…],[0.0030,…]]` | Both sides returned **ascending by price**; used to verify the ladder ordering rather than assume it. |
+| Live trade tape | `GET /markets/trades?limit=8` | `yes_price_dollars` / `no_price_dollars` / `count_fp` / `taker_side`, **no** `price` or `yes_price` field | D3. |
+
+### Two retractions made while verifying (recorded so the next session does not repeat them)
+
+1. **The order-book ladder is correct.** On first reading, `asks.sort(...).slice(0, levels)` and
+   `yesLevels.slice(-levels)` looked like they kept the worst levels. Executed against the real payloads,
+   both are right *because* the API returns each side **ascending by price**: `slice(-n)` takes the best
+   YES bids and `sort(desc).slice(0,n)` takes the best (lowest) asks. Verified by running the shipped
+   `TBChart.ladder` against the live `KXDPWORLDTOUR` book and a synthetic 10-level book at
+   `levels=2,3,8`. **No change made.** A hand-built descending fixture *does* break it, so the ascending
+   precondition is now asserted in the test suite instead of silent.
+2. **`status=open` is a query filter, not a response value.** A market fetched with `status=open` returns
+   `"status":"active"`. The request filter enum (`unopened|open|closed|settled`) and the response enum
+   (`initialized|inactive|active|closed|determined|disputed|amended|finalized`) are different vocabularies.
+   `core.js` already handles both correctly; an earlier note in this session that it did not was wrong.
+
+**Third board conflict:** PR #41 merged concurrently; preserved both board appendices. PR #41 scopes the Pages verification concurrency group per event/ref and adds quote-integrity checks. Runtime quote fixes are owned by that session; this audit makes no claim to have independently re-probed them.
+
+### J3 merge and deployment result
+
+[PR #40](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40) merged at 2026-11-27 19:51:20 UTC as `4517d1caaa339b3db4650628ad6db2471f539a1d`. PR checks `tests` and `verify` passed after merging PR #41's concurrency fix; locally, 69 pytest tests, 87 browser smoke checks, 35 quote rules, and the published-site link gates passed on the combined tree. GitHub Pages API reports the build for `4517d1c` **built** at 19:51:45 UTC, and [Pages workflow 46059595130](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46059595130) reports deploy success. The public URL is https://kanlerxz87-cyber.github.io/Tradebot2/. Direct HTTP verification from this sandbox was blocked; the build/deploy status is not an independent browser content check.
+
+Other concurrent sessions continue their separately claimed functional work. Missing signed-account access, non-exhaustive data discovery and all remaining flagged items are not resolved by this documentation PR.
+
+## Session `arena/bce83713-tradebot2` — demo collector safety takeover and final audit
+
+Base: `main` @ `aca6cc898a8abb16bb36928648e1dcda90be7e78`. Arena fixes this session to branch
+`arena/bce83713-tradebot2`; work stays on that branch.
+
+| Task | Status | Owner | File scope | Sources / verification |
+|---|---|---|---|---|
+| Take over the stale demo collector safety task; audit the integrated site and record final evidence | `implementation and local verification done; PR integration pending` | `arena/bce83713-tradebot2` | `scripts/kalshi_collector.py`, `scripts/tests/test_collector_safety.py`, `site/{flagged,resolved}.html`, `site/assets/app.js`, `COORDINATION.md`, `VERIFICATION_REPORT.md` | Official Kalshi [demo environment](https://docs.kalshi.com/getting_started/demo_env) and [market lifecycle](https://docs.kalshi.com/getting_started/market_lifecycle); pytest 74 + 2 subtests, collector tests 5, site/live gates pass; see `VERIFICATION_REPORT.md` |
+
+### Handoff and scope
+
+The collector safety change is claimed by session `arena/d60a6d1e` in open PR [#16](https://github.com/kanlerxz87-cyber/Tradebot2/pull/16), last updated 2026-11-22 (more than 60 minutes before this claim). The current `main` already defaults the collector to the demo host but does not yet carry the full state-environment guard, active-child filter, finalized-only settlement, and fair bounded resolution-check rotation described by that PR. This session takes over only those collector lifecycle/isolation safeguards and their regression tests. The site redesigns in open PRs #6 and #14 are not copied: the checked-out root/live site is a different, already integrated generation and duplicating those alternative trees would create conflicting published sites. This note records the handoff; no credentials are requested or stored and no authenticated order is sent.
+
+### Rebase and parallel-session log — 2026-11-27
+
+- `origin/main` advanced from `aca6cc8` to `037d65b` when PR #39 merged, to `565df69` when PR #41 merged, to `4517d1c` when PR #40 merged, and to `6b9b25c` when PR #43 recorded #40's Pages deployment. Each base-advancing rebase encountered an append conflict in this shared board. Every resolution retained all upstream session/audit/deployment entries and this task's record; no file or session work was dropped. After the latest rebase, the collector fix is `3da8fec`.
+- PR [#40](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40) owned separate executive-summary/verification-page scope and merged as `4517d1c` on 2026-11-27. PR [#43](https://github.com/kanlerxz87-cyber/Tradebot2/pull/43) recorded its Pages deployment as `built` and merged as `6b9b25c`; this session did not edit those executive-summary/verification files. The #40 owner was notified that only `COORDINATION.md` was shared and that merged audit sections must be preserved: [coordination comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40#issuecomment-7226875761).
+- PR [#41](https://github.com/kanlerxz87-cyber/Tradebot2/pull/41) owns the current `live/**` dashboard data-integrity fixes and Pages workflow. This session did not edit those files; the author was notified to preserve the appended coordination sections: [coordination comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/41#issuecomment-7226895836).
+- Replacement PR [#42](https://github.com/kanlerxz87-cyber/Tradebot2/pull/42) is open; its checks will rerun after this latest rebase, and merge/post-merge Pages verification remain pending. The full local test/site suite passed against `main` at `6b9b25c` (details in `VERIFICATION_REPORT.md`). PR #16 remains open until #42 is merged.
 
 ---
 
 ## Session `arena/33fd30e7-tradebot2` — cross-repo defect audit, live-API verification, snapshot compaction & trader UX upgrades
 
-Base: `main` @ `aca6cc8` (branch fixed by runtime to `arena/33fd30e7-tradebot2`).
+Base: `main` @ `aca6cc8` (merged `origin/main` through `f5df412`; branch fixed by runtime to `arena/33fd30e7-tradebot2`).
 
 | # | Task | Status | Owner | File scope | Sources / verification |
 |---|------|--------|-------|-----------|------------------------|
 | T1 | Fix `#chat-model` zero-seed bug (`assets/js/{core,dashboard}.js`), wide-book 50¢ mid leaks (`app/{alerts,collector}.py`, `collector/collect.py`, `assets/js/core.js`), and Culture vs official `Entertainment` taxonomy (`app/topics.py`, `tools/build_category_pages.py`, `methodology.html`) | done | `arena/33fd30e7-tradebot2` | `app/{topics,alerts,collector}.py`, `collector/collect.py`, `assets/js/{core,dashboard}.js`, `tools/build_category_pages.py`, `{gas-prices,elections,culture,crypto,golf}.html`, `methodology.html` | Live-verified `GET /search/tags_by_categories` & `GET /exchange/status` on `external-api.demo.kalshi.co`; `dashboard.html` in `jsdom` now seeds `36` alerts and `26` scored `#chat-model` picks (up from `0`) |
-| T2 | Fix `28 MB` snapshot bloat & clamped `resolved_markets_30d: 40` bug; fix `collect.yml` 25m CI timeout via bulk `with_nested_markets=true` discovery + 60-series budget | done | `arena/33fd30e7-tradebot2` | `app/collector.py`, `collector/collect.py`, `data/snapshot.json`, `assets/js/{pages,category,dashboard}.js`, `executive-summary.html` | `data/snapshot.json` trimmed from `28,033,008` bytes to `1,029,188` bytes (`218` logged resolutions, newest `50`/topic) while showing real 30d counts (`44,192` total: `crypto: 41,260`, `gas_prices: 1,674`, `golf: 1,112`, `culture: 128`, `elections: 18`) |
-| T3 | Fix broken HTML/links (`index.html` 404 `monitor/` link & false `/dashboard.html` disclaimer, `flagged.html` unclosed table + duplicate `F-13`, `portfolio.html` duplicate `pf-trades`, `sources.html` legacy chrome) + harden `tools/{check_site,verify_site}.py` | done | `arena/33fd30e7-tradebot2` | `index.html`, `sources.html`, `flagged.html`, `portfolio.html`, `tools/{check_site,verify_site}.py` | `check_site.py --strict`, `check_site.py --published` (`95` HTML pages), `verify_site.py` (`sources.html` included) all pass with zero duplicate HTML IDs and zero broken links |
-| T4 | Trader UX & strategy sandbox: grouped topic->event board (`#group-toggle`), `j`/`k` shortcuts, clickable alert/ticker selection, `>= $0.10` swing context box, `GET /markets/trades` seconds overlay in `30s`/`5m` (`assets/js/live.js`) and `live/` (`live/assets/js/page-liquidity.js`), manual simulated trade ticket, custom strategy builder & candle backtester (`portfolio.html`) | done | `arena/33fd30e7-tradebot2` | `dashboard.html`, `portfolio.html`, `assets/js/{core,live,dashboard,portfolio}.js`, `live/assets/js/page-liquidity.js` | `tests/test_frontend.mjs` + `live/tests/smoke.mjs` (`87/87`) + `node --check` all pass |
+| T2 | Fix `28 MB` snapshot bloat & clamped `resolved_markets_30d: 40` bug; fix `collect.yml` 25m CI timeout via bulk `with_nested_markets=true` discovery + 60-series budget | done | `arena/33fd30e7-tradebot2` | `app/collector.py`, `collector/collect.py`, `data/snapshot.json`, `assets/js/{pages,category,dashboard}.js`, `executive-summary.html` | `data/snapshot.json` trimmed from `28,033,008` bytes to `1,029,188` bytes (`218` logged resolutions, newest `50`/topic) while showing real 30d counts (`44,192` total: `crypto: 41,260`, `gas_prices: 1,674`, `golf: 1,112`, `culture: 128`, `elections: 18`); `collect.yml` completed in `1m30s` (down from `25m19s` timeout) |
+| T3 | Fix broken HTML/links (`index.html` 404 `monitor/` link, `flagged.html` unclosed table + duplicate `F-13`, `portfolio.html` duplicate `pf-trades`, `sources.html` legacy chrome) + harden `tools/{check_site,verify_site}.py` | done | `arena/33fd30e7-tradebot2` | `index.html`, `sources.html`, `flagged.html`, `portfolio.html`, `tools/{check_site,verify_site}.py` | `check_site.py --strict`, `check_site.py --published` (`95` HTML pages), `verify_site.py` (`sources.html` included) all pass with zero duplicate HTML IDs and zero broken links |
+| T4 | Trader UX & strategy sandbox: grouped topic->event board (`#group-toggle`), `j`/`k` shortcuts, clickable alert/ticker selection, `>= $0.10` swing context box, `GET /markets/trades` seconds overlay in `30s`/`5m` (`assets/js/live.js`) and `live/` (`live/assets/js/page-liquidity.js`), manual simulated trade ticket, custom strategy builder & candle backtester (`portfolio.html`) | done | `arena/33fd30e7-tradebot2` | `dashboard.html`, `portfolio.html`, `assets/js/{core,live,dashboard,portfolio}.js`, `live/assets/js/page-liquidity.js` | `tests/test_frontend.mjs` + `live/tests/smoke.mjs` (`87/87`) + `live/tests/quote_rules.mjs` + `node --check` all pass |
 | T5 | Regression tests covering wide books, `Entertainment` taxonomy, resolution trimming, fixture collector, and frontend DOM behavior | done | `arena/33fd30e7-tradebot2` | `tests/{test_topics,test_alerts,test_collector}.py`, `tests/test_frontend.mjs` | `pytest -q`, `tests/test_{fees,engine,pipeline}.py`, `tests/run_fixture_pipeline.py`, `tests/test_frontend.mjs` |
-
-

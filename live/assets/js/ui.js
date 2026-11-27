@@ -103,9 +103,15 @@ var TBUI = (() => {
     const sc = a.score || {};
     const link = `market.html?ticker=${encodeURIComponent(a.ticker)}&series=${encodeURIComponent(a.seriesTicker || (a.ticker || '').split('-')[0])}`;
     const srcApi = api.url(`/markets/${encodeURIComponent(a.ticker)}/orderbook`);
-    return `<div class="msg ${up ? 'up' : 'down'}" data-id="${esc(a.id)}">
+    /* A synthetic "Insert demo alert" message must be impossible to mistake for a real
+       move of $0.10 or more when someone screenshots the chat. The badge is rendered
+       from the same flag that the alerts table already prints (page-alerts.js). */
+    const demoBadge = a.demo
+      ? '<span class="pill warn sm" title="Synthetic alert inserted by the Insert demo alert button — not a price move observed on the API">DEMO</span>'
+      : '';
+    return `<div class="msg ${up ? 'up' : 'down'}${a.demo ? ' demo' : ''}" data-id="${esc(a.id)}">
       <div class="top">
-        <span>${esc(window)}</span>
+        <span>${esc(window)}</span>${demoBadge}
         ${t ? `<span class="tag" title="${esc(t.note)}">${t.icon} ${esc(t.name)}</span>` : ''}
         <span class="spread"></span>
         <span class="src"><a href="${esc(srcApi)}" target="_blank" rel="noopener">API</a></span>
