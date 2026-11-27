@@ -408,7 +408,6 @@ Rechecked the official references listed above, plus [trades](https://docs.kalsh
 
 ---
 
->>>>>>> origin/main
 ## Session `arena/a32cdd24-tradebot2` — verification and repository audit
 
 Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `aca6cc8`); it cannot be renamed or moved to the requested `session-<id>/<task>` naming convention. No other task in this board is being taken over. This session claims only an independent final audit and recording of findings; it will not change canonical page/data ownership or execute any demo-account trade.
@@ -564,3 +563,20 @@ Base: `main` @ `a718fd7` (branch fixed by runtime to `arena/ac928922-tradebot2`)
 ### Coordination requests to other owners (not edited by this session)
 - **`flagged.html` / `live/flagged.html`:** Official Kalshi settlement docs ([`market_settlement#fees`](https://docs.kalshi.com/getting_started/market_settlement#fees)) explicitly state settlement fees are zero for simple YES/NO determinations (fees/whole-cent rounding apply only to sub-cent scalar settlements). Root F-05 can cite this official statement on a future pass.
 
+---
+
+## Session `arena/ba08e592-tradebot2` — requirements register audit (claimed 2026-11-27)
+
+Runtime branch: `arena/ba08e592-tradebot2` (base `main` @ `aca6cc8`, fast-forwarded to `260c432`).
+No other branch will be created. This session claims work no other active session has claimed; it does not
+touch `live/**` (session `arena/600a5dcd` R1), `README.md`/`EXECUTIVE_SUMMARY.md` (sessions `arena/4a7cc110` D1,
+`arena/600a5dcd` R2, `arena/b4e1fe8a` J1 appendix), `scripts/kalshi_collector.py` (session `arena/bce83713`),
+`tools/verify_site.py` (session `arena/b4e1fe8a` J2), `index.html`/`flagged.html`/`live/flagged.html`
+(session `arena/600a5dcd` R2 / prior audits), or the PR-merge-deploy step (sessions `arena/b4e1fe8a` J3 and
+`arena/600a5dcd` R3 both claim it — this session will not race them).
+
+| Task | Status | Owner | File scope |
+|---|---|---|---|
+| K1 — line-by-line audit of the brief's requirements register: every row checked against the repo and official Kalshi docs; statuses corrected; missing brief lines added; unverifiable claims blanked and flagged | in progress | `arena/ba08e592-tradebot2` | `requirements.html`, `data/requirements.json`, `assets/js/requirements.js`, this section of `COORDINATION.md` |
+
+Claim pushed before implementation, per the board's convention.
