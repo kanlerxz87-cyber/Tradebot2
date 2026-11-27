@@ -252,6 +252,23 @@ for (const file of ['flagged.html', 'executive-summary.html', 'verification.html
   const doc = new JSDOM(fs.readFileSync(path.join(live, file)), { url: 'https://example.test/Tradebot2/live/' + file }).window.document;
   rowsSourced(doc, file);
 }
+console.log('\n=== Published root landing: runtime navigation and source rows ===');
+{
+  const dom = new JSDOM(fs.readFileSync(path.join(repo, 'index.html'), 'utf8'), {
+    url: 'https://example.test/Tradebot2/index.html', runScripts: 'outside-only'
+  });
+  doms.push(dom); const w = dom.window;
+  for (const script of w.document.querySelectorAll('script')) {
+    const src = script.getAttribute('src');
+    w.eval(src ? fs.readFileSync(path.join(repo, src), 'utf8') + '\nwindow.TB = TB;' : script.textContent);
+  }
+  const nav = [...w.document.querySelectorAll('#site-head nav a')];
+  eq(nav.length, 13, 'root renders all shared navigation entries');
+  ok(nav.every(a => new URL(a.href).pathname.startsWith('/Tradebot2/live/')), 'root nav has no double-live or prefixed-absolute-URL links');
+  eq(new URL(w.document.querySelector('#site-head .brand').href).pathname, '/Tradebot2/live/index.html', 'root brand goes to maintained desk');
+  rowsSourced(w.document, 'published root landing');
+  ok(!w.document.querySelector('.hero .pill.live'), 'landing does not assert an API check it never performed');
+}
 for (const dom of doms) dom.window.close();
 console.log(`\n${failures ? 'FAIL' : 'ALL PASS'}: ${checks - failures}/${checks} checks; mocked API only.\n`);
 process.exit(failures ? 1 : 0);

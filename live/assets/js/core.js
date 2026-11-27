@@ -286,8 +286,8 @@ var TB = (() => {
    */
   function quotedPrice(price, size) {
     const p = num(price);
-    if (p === null) return null;
-    if (p <= 0) {
+    if (p === null || p < 0 || p > 1) return null;
+    if (p === 0) {
       const q = num(size);
       return (q !== null && q > 0) ? p : null;
     }
@@ -313,7 +313,10 @@ var TB = (() => {
       observedAt: ctx && ctx.observedAt != null ? ctx.observedAt : null,
       fallback: !!(ctx && ctx.fallback),
       sourceUrl: ctx && ctx.sourceUrl || api.url(`/markets/${encodeURIComponent(m.ticker)}`),
-      yesBid, yesAsk, noBid: num(m.no_bid_dollars), noAsk: num(m.no_ask_dollars),
+      // NO bid size is the complementary YES-ask size; the reverse holds for
+      // NO ask size. Apply the empty-zero guard to BOTH sides, not just YES.
+      yesBid, yesAsk, noBid: quotedPrice(m.no_bid_dollars, m.yes_ask_size_fp),
+      noAsk: quotedPrice(m.no_ask_dollars, m.yes_bid_size_fp),
       yesBidSize: num(m.yes_bid_size_fp), yesAskSize: num(m.yes_ask_size_fp),
       last, prev, mid,
       /* price used for swings/charts: last trade if present, else bid/ask mid. Tagged with which. */

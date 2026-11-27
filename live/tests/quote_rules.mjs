@@ -43,6 +43,12 @@ const penny = TB.normMarket({ ticker: 'TEST-SIZED-ZERO', yes_bid_dollars: '0.000
   yes_ask_dollars: '0.0100', yes_ask_size_fp: '50.00', last_price_dollars: '0.0000' }, {});
 ok('explicit 0c bid WITH positive size survives', penny.yesBid === 0);
 ok('sized 0c/1c spread is exactly 1c', penny.spread === 0.01);
+const emptyNo = TB.normMarket({ ticker: 'TEST-NO-EMPTY', no_bid_dollars: '0.0000', no_ask_dollars: '0.0000',
+  yes_ask_size_fp: '0.00', yes_bid_size_fp: '0.00' }, {});
+ok('empty NO bid also remains blank', emptyNo.noBid === null);
+ok('empty NO ask also remains blank', emptyNo.noAsk === null);
+ok('negative price is not a quote even if sized', TB.quotedPrice('-0.01', '100') === null);
+ok('above-$1 binary quote is rejected', TB.quotedPrice('1.01', '100') === null);
 ok('threshold remains $0.10', TB.ALERT_THRESHOLD === 0.1);
 ok('sub-cent dollars remain precise', TB.cents(0.038) === 3.8);
 ok('10c move exact in cents', TB.cents(0.66) - TB.cents(0.56) === 10);
