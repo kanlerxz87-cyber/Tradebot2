@@ -17,8 +17,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: kalshi-data
-  cancel-in-progress: true
+  group: kalshi-data-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   collect:
@@ -36,6 +36,7 @@ jobs:
         run: |
           python tools/build_snapshot.py --out data
           python tools/build_category_pages.py
+          python tools/build_live_snapshot.py --verify-live
       - name: Validate snapshot schema and source links
         run: |
           python - <<'PY'
@@ -62,11 +63,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: kalshi-data
-          path: data/
+          path: |
+            data/
+            live/data/fallback-snapshot.json
           retention-days: 14
       - name: Commit refreshed snapshot to this branch
         run: |
-          git add -A data gas-prices.html elections.html culture.html crypto.html golf.html
+          git add -A data live/data/fallback-snapshot.json gas-prices.html elections.html culture.html crypto.html golf.html
           if git diff --cached --quiet; then
             echo "no data changes"
             exit 0
