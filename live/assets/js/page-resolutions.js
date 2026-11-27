@@ -43,7 +43,7 @@
     const host = qs('#resolved');
     if (!rows.length) { host.innerHTML = '<div class="t-blank" style="padding:.6rem">No resolved markets match.</div>'; return; }
     host.innerHTML = `<div class="table-wrap"><table><thead><tr>
-      <th>Topic</th><th>Market</th><th>Result</th><th class="num">Final price</th><th>Settled</th><th>Official settlement source</th><th>Sources</th>
+      <th>Topic</th><th>Market</th><th>Result</th><th class="num">Reported YES settlement value ($)</th><th>Settled</th><th>Official settlement source</th><th>Sources</th>
       </tr></thead><tbody>
       ${rows.map(m => {
         const t = topicById(m.topic);
@@ -53,8 +53,8 @@
           <td><span class="t">${esc(m.title)}</span><div class="s mono">${esc(m.ticker)}</div></td>
           <td>${TBUI.statusPill(m)}</td>
           <td class="num">${m.settlementValue !== null ? dollar(m.settlementValue, 4) : TBUI.missing()}</td>
-          <td>${m.settlementTs ? new Date(m.settlementTs).toLocaleString() : '<span class="t-blank">—</span>'}</td>
-          <td class="src">${ss.length ? ss.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>`).join('<br>') : '<span class="t-blank">not returned</span>'}</td>
+          <td>${m.settlementTs ? new Date(m.settlementTs).toLocaleString() : TBUI.missing()}</td>
+          <td class="src">${ss.length ? ss.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>`).join('<br>') : TBUI.missing()}</td>
           <td class="src"><a href="${esc(TBUI.source(m))}" target="_blank" rel="noopener">market API</a></td>
         </tr>`;
       }).join('')}</tbody></table></div>`;

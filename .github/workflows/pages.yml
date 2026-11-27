@@ -13,9 +13,8 @@
 # is exactly how the previous revision broke publishing).
 name: Verify published site
 
-# `pull_request` was removed: `push` already covers every branch in this repository, and
-# the duplicate started a second identical job that this cancel-in-progress group then
-# cancelled, leaving a cancelled (red) check on a green commit.
+# Keep PR checks (including forks). Event/ref-scoped concurrency below prevents
+# push and PR runs from cancelling one another.
 on:
   push:
     branches: [main, "arena/**"]
@@ -62,8 +61,10 @@ jobs:
       - name: Engine tests
         run: python -m pytest -q
 
-      - name: Canonical site data, required pages and local links
-        run: python tools/verify_site.py
+      - name: Canonical site data, required pages and published-tree links
+        run: |
+          python tools/verify_site.py
+          python tools/check_site.py --published
 
       - name: Data integrity (empty datasets and count drift fail here)
         run: python3 tools/audit_data.py --data-dir data

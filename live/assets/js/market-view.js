@@ -13,8 +13,13 @@ var TBView = (() => {
     if (meta) meta.textContent = data.note;
   }
   async function ladder(host, meta, m, levels = 10) {
-    if (!host || !m) return;
-    host.dataset.ticker = m.ticker;
+    if (!host) return;
+    host.dataset.ticker = m ? m.ticker : '';
+    if (!m) {
+      host.innerHTML = '<div class="t-blank">No verified market selected; current liquidity is unverified.</div>';
+      if (meta) meta.textContent = '';
+      return;
+    }
     if (TBData.state.fallback || m.fallback) {
       host.innerHTML = '<div class="t-blank">Current liquidity unverified. The dated capture is not an executable book.</div>';
       if (meta) meta.textContent = 'No current-size estimate is substituted.';
@@ -35,8 +40,9 @@ var TBView = (() => {
     }
   }
   async function trades(host, m) {
-    if (!host || !m) return;
-    host.dataset.ticker = m.ticker;
+    if (!host) return;
+    host.dataset.ticker = m ? m.ticker : '';
+    if (!m) { host.innerHTML = '<div class="t-blank">No verified market selected; trade tape is unavailable.</div>'; return; }
     if (TBData.state.fallback || m.fallback) { host.innerHTML = '<div class="t-blank">Current trade tape unverified in snapshot mode.</div>'; return; }
     try {
       const r = await TB.api.trades({ ticker: m.ticker, limit: 15 });

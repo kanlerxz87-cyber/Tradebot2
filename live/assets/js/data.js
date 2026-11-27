@@ -471,7 +471,7 @@ var TBData = (() => {
         t.settledAt = m.settlementTs; continue;
       }
       // No order execution at closed/determined/disputed/amended or paused.
-      if (m.status !== 'active') continue;
+      if (m.status !== 'active' || (m.closeTime && Date.parse(m.closeTime) <= Date.now())) continue;
       const bid = exitBid(m, t.side), size = t.side === 'yes' ? m.yesBidSize : m.yesAskSize;
       if (bid == null) continue;
       if (!t.marks.length || t.marks[t.marks.length - 1].t !== m.observedAt) {
@@ -514,7 +514,8 @@ var TBData = (() => {
     let openValue = 0, unrealized = 0, unknown = 0;
     for (const t of open) {
       const m = marketByTicker(t.ticker), bid = m && exitBid(m, t.side);
-      const known = isQuoteFresh(m) && m.status === 'active' && bid != null;
+      const known = isQuoteFresh(m) && m.status === 'active' && bid != null
+        && !(m.closeTime && Date.parse(m.closeTime) <= Date.now());
       t.markCents = known ? TB.cents(bid) : null;
       t.upnl = known ? Math.round((bid * t.qty - t.entry * t.qty - t.fee) * 1e4) / 1e4 : null;
       t.mark = known ? bid * t.qty : null;

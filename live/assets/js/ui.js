@@ -46,8 +46,8 @@ var TBUI = (() => {
         ${o.topic ? `<td>${t ? t.icon + ' ' + esc(t.name) : missing()}</td>` : ''}
         <td><span class="t">${esc(m.title)}</span><div class="s mono">${esc(m.ticker)}</div>${m.eventTitle ? `<div class="s">${esc(m.eventTitle)}</div>` : ''}</td>
         <td>${statusPill(m)}</td><td class="num">${priceCell(m)}</td><td class="num">${m.yesBid === null ? missing() : centsLabel(TB.cents(m.yesBid))}</td>
-        <td class="num">${m.yesAsk === null ? missing() : centsLabel(TB.cents(m.yesAsk))}</td><td class="num">${compact(m.volume24h)}</td>
-        <td class="num">${compact(m.oi)}</td><td>${m.closeTime ? dateShort(m.closeTime) + ' ' + timeShort(m.closeTime) : missing()}</td>
+        <td class="num">${m.yesAsk === null ? missing() : centsLabel(TB.cents(m.yesAsk))}</td><td class="num">${m.volume24h == null ? missing() : compact(m.volume24h)}</td>
+        <td class="num">${m.oi == null ? missing() : compact(m.oi)}</td><td>${m.closeTime ? dateShort(m.closeTime) + ' ' + timeShort(m.closeTime) : missing()}</td>
         <td class="src">${marketSourceLinks(m)}</td>${o.actions ? `<td>${o.actions(m)}</td>` : ''}</tr>`; }).join('')}
       </tbody></table></div>`;
   }
@@ -62,7 +62,7 @@ var TBUI = (() => {
       return `<tr>${o.topic ? `<td>${t ? t.icon + ' ' + esc(t.name) : missing()}</td>` : ''}
         <td><span class="t">${r.title ? esc(r.title) : missing()}</span><div class="s mono">${esc(r.eventTicker)}</div></td>
         <td class="num">${r.marketCount}</td><td>${esc(r.state === 'LIVE' ? r.liveCount + ' active (last read)' : r.state)}</td>
-        <td class="num">${compact(r.contracts24)}</td><td class="num">${r.vol24 === null ? missing() : dollar(r.vol24, 0)}</td>
+        <td class="num">${r.contracts24 == null ? missing() : compact(r.contracts24)}</td><td class="num">${r.vol24 === null ? missing() : dollar(r.vol24, 0)}</td>
         <td>${r.resolved.length ? r.resolved.slice(0, 5).map(m => `${esc(m.yesSubTitle || m.title)} <b>${esc(m.result.toUpperCase())}</b>${m.status === 'finalized' ? '' : ' (status unverified/provisional)'}`).join('<br>') : '—'}</td>
         <td class="src">${link(api.url(`/events/${encodeURIComponent(r.eventTicker)}`), 'event API')} ·
           ${link(api.url('/markets', { event_ticker: r.eventTicker }), 'contracts API')}</td></tr>`;
@@ -107,6 +107,7 @@ var TBUI = (() => {
   }
   function contextTable(host, m) {
     if (!host) return;
+    if (!m || !m.ticker) { host.innerHTML = '<div class="t-blank">No verified contract selected; context is unverified.</div>'; return; }
     const moves = TBData.alerts().filter(a => a.ticker === m.ticker).slice(0, 12);
     const refs = (m.eventSettlementSources || []).filter(s => link(s.url, s.name));
     host.innerHTML = `<p class="hint">Pins mark observed ≥$0.10 moves. The links below are the contract's official reference/settlement sources,

@@ -21,7 +21,7 @@
     const summary = TBData.computeStats().byTopic.find(t => t.id === topicId);
     qs('#kpis').innerHTML = [
       TBUI.kpi('Live markets', String(live.length), `${new Set(mk.map(m => m.eventTicker)).size} events`),
-      TBUI.kpi('Notional traded', dollar(summary.notional, 0), 'calculated from reported face values; not cash traded'),
+      TBUI.kpi('Lifetime face proxy', dollar(summary.notional, 0), 'calculated from reported face values; not cash traded'),
       TBUI.kpi('24h notional', dollar(summary.vol24, 0), 'missing face values stay blank'),
       TBUI.kpi('Resolved', String(resolved.length), 'YES/NO results from the API')
     ].join('');
@@ -63,11 +63,11 @@
       <th>Series</th><th>Title</th><th class="num">Volume (all events)</th><th>Frequency</th><th>Settlement sources (official)</th><th>Contract</th></tr></thead><tbody>
       ${list.map(s => `<tr>
         <td class="mono">${esc(s.ticker)}</td>
-        <td>${esc(s.title)}</td>
-        <td class="num">${compact(s.volume)}</td>
-        <td>${esc(s.frequency || '—')}</td>
-        <td class="src">${(s.settlementSources || []).slice(0, 4).map(x => x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name || 'source')}</a>` : esc(x.name || '')).join('<br>') || '<span class="t-blank">—</span>'}</td>
-        <td class="src">${s.contractTermsUrl ? `<a href="${esc(s.contractTermsUrl)}" target="_blank" rel="noopener">terms (PDF)</a>` : '<span class="t-blank">—</span>'}
+        <td>${s.title ? esc(s.title) : TBUI.missing()}</td>
+        <td class="num">${s.volume == null ? TBUI.missing() : compact(s.volume)}</td>
+        <td>${s.frequency ? esc(s.frequency) : TBUI.missing()}</td>
+        <td class="src">${(s.settlementSources || []).slice(0, 4).map(x => x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name || 'source')}</a>` : esc(x.name || '')).join('<br>') || TBUI.missing()}</td>
+        <td class="src">${s.contractTermsUrl ? `<a href="${esc(s.contractTermsUrl)}" target="_blank" rel="noopener">terms (PDF)</a>` : TBUI.missing()}
           <div><a href="${esc(api.url(`/series/${encodeURIComponent(s.ticker)}`))}" target="_blank" rel="noopener">series API</a></div></td>
       </tr>`).join('')}
       </tbody></table></div>`;

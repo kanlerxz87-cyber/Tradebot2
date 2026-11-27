@@ -16,7 +16,15 @@
   function renderEvents() {
     const needle = qs('#evSearch').value.toLowerCase();
     const rows = TBData.rankEvents().rows.filter(r => r.state === 'LIVE' && (!needle || ((r.title || '') + r.eventTicker).toLowerCase().includes(needle)));
-    TBUI.eventsTable(qs('#events'), rows, { limit: 40 });
+    const host = qs('#events'); host.replaceChildren();
+    for (const topic of TB.TOPICS) {
+      const group = document.createElement('section'); group.dataset.topic = topic.id;
+      group.style.marginTop = '1rem';
+      group.innerHTML = `<div class="spread"><h3>${topic.icon} ${esc(topic.name)}</h3><a href="${TB.pageUrl('topics/' + topic.id + '.html')}">All selected ${esc(topic.name.toLowerCase())} contracts →</a></div>`;
+      const table = document.createElement('div'); group.appendChild(table);
+      TBUI.eventsTable(table, rows.filter(r => r.topic === topic.id), { topic: false, limit: 10 });
+      host.appendChild(group);
+    }
   }
   function renderChats() {
     const all = TBData.alerts(), roi = TBUI.roiAlerts(all);
@@ -31,7 +39,7 @@
   async function drawChart() {
     const m = TBData.marketByTicker(chartPick);
     await TBView.price(qs('#dashChart'), m, spanSeconds, interval, qs('#dashChartMeta'));
-    if (m) await TBView.ladder(qs('#dashLadder'), qs('#dashLiqMeta'), m, 8);
+    await TBView.ladder(qs('#dashLadder'), qs('#dashLiqMeta'), m, 8);
     TBUI.contextTable(qs('#moveContext'), m || { ticker: '', eventSettlementSources: [] });
   }
   function signed(v) { return v == null ? '—' : (v >= 0 ? '+' : '') + dollar(v, 2); }

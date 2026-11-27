@@ -137,7 +137,8 @@ console.log('\n=== Quotes, aggregation, unknown values and ranking ===');
   ok(D.state.freshCount > 0, 'selected cohort re-read through tickers-only official route');
   ok(net.calls.some(u => u.pathname.endsWith('/markets') && u.searchParams.has('tickers')), 'batch quote route used');
   eq(doc.querySelectorAll('#topics .topic-card').length, 5, 'five distinct topic cards');
-  ok(doc.querySelector('#events tbody tr'), 'grouped events rendered'); rowsSourced(doc, 'dashboard');
+  ok(doc.querySelector('#events tbody tr'), 'grouped events rendered');
+  eq(doc.querySelectorAll('#events section[data-topic]').length, 5, 'event ranking has five separate topic groups'); rowsSourced(doc, 'dashboard');
   const stats = D.computeStats(); ok(stats.live > 0 && stats.markets > 0, 'counts reflect actual loaded selection');
   const rows = D.rankEvents().rows;
   ok(rows.every((r, i) => i === 0 || (rows[i - 1].vol24 ?? -1) >= (r.vol24 ?? -1)), 'consistent face-notional descending ranking');
@@ -179,6 +180,10 @@ console.log('\n=== Paper execution, bid marks and finalization safety ===');
   m.status = 'disputed'; D.markToMarket(); eq(D.paperState().trades[0].status, 'open', 'disputed YES is not a settlement');
   m.status = 'finalized'; m.price = null; D.markToMarket();
   const t = D.paperState().trades[0]; eq(t.status, 'closed', 'finalized result settles even if no quote price'); eq(t.exit, 1, 'YES finalized payout'); eq(t.exitFee, 0, 'no settlement fee');
+  D.resetPaper(); m = set({}); order(m, { strategyId: 'S1-momentum' });
+  m.closeTime = new Date(w.Date.now() - 1).toISOString(); m.yesBid = 0.2;
+  D.markToMarket(); eq(D.paperState().trades[0].status, 'open', 'passed close time blocks exit while status lags');
+  eq(D.portfolio().equity, null, 'post-close pending marks are not executable equity');
   D.resetPaper(); m = set({}); order(m); m.observedAt -= 600000;
   eq(D.portfolio().equity, null, 'unknown/stale open marks leave equity blank');
   D.resetPaper(); m = set({}); D.savePaper({ ...D.paperState(), auto: true });
@@ -211,6 +216,12 @@ for (const file of ['alerts.html', 'liquidity.html', 'portfolio.html', 'resoluti
     const text = doc.querySelector('#ladder').textContent;
     ok(text.includes('30¢') && text.includes('60¢'), 'ladder selects nearest ask and bid even if input unsorted');
     ok(!text.includes('90¢') && !text.includes('20¢'), 'far/worst book levels not substituted for best'); rowsSourced(doc, 'one-level book');
+    await w.TBView.ladder(doc.querySelector('#ladder'), doc.querySelector('#liqMeta'), null);
+    eq(doc.querySelectorAll('#ladder tbody tr').length, 0, 'no selection clears old current-liquidity rows');
+    await w.TBView.trades(doc.querySelector('#trades'), null);
+    eq(doc.querySelectorAll('#trades tbody tr').length, 0, 'no selection clears old trade rows');
+    w.TBUI.contextTable(doc.querySelector('#moveContext'), null);
+    eq(doc.querySelectorAll('#moveContext a').length, 0, 'no selection does not fabricate an empty-ticker source');
   }
   if (file === 'portfolio.html') {
     eq(doc.querySelectorAll('#stratTable tbody tr').length, 4, 'four documented paper strategies');

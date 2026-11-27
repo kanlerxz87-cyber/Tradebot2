@@ -10,7 +10,12 @@
   }
   async function draw() {
     const m = TBData.marketByTicker(ticker);
-    if (!m) { TBChart.empty(qs('#chart'), 'No verified market selected.'); return; }
+    if (!m) {
+      TBChart.empty(qs('#chart'), 'No verified market selected.');
+      qs('#mktMeta').textContent = 'No verified market selected.';
+      await Promise.all([TBView.ladder(qs('#ladder'), qs('#liqMeta'), null), TBView.trades(qs('#trades'), null)]);
+      TBUI.contextTable(qs('#moveContext'), null); return;
+    }
     qs('#chartTitle').textContent = m.ticker;
     TBUI.contractMeta(qs('#mktMeta'), m); TBUI.contextTable(qs('#moveContext'), m);
     await Promise.all([TBView.price(qs('#chart'), m, seconds, interval, qs('#chartMeta')),
