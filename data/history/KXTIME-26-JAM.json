@@ -15,6 +15,18 @@
     {
       "ask": 0.3,
       "bid": 0.29,
+      "bid_depth": 6633.29,
+      "last": 0.3,
+      "mid": 0.295,
+      "oi": 36689.37,
+      "spread": 0.01,
+      "t": "2026-11-27T20:21:59Z",
+      "ts": 1795810919,
+      "vol": 50328.03
+    },
+    {
+      "ask": 0.3,
+      "bid": 0.29,
       "bid_depth": 6653.29,
       "last": 0.3,
       "mid": 0.295,
@@ -28,7 +40,7 @@
   "series_ticker": "KXTIME",
   "subtitle": "James Talarico",
   "ticker": "KXTIME-26-JAM",
-  "title": "TIME\u2019s Person of the Year",
+  "title": "TIME’s Person of the Year",
   "topic": "culture",
   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-JAM"
 }

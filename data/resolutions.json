@@ -1,13 +1,14 @@
 {
   "counts": {
     "awaiting_result": 0,
-    "open": 296,
+    "open": 298,
     "resolved": 9,
     "resolved_no": 0,
     "resolved_yes": 9,
-    "total": 305
+    "total": 307
   },
   "generated_at": "2026-11-27T20:27:49Z",
+  "note": "Integration union of dated official records. No new API read inferred: each last_seen/source/status/result is preserved; counts are calculated from retained rows.",
   "records": [
     {
       "close_time": "2026-09-22T16:40:54Z",
@@ -2480,6 +2481,25 @@
       "topic": "elections"
     },
     {
+      "close_time": "2030-01-01T15:00:00Z",
+      "event_ticker": "KXECCOMPACT-30",
+      "expiration_value": "",
+      "first_seen": "2026-11-27T20:22:50Z",
+      "last_price_dollars": "0.9900",
+      "last_seen": "2026-11-27T20:22:50Z",
+      "result": null,
+      "series_ticker": "KXECCOMPACT",
+      "settlement_ts": null,
+      "settlement_value_dollars": null,
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXECCOMPACT-30",
+      "state": "open",
+      "status": "active",
+      "subtitle": "Before 2030",
+      "ticker": "KXECCOMPACT-30",
+      "title": "EC compact 270",
+      "topic": "elections"
+    },
+    {
       "close_time": "2027-12-24T15:00:00Z",
       "event_ticker": "KXMAXSHARDINGTEST-27DEC2410",
       "expiration_value": "",
@@ -3521,6 +3541,25 @@
       "status": "active",
       "subtitle": "Josh Shapiro",
       "ticker": "KXPRESNOMD-28-JS",
+      "title": "Democratic Primary winner",
+      "topic": "elections"
+    },
+    {
+      "close_time": "2028-11-07T15:00:00Z",
+      "event_ticker": "KXPRESNOMD-28",
+      "expiration_value": "",
+      "first_seen": "2026-11-27T20:22:50Z",
+      "last_price_dollars": "0.0040",
+      "last_seen": "2026-11-27T20:22:50Z",
+      "result": null,
+      "series_ticker": "KXPRESNOMD",
+      "settlement_ts": null,
+      "settlement_value_dollars": null,
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-JSTE",
+      "state": "open",
+      "status": "active",
+      "subtitle": "Jon Stewart",
+      "ticker": "KXPRESNOMD-28-JSTE",
       "title": "Democratic Primary winner",
       "topic": "elections"
     },
@@ -4718,7 +4757,7 @@
       "status": "active",
       "subtitle": "Abdul El-Sayed",
       "ticker": "KXTIME-26-ABD",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4737,7 +4776,7 @@
       "status": "active",
       "subtitle": "Adam Hamilton",
       "ticker": "KXTIME-26-ADA",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4756,7 +4795,7 @@
       "status": "active",
       "subtitle": "AI",
       "ticker": "KXTIME-26-AI",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4775,7 +4814,7 @@
       "status": "active",
       "subtitle": "Alexandria Ocasio-Cortez",
       "ticker": "KXTIME-26-ALE",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4794,7 +4833,7 @@
       "status": "active",
       "subtitle": "Annie Andrews",
       "ticker": "KXTIME-26-ANN",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4813,7 +4852,7 @@
       "status": "active",
       "subtitle": "Bad Bunny",
       "ticker": "KXTIME-26-BAD",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4832,7 +4871,7 @@
       "status": "active",
       "subtitle": "Benjamin Netanyahu",
       "ticker": "KXTIME-26-BEN",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4851,7 +4890,7 @@
       "status": "active",
       "subtitle": "Bernie Sanders",
       "ticker": "KXTIME-26-BER",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4870,7 +4909,7 @@
       "status": "active",
       "subtitle": "Christina Koch",
       "ticker": "KXTIME-26-CHR",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4889,7 +4928,7 @@
       "status": "active",
       "subtitle": "Chris Wright",
       "ticker": "KXTIME-26-CWRI",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4908,7 +4947,7 @@
       "status": "active",
       "subtitle": "Dario Amodei",
       "ticker": "KXTIME-26-DAR",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4927,7 +4966,7 @@
       "status": "active",
       "subtitle": "Donald Trump",
       "ticker": "KXTIME-26-DT",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4946,7 +4985,7 @@
       "status": "active",
       "subtitle": "Elon Musk",
       "ticker": "KXTIME-26-EM",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4965,7 +5004,7 @@
       "status": "active",
       "subtitle": "ChatGPT",
       "ticker": "KXTIME-26-GPT",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -4984,7 +5023,7 @@
       "status": "active",
       "subtitle": "Hakeem Jeffries",
       "ticker": "KXTIME-26-HAK",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5003,7 +5042,7 @@
       "status": "active",
       "subtitle": "James Talarico",
       "ticker": "KXTIME-26-JAM",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5022,7 +5061,7 @@
       "status": "active",
       "subtitle": "James Stephen \"Jimmy\" Donaldson / MrBeast",
       "ticker": "KXTIME-26-JAME",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5041,7 +5080,7 @@
       "status": "active",
       "subtitle": "Jared Kushner",
       "ticker": "KXTIME-26-JAR",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5060,7 +5099,7 @@
       "status": "active",
       "subtitle": "JD Vance",
       "ticker": "KXTIME-26-JDV",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5079,7 +5118,7 @@
       "status": "active",
       "subtitle": "Jensen Huang",
       "ticker": "KXTIME-26-JEN",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5098,7 +5137,7 @@
       "status": "active",
       "subtitle": "Jeremy Hansen",
       "ticker": "KXTIME-26-JER",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5117,7 +5156,7 @@
       "status": "active",
       "subtitle": "Jon Ossoff",
       "ticker": "KXTIME-26-JON",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5136,7 +5175,7 @@
       "status": "active",
       "subtitle": "Joshua Turek",
       "ticker": "KXTIME-26-JOS",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5153,9 +5192,9 @@
       "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-LUI",
       "state": "open",
       "status": "active",
-      "subtitle": "Luiz In\u00e1cio Lula da Silva",
+      "subtitle": "Luiz Inácio Lula da Silva",
       "ticker": "KXTIME-26-LUI",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5174,7 +5213,7 @@
       "status": "active",
       "subtitle": "Marco Rubio",
       "ticker": "KXTIME-26-MAR",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5193,7 +5232,7 @@
       "status": "active",
       "subtitle": "Mark Carney",
       "ticker": "KXTIME-26-MARK",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5212,7 +5251,7 @@
       "status": "active",
       "subtitle": "Mary Peltola",
       "ticker": "KXTIME-26-MARY",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5231,7 +5270,7 @@
       "status": "active",
       "subtitle": "Mohammad-Bagher Ghalibaf",
       "ticker": "KXTIME-26-MOH",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5250,7 +5289,7 @@
       "status": "active",
       "subtitle": "Mojtaba Khamenei",
       "ticker": "KXTIME-26-MOJ",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5267,9 +5306,9 @@
       "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-PET",
       "state": "open",
       "status": "active",
-      "subtitle": "P\u00e9ter Magyar",
+      "subtitle": "Péter Magyar",
       "ticker": "KXTIME-26-PET",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5288,7 +5327,7 @@
       "status": "active",
       "subtitle": "Pete Hegseth",
       "ticker": "KXTIME-26-PHEG",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5307,7 +5346,7 @@
       "status": "active",
       "subtitle": "Pope Leo XIV",
       "ticker": "KXTIME-26-POP",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5326,7 +5365,7 @@
       "status": "active",
       "subtitle": "Reid Wiseman",
       "ticker": "KXTIME-26-REI",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5345,7 +5384,7 @@
       "status": "active",
       "subtitle": "Sam Altman",
       "ticker": "KXTIME-26-SA",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5364,7 +5403,7 @@
       "status": "active",
       "subtitle": "Scott Colom",
       "ticker": "KXTIME-26-SCO",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5383,7 +5422,7 @@
       "status": "active",
       "subtitle": "Shehbaz Sharif",
       "ticker": "KXTIME-26-SHE",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5402,7 +5441,7 @@
       "status": "active",
       "subtitle": "Steve Witkoff",
       "ticker": "KXTIME-26-STE",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5421,7 +5460,7 @@
       "status": "active",
       "subtitle": "Troy Jackson",
       "ticker": "KXTIME-26-TRO",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5440,7 +5479,7 @@
       "status": "active",
       "subtitle": "Victor Glover",
       "ticker": "KXTIME-26-VIC",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5459,7 +5498,7 @@
       "status": "active",
       "subtitle": "Xi Jinping",
       "ticker": "KXTIME-26-XIJ",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {
@@ -5478,7 +5517,7 @@
       "status": "active",
       "subtitle": "Zohran Mamdani",
       "ticker": "KXTIME-26-ZOH",
-      "title": "TIME\u2019s Person of the Year",
+      "title": "TIME’s Person of the Year",
       "topic": "culture"
     },
     {

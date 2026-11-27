@@ -46,8 +46,8 @@
       "id": "gas",
       "name": "Gas prices",
       "rules": [
-        "series tag \u2208 {Oil & Gas}",
-        "series category \u2208 {Economics | Commodities}, title ~ /gas(oline)?\\s*pric/i"
+        "series tag ∈ {Oil & Gas}",
+        "series category ∈ {Economics | Commodities}, title ~ /gas(oline)?\\s*pric/i"
       ],
       "series": [
         "AAAGASD",
@@ -222,8 +222,8 @@
       "id": "elections",
       "name": "Elections",
       "rules": [
-        "series category \u2208 {Elections}",
-        "series tag \u2208 {US Elections | International elections | Presidential winner | Senate | House | Governor | Primaries | Nomination race | Leadership races | Referendums | Mayors & local | Election Combos}"
+        "series category ∈ {Elections}",
+        "series tag ∈ {US Elections | International elections | Presidential winner | Senate | House | Governor | Primaries | Nomination race | Leadership races | Referendums | Mayors & local | Election Combos}"
       ],
       "series": [
         "CLOSESTSTATE",
@@ -434,8 +434,8 @@
       "id": "culture",
       "name": "Culture",
       "rules": [
-        "series category \u2208 {Culture | Entertainment | Mentions}",
-        "series tag \u2208 {Music | Awards | Movies | Television | People | Video games | Oscars | Grammys | Collectibles | Critics Choice Awards | Reality TV | Music charts | Art | Food}"
+        "series category ∈ {Culture | Entertainment | Mentions}",
+        "series tag ∈ {Music | Awards | Movies | Television | People | Video games | Oscars | Grammys | Collectibles | Critics Choice Awards | Reality TV | Music charts | Art | Food}"
       ],
       "series": [
         "1SONG-DRAKE",
@@ -646,8 +646,8 @@
       "id": "crypto",
       "name": "Crypto",
       "rules": [
-        "series category \u2208 {Crypto}",
-        "series tag \u2208 {BTC | ETH | SOL | XRP | DOGE | BNB | HYPE | ZEC | NEAR | Shiba Inu | Crypto | Bitcoin | Ethereum | Solana | Zcash}"
+        "series category ∈ {Crypto}",
+        "series tag ∈ {BTC | ETH | SOL | XRP | DOGE | BNB | HYPE | ZEC | NEAR | Shiba Inu | Crypto | Bitcoin | Ethereum | Solana | Zcash}"
       ],
       "series": [
         "BITCOINMAXY",
@@ -858,7 +858,7 @@
       "id": "golf",
       "name": "Golf",
       "rules": [
-        "series tag \u2208 {Golf}"
+        "series tag ∈ {Golf}"
       ],
       "series": [
         "KXBDSHOLEINONE",
