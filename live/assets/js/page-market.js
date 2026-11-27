@@ -104,7 +104,10 @@
   function updatePxHint() {
     if (!mkt) return;
     const side = (qs('input[name="side"]:checked') || {}).value || 'yes';
-    const px = side === 'yes' ? mkt.yesAsk : (mkt.noAsk != null ? mkt.noAsk : (mkt.yesBid != null ? 1 - mkt.yesBid : null));
+    /* Same fill rule as TBData.openTrade: a NO order fills against the resting YES
+       bid (1 - yesBid). no_ask_dollars is 1.0000 whenever one side of the book is
+       empty, so quoting it would advertise a 100¢ fill that does not exist. */
+    const px = side === 'yes' ? mkt.yesAsk : (mkt.yesBid != null ? 1 - mkt.yesBid : null);
     qs('#pxHint').textContent = px == null ? 'no tradable price' : `fills at ${centsLabel(cents(px))} (${side.toUpperCase()} ask)`;
   }
 

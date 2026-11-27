@@ -61,6 +61,27 @@ jobs:
       - name: Live dashboard links, assets and fabrication check
         run: python3 live/tests/check_live.py
 
+      # Added by session arena/d06c45b3: a quoted zero is an absent order, not a 0c
+      # price, and a synthetic demo alert must stay badged. Both were real defects.
+      - name: Quote rules — zero is not a price, no phantom fills, demo alerts badged
+        run: node live/tests/quote_rules.mjs
+
+      - name: No published page claims a directory that does not exist
+        run: |
+          python3 - <<'PY'
+          import re, pathlib, sys
+          root = pathlib.Path('.')
+          bad = []
+          for p in list(root.glob('live/*.html')) + [root / 'index.html']:
+              text = p.read_text(encoding='utf-8')
+              for m in re.finditer(r'href="[^"]*?/?(legacy)/', text):
+                  if not (root / 'legacy').exists():
+                      bad.append(f'{p}: claims /legacy/ which is not in the repository')
+          for line in sorted(set(bad)):
+              print(line)
+          sys.exit(1 if bad else 0)
+          PY
+
       - name: Confirm the root is the publish target
         run: |
           test -f index.html
