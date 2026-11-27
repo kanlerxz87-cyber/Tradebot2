@@ -109,7 +109,7 @@ PR [#38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38) merged on 2026-1
 
 ## 8. Demo collector safety follow-up (2026-11-27 UTC)
 
-**Scope.** This follow-up implements the stale collector-safety task from PR [#16](https://github.com/kanlerxz87-cyber/Tradebot2/pull/16) on the fixed branch `arena/bce83713-tradebot2`. It is a targeted code and page audit, not a line-by-line re-verification of every historical file, every market row, or every external link. The current branch was rebased onto `main` at `037d65b` after PR #39 merged; a conflict in the append-only coordination board was resolved by preserving both the prior audit and this claim. No file or session work was discarded.
+**Scope.** This follow-up implements the stale collector-safety task from PR [#16](https://github.com/kanlerxz87-cyber/Tradebot2/pull/16) on the fixed branch `arena/bce83713-tradebot2`. It is a targeted code and page audit, not a line-by-line re-verification of every historical file, every market row, or every external link. The branch was first rebased onto `main` at `037d65b` after PR #39 merged, then onto `565df69` after PR #41 merged; both append-only coordination conflicts were resolved by retaining the complete upstream session records and this task's record. No file or session work was discarded.
 
 ### Official facts checked
 
@@ -131,10 +131,10 @@ PR [#38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38) merged on 2026-1
 |---|---|
 | `/tmp/tradebot2-venv/bin/python -m pytest -q` | **74 passed**, 2 subtests passed. Temporary venv; no dependency manifest changed. |
 | `python3 -m unittest discover -s scripts/tests -p 'test_*.py' -v` | **5 passed**, including environment isolation, active-child filtering, finalized-only YES/NO settlement, timestamp separation, and resolution-check rotation. |
-| `python3 tools/verify_site.py` | Pass; 12 pages, 373 local links, 128 markets, 44,192 resolution rows; source URL/schema checks passed. |
-| `python3 tools/check_site.py --root . --strict` | Pass; 14 canonical pages, 406 internal links. |
+| `python3 tools/verify_site.py` | Pass; 12 pages, 374 local links, 128 markets, 44,192 resolution rows; source URL/schema checks passed. |
+| `python3 tools/check_site.py --root . --strict` | Pass; 14 canonical pages, 407 internal links. |
 | `python3 scripts/verify_site.py` | Pass; JSON schema, five topics, official host patterns, 54 relative links. |
-| `python3 scripts/check_site.py` | Pass; 18 pages, no broken internal links. It checked **0 archived data rows** because ignored `site/data/` is absent; the tool reports that explicitly. |
+| `python3 scripts/check_site.py` | Pass; 18 pages, **0 data records checked**. Ignored `site/data/` is absent, so the archived data checks were skipped; the tool reports each archived table empty and no broken internal links. |
 | `python3 tools/verify_data.py --data-dir data` | Pass, but all separate `all_feed`, `high_roi_feed`, `markets`, `orderbooks`, `resolutions`, and `trades` collections are **0 rows**. This validates no records; it does not prove a populated feed. |
 | `python3 tests/run_fixture_pipeline.py` | Pass; fixture-only pipeline: 3 alerts, 3 simulated trades, 10 tracked markets. Fixtures are tests, not live data. |
 | `node live/tests/smoke.mjs` | **87/87** DOM checks passed using mocked official-shaped API responses; this is not an independent live-browser API call. |
