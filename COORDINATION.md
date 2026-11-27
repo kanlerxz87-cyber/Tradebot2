@@ -383,6 +383,31 @@ Base: `main` @ `b379d02`.
 
 ---
 
+## Session `arena/b4e1fe8a-tradebot2` — final integration verification (claimed 2026-11-27)
+
+Base: `main` @ `aca6cc8` (branch `arena/b4e1fe8a-tradebot2`). This session acts as the final integration session per the brief: line-by-line verification against official Kalshi docs, site build check, PR to `main`, merge without waiting, Pages deploy confirmation.
+
+| Task | Status | Owner | File scope |
+|---|---|---|---|
+| `J1-official-verification` | done | `arena/b4e1fe8a-tradebot2` | `COORDINATION.md`, `EXECUTIVE_SUMMARY.md`, `live/executive-summary.html`, `live/verification.html`, `live/flagged.html`, `README.md` (verification appendix only) |
+| `J2-site-gate` | done | `arena/b4e1fe8a-tradebot2` | `tools/verify_site.py`, `live/tests/check_live.py` (run only; edits only if gate is broken) |
+| `J3-pr-merge-deploy` | in progress | `arena/b4e1fe8a-tradebot2` | PR to `main`, Pages build check |
+
+Scope rule: this session edits only the files in `J1` scope. If a fix requires a file outside that scope, it will be logged here as a request instead of edited. Open PRs #16, #14, #6 (2026-11-22) predate this base and their claims are >60 minutes old with no commits on this branch; this session proceeds as final integration and notes any handoff here. No other session's files will be deleted.
+
+Official sources re-verified 2026-11-27 via docs.kalshi.com (fetch): `getting_started/demo_env`, `getting_started/api_environments`, `getting_started/quick_start_websockets`, `api-reference/market/get-market-candlesticks`, `api-reference/market/get-market-orderbook`, `getting_started/market_settlement`, `getting_started/market_lifecycle`, `api-reference/orders/create-order-v2`, `api-reference/market/get-markets`, `getting_started/api_keys`, `getting_started/rate_limits`, `api-reference/search/get-tags-for-series-categories`. Findings recorded in `J1` completion below.
+
+
+### J1 close-out and handoff — 27 November 2026
+
+Rechecked the official references listed above, plus [trades](https://docs.kalshi.com/api-reference/market/get-trades), [historical data](https://docs.kalshi.com/getting_started/historical_data), and [fixed-point migration](https://docs.kalshi.com/getting_started/fixed_point_migration). Updated the executive summaries, README and live verification page to distinguish the recorded probe from a current independent probe, correct settlement and trade-limit wording, and disclose incomplete discovery, notional proxy and defaulted inputs, missed between-poll moves, and hypothetical paper exits. These checks do not establish complete line-by-line verification of all published and archived content.
+
+**Parallel session coordination:** independently discovered active [PR #38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38), owner `arena/a32cdd24-tradebot2`, whose branch claims `live/flagged.html`, `flagged.html`, `index.html`, and `VERIFICATION_REPORT.md`. Its claim was not in our base when J1 was pushed. We reverted our local changes to its `live/flagged.html` and requested via [comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38#issuecomment-7226784894) that its owner document the audit limitations on the flagged page and fix duplicate F-13 IDs. No other session's work was discarded. Its PR independently corrects the broken `/legacy/` link and archive warning claims.
+
+**Unverified:** live API re-probe blocked by sandbox egress; demo credentials/orders absent; not every external link or archived page verified. Gate results are recorded at J2 below. Branch naming is fixed by runtime to `arena/b4e1fe8a-tradebot2`.
+
+---
+
 ## Session `arena/a32cdd24-tradebot2` — verification and repository audit
 
 Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `aca6cc8`); it cannot be renamed or moved to the requested `session-<id>/<task>` naming convention. No other task in this board is being taken over. This session claims only an independent final audit and recording of findings; it will not change canonical page/data ownership or execute any demo-account trade.
@@ -399,6 +424,14 @@ Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `ac
 - **Irregularities:** data-feed collections checked by `tools/verify_data.py` were empty (0 rows); root collector metadata is dated Nov 22 with `api_requests: 0`; live API wasn't re-tested; 11/22 fallback is static and explicitly not live; archive warnings are incomplete; demo-account credentials, order status and causal news attribution remain unverified. No demo trade sent.
 - **No conflict:** edits were limited to the audit report, root landing warning, review pages and this close-out. Branch name remains workbench-fixed `arena/a32cdd24-tradebot2`; task claim was pushed immediately before implementation.
 
+### Conflict and integration handoff — 27 November 2026
+
+PR #38 merged to main during this session. Its and our independently appended board sections conflicted during integration; both sections were retained without discarding either session. Discovered later session `arena/600a5dcd-tradebot2` claimed `live/**`, `README.md`, and `EXECUTIVE_SUMMARY.md` at 19:41 UTC, after this session's 19:39 claim but from the same older base and without seeing it. Our documentation edits were already committed before discovering that scope. Handoff requested to that session to preserve or supersede the audit disclosures while it continues its code work.
+
+J2 gate: `tools/verify_site.py` (12 pages, 373 links, 128 markets, 44,192 resolutions); `tools/check_site.py --strict` (14 pages, 406 links); `live/tests/check_live.py` (16 pages); `pytest` (69 passed); live jsdom smoke (87/87); and JS syntax checks passed. `verify_data.py` checked zero rows in the separate feed files and does not verify the full snapshot or current market values. Neither these checks nor the independent documentation review establish every external link or all requirements are complete.
+
+**J3 PR:** [#40](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40) created with sources, gate results, and unresolved items. Session `arena/600a5dcd-tradebot2` was notified of the earlier J1 claim and overlapping R1/R2 scopes in [the coordination handoff](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38#issuecomment-7226812700); that session is continuing functional integration. Merge and Pages verification are pending.
+
 ### PR and Pages record
 
 | PR | Result |
@@ -406,6 +439,10 @@ Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `ac
 | [#38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38) | Merged 2026-11-27 19:42:04 UTC as `260c43274dc6210148ebaaac9389a865851d6ee3`. PR checks `tests` and `verify` passed. |
 | GitHub Pages | `build_type: legacy`, source `main:/`; Pages build for merge commit `260c43274dc6210148ebaaac9389a865851d6ee3` reported `built` at 19:42:34 UTC. Build workflow: [run 46058528998](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058528998). The sandbox could not fetch `github.io` directly (TLS `SSL_ERROR_SYSCALL`), so HTTP content-level deployment was not independently confirmed here. |
 | Post-merge verify workflow | `Verify site and engine` passed: [run 46058529505](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058529505). A separate published-site run was cancelled by GitHub concurrency (`higher priority waiting request`); it is not reported as a test failure. PR checks themselves had passed before merge. |
+
+**Second board conflict:** PR #39 appended a deployment record concurrently. Both records were retained when merging `origin/main`; no other session changes were discarded. The global Pages workflow concurrency group cancelled the first PR #40 run; rerun 46058740196 passed, and a request to scope concurrency per ref was sent to the workflow owner.
+
+---
 
 ## Session `arena/d06c45b3-tradebot2` — live-dashboard data-integrity fixes (claimed 2026-11-27)
 
@@ -465,3 +502,5 @@ is inferred, no order is placed, and no credential is used.
    `"status":"active"`. The request filter enum (`unopened|open|closed|settled`) and the response enum
    (`initialized|inactive|active|closed|determined|disputed|amended|finalized`) are different vocabularies.
    `core.js` already handles both correctly; an earlier note in this session that it did not was wrong.
+
+**Third board conflict:** PR #41 merged concurrently; preserved both board appendices. PR #41 scopes the Pages verification concurrency group per event/ref and adds quote-integrity checks. Runtime quote fixes are owned by that session; this audit makes no claim to have independently re-probed them.

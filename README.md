@@ -152,3 +152,7 @@ The site is static: no build step, no framework, SVG/canvas charts.
 
 All open items, with evidence and what would close them, are on **`flagged.html`**. Multi-session history and task ownership are
 in **`COORDINATION.md`**.
+
+### Integration audit — 27 November 2026
+
+The [executive summary](EXECUTIVE_SUMMARY.md) and [live verification page](live/verification.html) describe the limits of the current integration. In particular, browser discovery is capped, the ranking is a notional proxy rather than actual dollars paid, snapshot polling can miss movements, and paper fills are hypothetical. Demo-account access and submitted orders were not verified. The recorded API probe is historical, not a guarantee of current connectivity. Official references: [markets](https://docs.kalshi.com/api-reference/market/get-markets), [order book](https://docs.kalshi.com/api-reference/market/get-market-orderbook), [historical cutoff](https://docs.kalshi.com/getting_started/historical_data), and [signed WebSockets](https://docs.kalshi.com/getting_started/quick_start_websockets). See [Flagged for Review](live/flagged.html) for open issues.

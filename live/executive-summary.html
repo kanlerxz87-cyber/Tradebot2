@@ -12,18 +12,30 @@
 <main class="wrap narrow">
 
   <h1>Executive summary</h1>
-  <p class="hint">Last verified against the official Kalshi documentation on <b>22 November 2026</b>. Every claim below links to the
-    page it came from. Anything that could not be confirmed is listed on the <a href="flagged.html">Flagged for review</a> page and is
-    <b>not</b> stated as fact anywhere on this site.</p>
+  <p class="hint">Last verified against the official Kalshi documentation on <b>27 November 2026</b> (re-verified from
+    <a href="https://docs.kalshi.com/getting_started/demo_env">demo_env</a>,
+    <a href="https://docs.kalshi.com/getting_started/api_environments">api_environments</a>,
+    <a href="https://docs.kalshi.com/getting_started/quick_start_websockets">quick_start_websockets</a>,
+    <a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks">candlesticks</a>,
+    <a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook">orderbook</a>,
+    <a href="https://docs.kalshi.com/getting_started/market_settlement">settlement</a>,
+    <a href="https://docs.kalshi.com/getting_started/market_lifecycle">lifecycle</a>,
+    <a href="https://docs.kalshi.com/api-reference/orders/create-order-v2">create-order-v2</a>,
+    <a href="https://docs.kalshi.com/api-reference/market/get-markets">get-markets</a>,
+    <a href="https://docs.kalshi.com/getting_started/api_keys">api_keys</a>,
+    <a href="https://docs.kalshi.com/getting_started/rate_limits">rate_limits</a> and
+    <a href="https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories">tags_by_categories</a>;
+    live probe <span class="mono">data/probe.json</span> 2026-11-27 shows <span class="mono">exchange_active: true</span> and CORS allowed for this origin).
+    Documentation links support API facts, not guarantees of completeness. Limitations and unverified items are listed on the
+    <a href="flagged.html">Flagged for review</a> page and below.</p>
 
   <section class="card">
     <h2>1. What this project is</h2>
     <p>A read-only, browser-native dashboard for Kalshi's <b>demo</b> exchange covering five topics — gas prices, elections,
-      culture, crypto and golf. It ranks the highest-dollar live events, runs two live scrolling alert chats for moves of
-      $0.10 or more, charts price and order-book liquidity, tracks every event to settlement, and runs four
-      <b>simulated</b> trading strategies whose results are categorised and analysed.</p>
-    <p>The site is static: HTML, CSS and JavaScript with no build step and no server. Data is fetched directly from the
-      official Kalshi Trade API by the browser at request time.</p>
+      culture, crypto and golf. It ranks events in the data it loads by a notional proxy, offers two alert feeds for observed moves of
+      $0.10 or more, charts price and order-book liquidity, displays available resolutions, and runs four
+      <b>simulated</b> strategies. Coverage and execution are limited as described below.</p>
+    <p>The site is static: HTML, CSS and JavaScript with no build step and no server. The browser attempts to fetch from the official Kalshi Trade API; an older, labelled snapshot is used if live fetching fails.</p>
   </section>
 
   <section class="card">
@@ -41,7 +53,7 @@
           <td><a href="https://docs.kalshi.com/getting_started/api_environments">api_environments</a></td></tr>
         <tr><td>Do demo credentials work on production?</td><td>No — credentials are not shared between environments</td>
           <td><a href="https://docs.kalshi.com/getting_started/demo_env">demo_env</a></td></tr>
-        <tr><td>Do demo prices reflect real markets?</td><td>No — “may not be reflective of those in real markets”</td>
+        <tr><td>Do demo prices reflect real markets?</td><td>They “may not be reflective of those in real markets”</td>
           <td><a href="https://docs.kalshi.com/getting_started/demo_env">demo_env</a></td></tr>
         <tr><td>Public market data needs auth?</td><td>No for REST market data; <b>yes</b> for every WebSocket connection</td>
           <td><a href="https://docs.kalshi.com/getting_started/quick_start_websockets">quick_start_websockets</a></td></tr>
@@ -49,7 +61,7 @@
           <td><a href="https://docs.kalshi.com/getting_started/fixed_point_migration">fixed_point_migration</a></td></tr>
         <tr><td>Contract counts</td><td>fixed-point strings, e.g. <span class="mono">"10.00"</span>, 2 dp</td>
           <td><a href="https://docs.kalshi.com/getting_started/fixed_point_migration">fixed_point_migration</a></td></tr>
-        <tr><td>Settlement payout</td><td>YES pays $1, NO pays $0</td>
+        <tr><td>Settlement payout</td><td>A winning YES or NO contract pays $1; the losing side pays $0</td>
           <td><a href="https://docs.kalshi.com/getting_started/market_settlement">market_settlement</a></td></tr>
         <tr><td>Market status enum</td><td>initialized · inactive · active · closed · determined · disputed · amended · finalized</td>
           <td><a href="https://docs.kalshi.com/getting_started/market_lifecycle">market_lifecycle</a></td></tr>
@@ -63,7 +75,7 @@
           <td><a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks">get-market-candlesticks</a></td></tr>
         <tr><td>Taker fee</td><td><span class="mono">ceil(0.07 × C × P × (1−P))</span></td>
           <td><a href="https://kalshi.com/docs/kalshi-fee-schedule.pdf">fee schedule (PDF)</a></td></tr>
-        <tr><td>Settlement fee</td><td>zero</td><td><a href="https://kalshi.com/docs/kalshi-fee-schedule.pdf">fee schedule (PDF)</a> · <a href="https://docs.kalshi.com/getting_started/market_settlement">market_settlement</a></td></tr>
+        <tr><td>Settlement fee</td><td>Zero for simple yes/no markets; exceptions can apply to scalar markets</td><td><a href="https://kalshi.com/docs/kalshi-fee-schedule.pdf">fee schedule (PDF)</a> · <a href="https://docs.kalshi.com/getting_started/market_settlement">market_settlement</a></td></tr>
         <tr><td>Historical cutoff</td><td>old settled markets move to <span class="mono">/historical/*</span>; live endpoints stop returning them</td>
           <td><a href="https://docs.kalshi.com/getting_started/historical_data">historical_data</a></td></tr>
         <tr><td>Rate limits</td><td>token buckets per read/write; 429 with <span class="mono">too_many_requests</span>; back off</td>
@@ -78,13 +90,13 @@
       simply the filter string sent to <span class="mono">GET /series</span>, taken from the values that
       <span class="mono">GET /search/tags_by_categories</span> actually returns.</p>
     <div class="table-wrap"><table>
-      <thead><tr><th>Topic</th><th>API filter</th><th>Status</th></tr></thead>
+      <thead><tr><th>Topic</th><th>API filter</th><th>Status and official source</th></tr></thead>
       <tbody>
-        <tr><td>Gas prices</td><td class="mono">category=Commodities&amp;tags=Oil &amp; Gas</td><td>⚠ includes crude/heating oil; no retail-gasoline tag exists (F-02)</td></tr>
-        <tr><td>Elections</td><td class="mono">category=Elections</td><td>Exact</td></tr>
-        <tr><td>Culture</td><td class="mono">category=Entertainment</td><td>⚠ “Culture” is not a Kalshi category (F-03)</td></tr>
-        <tr><td>Crypto</td><td class="mono">category=Crypto</td><td>Exact</td></tr>
-        <tr><td>Golf</td><td class="mono">category=Sports&amp;tags=Golf</td><td>Exact</td></tr>
+        <tr><td>Gas prices</td><td class="mono">category=Commodities&amp;tags=Oil &amp; Gas</td><td>⚠ includes crude/heating oil; no retail-gasoline tag exists (F-02) · <a href="https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories">API reference</a></td></tr>
+        <tr><td>Elections</td><td class="mono">category=Elections</td><td>Exact · <a href="https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories">API reference</a></td></tr>
+        <tr><td>Culture</td><td class="mono">category=Entertainment</td><td>⚠ “Culture” is not a Kalshi category (F-03) · <a href="https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories">API reference</a></td></tr>
+        <tr><td>Crypto</td><td class="mono">category=Crypto</td><td>Exact · <a href="https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories">API reference</a></td></tr>
+        <tr><td>Golf</td><td class="mono">category=Sports&amp;tags=Golf</td><td>Exact · <a href="https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories">API reference</a></td></tr>
       </tbody>
     </table></div>
     <p class="src">Category/tag values: <a href="https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories">get-tags-for-series-categories</a>
@@ -94,13 +106,12 @@
   <section class="card">
     <h2>4. What the dashboard does</h2>
     <ul class="tight">
-      <li><b>Ranking.</b> Events are ranked by traded notional (contracts × $1). 24-hour and total figures are both shown
-        and labelled with the API field they come from.</li>
+      <li><b>Ranking.</b> Loaded events are ranked by volume × contract notional, a payout-notional proxy rather than actual traded dollars; pagination and missing values can affect ranking.</li>
       <li><b>Alerts.</b> Two chats: all moves ≥ $0.10, and the subset passing a documented reversion screen. Each message
         links to its market and its raw API call.</li>
       <li><b>Charts.</b> Official 1/60/1440-minute candlesticks merged with observed snapshots; window selectable from 15 minutes to 7 days.</li>
       <li><b>Liquidity.</b> Resting contracts at every returned price level, with the ask side correctly derived from NO bids.</li>
-      <li><b>Resolutions.</b> Markets are followed past close until the API publishes YES/NO.</li>
+      <li><b>Resolutions.</b> Available YES/NO results are shown; capped discovery and the historical cutoff prevent a guarantee that every event is followed to resolution.</li>
       <li><b>Simulated trading.</b> Four strategies, fee-aware, auto-runnable, analysed by strategy, topic, side and price band.</li>
     </ul>
   </section>
@@ -111,6 +122,9 @@
       <li><b>No cause data.</b> Kalshi publishes prices and trades, not news. This site never asserts why a contract moved;
         the “what may have moved it” idea is handled on the <a href="flagged.html">flagged page</a> because it cannot be sourced.</li>
       <li><b>Demo subset.</b> Several real series have no demo markets. Empty topics are reported as empty, never filled with examples.</li>
+      <li><b>Incomplete coverage and data gaps.</b> Event discovery is capped, series pagination is not exhaustive, the live fallback is an older snapshot, and missing volume or notional can be defaulted in calculations. Rankings are not proven exhaustive or actual dollar turnover. See <a href="verification.html">verification and audit limitations</a> and <a href="https://docs.kalshi.com/getting_started/historical_data">historical cutoff</a>.</li>
+      <li><b>Observed moves only.</b> Polling compares snapshots and can miss swings that reverse between polls or while the page is closed; no continuous monitoring is guaranteed.</li>
+      <li><b>Simulated fills.</b> The browser paper engine can mark a closed market as exited at the last observed price, not an executable quote; results are hypothetical. <a href="https://docs.kalshi.com/api-reference/market/get-market-orderbook">Official order book reference</a>.</li>
       <li><b>Polling, not a tape.</b> The public page refreshes on a timer; true per-second streaming needs an authenticated
         WebSocket, which requires a key that is not in this repository.</li>
       <li><b>No live account.</b> The Kalshi demo-account balance needs signed API keys (F-06). The portfolio here is a local simulation.</li>
@@ -124,8 +138,8 @@
       <li>Open the <a href="index.html">dashboard</a> and check the freshness pill — green means data is under 2 minutes old.</li>
       <li>Use the topic pages to see one category at a time, events grouped inside each.</li>
       <li>Watch <a href="alerts.html">Alerts</a> for ≥$0.10 moves; click any message to reach that market's chart and book.</li>
-      <li>Judge a move by its <b>spread, top-of-book size and 24h volume</b> before acting — all three are on every row.</li>
-      <li>Let <a href="portfolio.html">auto-trade</a> run for days, then read the per-strategy table instead of the headline P&amp;L.</li>
+      <li>Review available spread, order-book size and volume; missing information may not be available for every row.</li>
+      <li>Use <a href="portfolio.html">paper trading</a> only as an experimental simulation, not evidence of actual returns.</li>
     </ol>
   </section>
 
