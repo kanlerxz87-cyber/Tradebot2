@@ -431,3 +431,13 @@ PR #38 merged to main during this session. Its and our independently appended bo
 J2 gate: `tools/verify_site.py` (12 pages, 373 links, 128 markets, 44,192 resolutions); `tools/check_site.py --strict` (14 pages, 406 links); `live/tests/check_live.py` (16 pages); `pytest` (69 passed); live jsdom smoke (87/87); and JS syntax checks passed. `verify_data.py` checked zero rows in the separate feed files and does not verify the full snapshot or current market values. Neither these checks nor the independent documentation review establish every external link or all requirements are complete.
 
 **J3 PR:** [#40](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40) created with sources, gate results, and unresolved items. Session `arena/600a5dcd-tradebot2` was notified of the earlier J1 claim and overlapping R1/R2 scopes in [the coordination handoff](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38#issuecomment-7226812700); that session is continuing functional integration. Merge and Pages verification are pending.
+
+### PR and Pages record
+
+| PR | Result |
+|---|---|
+| [#38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38) | Merged 2026-11-27 19:42:04 UTC as `260c43274dc6210148ebaaac9389a865851d6ee3`. PR checks `tests` and `verify` passed. |
+| GitHub Pages | `build_type: legacy`, source `main:/`; Pages build for merge commit `260c43274dc6210148ebaaac9389a865851d6ee3` reported `built` at 19:42:34 UTC. Build workflow: [run 46058528998](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058528998). The sandbox could not fetch `github.io` directly (TLS `SSL_ERROR_SYSCALL`), so HTTP content-level deployment was not independently confirmed here. |
+| Post-merge verify workflow | `Verify site and engine` passed: [run 46058529505](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058529505). A separate published-site run was cancelled by GitHub concurrency (`higher priority waiting request`); it is not reported as a test failure. PR checks themselves had passed before merge. |
+
+**Second board conflict:** PR #39 appended a deployment record concurrently. Both records were retained when merging `origin/main`; no other session changes were discarded. The global Pages workflow concurrency group cancelled the first PR #40 run; rerun 46058740196 passed, and a request to scope concurrency per ref was sent to the workflow owner.
