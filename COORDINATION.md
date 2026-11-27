@@ -578,5 +578,9 @@ touch `live/**` (session `arena/600a5dcd` R1), `README.md`/`EXECUTIVE_SUMMARY.md
 | Task | Status | Owner | File scope |
 |---|---|---|---|
 | K1 — line-by-line audit of the brief's requirements register: every row checked against the repo and official Kalshi docs; statuses corrected; missing brief lines added; unverifiable claims blanked and flagged | in progress | `arena/ba08e592-tradebot2` | `requirements.html`, `data/requirements.json`, `assets/js/requirements.js`, this section of `COORDINATION.md` |
+| K2 — fix the root resolution tracker: `resolutions.html` reads `data/resolutions.json` (empty: 0 records) and renders "Tracked 0 / Resolved 0 / Yes 0 / No 0" while `data/snapshot.json` holds 44,192 settled markets with yes/no results; retarget the page to the snapshot (fallback to the collector file), honest KPIs, bounded table | in progress (claimed before edits, per the convention) | `arena/ba08e592-tradebot2` | `resolutions.html` only |
 
-Claim pushed before implementation, per the board's convention.
+Claim pushed before implementation, per the board's convention. K2 was discovered during the K1
+audit (read-only render test); no active session's claim covers `resolutions.html` — verified
+against the claims of sessions `arena/600a5dcd` (R1 `live/**`, R2 `index.html`/README/EXEC_SUMMARY/
+workflows), `arena/b4e1fe8a` (J1/J2/J3), `arena/4a7cc110` (D1), `arena/bce83713` (collector).
