@@ -582,6 +582,8 @@ That is recorded here rather than glossed over.
 | `20D-B` Entry band | done | `assets/js/core.js`, `assets/js/dashboard.js`, `tests/js/model-feed.test.mjs` (new) | `evaluate()` applied no `$0.10–$0.90` bound although the page and `collector/alerts.py` both publish one. With the band absent, seeded feeds produced `$0.004` entries reporting 6,214% "ROI". Now every one of the 13 picks lands between `$0.26` and `$0.72`; asserted in CI. |
 | `20D-C` Flagged record | done | `flagged.html` | F-29 (entry band) and F-30 (the missing integrity gate) with their evidence. |
 
+| `20D-D` Snapshot size guard | done | `tools/audit_data.py`, `flagged.html` | A CI run on this very branch committed a **29.1 MB** `snapshot.json` (43,792 untrimmed resolution records) because the 1.5 MB trim lives in `tools/build_snapshot.py` while `collect.yml` commits from `collector/run.py`, which never calls `trim_resolutions`. The gate now fails anything over 1.6 MB. Published as **F-31**. The untrimmed file was removed from this branch: `main`'s trimmed 1 MB snapshot is used, and both versions were audited (untrimmed → FAIL, trimmed → PASS). |
+
 ### What this session verified but did **not** change
 
 * **The retired pages fabricate their charts.** `assets/js/app-core.js` `buildTimeSeries()` generates price history
@@ -593,6 +595,9 @@ That is recorded here rather than glossed over.
   over 37 trades) is sound; the percentage is not an equity return.
 * **Two archived pages still print fabricated tickers** (`docs/index.html`: `OSCAR-BESTPIC-25`,
   `MASTERS-25-SCHEFFLER`); the fabrication gate in `live/tests/check_live.py` only scans `live/`.
+* **Two pipelines write `data/`, and only one trims** (F-31). `collect.yml` → `collector/run.py` (no trim);
+  `data.yml` → `tools/build_snapshot.py` (trims to 50 resolutions per topic). A run of the first produced a 29.1 MB
+  snapshot on this branch. Aligning them changes which pipeline owns `data/`, so it is logged as a request.
 * **The 5-minute `collect.yml` vs daily `data.yml` concurrency overlap still exists on `main`** (group
   `kalshi-data`, `data.yml` cancelling in progress). #45 made `collect.yml` fit inside its timeout, which removes
   the symptom; the coupling itself is unchanged and is noted rather than edited here.

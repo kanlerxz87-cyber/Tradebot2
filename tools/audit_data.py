@@ -21,7 +21,10 @@ So this audit re-derives what the site publishes and fails on disagreement:
   5. every market is unique, tagged with a topic and linked to an official endpoint;
   6. every seeded swing clears the advertised $0.10 threshold;
   7. `meta.error_count` equals `len(meta.errors)`;
-  8. a legacy data file that holds 0 rows must say why, in its own `note`.
+  8. a legacy data file that holds 0 rows must say why, in its own `note`;
+  9. `snapshot.json` stays inside the size its own collector promises
+     (< 1.5 MB, `app/collector.py` trim_resolutions), because the browser loads it
+     on every page view and GitHub Pages serves the committed file.
 
 Run: python3 tools/audit_data.py --data-dir data   (exit 1 on any finding)
 """
@@ -63,6 +66,24 @@ def official(url: str | None) -> bool:
         return False
     p = urlparse(url)
     return p.scheme in ("http", "https") and (p.hostname or "").lower() in OFFICIAL_HOSTS
+
+
+SNAPSHOT_MAX_BYTES = 1_600_000  # 1.5 MB promise + headroom for new markets
+
+
+def audit_snapshot_size(data_dir: str) -> None:
+    path = os.path.join(data_dir, "snapshot.json")
+    if not os.path.exists(path):
+        return
+    size = os.path.getsize(path)
+    if size > SNAPSHOT_MAX_BYTES:
+        fail(
+            f"snapshot.json is {size / 1048576:.1f} MB, over the {SNAPSHOT_MAX_BYTES / 1048576:.1f} MB ceiling. "
+            "app/collector.py trims resolutions to the newest 50 per topic to keep the browser load "
+            "small; a file this size means a pipeline wrote resolutions without that trim."
+        )
+    else:
+        notes.append(f"snapshot.json size: {size / 1024:.0f} KiB")
 
 
 def audit_snapshot(snap: dict[str, Any]) -> None:
@@ -224,6 +245,7 @@ def main() -> int:
         fail("snapshot.json is missing; the published pages render from it")
     else:
         audit_snapshot(snap)
+    audit_snapshot_size(args.data_dir)
     audit_legacy(args.data_dir)
     audit_pages(args.root, args.data_dir)
 

@@ -228,6 +228,13 @@
                 <td>New gate: <a href="tools/audit_data.py">tools/audit_data.py</a>, run in both <code>verify.yml</code> and <code>pages.yml</code> before publish. It re-derives what the pages print and fails on 8 classes of drift — including the display-cap bug of F-21, a resolution without YES/NO, a swing below the advertised threshold, and a zero-row file with no explanation. Each class was re-introduced deliberately and the gate caught all four tested.</td>
                 <td>Closed for the checks listed. It cannot re-fetch live values; that remains F-01.</td>
               </tr>
+              <tr id="F-31">
+                <td class="mono">F-31</td><td><span class="badge warn">Medium</span></td>
+                <td><strong>The 1.5 MB snapshot promise is not enforced, and the pipeline that commits is not the pipeline that trims.</strong> <code>app/collector.py</code> keeps the committed snapshot under 1.5 MB by trimming <code>resolutions[]</code> to the newest 50 per topic (<code>trim_resolutions</code>). That trim runs in <code>tools/build_snapshot.py</code>, but the 5-minute <code>collect.yml</code> commits <code>data/</code> from <code>collector/run.py</code>, which does not call it. During this session a CI run wrote a <strong>29.1 MB</strong> snapshot (43,792 untrimmed resolution records) onto a branch, and the old gate would have accepted it.</td>
+                <td><span class="badge blue">Guarded</span></td>
+                <td><code>tools/audit_data.py</code> now fails any <code>snapshot.json</code> over 1.6 MB and states why. Evidence for the ceiling: <code>trim_resolutions(..., limit_per_topic=50)</code> and <code>meta.resolutions_note</code> in <code>app/collector.py</code>. The 29.1 MB file was measured with <code>git cat-file -s</code> and is not published.</td>
+                <td>Align the writers: either have <code>collector/run.py</code> call <code>trim_resolutions</code> before committing, or point <code>collect.yml</code> at <code>tools/build_snapshot.py</code>. Not changed here because it alters which pipeline owns <code>data/</code>.</td>
+              </tr>
             </tbody>
           </table>
         </div>
