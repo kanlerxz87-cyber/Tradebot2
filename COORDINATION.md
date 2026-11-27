@@ -658,3 +658,16 @@ old all-zero state as fact. Source: [market lifecycle](https://docs.kalshi.com/g
 5. **Register reachability.** `requirements.html` is two hops from the landing page
    (canonical pages → `sources.html` → `requirements.html`) and is not in the main nav; adding it
    to the shared nav is likewise logged for the integration owner rather than edited here.
+
+### PR and deploy record — arena/ba08e592-tradebot2
+
+| Item | Result |
+|------|--------|
+| Pull request | [#49](https://github.com/kanlerxz87-cyber/Tradebot2/pull/49) (`arena/ba08e592-tradebot2` → `main`) |
+| Merge | **merged without approval** 2026-11-27T20:18:58Z as `c6366d4` |
+| PR checks | `tests` pass ([run 46062698950](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062698950)) · `verify` pass ([run 46062698944](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062698944)) |
+| Post-merge on `main` | `Verify site and engine` success · `Verify published site` success · `pages build and deployment` success (all on `c6366d4`) |
+| Pages | `build_type: legacy`, source `main:/`; build for `c6366d4` reported **built** at 2026-11-27T20:19:00Z (`GET /repos/kanlerxz87-cyber/Tradebot2/pages/builds`) |
+| Live content checks | `…/Tradebot2/resolutions.html` serves the new tracker (KPI Resolved (30d) 45,386 from the freshest snapshot, open markets first, API + Kalshi links per row, em-dash awaiting); `…/Tradebot2/requirements.html` serves the audited register (23 rows, 17 implemented / 2 partial / 4 needs review / 0 not built, source link on every row, audit-provenance line) — both fetched from the live URL after the build |
+| Verification at merge | `check_site --strict` 14 pages/422 links OK · `verify_site` OK · `verify_data` OK · `pytest` 88 passed · `smoke` 87/87 · `check_live` 0 failures · `node --check` all `assets/js` |
+| Conflicts | Two `COORDINATION.md` rebase conflicts during the session (against PRs #45/#46/#48 content); both resolved by keeping every session's text. No other session's files were edited. |
