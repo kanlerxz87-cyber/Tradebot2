@@ -22,7 +22,7 @@
 'use strict';
 
 var TBData = (() => {
-  const { num, api, normMarket, TOPICS, topicById, store, LS } = TB;
+  const { num, api, normMarket, quotedPrice, TOPICS, topicById, store, LS } = TB;
 
   const KEY = { history: 'tb.hist', alerts: 'tb.alerts', events: 'tb.events' };
   const CAP = { historyTickers: 400, historyPoints: 180, alerts: 600 };
@@ -199,14 +199,24 @@ var TBData = (() => {
           topic: m.topic, title: m.title, yesSubTitle: null,
           status: m.status, statusLabel: (TB.STATUS_MAP[m.status] || m.status),
           result: m.result || '',
-          yesBid: num(m.yes_bid_dollars), yesAsk: num(m.yes_ask_dollars),
-          noBid: num(m.no_bid_dollars), noAsk: num(m.no_ask_dollars),
+          /* Same rule as TB.normMarket: a fixed-point zero is an ABSENT quote, not a
+             price, unless the API reports size behind it. Measured on this repo's own
+             live/data/fallback-snapshot.json: 18 of 40 markets carry
+             last_price_dollars "0.0000" (all with volume_fp "0.00") and 4 carry
+             yes_bid_dollars "0.0000" with yes_bid_size_fp "0.00"; before this fix the
+             snapshot view printed every one of them as "0\u00a2". See quotedPrice in core.js. */
+          yesBid: quotedPrice(m.yes_bid_dollars, m.yes_bid_size_fp),
+          yesAsk: quotedPrice(m.yes_ask_dollars, m.yes_ask_size_fp),
+          noBid: quotedPrice(m.no_bid_dollars, m.no_bid_size_fp),
+          noAsk: quotedPrice(m.no_ask_dollars, m.no_ask_size_fp),
           yesBidSize: num(m.yes_bid_size_fp), yesAskSize: num(m.yes_ask_size_fp),
-          last: num(m.last_price_dollars), prev: null, mid: null,
-          price: num(m.last_price_dollars),
-          priceKind: num(m.last_price_dollars) !== null ? 'last' : null,
-          spread: (num(m.yes_bid_dollars) !== null && num(m.yes_ask_dollars) !== null)
-            ? Math.round((num(m.yes_ask_dollars) - num(m.yes_bid_dollars)) * 10000) / 10000 : null,
+          last: quotedPrice(m.last_price_dollars, null), prev: null, mid: null,
+          price: quotedPrice(m.last_price_dollars, null),
+          priceKind: quotedPrice(m.last_price_dollars, null) !== null ? 'last' : null,
+          spread: (quotedPrice(m.yes_bid_dollars, m.yes_bid_size_fp) !== null
+                   && quotedPrice(m.yes_ask_dollars, m.yes_ask_size_fp) !== null)
+            ? Math.round((quotedPrice(m.yes_ask_dollars, m.yes_ask_size_fp)
+                        - quotedPrice(m.yes_bid_dollars, m.yes_bid_size_fp)) * 10000) / 10000 : null,
           volume: num(m.volume_fp), volume24h: num(m.volume_24h_fp), oi: num(m.open_interest_fp),
           notional: num(m.notional_value_dollars) || 1,
           closeTime: m.close_time, expirationTime: null, latestExpiration: null,
@@ -507,7 +517,15 @@ var TBData = (() => {
     const sideUse = side || 'yes';
     let px = price;
     if (px == null && market) {
-      px = sideUse === 'yes' ? market.yesAsk : (market.noAsk != null ? market.noAsk : (market.yesBid != null ? 1 - market.yesBid : null));
+      /* Fill price for a SIMULATED order.
+         YES: pay the YES ask. NO: pay the NO ask, which in a binary book is the
+         mirror of the resting YES bid (1 - yesBid) — a NO buyer fills against the
+         best YES bid. no_ask_dollars is NOT used: Kalshi reports it as "1.0000"
+         whenever one side of the book is empty (measured on the demo host
+         2026-11-27: no_ask_dollars "1.0000" on a market whose book holds only a
+         NO bid at 0.08), so filling at it would book a 100¢ phantom buy. If there
+         is no quote that can price the fill, the trade is refused, not guessed. */
+      px = sideUse === 'yes' ? market.yesAsk : (market.yesBid != null ? 1 - market.yesBid : null);
     }
     if (px == null || px <= 0 || px >= 1) return { ok: false, error: 'no tradable price for that side' };
     const cost = Math.round(px * q * 10000) / 10000;
@@ -545,9 +563,13 @@ var TBData = (() => {
       else if (last != null) priceCents = last;
       if (priceCents == null) continue;
 
-      /* price of the side we hold */
-      const sideCents = t.side === 'yes' ? priceCents
-        : (m && m.noAsk != null ? TB.cents(1 - m.yesBid) : 100 - priceCents);
+      /* Mark the side we hold as the mirror of the same YES mark.
+         Previously a NO position was marked with `TB.cents(1 - m.yesBid)`, and on a
+         market whose YES bid is empty `yesBid` is null, so `1 - null` evaluated to
+         1.00 and the position was marked at 100¢ — a $1.00 per-contract phantom win
+         built out of a missing field. The mirror is symmetric, cannot coerce a null,
+         and is the same basis methodology.html documents for a YES mark. */
+      const sideCents = t.side === 'yes' ? priceCents : 100 - priceCents;
       t.peak = Math.max(t.peak || 0, sideCents / 100);
       t.trough = Math.min(t.trough || 1, sideCents / 100);
       if (t.marks.length < 400) t.marks.push({ t: now, p: sideCents });

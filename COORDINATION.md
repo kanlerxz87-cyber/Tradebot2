@@ -406,3 +406,62 @@ Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `ac
 | [#38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38) | Merged 2026-11-27 19:42:04 UTC as `260c43274dc6210148ebaaac9389a865851d6ee3`. PR checks `tests` and `verify` passed. |
 | GitHub Pages | `build_type: legacy`, source `main:/`; Pages build for merge commit `260c43274dc6210148ebaaac9389a865851d6ee3` reported `built` at 19:42:34 UTC. Build workflow: [run 46058528998](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058528998). The sandbox could not fetch `github.io` directly (TLS `SSL_ERROR_SYSCALL`), so HTTP content-level deployment was not independently confirmed here. |
 | Post-merge verify workflow | `Verify site and engine` passed: [run 46058529505](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46058529505). A separate published-site run was cancelled by GitHub concurrency (`higher priority waiting request`); it is not reported as a test failure. PR checks themselves had passed before merge. |
+
+## Session `arena/d06c45b3-tradebot2` — live-dashboard data-integrity fixes (claimed 2026-11-27)
+
+Base: `main` @ `aca6cc898a8abb16bb36928648e1dcda90be7e78` (this branch was created at that commit and
+`main` had not advanced when the claim was written). The runtime fixes this session to
+`arena/d06c45b3-tradebot2`; all work stays on that branch.
+
+This session picks up the **data-integrity defects in the published `/live/` dashboard** that no other
+sweep in the board log had claimed: a real zero-bid/zero-trade bug and a zero-as-spread bug. Both were
+proven with a unit-level reproduction against the live API payload shape before being claimed, and both
+are in files outside every other session's claimed scope.
+
+| Task | Status | Owner | File scope | Source of truth |
+|---|---|---|---|---|
+| `D1 zero-is-not-a-price` | in progress | `arena/d06c45b3-tradebot2` | `live/assets/js/core.js`, `live/tests/check_live.py`, `live/tests/zero_quote.mjs` | [get-markets](https://docs.kalshi.com/api-reference/market/get-markets), [get-market-orderbook](https://docs.kalshi.com/api-reference/market/get-market-orderbook) |
+| `D2 no-fabricated-input-button` | in progress | `arena/d06c45b3-tradebot2` | `live/assets/js/page-dashboard.js`, `live/index.html`, `live/tests/smoke.mjs` | [get-trades](https://docs.kalshi.com/api-reference/market/get-trades) |
+| `D3 dead-payload-field` | in progress | `arena/d06c45b3-tradebot2` | `live/assets/js/data.js` | [get-trades](https://docs.kalshi.com/api-reference/market/get-trades) |
+
+### Claimed scope rule
+
+This session edits **only** the files listed above. `live/flagged.html` is claimed by
+`arena/a32cdd24-tradebot2` and is **not** edited here; the `/legacy/` defect found there is logged as a
+request below, not fixed. `COORDINATION.md` is appended only (no other section edited). No market value
+is inferred, no order is placed, and no credential is used.
+
+### Requests to other owners (not edited by this session)
+
+- **`live/flagged.html` → `arena/a32cdd24-tradebot2`.** F-01 and its banner say the fabricated pages were
+  "moved to `/legacy/`" and link `https://kanlerxz87-cyber.github.io/Tradebot2/legacy/`. There is no
+  `legacy/` directory in the repository (`ls legacy` → no such file), so that link is dead. `live/start.html`
+  makes the same claim (that line is in this session's scope and is corrected here). The a32cdd24 commit
+  `895d390` claims to fix this class of statement; recommend confirming all three occurrences.
+- **`live/start.html`.** Corrected by this session (`D3`) to describe the real archive location.
+
+### Evidence captured while claiming (live demo API, 2026-11-27T19:42Z)
+
+| What was read | Official endpoint | Value returned | Why it matters |
+|---|---|---|---|
+| Exchange status | `GET /exchange/status` | `exchange_active:true`, `trading_active:true` | The demo exchange was up when the claim was written. |
+| Tag taxonomy | `GET /search/tags_by_categories` | categories include `Commodities`, `Elections`, `Culture`? → **no**; `Entertainment`, `Crypto`, `Sports` | Confirms F-02/F-03: the five topic filters in `core.js` match the official strings, and there is no "Culture" category. |
+| Golf filter | `GET /series?category=Sports&tags=Golf` | `KXPRESCUPPTS`, `KXPGAACTION`, `KXDPWORLDTOUR…` | Topic filter is real. |
+| Gas filter | `GET /series?category=Commodities&tags=Oil %26 Gas` | `KXWTIH`, `KXWTIW`, `KXHOILW`, `KXTTFW` | Topic filter is real. |
+| Empty-book market | `GET /markets?status=open&series_ticker=KXBTCMAXY` | `yes_bid_dollars` `0.0000`, `yes_bid_size_fp` `0.00`, `last_price_dollars` `0.0700`… `0.5000` | Proves a zero float cannot be told apart from "no bid". |
+| Multi-level book | `GET /markets/KXDPWORLDTOUR-BMAPC26-TMOR/orderbook` | `no_dollars` `[[0.9880,…],[0.9890,…],[0.9900,…]]`, `yes_dollars` `[[0.0010,…],[0.0020,…],[0.0030,…]]` | Both sides returned **ascending by price**; used to verify the ladder ordering rather than assume it. |
+| Live trade tape | `GET /markets/trades?limit=8` | `yes_price_dollars` / `no_price_dollars` / `count_fp` / `taker_side`, **no** `price` or `yes_price` field | D3. |
+
+### Two retractions made while verifying (recorded so the next session does not repeat them)
+
+1. **The order-book ladder is correct.** On first reading, `asks.sort(...).slice(0, levels)` and
+   `yesLevels.slice(-levels)` looked like they kept the worst levels. Executed against the real payloads,
+   both are right *because* the API returns each side **ascending by price**: `slice(-n)` takes the best
+   YES bids and `sort(desc).slice(0,n)` takes the best (lowest) asks. Verified by running the shipped
+   `TBChart.ladder` against the live `KXDPWORLDTOUR` book and a synthetic 10-level book at
+   `levels=2,3,8`. **No change made.** A hand-built descending fixture *does* break it, so the ascending
+   precondition is now asserted in the test suite instead of silent.
+2. **`status=open` is a query filter, not a response value.** A market fetched with `status=open` returns
+   `"status":"active"`. The request filter enum (`unopened|open|closed|settled`) and the response enum
+   (`initialized|inactive|active|closed|determined|disputed|amended|finalized`) are different vocabularies.
+   `core.js` already handles both correctly; an earlier note in this session that it did not was wrong.
