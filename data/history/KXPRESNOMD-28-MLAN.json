@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.01,
+      "bid": 0.0,
+      "bid_depth": 0,
+      "last": 0.01,
+      "mid": 0.01,
+      "oi": 91390.04,
+      "spread": null,
+      "t": "2026-11-27T21:41:27Z",
+      "ts": 1795815687,
+      "vol": 123988.94
+    }
+  ],
+  "series_ticker": "KXPRESNOMD",
+  "subtitle": "Mitch Landrieu",
+  "ticker": "KXPRESNOMD-28-MLAN",
+  "title": "Democratic Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-MLAN"
+}

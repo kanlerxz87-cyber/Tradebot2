@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.004,
+      "bid": 0.002,
+      "bid_depth": 749999.97,
+      "last": 0.004,
+      "mid": 0.003,
+      "oi": 21100357.45,
+      "spread": 0.001,
+      "t": "2026-11-27T21:41:27Z",
+      "ts": 1795815687,
+      "vol": 33323330.65
+    }
+  ],
+  "series_ticker": "KXPRESNOMR",
+  "subtitle": "Pete Hegseth",
+  "ticker": "KXPRESNOMR-28-PHEG",
+  "title": "Republican Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-PHEG"
+}

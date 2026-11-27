@@ -1,18 +1,18 @@
 {
   "api_requests": 250,
-  "collected_at": "2026-11-27T20:34:52Z",
-  "duration_seconds": 54.3,
+  "collected_at": "2026-11-27T21:42:14Z",
+  "duration_seconds": 46.6,
   "environment": "demo",
   "host": "https://external-api.demo.kalshi.co/trade-api/v2",
   "run_log": {
     "exchange_active": true,
     "exchange_status_url": "https://external-api.demo.kalshi.co/trade-api/v2/exchange/status",
     "history_pruned": 2,
-    "open_events": 7221,
+    "open_events": 7203,
     "orderbooks_captured": 90,
     "series_pages_fetched": 58,
-    "series_seen": 16851,
-    "started_at": "2026-11-27T20:33:58Z",
+    "series_seen": 16868,
+    "started_at": "2026-11-27T21:41:27Z",
     "tags_by_categories": "https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories",
     "topic_counts": {
       "crypto": {
@@ -25,7 +25,7 @@
       },
       "elections": {
         "kept": 60,
-        "open_markets": 19101
+        "open_markets": 18917
       },
       "gas": {
         "kept": 60,
@@ -427,7 +427,7 @@
         "KXAMERICAPARTY2028",
         "KXANDORRAPARLI"
       ],
-      "series_matched": 2772
+      "series_matched": 2773
     },
     {
       "blurb": "Culture & entertainment contracts: Kalshi category `Culture` plus the `Entertainment` and `Mentions` categories that carry pop-culture markets.",

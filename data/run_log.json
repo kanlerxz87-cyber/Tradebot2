@@ -1,10 +1,10 @@
 {
-  "finished_at": "2026-11-27T20:35:28Z",
+  "finished_at": "2026-11-27T21:42:43Z",
   "ok": true,
   "stages": [
     {
       "ok": true,
-      "seconds": 55.01,
+      "seconds": 47.34,
       "stage": "collect"
     },
     {
@@ -14,7 +14,7 @@
     },
     {
       "ok": true,
-      "seconds": 35.67,
+      "seconds": 28.83,
       "stage": "resolutions"
     },
     {
@@ -28,6 +28,6 @@
       "stage": "portfolio_sync"
     }
   ],
-  "started_at": "2026-11-27T20:33:58Z",
+  "started_at": "2026-11-27T21:41:27Z",
   "warnings": []
 }

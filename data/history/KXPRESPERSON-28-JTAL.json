@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.02,
+      "bid": 0.01,
+      "bid_depth": 33357.02,
+      "last": 0.03,
+      "mid": 0.015,
+      "oi": 624698.45,
+      "spread": 0.01,
+      "t": "2026-11-27T21:41:27Z",
+      "ts": 1795815687,
+      "vol": 2068159.55
+    }
+  ],
+  "series_ticker": "KXPRESPERSON",
+  "subtitle": "James Talarico",
+  "ticker": "KXPRESPERSON-28-JTAL",
+  "title": "Pres person",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-JTAL"
+}

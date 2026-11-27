@@ -5207,6 +5207,24 @@
       ]
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXCHIMAYOR1RMOV&status=open",
+      "category": "Elections",
+      "event_ticker": "KXCHIMAYOR1RMOV-27FEB23",
+      "mutually_exclusive": true,
+      "series_ticker": "KXCHIMAYOR1RMOV",
+      "settlement_sources": [
+        {
+          "name": "Chicago Board of Election Commissioners",
+          "url": "https://chicagoelections.gov/"
+        }
+      ],
+      "sub_title": "On Feb 23, 2027",
+      "title": "Chicago mayoral election margin of victory? (1st Round)",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXCHRISTIERUN&status=open",
       "category": "Elections",
       "event_ticker": "KXCHRISTIERUN-28",
@@ -37784,384 +37802,6 @@
       ],
       "sub_title": "in 2030",
       "title": "2030 Mexico Presidential election winner? (Party)",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA38",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 38 House General Election",
-      "title": "California 38 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA39",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 39 House General Election",
-      "title": "California 39 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA40",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 40 House General Election",
-      "title": "California 40 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA41",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 41 House General Election",
-      "title": "California 41 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA42",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 42 House General Election",
-      "title": "California 42 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA43",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 43 House General Election",
-      "title": "California 43 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA44",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 44 House General Election",
-      "title": "California 44 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA45",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 45 House General Election",
-      "title": "California 45 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA46",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 46 House General Election",
-      "title": "California 46 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA47",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 47 House General Election",
-      "title": "California 47 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA48",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 48 House General Election",
-      "title": "California 48 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA49",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 49 House General Election",
-      "title": "California 49 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA50",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 50 House General Election",
-      "title": "California 50 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA51",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 51 House General Election",
-      "title": "California 51 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CA52",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California 52 House General Election",
-      "title": "California 52 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CAGOV",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "California Governor General Election",
-      "title": "California Governor General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CO01",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Colorado 01 House General Election",
-      "title": "Colorado 01 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CO02",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Colorado 02 House General Election",
-      "title": "Colorado 02 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CO03",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Colorado 03 House General Election",
-      "title": "Colorado 03 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CO04",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Colorado 04 House General Election",
-      "title": "Colorado 04 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CO05",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Colorado 05 House General Election",
-      "title": "Colorado 05 House General Election: voter turnout",
       "topics": [
         "elections"
       ]
@@ -317006,6 +316646,42 @@
       ]
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXVOTEPRIMARY&status=open",
+      "category": "Elections",
+      "event_ticker": "KXVOTEPRIMARY-CHIMAYOR1R27AGIA",
+      "mutually_exclusive": false,
+      "series_ticker": "KXVOTEPRIMARY",
+      "settlement_sources": [
+        {
+          "name": "Chicago Board of Election Commissioners",
+          "url": "https://chicagoelections.gov/elections/results"
+        }
+      ],
+      "sub_title": "Vote Percent - Alexi Giannoulias",
+      "title": "Chicago mayoral election: Alexi Giannoulias vote percent (1st Round)",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXVOTEPRIMARY&status=open",
+      "category": "Elections",
+      "event_ticker": "KXVOTEPRIMARY-CHIMAYOR1R27BJOH",
+      "mutually_exclusive": false,
+      "series_ticker": "KXVOTEPRIMARY",
+      "settlement_sources": [
+        {
+          "name": "Chicago Board of Election Commissioners",
+          "url": "https://chicagoelections.gov/elections/results"
+        }
+      ],
+      "sub_title": "Vote Percent - Brandon Johnson",
+      "title": "Chicago mayoral election: Brandon Johnson vote percent (1st Round)",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXVPRESNOMD&status=open",
       "category": "Elections",
       "event_ticker": "KXVPRESNOMD-28",
@@ -318950,5 +318626,5 @@
       ]
     }
   ],
-  "generated_at": "2026-11-27T20:34:52Z"
+  "generated_at": "2026-11-27T21:42:14Z"
 }

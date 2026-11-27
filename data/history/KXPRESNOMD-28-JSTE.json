@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.004,
+      "bid": 0.002,
+      "bid_depth": 749999.97,
+      "last": 0.003,
+      "mid": 0.003,
+      "oi": 116931480.76,
+      "spread": 0.001,
+      "t": "2026-11-27T21:41:27Z",
+      "ts": 1795815687,
+      "vol": 293254541.9
+    }
+  ],
+  "series_ticker": "KXPRESNOMD",
+  "subtitle": "Jon Stewart",
+  "ticker": "KXPRESNOMD-28-JSTE",
+  "title": "Democratic Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-JSTE"
+}
