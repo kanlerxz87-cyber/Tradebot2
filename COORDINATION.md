@@ -391,7 +391,7 @@ Base: `main` @ `aca6cc8` (branch `arena/b4e1fe8a-tradebot2`). This session acts 
 |---|---|---|---|
 | `J1-official-verification` | done | `arena/b4e1fe8a-tradebot2` | `COORDINATION.md`, `EXECUTIVE_SUMMARY.md`, `live/executive-summary.html`, `live/verification.html`, `live/flagged.html`, `README.md` (verification appendix only) |
 | `J2-site-gate` | done | `arena/b4e1fe8a-tradebot2` | `tools/verify_site.py`, `live/tests/check_live.py` (run only; edits only if gate is broken) |
-| `J3-pr-merge-deploy` | in progress | `arena/b4e1fe8a-tradebot2` | PR to `main`, Pages build check |
+| `J3-pr-merge-deploy` | done | `arena/b4e1fe8a-tradebot2` | PR to `main`, Pages build check |
 
 Scope rule: this session edits only the files in `J1` scope. If a fix requires a file outside that scope, it will be logged here as a request instead of edited. Open PRs #16, #14, #6 (2026-11-22) predate this base and their claims are >60 minutes old with no commits on this branch; this session proceeds as final integration and notes any handoff here. No other session's files will be deleted.
 
@@ -504,3 +504,9 @@ is inferred, no order is placed, and no credential is used.
    `core.js` already handles both correctly; an earlier note in this session that it did not was wrong.
 
 **Third board conflict:** PR #41 merged concurrently; preserved both board appendices. PR #41 scopes the Pages verification concurrency group per event/ref and adds quote-integrity checks. Runtime quote fixes are owned by that session; this audit makes no claim to have independently re-probed them.
+
+### J3 merge and deployment result
+
+[PR #40](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40) merged at 2026-11-27 19:51:20 UTC as `4517d1caaa339b3db4650628ad6db2471f539a1d`. PR checks `tests` and `verify` passed after merging PR #41's concurrency fix; locally, 69 pytest tests, 87 browser smoke checks, 35 quote rules, and the published-site link gates passed on the combined tree. GitHub Pages API reports the build for `4517d1c` **built** at 19:51:45 UTC, and [Pages workflow 46059595130](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46059595130) reports deploy success. The public URL is https://kanlerxz87-cyber.github.io/Tradebot2/. Direct HTTP verification from this sandbox was blocked; the build/deploy status is not an independent browser content check.
+
+Other concurrent sessions continue their separately claimed functional work. Missing signed-account access, non-exhaustive data discovery and all remaining flagged items are not resolved by this documentation PR.
