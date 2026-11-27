@@ -201,6 +201,14 @@
       return data.market || data;
     }
 
+    async fetchTrades(ticker, limit) {
+      const data = await getJSON(
+        TB.CONFIG.apiBase + "/markets/trades?ticker=" + encodeURIComponent(ticker) + "&limit=" + (limit || 100),
+        { timeout: 12000 }
+      );
+      return data.trades || [];
+    }
+
     getTicks(ticker) { return this.ticks[ticker] || []; }
   }
 

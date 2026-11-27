@@ -22,6 +22,8 @@
       if (event.key === TB.paper.key) { state.paper = TB.paper.loadState(); renderPaper(); }
     });
     document.querySelector("#export-trades").addEventListener("click", exportCsv);
+    setupCustomBuilder();
+    renderCustomSaved();
   });
 
   function seedMarks() {
@@ -107,18 +109,21 @@
     pnlEl.textContent = (totalPnl >= 0 ? "+" : "") + TB.money(totalPnl, 2);
     pnlEl.className = "value " + (totalPnl >= 0 ? "accent" : "down");
     document.querySelector("#pf-winrate").textContent = analytics.closed_trades ? TB.pct(analytics.win_rate) : "—";
-    document.querySelector("#pf-trades").textContent = analytics.closed_trades + " closed · " + analytics.open_trades + " open";
+    document.querySelector("#pf-trades-foot").textContent = analytics.closed_trades + " closed · " + analytics.open_trades + " open";
     document.querySelector("#pf-expectancy").textContent = analytics.closed_trades ? (analytics.expectancy >= 0 ? "+" : "") + TB.money(analytics.expectancy, 2) : "—";
     document.querySelector("#pf-dd").textContent = analytics.closed_trades ? analytics.max_drawdown_pct.toFixed(1) + "%" : "—";
     document.querySelector("#pf-log-count").textContent = (analytics.closed_trades + openRows.length) + " trades";
 
     const body = document.querySelector("#pf-accounts tbody");
+    const customMap = {};
+    TB.customStrategies.load().forEach((c) => { customMap[c.id] = c.name; });
     body.innerHTML = Object.keys(paper.accounts).map((name) => {
       const acct = paper.accounts[name];
       let sleeve = acct.cash;
       acct.positions.forEach((pos) => { sleeve += pos.contracts * markFor(pos); });
       const ret = (sleeve / acct.starting_cash - 1) * 100;
-      return "<tr><td><strong>" + TB.esc(TB.STRATEGIES[name] ? TB.STRATEGIES[name].label : name) + "</strong><span class='sub'>" + TB.esc(name) + "</span></td>" +
+      const label = TB.STRATEGIES[name] ? TB.STRATEGIES[name].label : (customMap[name] || (name === "manual" ? "Manual trades" : name));
+      return "<tr><td><strong>" + TB.esc(label) + "</strong><span class='sub'>" + TB.esc(name) + "</span></td>" +
         '<td class="num">' + TB.money(sleeve, 0) + "</td>" +
         '<td class="num ' + (ret >= 0 ? "up" : "down") + '">' + (ret >= 0 ? "+" : "") + ret.toFixed(2) + "%</td>" +
         '<td class="num">' + TB.money(acct.realized_pnl, 2) + "</td>" +
@@ -154,9 +159,24 @@
           "<td class='num'>" + TB.money((t.entry_fee || 0) + (t.exit_fee || 0), 4) + "</td>" +
           "<td class='num " + (pnl >= 0 ? "up" : "down") + "'>" + (pnl >= 0 ? "+" : "") + TB.money(pnl, 2) + "</td>" +
           "<td class='num " + (roi >= 0 ? "up" : "down") + "'>" + TB.pct(roi) + "</td>" +
-          "<td><span class='badge " + (t.open ? "neutral" : t.status === "settled" ? "green" : "blue") + "'>" + TB.esc(t.open ? "open" : t.status) + "</span><span class='sub'>" + TB.esc(t.close_reason || "") + "</span></td>" +
+          "<td><span class='badge " + (t.open ? "neutral" : t.status === "settled" ? "green" : "blue") + "'>" + TB.esc(t.open ? "open" : t.status) + "</span><span class='sub'>" +
+          (t.open
+            ? '<button class="btn js-close-pos" data-strategy="' + TB.esc(t.strategy) + '" data-id="' + TB.esc(t.id) + '" data-mark="' + t.mark + '" type="button" style="padding:2px 6px;font-size:11px;margin-top:3px">Close @ mark</button>'
+            : TB.esc(t.close_reason || "")) + "</span></td>" +
           "<td class='small'>" + (link.market_api ? "<span class='source-links'><a href='" + TB.esc(link.market_api) + "' target='_blank' rel='noopener'>API ↗</a><a href='" + TB.esc(link.kalshi) + "' target='_blank' rel='noopener'>Kalshi ↗</a></span>" : "—") + "</td></tr>";
       }).join("");
+      tbody.querySelectorAll(".js-close-pos").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const strat = btn.getAttribute("data-strategy");
+          const id = btn.getAttribute("data-id");
+          const mark = Number(btn.getAttribute("data-mark"));
+          const closed = TB.paper.closeTrade(state.paper, strat, id, mark, "manual close");
+          if (closed) {
+            renderPaper();
+            UI.toast("Closed " + closed.ticker + " @ " + TB.money(mark) + " (" + (closed.pnl >= 0 ? "+" : "") + TB.money(closed.pnl, 2) + ")", closed.pnl >= 0 ? "ok" : "info");
+          }
+        });
+      });
     }
     document.querySelector("#pf-updated").textContent = "updated " + new Date().toLocaleTimeString();
   }
@@ -174,6 +194,77 @@
       return "<tr><td>" + TB.esc(label) + "</td><td class='num'>" + row.trades + "</td><td class='num'>" + TB.pct(row.win_rate) + "</td>" +
         "<td class='num " + (row.pnl >= 0 ? "up" : "down") + "'>" + (row.pnl >= 0 ? "+" : "") + TB.money(row.pnl, 2) + "</td></tr>";
     }).join("");
+  }
+
+  function readCustomRule() {
+    const name = (document.querySelector("#cs-name") && document.querySelector("#cs-name").value.trim()) || "Custom rule";
+    return {
+      id: "custom_" + name.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 24),
+      name: name,
+      kind: (document.querySelector("#cs-kind") && document.querySelector("#cs-kind").value) || "mean_reversion",
+      topic: (document.querySelector("#cs-topic") && document.querySelector("#cs-topic").value) || "all",
+      side: (document.querySelector("#cs-side") && document.querySelector("#cs-side").value) || "auto",
+      minMove: TB.num(document.querySelector("#cs-move") && document.querySelector("#cs-move").value) || 0.15,
+      minPrice: TB.num(document.querySelector("#cs-min") && document.querySelector("#cs-min").value) || 0.15,
+      maxPrice: TB.num(document.querySelector("#cs-max") && document.querySelector("#cs-max").value) || 0.85,
+      takeProfit: TB.num(document.querySelector("#cs-tp") && document.querySelector("#cs-tp").value) || 0.12,
+      stopLoss: TB.num(document.querySelector("#cs-sl") && document.querySelector("#cs-sl").value) || 0.08
+    };
+  }
+
+  function setupCustomBuilder() {
+    const testBtn = document.querySelector("#cs-test");
+    const saveBtn = document.querySelector("#cs-save");
+    if (testBtn) testBtn.addEventListener("click", () => {
+      if (!state.snapshot) return;
+      const rule = readCustomRule();
+      const res = TB.customStrategies.backtest(state.snapshot, rule);
+      const box = document.querySelector("#cs-result");
+      if (!box) return;
+      box.innerHTML =
+        '<div class="btn-row" style="gap:10px;margin-bottom:8px">' +
+        '<span class="badge blue">' + res.trades + ' trades</span>' +
+        '<span class="badge ' + (res.winRate >= 0.5 ? "up" : "warn") + '">Win ' + TB.pct(res.winRate) + '</span>' +
+        '<span class="badge ' + (res.totalPnl >= 0 ? "up" : "down") + '">P&amp;L ' + (res.totalPnl >= 0 ? "+" : "") + TB.money(res.totalPnl, 2) + '</span>' +
+        '<span class="badge neutral">Max DD ' + res.maxDrawdownPct.toFixed(1) + '%</span></div>' +
+        (res.sample.length
+          ? '<div class="small">Recent fills: ' + res.sample.slice(0, 6).map((t) => '<span class="mono">' + TB.esc(t.ticker) + "</span> " + t.side.toUpperCase() + " (" + (t.pnl >= 0 ? "+" : "") + TB.money(t.pnl, 2) + ")").join(" · ") + "</div>"
+          : '<div class="muted">No signals matched this rule across the snapshot’s 1-minute candles. Try widening the price band or lowering min swing.</div>');
+    });
+    if (saveBtn) saveBtn.addEventListener("click", () => {
+      const rule = readCustomRule();
+      const list = TB.customStrategies.load().filter((x) => x.id !== rule.id);
+      list.push(rule);
+      TB.customStrategies.save(list);
+      TB.paper.ensureAccount(state.paper, rule.id);
+      TB.paper.saveState(state.paper);
+      renderCustomSaved();
+      renderPaper();
+      UI.toast("Activated custom sleeve: " + rule.name + " ($10,000 paper allocation).", "ok");
+    });
+  }
+
+  function renderCustomSaved() {
+    const box = document.querySelector("#cs-saved");
+    if (!box) return;
+    const list = TB.customStrategies.load();
+    if (!list.length) {
+      box.innerHTML = '<div class="small muted">No saved custom sleeves yet.</div>';
+      return;
+    }
+    box.innerHTML = '<div class="small" style="margin-bottom:6px"><strong>Active custom sleeves</strong></div>' +
+      list.map((r) =>
+        '<div class="btn-row" style="justify-content:space-between;padding:6px 0;border-top:1px solid var(--line-soft)">' +
+        '<span class="small"><strong>' + TB.esc(r.name) + '</strong> <span class="muted">(' + TB.esc(r.kind) + ' · ' + TB.esc(r.topic) + ')</span></span>' +
+        '<button class="btn js-del-custom" data-id="' + TB.esc(r.id) + '" type="button" style="padding:2px 8px;font-size:11px">Remove</button></div>'
+      ).join("");
+    box.querySelectorAll(".js-del-custom").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
+        TB.customStrategies.save(TB.customStrategies.load().filter((x) => x.id !== id));
+        renderCustomSaved();
+      });
+    });
   }
 
   function marketLinks() {

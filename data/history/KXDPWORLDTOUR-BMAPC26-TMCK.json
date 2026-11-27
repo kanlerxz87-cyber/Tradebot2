@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.065,
+      "bid": 0.061,
+      "bid_depth": 8374.86,
+      "last": 0.065,
+      "mid": 0.063,
+      "oi": 37947.53,
+      "spread": 0.004,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 40530.61
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "Tom McKibbin",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-TMCK",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-TMCK"
+}

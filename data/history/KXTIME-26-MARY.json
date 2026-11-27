@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.2,
+      "bid": 0.19,
+      "bid_depth": 5567.0,
+      "last": 0.2,
+      "mid": 0.195,
+      "oi": 16562.64,
+      "spread": 0.01,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 18229.3
+    }
+  ],
+  "series_ticker": "KXTIME",
+  "subtitle": "Mary Peltola",
+  "ticker": "KXTIME-26-MARY",
+  "title": "TIME\u2019s Person of the Year",
+  "topic": "culture",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-MARY"
+}

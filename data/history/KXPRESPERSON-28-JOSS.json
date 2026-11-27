@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.17,
+      "bid": 0.169,
+      "bid_depth": 18147.62,
+      "last": 0.17,
+      "mid": 0.1695,
+      "oi": 5265744.52,
+      "spread": 0.001,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 33505878.3
+    }
+  ],
+  "series_ticker": "KXPRESPERSON",
+  "subtitle": "Jon Ossoff",
+  "ticker": "KXPRESPERSON-28-JOSS",
+  "title": "Pres person",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-JOSS"
+}

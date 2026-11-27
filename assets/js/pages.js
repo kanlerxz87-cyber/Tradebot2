@@ -24,7 +24,9 @@
       tracked: stats.tracked_markets,
       open_scope: stats.open_markets_in_scope,
       open_total: stats.open_markets_total,
-      resolutions: (snapshot.resolutions || []).length,
+      resolutions: stats.resolutions !== undefined && stats.resolutions !== null
+        ? Number(stats.resolutions).toLocaleString()
+        : (snapshot.resolutions || []).length,
       volume_24h: TB.compact(totalVolume),
       alerts_seed: stats.seed_alerts,
       series_indexed: stats.series_indexed,

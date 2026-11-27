@@ -57,14 +57,14 @@ def quote_price(market: dict[str, Any]) -> tuple[float | None, str]:
         legacy = _num(market.get("yes_ask"))
         ask = None if legacy is None else legacy / 100.0
 
-    if bid is not None and ask is not None and 0.0 < bid <= ask <= 1.0:
+    if bid is not None and ask is not None and 0.0 < bid <= ask <= 1.0 and (ask - bid) <= 0.25 + EPS:
         return round((bid + ask) / 2.0, 6), "mid"
 
     last = _num(market.get("last_price_dollars"))
     if last is None:
         legacy_last = _num(market.get("last_price"))
         last = None if legacy_last is None else legacy_last / 100.0
-    if last is not None and 0.0 <= last <= 1.0:
+    if last is not None and 0.0 < last <= 1.0:
         return round(last, 6), "last"
 
     # A one-sided book still tells us something, but not a fair mid. Using the

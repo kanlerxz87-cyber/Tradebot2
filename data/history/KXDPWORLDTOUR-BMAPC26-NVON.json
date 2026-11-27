@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.093,
+      "bid": 0.077,
+      "bid_depth": 13199.4,
+      "last": 0.093,
+      "mid": 0.085,
+      "oi": 16918.15,
+      "spread": 0.016,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 16918.15
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "Nicolai von Dellingshausen",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-NVON",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-NVON"
+}

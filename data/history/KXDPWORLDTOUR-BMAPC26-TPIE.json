@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.015,
+      "bid": 0.014,
+      "bid_depth": 26797.33,
+      "last": 0.015,
+      "mid": 0.0145,
+      "oi": 64910.47,
+      "spread": 0.001,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 69705.51
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "Thomas Pieters",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-TPIE",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-TPIE"
+}

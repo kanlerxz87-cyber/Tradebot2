@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.038,
+      "bid": 0.036,
+      "bid_depth": 2043105.94,
+      "last": 0.038,
+      "mid": 0.037,
+      "oi": 27749880.44,
+      "spread": 0.002,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 145094144.41
+    }
+  ],
+  "series_ticker": "KXPRESNOMD",
+  "subtitle": "Andy Beshear",
+  "ticker": "KXPRESNOMD-28-AB",
+  "title": "Democratic Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-AB"
+}

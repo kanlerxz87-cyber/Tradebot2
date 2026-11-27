@@ -29,7 +29,6 @@ KNOWN_TOPIC_SERIES: dict[str, tuple[str, ...]] = {
         "KXCONTROLH",
         "KXSENATEIAD",
         "KXNEXTNATOSECGEN",
-        "KXGA14",
     ),
     "culture": (
         "KXOSCARPIC",
@@ -139,9 +138,9 @@ def normalize_market(
     yes_ask = _dollars(market, "yes_ask")
     last = _dollars(market, "last_price")
     mid = None
-    if yes_bid is not None and yes_ask is not None and 0 < yes_bid <= yes_ask <= 1:
+    if yes_bid is not None and yes_ask is not None and 0 < yes_bid <= yes_ask <= 1 and (yes_ask - yes_bid) <= 0.25:
         mid = round((yes_bid + yes_ask) / 2, 4)
-    elif last is not None:
+    elif last is not None and last > 0:
         mid = last
 
     volume_24h = _num(market.get("volume_24h_fp"))
@@ -313,6 +312,26 @@ def summarize_liquidity(book: dict[str, Any] | None) -> dict[str, Any]:
     }
 
 
+def trim_resolutions(
+    resolutions: list[dict[str, Any]],
+    limit_per_topic: int = 50,
+) -> tuple[list[dict[str, Any]], dict[str, list[dict[str, Any]]], dict[str, int]]:
+    ordered = sorted(resolutions, key=lambda r: r.get("close_time") or "", reverse=True)
+    totals: dict[str, int] = {}
+    per_topic_res: dict[str, list[dict[str, Any]]] = {}
+    for row in ordered:
+        topic_key = row["topic"]
+        totals[topic_key] = totals.get(topic_key, 0) + 1
+        bucket = per_topic_res.setdefault(topic_key, [])
+        if len(bucket) < limit_per_topic:
+            bucket.append(row)
+    trimmed: list[dict[str, Any]] = []
+    for bucket in per_topic_res.values():
+        trimmed.extend(bucket)
+    trimmed.sort(key=lambda r: r.get("close_time") or "", reverse=True)
+    return trimmed, per_topic_res, totals
+
+
 def select_tracked(markets: list[dict[str, Any]], per_topic: int = 8) -> list[dict[str, Any]]:
     selected: list[dict[str, Any]] = []
     for topic in TOPIC_KEYS:
@@ -466,15 +485,25 @@ def collect(
             series_cache[series] = {}
         time.sleep(0.04)
 
+    non_scope_prefixes = ("KXNBA", "KXNFL", "KXMLB", "KXNHL", "KXNCAA", "KXMVE", "KXSOCCER", "KXATPMATCH", "KXWTAMATCH")
     for market in raw_markets + raw_settled:
-        series = series_from_event(str(market.get("event_ticker") or ""), events)
+        event_ticker = str(market.get("event_ticker") or "")
+        event_meta = events.get(event_ticker) or {}
+        explicit_series = bool(event_meta.get("series_ticker"))
+        series = series_from_event(event_ticker, events)
         if not series or series in series_cache or len(series_cache) >= max_series_lookups:
+            continue
+        if any(series.upper().startswith(p) for p in non_scope_prefixes):
             continue
         try:
             payload = client.get_series(series)
             series_cache[series] = payload.get("series", {}) or {}
         except KalshiError as exc:
-            errors.append(f"GET /series/{series}: {exc}")
+            # Speculative series tickers guessed from unindexed settled event tickers
+            # (e.g. sports parlays/props) can legitimately 404; only record real errors
+            # or failures on explicitly indexed series.
+            if not (exc.status == 404 and not explicit_series):
+                errors.append(f"GET /series/{series}: {exc}")
             series_cache[series] = {}
         time.sleep(0.05)
 
@@ -609,12 +638,9 @@ def collect(
                 "links": market["links"],
             }
         )
-    resolutions.sort(key=lambda r: r.get("close_time") or "", reverse=True)
-    per_topic_res: dict[str, list[dict[str, Any]]] = {}
-    for row in resolutions:
-        bucket = per_topic_res.setdefault(row["topic"], [])
-        if len(bucket) < 40:
-            bucket.append(row)
+    # Keep the committed snapshot compact (< 1.5 MB) by storing the newest 50
+    # resolutions per topic while preserving exact 30d counts in stats/topics.
+    trimmed_resolutions, per_topic_res, resolutions_total_by_topic = trim_resolutions(resolutions, limit_per_topic=50)
 
     # Per-topic aggregates.
     topics = []
@@ -634,7 +660,7 @@ def collect(
                 "open_interest_contracts": round(
                     sum(m["volume"].get("open_interest_contracts") or 0 for m in pool), 2
                 ),
-                "resolved_markets_30d": len(per_topic_res.get(topic, [])),
+                "resolved_markets_30d": resolutions_total_by_topic.get(topic, 0),
                 "tickers": [m["ticker"] for m in topic_markets],
             }
         )
@@ -646,6 +672,8 @@ def collect(
         "settled_markets_in_scope": len(settled_markets),
         "tracked_markets": len(tracked),
         "resolutions": len(resolutions),
+        "resolutions_logged": len(trimmed_resolutions),
+        "resolutions_by_topic_totals": resolutions_total_by_topic,
         "seed_alerts": len(seed_alerts),
         "events_indexed": len(events),
         "series_indexed": len(series_cache),
@@ -661,7 +689,7 @@ def collect(
         "threshold": 0.10,
         "topics": topics,
         "markets": tracked,
-        "resolutions": resolutions,
+        "resolutions": trimmed_resolutions,
         "resolutions_by_topic": per_topic_res,
         "alerts_seed": seed_alerts,
         "stats": stats,
@@ -671,6 +699,11 @@ def collect(
             "selection": (
                 f"Top {per_topic} open markets per topic by 24h volume (contracts), plus the top 2 "
                 "by open interest; multivariate (KXMVE*) markets excluded."
+            ),
+            "resolutions_note": (
+                "resolutions[] and resolutions_by_topic store the newest 50 settled markets per "
+                "topic to keep browser snapshot loads compact; stats.resolutions and "
+                "topics[].resolved_markets_30d hold the complete 30d counts."
             ),
             "notional_note": (
                 "notional_24h_est and open_interest_notional_est are computed as contracts x "

@@ -30,6 +30,10 @@ def test_culture_official_category():
     assert topic_of(title="Will Grok be banned this year", category="Culture") == "culture"
 
 
+def test_culture_official_entertainment_category():
+    assert topic_of(title="Box office winner this weekend", category="Entertainment") == "culture"
+
+
 def test_culture_keyword():
     assert (
         topic_of(title="Will Taylor Swift win album of the year at the Grammys?", category="Entertainment")

@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.013,
+      "bid": 0.003,
+      "bid_depth": 305595.54,
+      "last": 0.013,
+      "mid": 0.008,
+      "oi": 50017.56,
+      "spread": 0.01,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 58511.43
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "Marc Leishman",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-MLEI",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-MLEI"
+}

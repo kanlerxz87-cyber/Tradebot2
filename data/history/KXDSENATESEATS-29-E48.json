@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.04,
+      "bid": 0.01,
+      "bid_depth": 33333.32,
+      "last": 0.03,
+      "mid": 0.025,
+      "oi": 13953.89,
+      "spread": 0.01,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 13957.06
+    }
+  ],
+  "series_ticker": "KXDSENATESEATS",
+  "subtitle": "48",
+  "ticker": "KXDSENATESEATS-29-E48",
+  "title": "Democratic Senate seats",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDSENATESEATS-29-E48"
+}

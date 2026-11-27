@@ -21,11 +21,12 @@
     const seed = (snapshot.alerts_seed || []).filter((a) => a.topic === topic);
 
     document.querySelectorAll("[data-topic-label]").forEach((el) => { el.textContent = meta.label; });
-    document.querySelectorAll("[data-topic-open]").forEach((el) => { el.textContent = topicRow.open_markets !== undefined ? topicRow.open_markets : "—"; });
+    document.querySelectorAll("[data-topic-open]").forEach((el) => { el.textContent = topicRow.open_markets !== undefined ? Number(topicRow.open_markets).toLocaleString() : "—"; });
     document.querySelectorAll("[data-topic-tracked]").forEach((el) => { el.textContent = markets.length; });
     document.querySelectorAll("[data-topic-volume]").forEach((el) => { el.textContent = TB.compact(topicRow.volume_24h_contracts); });
     document.querySelectorAll("[data-topic-oi]").forEach((el) => { el.textContent = TB.compact(topicRow.open_interest_contracts); });
-    document.querySelectorAll("[data-topic-resolved]").forEach((el) => { el.textContent = resolutions.length; });
+    const resolvedTotal = topicRow.resolved_markets_30d !== undefined ? topicRow.resolved_markets_30d : resolutions.length;
+    document.querySelectorAll("[data-topic-resolved]").forEach((el) => { el.textContent = Number(resolvedTotal).toLocaleString(); });
     document.querySelectorAll("[data-topic-top]").forEach((el) => { el.textContent = TB.money(Math.max(0, ...markets.map((m) => m.volume.notional_24h_est || 0)), 0); });
 
     renderMarkets(markets, topic);

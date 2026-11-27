@@ -33,7 +33,7 @@
   </header>
 
   <main class="wrap-narrow page prose">
-    <div class="eyebrow">Methodology · verified 22 November 2026</div>
+    <div class="eyebrow">Methodology · verified 27 November 2026</div>
     <h1>Method, formulas and sources</h1>
     <p class="lede">The rule for this project is simple: every observable value comes from an official Kalshi endpoint, every derived number has a published formula, and anything that cannot be confirmed is blank and flagged. This page documents the whole chain so it can be checked line by line.</p>
 
@@ -61,7 +61,7 @@
       <li>Index events (open + settled) and fetch series metadata for open series. The series response supplies the official category, title and named settlement sources.</li>
       <li>Classify each market (section 4). Markets outside the five topics are dropped.</li>
       <li>Select the top eight open markets per topic by 24h contract volume, plus the top two by open interest. Every selected market gets a 10-level orderbook and 1-minute (8–12h) plus 1-hour (7d) candles.</li>
-      <li>Derive ≥ $0.10 historical swings from consecutive 1-minute closes for the alert seed, and run the candle backtest.</li>
+      <li>Derive ≥ $0.10 historical swings from consecutive 1-minute closes for the alert seed, record full 30-day per-topic resolution totals in <code>stats</code>/<code>topics[]</code> while logging the newest 50 settled rows per topic in <code>resolutions[]</code> to keep browser snapshot loads compact (~1 MB), and run the candle backtest.</li>
       <li>Write <code>data/snapshot.json</code>, <code>data/backtest.json</code> and <code>data/probe.json</code>. CI validates the schema and sources before the artifact is accepted.</li>
     </ol>
     <p class="small muted">Snapshot generated <span data-snapshot-time>—</span> · age at view <span data-snapshot-age>—</span>. The live dashboard polls the API directly and is not limited by this snapshot.</p>
@@ -85,10 +85,10 @@
     <p>The dashboard never replaces a missing value with zero. “—” means the API did not provide a usable value; zero means the API returned zero.</p>
 
     <h2 id="classification">4. Topic classification</h2>
-    <p>Kalshi’s category taxonomy does not match the five requested topics: Crypto and Culture are official categories, while golf sits inside Sports and gas prices inside broader economics/weather categories. Classification therefore combines three signals, in this order:</p>
+    <p>Kalshi’s category taxonomy does not match the five requested topics: Crypto and Entertainment are official categories (there is no official category literally named “Culture”), while golf sits inside Sports and gas prices inside Commodities / broader categories. Classification therefore combines three signals, in this order:</p>
     <ol>
       <li><strong>Strong series-ticker prefixes</strong> (for example <code>KXAAAGASW</code>, <code>KXPGATOUR</code>, <code>KXPRES</code>).</li>
-      <li><strong>Official category</strong>, trusted only for Crypto and Culture, where the category is exact.</li>
+      <li><strong>Official category</strong>, trusted only for Crypto and Entertainment (mapped to Culture), where the category is exact.</li>
       <li><strong>Narrow keyword rules with word boundaries and explicit vetoes</strong> (for example, “Las Vegas” vetoes gas prices; “Netherlands” cannot match “ETH”).</li>
     </ol>
     <p>Regression tests include negative cases: “Netherlands” is not crypto, “Liga MX” is not golf, “Las Vegas” is not gas prices, and a weather market is not in scope. A market that matches nothing is excluded rather than assigned to the closest topic.</p>

@@ -77,15 +77,15 @@ TOPICS = [
         "icon": "🎬",
         "title": "Culture",
         "lede": (
-            "Film, music, awards, celebrities and internet culture. Kalshi publishes an official "
-            "“Culture” category, which this board trusts directly, plus a small set of entertainment "
-            "keywords for series filed elsewhere."
+            "Film, music, awards, celebrities and internet culture. Kalshi’s official category name is "
+            "“Entertainment” (there is no official category literally named “Culture”), which this board "
+            "maps to Culture alongside curated series and entertainment keywords."
         ),
         "definition": [
-            "Official Kalshi category <code>Culture</code> (strongest signal).",
+            "Official Kalshi category <code>Entertainment</code> (strongest signal; <code>Culture</code> accepted for legacy compatibility).",
             "Keywords: box office, movie, film, album, Grammy, Oscar, Emmy, Tony Award, Billboard, "
             "Netflix, TV show, celebrity, Taylor Swift, music, concert, award show, Time Person of the Year.",
-            "The category alone is enough; keywords exist for cross-listed series.",
+            "The Entertainment category alone is enough; keywords exist for cross-listed series.",
         ],
         "notes": [
             "The collector supplements paginated discovery with targeted series queries (KXOSCARPIC, KXGTAONLINE, KXNETFLIXRANKSHOWGLOBAL, KXTIME) so older open Culture series are included alongside newly listed events.",

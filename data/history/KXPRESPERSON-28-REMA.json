@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.04,
+      "bid": 0.01,
+      "bid_depth": 16666.66,
+      "last": 0.02,
+      "mid": 0.025,
+      "oi": 1643406.97,
+      "spread": 0.03,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 7615321.67
+    }
+  ],
+  "series_ticker": "KXPRESPERSON",
+  "subtitle": "Rahm Emanuel",
+  "ticker": "KXPRESPERSON-28-REMA",
+  "title": "Pres person",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-REMA"
+}

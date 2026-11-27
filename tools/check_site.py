@@ -49,11 +49,14 @@ class LinkParser(HTMLParser):
         super().__init__()
         self.links: list[str] = []
         self.ids: set[str] = set()
+        self.dup_ids: list[str] = []
         self.scripts: list[str] = []
 
     def handle_starttag(self, tag, attrs):
         d = dict(attrs)
         if "id" in d:
+            if d["id"] in self.ids:
+                self.dup_ids.append(d["id"])
             self.ids.add(d["id"])
         if tag in ("a", "link"):
             href = d.get("href")
@@ -77,13 +80,13 @@ def _dataset_for(page_html: str) -> str:
 
 
 PUBLISHED_MAP = {
-    # source dir -> path in the deployed artifact
+    # Legacy Pages serves main:/ directly (no directory rewrite).
     "docs/": "docs/",
-    "site/": "monitor/",
+    "site/": "site/",
     "dash/": "dash/",
 }
-SKIP_DIRS = {".git", ".github", "collector", "tests", "tools", "scripts", "site", "state",
-             ".venv", "__pycache__"}
+SKIP_DIRS = {".git", ".github", "collector", "tests", "tools", "scripts", "state",
+             ".venv", "__pycache__", "node_modules"}
 
 
 def build_published(root: str, target: str) -> dict[str, str]:
@@ -174,6 +177,8 @@ def main() -> int:
         for snippet in REQUIRED_SNIPPETS.get(page, []):
             if snippet not in html:
                 errors.append(f"{page}: required element id '{snippet}' is missing")
+        for dup in parser.dup_ids:
+            errors.append(f"{page}: duplicate element id '{dup}'")
 
         for href in parser.links + parser.scripts:
             if href.startswith(("http://", "https://", "mailto:", "data:", "#", "//")):
@@ -184,10 +189,6 @@ def main() -> int:
             resolved = os.path.normpath(os.path.join(root, base, target))
             checked += 1
             if not os.path.exists(resolved):
-                # /monitor/ is produced by pages.yml (site/ is copied there); it is verified
-                # by --published, which rebuilds the deployed tree.
-                if href.split("#")[0].startswith("monitor/"):
-                    continue
                 errors.append(f"{page}: broken link -> {href}")
             elif "#" in href and href.split("#")[1]:
                 anchor = href.split("#")[1]
