@@ -20,6 +20,12 @@ on:
     branches: [main, "arena/**"]
   pull_request:
   workflow_dispatch:
+    inputs:
+      verify_deployment:
+        description: "Also verify the deployed Pages HTML/assets and public JSON (read-only)"
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: read
@@ -110,3 +116,76 @@ jobs:
           test -f live/index.html
           grep -q 'live/index.html' index.html
           echo "Legacy Pages publishes main:/ ; root index.html is the entry point and links the live dashboard."
+
+      # Dispatch after the legacy Pages build completes. This runs on a networked
+      # runner and checks what the HTTPS site serves, not just the checkout.
+      - name: Verify deployed Pages code and source capture (read-only)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.verify_deployment }}
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, time
+          from datetime import datetime, timezone
+          from pathlib import Path
+          from urllib.parse import urlparse, quote
+          import requests
+          base = 'https://kanlerxz87-cyber.github.io/Tradebot2/'
+          files = [Path('index.html')] + sorted(Path('live').glob('*.html'))
+          files += sorted(Path('live/assets').rglob('*.js')) + sorted(Path('live/assets').rglob('*.css'))
+          expected = {p.as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
+          session = requests.Session()
+          deadline = time.monotonic() + 150
+          while True:
+              mismatches = []
+              for name, digest in expected.items():
+                  try:
+                      r = session.get(base + name, params={'release-check': digest}, timeout=15)
+                      if r.status_code != 200 or hashlib.sha256(r.content).hexdigest() != digest:
+                          mismatches.append(name)
+                  except requests.RequestException:
+                      mismatches.append(name)
+              if not mismatches:
+                  break
+              if time.monotonic() > deadline:
+                  raise SystemExit('Published code missing/stale: ' + ', '.join(mismatches))
+              print('Waiting for Pages propagation:', ', '.join(mismatches))
+              time.sleep(10)
+          # JSON may have been refreshed by a newer successful collector commit.
+          # Validate its real served schema/provenance rather than requiring old prices.
+          def read(name):
+              r = session.get(base + name, params={'checked': int(time.time())}, timeout=20)
+              r.raise_for_status()
+              return r.json()
+          capture = read('live/data/fallback-snapshot.json')
+          assert capture['schema_version'] == 2 and capture['environment'] == 'demo'
+          assert capture['provenance']['mode'] == 'official REST re-read'
+          assert capture['provenance']['reverified_at']
+          assert {m['topic'] for m in capture['markets']} == {'gas','elections','culture','crypto','golf'}
+          assert len({m['ticker'] for m in capture['markets']}) == len(capture['markets']) > 0
+          for m in capture['markets'] + capture['resolutions']:
+              u = urlparse(m['source_url'])
+              assert u.scheme == 'https' and u.netloc in {'external-api.demo.kalshi.co','demo-api.kalshi.co'}
+              assert u.path == '/trade-api/v2/markets/' + quote(m['ticker'], safe='')
+          account = read('live/data/account-verification.json')
+          assert account['environment'] == 'demo' and account['read_only'] is True
+          assert account['orders_submitted'] == 0
+          if account['configured'] is not True:
+              assert all(account[k] is None for k in ['balance','balance_dollars','portfolio_value','market_positions','event_positions'])
+          proof = {'checked_at': datetime.now(timezone.utc).isoformat(), 'site':base,
+                   'checkout_commit':os.environ['GITHUB_SHA'], 'http_200_and_exact_code_hashes':expected,
+                   'public_capture_provenance':capture['provenance'], 'selected_markets':len(capture['markets']),
+                   'account_status':account['status'], 'orders_submitted_by_check':0}
+          Path('deployment-proof.json').write_text(json.dumps(proof, indent=2)+'\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as fh:
+              fh.write('## Published Pages verified\n\n')
+              fh.write(f'- {len(expected)} HTML/JS/CSS files: HTTPS 200 and exact checkout SHA-256 match.\n')
+              fh.write(f"- {len(capture['markets'])} selected records: official source/provenance schema valid.\n")
+              fh.write('- Account status: `' + account['status'] + '`. Orders sent: **0**.\n')
+          print(json.dumps(proof, indent=2))
+          PY
+      - name: Retain HTTPS deployment proof
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.verify_deployment }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-deployment-proof
+          path: deployment-proof.json
+          retention-days: 14
