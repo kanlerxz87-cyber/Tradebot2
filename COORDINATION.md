@@ -621,3 +621,83 @@ Final integration merge checkpoint 2026-11-27T20:15Z: merged completed docs PR #
 Account verification **completed and inspected**, not inferred from the denied secret-list API: [Actions 46062187383, read-only account job](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062187383) wrote `live/data/account-verification.json` at `2026-11-27T20:13:59.431121Z`. `credentials_available_to_job:false`, `configured:false`, `verified_account_read:false`, `orders_submitted:0`; all balance/positions fields null. No signed request or demo order was sent, and no key value appeared in code/chat/logs. This proves only that this job lacked the configured inputs, not that credentials are globally absent. Existing manual execution remains uninvoked, appropriate when authentication is unavailable.
 
 After incoming PR #48, the local environment lacked FastAPI (now imported by its new test); installed the already-declared dependencies, then **100 pytest +2 subtests** passed. Four FastAPI `on_event` deprecation warnings are non-blocking and do not affect static Pages; app/server ownership remains with that session. Source also re-read: [simple YES/NO settlement fees are zero](https://docs.kalshi.com/getting_started/market_settlement#fees). Plain pull-rebase again tried replaying merge-side AC claims; aborted it without dropping any commit, merged the runner's account evidence, and confirmed ancestry with `pull --rebase --ff-only`. R1/R2 are marked done; R3 still waits for PR #44 integrity integration and final green main/Pages verification.
+## Session `arena/20d918dc-tradebot2` — overlapping discovery, then a narrowed, non-duplicating contribution
+
+Branch is fixed by the runtime to `arena/20d918dc-tradebot2`. This section is deliberately short because **most of
+what this session found was fixed on `main` by session `arena/33fd30e7` (PR #45) while this session was running.**
+That is recorded here rather than glossed over.
+
+### What happened
+
+1. From base `aca6cc8` this session independently verified five defects and fixed them on its own branch
+   (`tools/audit_data.py`, a `resolved_markets_30d` count fix, a `quotePrice()` shape fix for the model chat, the
+   `$0.10–$0.90` entry band, and a `collect.yml`/`data.yml` concurrency fix). PR
+   [#44](https://github.com/kanlerxz87-cyber/Tradebot2/pull/44) was opened.
+2. PR #44 then showed `CONFLICTING`. Rebasing onto `origin/main` revealed PR #45 (`arena/33fd30e7`) had already
+   landed fixes for three of the same five items. The rebase was **aborted** rather than resolved by preferring
+   either side, and the branch was rebuilt on current `main` with only what `main` still lacked.
+3. No work from any session was discarded: the old branch head is preserved as tag `myold` (`22202aa`).
+
+### What `main` had already fixed (so this session dropped its version)
+
+| Finding | Fixed on `main` by #45 | This session's action |
+|---|---|---|
+| `resolved_markets_30d` published a 40-row display cap | yes — full 30-day counts, `resolutions[]` trimmed to 50/topic with a `meta.resolutions_note` | dropped its own data repair entirely |
+| `quotePrice()` ignored the snapshot's `prices` object, so chat 2 was empty | yes — `quotePrice()` now reads `prices` and `liquidity`; `tests/test_frontend.mjs` asserts 13 model picks | dropped |
+| `collect.yml` cancelled at its 25-minute timeout | yes, but by a different route — bulk discovery with `with_nested_markets=true`, so the scan fits in 1m30s | dropped |
+| `data/*.json` zero-row files | partially — `resolutions[]` trimming is documented | kept the "empty file must say why" rule in the new gate |
+
+### What `main` still lacked, and what this session added
+
+| Task | Status | File scope | Verification |
+|---|---|---|---|
+| `20D-A` Integrity gate | done | `tools/audit_data.py` (new), `.github/workflows/{verify,pages}.yml` | Re-derives what the pages print and fails on 8 classes of drift: empty snapshot/alerts, `error_count` mismatch, array totals, `topics[].resolved_markets_30d` vs `stats.settled_markets_in_scope`, a resolution without YES/NO or an official link, a duplicate/untagged/unsourced market, a seed below the advertised threshold, and a zero-row file with no explanation. Each class was re-introduced in a scratch copy and the gate caught all four tested. Currently **PASS** on `main`'s data. |
+| `20D-B` Entry band | done | `assets/js/core.js`, `assets/js/dashboard.js`, `tests/js/model-feed.test.mjs` (new) | `evaluate()` applied no `$0.10–$0.90` bound although the page and `collector/alerts.py` both publish one. With the band absent, seeded feeds produced `$0.004` entries reporting 6,214% "ROI". Now every one of the 13 picks lands between `$0.26` and `$0.72`; asserted in CI. |
+| `20D-C` Flagged record | done | `flagged.html` | F-29 (entry band) and F-30 (the missing integrity gate) with their evidence. |
+
+| `20D-D` Snapshot size guard | done | `tools/audit_data.py`, `flagged.html` | A CI run on this very branch committed a **29.1 MB** `snapshot.json` (43,792 untrimmed resolution records) because the 1.5 MB trim lives in `tools/build_snapshot.py` while `collect.yml` commits from `collector/run.py`, which never calls `trim_resolutions`. The gate now fails anything over 1.6 MB. Published as **F-31**. The untrimmed file was removed from this branch: `main`'s trimmed 1 MB snapshot is used, and both versions were audited (untrimmed → FAIL, trimmed → PASS). |
+
+### What this session verified but did **not** change
+
+* **The retired pages fabricate their charts.** `assets/js/app-core.js` `buildTimeSeries()` generates price history
+  from a seeded PRNG (`seed * 16807 % 2147483647`) and injects a scripted "≥ $0.10 jump" with a catalyst label.
+  It is reachable only from the archived `pages/` generation, never from the canonical root, but it is worth
+  deleting when the archive is retired.
+* **Backtest `avg_roi` is a per-premium ratio, not a comparable return.** `app/paper.py` `roi() = pnl / cost`, so a
+  $0.01 contract turns a 1¢ gain into +100%. The P&L itself (−$252.40 momentum, +$239.41 mean reversion, −$12.99
+  over 37 trades) is sound; the percentage is not an equity return.
+* **Two archived pages still print fabricated tickers** (`docs/index.html`: `OSCAR-BESTPIC-25`,
+  `MASTERS-25-SCHEFFLER`); the fabrication gate in `live/tests/check_live.py` only scans `live/`.
+* **Two pipelines write `data/`, and only one trims** (F-31). `collect.yml` → `collector/run.py` (no trim);
+  `data.yml` → `tools/build_snapshot.py` (trims to 50 resolutions per topic). A run of the first produced a 29.1 MB
+  snapshot on this branch. Aligning them changes which pipeline owns `data/`, so it is logged as a request.
+* **The concurrency coupling is now fixed** (F-32). #45 made `collect.yml` fit inside its timeout, which hid the
+  symptom, but the coupling remained: both workflows declared `concurrency.group: kalshi-data` while `data.yml`
+  cancelled in progress. Observed live twice on this branch — a `collect.yml` run and the `data.yml` run cancelled
+  within 30 seconds of each other, and *both* of a pair of daily runs cancelled. `collect.yml` → `kalshi-collect`,
+  `data.yml` → `kalshi-snapshot`, neither cancelling, and the redundant `pull_request` trigger on `pages.yml` was
+  removed because `push` already covers every branch.
+
+### Gates run on the rebuilt branch (all against `main` + these three additions)
+
+`tools/audit_data.py` PASS · `tools/verify_data.py` PASS · `tools/verify_site.py` PASS ·
+`tools/check_site.py --root . --strict` PASS (427 internal links) · `scripts/check_site.py` PASS ·
+`live/tests/check_live.py` PASS · `pytest` 69 passed · `tests/test_frontend.mjs` PASS (36 alerts, 13 model picks) ·
+`live/tests/smoke.mjs` 87/87 · `node tests/js/model-feed.test.mjs` PASS · `node --check` on every JS file PASS.
+
+### Limits, stated plainly
+
+* This sandbox has **no route to `*.kalshi.co`** (curl exit 35, TLS closed), the limitation F-01 records. No live
+  market value was fetched or inferred in this session; the gate compares published files against each other.
+* Demo-account balance, positions and order entry remain unverified (F-01). No credentials were supplied or
+  requested.
+
+### Open item for the owner
+
+`collect.yml` and `data.yml` should still not share a cancellation group. If scheduled freshness matters, give
+them separate `concurrency.group` values. Logged as a request rather than edited here because #45 already changed
+that workflow and the owner may prefer its current behaviour.
+
+### PR #44 integrated on the final branch — 2026-11-27T20:18Z
+
+The exact completed `9eff3c3` head passed dispatched [Pages 46062350915](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062350915) and [engine 46062354682](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062354682). Direct GitHub merge was conflicting after #46/#48. Per [handoff comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/44#issuecomment-7227357349), merged its **complete commit history** into the current integration branch instead of pushing to its owner's branch. Conflicts resolved as follows: retained both entire coordination entries; retained both headless suites and the new integrity gate; kept `pull_request` verification because forks need checks (event/ref scoping prevents cancellation); combined separate snapshot/collector concurrency names with per-ref scoping and no cancellation. The snapshot/data conflict temporarily retains the coherent 20:07 snapshot + verified bootstrap pair, not a mismatched 20:09 hash; the incoming 20:09 capture is retained in its original commit history and is superseded by our just-completed newer official re-verification run when pulled. Root model entry-band guard, audit findings F-20+ and all new audit/test code are retained unchanged. No fabricated numbers or inferred results were used to resolve a data conflict.

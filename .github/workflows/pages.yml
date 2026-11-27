@@ -13,6 +13,9 @@
 # is exactly how the previous revision broke publishing).
 name: Verify published site
 
+# `pull_request` was removed: `push` already covers every branch in this repository, and
+# the duplicate started a second identical job that this cancel-in-progress group then
+# cancelled, leaving a cancelled (red) check on a green commit.
 on:
   push:
     branches: [main, "arena/**"]
@@ -62,6 +65,9 @@ jobs:
       - name: Canonical site data, required pages and local links
         run: python tools/verify_site.py
 
+      - name: Data integrity (empty datasets and count drift fail here)
+        run: python3 tools/audit_data.py --data-dir data
+
       - name: Archived generations internal links and sourced rows
         run: python scripts/check_site.py
 
@@ -70,6 +76,7 @@ jobs:
           npm install --no-save --silent jsdom
           node live/tests/smoke.mjs
           node tests/test_frontend.mjs
+          node tests/js/model-feed.test.mjs
 
       - name: Live dashboard links, assets and fabrication check
         run: python3 live/tests/check_live.py

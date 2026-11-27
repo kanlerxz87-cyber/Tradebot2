@@ -16,8 +16,10 @@ on:
 permissions:
   contents: write
 
+# Snapshot and scheduled collector use distinct, ref-scoped groups. A capture
+# must not be cancelled halfway through by another workflow or branch push.
 concurrency:
-  group: kalshi-data-${{ github.ref }}
+  group: kalshi-snapshot-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
