@@ -38,6 +38,18 @@ def test_crossed_book_yields_no_price():
     assert price is None
 
 
+def test_wide_book_ignores_artificial_mid():
+    wide_with_last = {"ticker": "X", "yes_bid_dollars": "0.01", "yes_ask_dollars": "0.99", "last_price_dollars": "0.24"}
+    price, basis = quote_price(wide_with_last)
+    assert basis == "last"
+    assert price == pytest.approx(0.24)
+
+    wide_no_last = {"ticker": "X", "yes_bid_dollars": "0.01", "yes_ask_dollars": "0.99", "last_price_dollars": "0.0000"}
+    price2, basis2 = quote_price(wide_no_last)
+    assert basis2 == "none"
+    assert price2 is None
+
+
 def test_threshold_just_below_does_not_alert():
     det = SwingDetector(threshold=0.10)
     assert det.observe(market(0.40, 0.40), ts=1) is None

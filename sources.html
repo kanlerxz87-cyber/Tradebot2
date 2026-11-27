@@ -1,94 +1,177 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sources &amp; evidence · Tradebot2</title>
-<meta name="description" content="Every official source used by this project, what it supports, and the captured API responses that back the site's numbers.">
-<link rel="stylesheet" href="assets/css/main-site.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sources &amp; evidence — Kalshi demo | Tradebot2</title>
+  <meta name="description" content="Every official source used by this project, what it supports, and the captured API responses that back the site's numbers.">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232fe3b0'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-size='17' font-weight='bold' fill='%23041016'%3EK%3C/text%3E%3C/svg%3E">
 </head>
-<body>
-<header class="site"><div class="wrap nav">
-  <a class="brand" href="index.html">Tradebot<span class="dot">2</span></a>
-  <a class="navlink" href="index.html">Dashboard</a>
-  <a class="navlink" href="topics/gas.html">Gas</a>
-  <a class="navlink" href="topics/elections.html">Elections</a>
-  <a class="navlink" href="topics/culture.html">Culture</a>
-  <a class="navlink" href="topics/crypto.html">Crypto</a>
-  <a class="navlink" href="topics/golf.html">Golf</a>
-  <a class="navlink" href="performance.html">Performance</a>
-  <a class="navlink" href="resolutions.html">Resolutions</a>
-  <a class="navlink" href="requirements.html">Requirements</a>
-  <a class="navlink" href="sources.html" aria-current="page">Sources</a>
-  <a class="navlink" href="flagged.html">Flagged</a>
-</div></header>
-<main class="wrap">
-  <h1>Sources &amp; evidence</h1>
-  <p class="lede">
-    Two kinds of evidence back this site: the official Kalshi documentation each rule is built
-    from, and the API responses the project captured itself. Both are listed here with links.
-  </p>
+<body data-page="sources">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">K</span>
+        <span class="brand-text"><strong>Tradebot2</strong><span>Kalshi demo terminal</span></span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html" data-nav="home">Overview</a>
+        <a href="dashboard.html" data-nav="dashboard">Dashboard</a>
+        <span class="nav-sep"></span>
+        <a href="gas-prices.html" data-nav="gas">Gas</a>
+        <a href="elections.html" data-nav="elections">Elections</a>
+        <a href="culture.html" data-nav="culture">Culture</a>
+        <a href="crypto.html" data-nav="crypto">Crypto</a>
+        <a href="golf.html" data-nav="golf">Golf</a>
+        <span class="nav-sep"></span>
+        <a href="portfolio.html" data-nav="portfolio">Portfolio</a>
+        <a href="executive-summary.html" data-nav="summary">Summary</a>
+        <a href="methodology.html" data-nav="method">Method</a>
+        <a href="sources.html" data-nav="sources">Sources</a>
+        <a href="flagged.html" data-nav="flagged">Flagged</a>
+        <a href="suggestions.html" data-nav="suggestions">Ideas</a>
+      </nav>
+    </div>
+  </header>
 
-  <h2>Captured API evidence</h2>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Artifact</th><th>What it records</th><th>Produced by</th></tr></thead>
-    <tbody>
-      <tr><td><a href="data/verify-api.json">data/verify-api.json</a></td>
-        <td>HTTP status, CORS headers and body hashes for public REST reads on both demo hosts; preflight result for
-          the signed headers; WebSocket handshake outcomes.</td>
-        <td><code>tools/probe_api.py</code>, run by the <code>probe-api</code> GitHub Actions workflow
-          (<a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/probe-api.yml"
-             target="_blank" rel="noopener">run history ↗</a>)</td></tr>
-      <tr><td><a href="data/verification.json">data/verification.json</a></td>
-        <td>Integration-session evidence: demo-host exchange status, origin-reflective CORS headers on GET and preflight,
-          the rejected unauthenticated WebSocket handshake, the official category/tag mapping, series counts, and existence
-          checks for the tickers quoted by the repository's older hand-written pages.</td>
-        <td><code>scripts/probe_demo.py</code> + the <code>probe-demo</code> GitHub Actions workflow
-          (<a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/probe-demo.yml"
-             target="_blank" rel="noopener">run history ↗</a>)</td></tr>
-      <tr><td><a href="data/coverage.json">data/coverage.json</a></td>
-        <td>Per-topic coverage probe: one known open series per topic, plus the golf chain (/series count, per-series open events).
-          Records HTTP status and cursor truncation so an empty topic can be attributed to the API rather than to a missed scan.</td>
-        <td><code>scripts/probe_coverage.py</code>, run by the <code>probe-coverage</code> workflow
-          (<a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/probe-coverage.yml"
-             target="_blank" rel="noopener">run history ↗</a>)</td></tr>
-      <tr><td><a href="data/meta.json">data/meta.json</a></td>
-        <td>Collection timestamp, host, request count, per-topic matching rules and series lists.</td>
-        <td><code>collector/collect.py</code></td></tr>
-      <tr><td><a href="data/run_log.json">data/run_log.json</a></td>
-        <td>Per-stage success, duration and any warnings for the latest cycle.</td>
-        <td><code>collector/run.py</code></td></tr>
-    </tbody>
-  </table></div>
+  <main class="wrap-narrow page prose">
+    <div class="eyebrow">Evidence &amp; citations</div>
+    <h1>Sources &amp; captured API evidence</h1>
+    <p class="lede">Two kinds of evidence back this terminal: the official Kalshi documentation each rule is built from, and the captured API responses recorded by CI workflows. Every claim traces back to one of these artifacts.</p>
 
-  <h2>Official documentation</h2>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Source</th><th>What it supports</th></tr></thead>
-    <tbody id="rows"><tr><td colspan="2" class="muted">loading…</td></tr></tbody>
-  </table></div>
+    <div class="statusbar" style="margin:14px 0 22px">
+      <span class="badge green">Snapshot <span data-snapshot-time>—</span></span>
+      <span class="badge blue" id="src-probe">Probe loading…</span>
+      <span class="badge neutral" id="src-coverage">Coverage loading…</span>
+    </div>
 
-  <h2>How a row on this site is verified</h2>
-  <ol class="small">
-    <li>The collector calls a documented endpoint and stores the exact request URL with the record.</li>
-    <li><code>tools/verify_data.py</code> rejects any record without an official Kalshi source URL, any
-      non-null value that contradicts the API's string format, and any resolved market without a yes/no result.</li>
-    <li>The site renders the stored value verbatim; a dash means the API returned nothing for that field.</li>
-    <li>Derived numbers name their formula next to the table (volume estimate, ROI, fee model).</li>
-  </ol>
-</main>
-<footer><div class="wrap">Tradebot2 · <a href="flagged.html">flagged items</a> · <a href="requirements.html">requirements</a></div></footer>
-<script src="assets/js/util.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', async () => {
-  const TB = window.TB;
-  const doc = await TB.getJSON('data/sources.json').catch(() => null);
-  const rows = doc?.sources || [];
-  document.querySelector('#rows').innerHTML = rows.map((s) => `<tr>
-    <td><a href="${TB.esc(s.url)}" target="_blank" rel="noopener">${TB.esc(s.name)} ↗</a>
-      <div class="small muted">${TB.esc(s.url)}</div></td>
-    <td class="small">${TB.esc(s.used_for)}</td></tr>`).join('')
-    || '<tr><td colspan="2" class="unverified">data/sources.json is missing</td></tr>';
-});
-</script>
+    <h2>Captured API artifacts</h2>
+    <div class="card flush">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Artifact</th><th>What it records</th><th>Produced by</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="data/snapshot.json">data/snapshot.json</a></td>
+              <td>Verified demo catalog snapshot: tracked markets, orderbooks, 1m/60m candles, ≥ $0.10 historical alert seed, full 30-day per-topic resolution counts, and newest 50 settled rows per topic.</td>
+              <td><code>tools/build_snapshot.py</code> via <a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/data.yml" target="_blank" rel="noopener">data.yml ↗</a></td>
+              <td class="small mono" id="st-snapshot">—</td>
+            </tr>
+            <tr>
+              <td><a href="data/probe.json">data/probe.json</a></td>
+              <td>Live browser CORS and unauthenticated WebSocket handshake results on <code>external-api.demo.kalshi.co</code> and <code>demo-api.kalshi.co</code>.</td>
+              <td><code>tools/build_snapshot.py</code> via <a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/data.yml" target="_blank" rel="noopener">data.yml ↗</a></td>
+              <td class="small mono" id="st-probe">—</td>
+            </tr>
+            <tr>
+              <td><a href="data/verify-api.json">data/verify-api.json</a></td>
+              <td>HTTP status, CORS headers, preflight allow-headers, body hashes, and WebSocket outcomes across both demo hosts.</td>
+              <td><code>tools/probe_api.py</code> via <a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/probe-api.yml" target="_blank" rel="noopener">probe-api.yml ↗</a></td>
+              <td class="small mono" id="st-verify-api">—</td>
+            </tr>
+            <tr>
+              <td><a href="data/verification.json">data/verification.json</a></td>
+              <td>Exchange status, category/tag mapping (<code>GET /search/tags_by_categories</code>), series counts, and existence checks on legacy tickers.</td>
+              <td><code>scripts/probe_demo.py</code> via <a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/probe-demo.yml" target="_blank" rel="noopener">probe-demo.yml ↗</a></td>
+              <td class="small mono" id="st-verification">—</td>
+            </tr>
+            <tr>
+              <td><a href="data/coverage.json">data/coverage.json</a></td>
+              <td>Per-topic series &amp; open-market coverage probe, including the golf chain and cursor truncation tracking.</td>
+              <td><code>scripts/probe_coverage.py</code> via <a href="https://github.com/kanlerxz87-cyber/Tradebot2/actions/workflows/probe-coverage.yml" target="_blank" rel="noopener">probe-coverage.yml ↗</a></td>
+              <td class="small mono" id="st-coverage">—</td>
+            </tr>
+            <tr>
+              <td><a href="data/backtest.json">data/backtest.json</a></td>
+              <td>Simulated portfolio backtest over real 1-minute candles with official quadratic taker fees and bid/ask execution rules.</td>
+              <td><code>tools/build_snapshot.py</code></td>
+              <td class="small mono" id="st-backtest">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2>Official documentation</h2>
+    <div class="card flush">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Source</th><th>What it supports</th></tr></thead>
+          <tbody id="rows"><tr><td colspan="2" class="muted">Loading official source index…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2>Verification pipeline rules</h2>
+    <ol>
+      <li>The collector fetches documented public endpoints and stores the exact Kalshi API and market URLs on every row.</li>
+      <li><code>tools/verify_data.py</code> and <code>tools/verify_site.py</code> fail on missing source URLs, invalid quotes, unknown topics, or broken relative links.</li>
+      <li>Any missing or unauthenticated value (such as live demo balance without an API key) renders as <code>—</code> and is recorded on <a href="flagged.html">Flagged for review</a>.</li>
+      <li>Computed metrics (notional estimate, estimated ROI, fees, backtest equity) state their exact formulas in <a href="methodology.html">Method &amp; formulas</a>.</li>
+    </ol>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="cols">
+        <div><strong style="color:var(--text)">Tradebot2</strong><div class="small">Kalshi demo market intelligence.</div></div>
+        <div class="small-link-row">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="portfolio.html">Portfolio</a>
+          <a href="executive-summary.html">Executive summary</a>
+          <a href="methodology.html">Method &amp; sources</a>
+          <a href="flagged.html">Flagged for review</a>
+          <a href="live/index.html">Live desk (/live/)</a>
+        </div>
+      </div>
+      <p class="fine">Verified demo sources only. Not financial advice. © <span data-year>2026</span> Tradebot2.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/live.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const TB = window.TB;
+    const UI = window.TBUI;
+    const data = await UI.loadAll(["sources.json", "snapshot.json", "probe.json", "verify-api.json", "verification.json", "coverage.json", "backtest.json"]);
+    const snap = data["snapshot.json"];
+    if (snap) UI.applySnapshotChrome(snap);
+
+    const setText = (sel, val) => { const el = document.querySelector(sel); if (el) el.textContent = val; };
+    if (snap && snap.stats) {
+      setText("#st-snapshot", (snap.stats.tracked_markets || 0) + " tracked · " + Number(snap.stats.resolutions || 0).toLocaleString() + " resolved (30d)");
+    }
+    const probe = data["probe.json"];
+    if (probe) {
+      const ok = probe.cors_public_read_allowed ? "CORS OK" : "CORS blocked";
+      setText("#st-probe", ok + " · " + TB.isoDate(probe.generated_at));
+      setText("#src-probe", ok);
+    }
+    const vapi = data["verify-api.json"];
+    if (vapi) setText("#st-verify-api", "captured " + TB.isoDate(vapi.generated_at || vapi.checked_at));
+    const ver = data["verification.json"];
+    if (ver) setText("#st-verification", "captured " + TB.isoDate(ver.generated_at || ver.checked_at));
+    const cov = data["coverage.json"];
+    if (cov) {
+      setText("#st-coverage", "captured " + TB.isoDate(cov.generated_at || cov.checked_at));
+      setText("#src-coverage", "Coverage verified " + TB.isoDate(cov.generated_at || cov.checked_at));
+    }
+    const bt = data["backtest.json"];
+    if (bt && bt.coverage) {
+      setText("#st-backtest", (bt.coverage.markets_tested || 0) + " markets tested");
+    }
+
+    const doc = data["sources.json"];
+    const rows = (doc && doc.sources) || [];
+    document.querySelector("#rows").innerHTML = rows.map((s) =>
+      "<tr><td><a href=\"" + TB.esc(s.url) + "\" target=\"_blank\" rel=\"noopener\">" + TB.esc(s.name) + " ↗</a>" +
+      "<div class=\"small muted mono\">" + TB.esc(s.url) + "</div></td>" +
+      "<td class=\"small\">" + TB.esc(s.used_for) + "</td></tr>"
+    ).join("") || '<tr><td colspan="2"><div class="empty">data/sources.json could not be loaded.</div></td></tr>';
+  });
+  </script>
 </body>
 </html>

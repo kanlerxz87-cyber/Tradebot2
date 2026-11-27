@@ -380,3 +380,29 @@ Base: `main` @ `b379d02`.
 | A2 | Fix `app/alerts.py`, `app/collector.py`, and `app/backtest.py` so `seed_alerts` and `run_backtest` inspect both `1m` and `60m` candlesticks as well as intra-bar `open -> close` moves `>= $0.10` (deduplicated within 1h) | done | `arena/10428a57-tradebot2` | `app/alerts.py`, `app/collector.py`, `app/backtest.py`, `tests/test_alerts.py` | `56` deduplicated `>= $0.10` seed alerts across all 5 topics (`19` crypto, `18` gas_prices, `10` culture, `8` elections, `1` golf); `data/backtest.json` tests `17` markets / `4,797` candle cells (`209` closed trades, `8` open positions) |
 | A3 | Fix `tools/build_category_pages.py` nav template (`Sources` link), `site/*.html` internal `../data/probe.json` links (`scripts/check_site.py`), and `collector/kalshi.py` optional `requests` import; clean up `flagged.html` non-official link warnings | done | `arena/10428a57-tradebot2` | `tools/build_category_pages.py`, `site/{alerts,findings,flagged,sources}.html`, `collector/kalshi.py`, `flagged.html`, `.github/workflows/data.yml` | Zero warnings/failures in `tools/verify_site.py`, `tools/check_site.py --root . --strict`, `scripts/check_site.py`, `scripts/verify_site.py`, `live/tests/check_live.py`, and `tests/run_fixture_pipeline.py` |
 
+
+---
+
+## Session `arena/a32cdd24-tradebot2` — verification and repository audit
+
+Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `aca6cc8`); it cannot be renamed or moved to the requested `session-<id>/<task>` naming convention. No other task in this board is being taken over. This session claims only an independent final audit and recording of findings; it will not change canonical page/data ownership or execute any demo-account trade.
+
+| Task | Status | Owner | File scope | Method |
+|---|---|---|---|---|
+| A32-1 | in progress | `arena/a32cdd24-tradebot2` | `VERIFICATION_REPORT.md`, this section of `COORDINATION.md` | Run existing repo/site/data/test gates, review source provenance and public pages; record verified outcomes and residual irregularities without inferring live market values. |
+
+---
+
+## Session `arena/33fd30e7-tradebot2` — cross-repo defect audit, live-API verification, snapshot compaction & trader UX upgrades
+
+Base: `main` @ `aca6cc8` (branch fixed by runtime to `arena/33fd30e7-tradebot2`).
+
+| # | Task | Status | Owner | File scope | Sources / verification |
+|---|------|--------|-------|-----------|------------------------|
+| T1 | Fix `#chat-model` zero-seed bug (`assets/js/{core,dashboard}.js`), wide-book 50¢ mid leaks (`app/{alerts,collector}.py`, `collector/collect.py`, `assets/js/core.js`), and Culture vs official `Entertainment` taxonomy (`app/topics.py`, `tools/build_category_pages.py`, `methodology.html`) | done | `arena/33fd30e7-tradebot2` | `app/{topics,alerts,collector}.py`, `collector/collect.py`, `assets/js/{core,dashboard}.js`, `tools/build_category_pages.py`, `{gas-prices,elections,culture,crypto,golf}.html`, `methodology.html` | Live-verified `GET /search/tags_by_categories` & `GET /exchange/status` on `external-api.demo.kalshi.co`; `dashboard.html` in `jsdom` now seeds `36` alerts and `26` scored `#chat-model` picks (up from `0`) |
+| T2 | Fix `28 MB` snapshot bloat & clamped `resolved_markets_30d: 40` bug; fix `collect.yml` 25m CI timeout via bulk `with_nested_markets=true` discovery + 60-series budget | done | `arena/33fd30e7-tradebot2` | `app/collector.py`, `collector/collect.py`, `data/snapshot.json`, `assets/js/{pages,category,dashboard}.js`, `executive-summary.html` | `data/snapshot.json` trimmed from `28,033,008` bytes to `1,029,188` bytes (`218` logged resolutions, newest `50`/topic) while showing real 30d counts (`44,192` total: `crypto: 41,260`, `gas_prices: 1,674`, `golf: 1,112`, `culture: 128`, `elections: 18`) |
+| T3 | Fix broken HTML/links (`index.html` 404 `monitor/` link & false `/dashboard.html` disclaimer, `flagged.html` unclosed table + duplicate `F-13`, `portfolio.html` duplicate `pf-trades`, `sources.html` legacy chrome) + harden `tools/{check_site,verify_site}.py` | done | `arena/33fd30e7-tradebot2` | `index.html`, `sources.html`, `flagged.html`, `portfolio.html`, `tools/{check_site,verify_site}.py` | `check_site.py --strict`, `check_site.py --published` (`95` HTML pages), `verify_site.py` (`sources.html` included) all pass with zero duplicate HTML IDs and zero broken links |
+| T4 | Trader UX & strategy sandbox: grouped topic->event board (`#group-toggle`), `j`/`k` shortcuts, clickable alert/ticker selection, `>= $0.10` swing context box, `GET /markets/trades` seconds overlay in `30s`/`5m` (`assets/js/live.js`) and `live/` (`live/assets/js/page-liquidity.js`), manual simulated trade ticket, custom strategy builder & candle backtester (`portfolio.html`) | done | `arena/33fd30e7-tradebot2` | `dashboard.html`, `portfolio.html`, `assets/js/{core,live,dashboard,portfolio}.js`, `live/assets/js/page-liquidity.js` | `tests/test_frontend.mjs` + `live/tests/smoke.mjs` (`87/87`) + `node --check` all pass |
+| T5 | Regression tests covering wide books, `Entertainment` taxonomy, resolution trimming, fixture collector, and frontend DOM behavior | done | `arena/33fd30e7-tradebot2` | `tests/{test_topics,test_alerts,test_collector}.py`, `tests/test_frontend.mjs` | `pytest -q`, `tests/test_{fees,engine,pipeline}.py`, `tests/run_fixture_pipeline.py`, `tests/test_frontend.mjs` |
+
+

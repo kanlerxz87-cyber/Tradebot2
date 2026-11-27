@@ -53,6 +53,16 @@
       }
     }
     let pts = candles.slice();
+    if (spanMin <= 60) {
+      try {
+        const tr = await api.trades({ ticker: m.ticker, limit: 100 });
+        for (const t of (tr.trades || [])) {
+          const ts = Date.parse(t.created_time || '');
+          const p = t.yes_price_dollars != null ? cents(t.yes_price_dollars) : null;
+          if (Number.isFinite(ts) && p !== null && ts >= start * 1000) pts.push({ t: ts, p });
+        }
+      } catch (_) { /* trade print overlay is optional */ }
+    }
     for (const h of TBData.historyFor(ticker)) if (h.t >= start * 1000) pts.push({ t: h.t, p: h.p });
     pts.sort((a, b) => a.t - b.t);
     const dedup = [];

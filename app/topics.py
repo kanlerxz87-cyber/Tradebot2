@@ -2,10 +2,11 @@
 
 The brief restricts the dashboard to gas prices, elections, culture, crypto and
 golf. Kalshi exposes a `category` on events/series (for example "Crypto" or
-"Culture") but the categories are broader than the requested topics (golf sits
-inside "Sports", elections inside "Politics", gas prices inside "Economics" /
-"Climate and Weather" depending on the series). Classification therefore uses
-the official category as a strong signal *plus* explicit keyword rules.
+"Entertainment") but the categories are broader than the requested topics (golf sits
+inside "Sports", elections inside "Politics", gas prices inside "Commodities" /
+"Economics" depending on the series, and Kalshi does not expose a category
+literally named "Culture" — it uses "Entertainment"). Classification therefore
+uses the official category as a strong signal *plus* explicit keyword rules.
 
 Rules are deliberately narrow: a market that cannot be tied to one of the five
 topics is returned as `None` rather than guessed into a bucket.
@@ -239,8 +240,11 @@ KEYWORDS: dict[str, tuple[str, ...]] = {
 }
 
 # Category names as published by Kalshi that map directly to a topic.
+# Note: Kalshi's official category for pop culture/awards/media is "Entertainment"
+# (verified against GET /search/tags_by_categories). Keep "culture" for compatibility.
 CATEGORY_MAP = {
     "crypto": "crypto",
+    "entertainment": "culture",
     "culture": "culture",
 }
 
