@@ -1,6 +1,6 @@
 {
   "session": "arena/600a5dcd-tradebot2",
-  "status": "candidate checks passed; PR/main/Pages verification pending",
+  "status": "released; main merged, Pages built, and served HTTPS code verified",
   "documentation_checked_at": "2026-11-27",
   "official_documentation": [
     "https://docs.kalshi.com/getting_started/api_environments",
@@ -21,11 +21,11 @@
   "pull_request": "https://github.com/kanlerxz87-cyber/Tradebot2/pull/47",
   "public_demo_capture": {
     "input": "data/snapshot.json",
-    "sha256": "a9d8ee7c40792879154328eca78d55f90006a3d729e5e6e7c30d00f334e3fbb4",
-    "selection_at": "2026-11-27T20:29:46.894616Z",
-    "reverified_at": "2026-11-27T20:29:54.445276Z",
+    "sha256": "060d2c6f2d49aaa7368f3e1f9bbe1b547d72700071b09571394f83df1c2b68a6",
+    "selection_at": "2026-11-27T20:37:13.999893Z",
+    "reverified_at": "2026-11-27T20:37:21.664074Z",
     "mode": "official REST re-read",
-    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598553",
+    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064475392",
     "selected_markets": 128,
     "topics": {
       "gas": 25,
@@ -34,7 +34,7 @@
       "crypto": 27,
       "golf": 25
     },
-    "bytes": 531239,
+    "bytes": 532129,
     "resolution_sample": 200,
     "qualification": "Only the selected cohort was independently re-read. Counts and resolution sample are dated collector output; not full exchange or authenticated account verification."
   },
@@ -46,7 +46,11 @@
     "parallel_frontend": "passed against current capture; seed counts are dated input, not injected /live/ signals",
     "live_static_pages": 16,
     "canonical_and_archive_links": "passed including actual 95-page published tree; GitHub source/workflow evidence is not official price evidence",
-    "data_integrity": "passed new non-empty/count/size gate"
+    "data_integrity": "passed new non-empty/count/size gate",
+    "checked_against_commit": "0a58124d046a07a55fe60b6a0baba02233255f0b",
+    "published_html_pages": 95,
+    "canonical_local_links": 411,
+    "root_local_links": 424
   },
   "account_evidence": "data/account-verification.json",
   "publish_target": {
@@ -54,16 +58,20 @@
     "branch": "main",
     "path": "/",
     "url": "https://kanlerxz87-cyber.github.io/Tradebot2/",
-    "outcome": "not yet asserted for this candidate"
+    "outcome": "built; read-only HTTPS verification passed",
+    "verified_build_commit": "0a58124d046a07a55fe60b6a0baba02233255f0b",
+    "build_api": "https://api.github.com/repos/kanlerxz87-cyber/Tradebot2/pages/builds/1409734626",
+    "build_updated_at": "2026-11-27T20:37:58Z",
+    "build_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064897245"
   },
   "account_verification": {
-    "generated_at": "2026-11-27T20:26:18.208999Z",
+    "generated_at": "2026-11-27T20:33:59.338830Z",
     "status": "no_credentials_available_to_this_job",
     "configured": false,
     "verified_account_read": false,
     "credentials_available_to_job": false,
     "orders_submitted": 0,
-    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598553"
+    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064475392"
   },
   "candidate_ci": {
     "verified_code_commit": "3b5ffa600b0b1bba124b273d83f8486a4aed1184",
@@ -72,5 +80,62 @@
     "public_capture_and_account": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598553",
     "scheduled_collector": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598575",
     "conclusion": "success"
+  },
+  "recorded_at": "2026-11-27T20:39:38.241235+00:00",
+  "release_merge": {
+    "pull_request": 47,
+    "merged_at": "2026-11-27T20:33:46Z",
+    "commit": "6420f4c8689e3a87a0581a5badeba9f333dd1d9c",
+    "final_candidate": "81e3bd91921709e2bdd19a0e2be2eefd07c546a7",
+    "parallel_pr_44": "Complete head ba1b005 was integrated with all ancestry; GitHub marked #44 merged through preservation merge cc1285b when #47 reached main."
+  },
+  "final_candidate_ci": {
+    "commit": "81e3bd91921709e2bdd19a0e2be2eefd07c546a7",
+    "conclusion": "success",
+    "site_push": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064368676",
+    "site_pr": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064375908",
+    "engine_push": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064368677",
+    "engine_pr": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064375917"
+  },
+  "post_merge_ci": {
+    "commit": "6420f4c8689e3a87a0581a5badeba9f333dd1d9c",
+    "conclusion": "success",
+    "site": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064475301",
+    "engine": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064475376",
+    "public_capture_and_get_only_account_check": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064475392",
+    "scheduled_collector": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064475316"
+  },
+  "deployed_https_verification": {
+    "conclusion": "success",
+    "workflow_dispatch": "verify_deployment=true on main",
+    "run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064513796",
+    "checkout_commit": "7ff69d9ebbcbb7d5ad26c7d5d494fd3936857ce0",
+    "completed_at": "2026-11-27T20:34:41Z",
+    "http_200_and_exact_sha256_file_count": 25,
+    "code_scope": "index.html, top-level live/*.html, recursive live/assets JavaScript and CSS. Topic subpages and archives have separate local rendered/source/link checks; they are not in the HTTPS hash manifest.",
+    "served_json_checks": [
+      "demo schema v2",
+      "official REST re-read provenance present",
+      "five topics and unique selected identities",
+      "exact official /markets/{ticker} source URLs",
+      "read-only demo account evidence and null unconfigured account fields",
+      "zero submitted orders"
+    ],
+    "artifact": {
+      "name": "pages-deployment-proof",
+      "url": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46064513796/artifacts/15230167537",
+      "retention_days": 14
+    },
+    "qualification": "A dated deployment check, not a promise of uninterrupted connectivity. Later scheduled captures can legitimately update prices. Job/step conclusion and artifact metadata verified through GitHub; local artifact download was blocked at its storage-host redirect."
+  },
+  "remaining_unverified": {
+    "register": "flagged.html",
+    "items": [
+      "Authenticated demo balance/positions/execution: unavailable credential inputs to the GET-only runner job; no signed read/order sent.",
+      "Exhaustive highest-dollar event coverage and actual cash turnover: selected-contract face-notional proxies only.",
+      "Continuous WebSocket streaming: signed gateway not enabled; sampled browser REST can miss between-read moves.",
+      "Validated profitable strategy or predictive ROI: browser-local paper ledger and disclosed model assumptions only.",
+      "Causal news attribution and historical archive accuracy: unverified, flagged, not filled in."
+    ]
   }
 }
