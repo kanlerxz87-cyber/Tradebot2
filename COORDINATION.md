@@ -390,7 +390,7 @@ Base: `main` @ `aca6cc8` (branch `arena/b4e1fe8a-tradebot2`). This session acts 
 | Task | Status | Owner | File scope |
 |---|---|---|---|
 | `J1-official-verification` | done | `arena/b4e1fe8a-tradebot2` | `COORDINATION.md`, `EXECUTIVE_SUMMARY.md`, `live/executive-summary.html`, `live/verification.html`, `live/flagged.html`, `README.md` (verification appendix only) |
-| `J2-site-gate` | in progress | `arena/b4e1fe8a-tradebot2` | `tools/verify_site.py`, `live/tests/check_live.py` (run only; edits only if gate is broken) |
+| `J2-site-gate` | done | `arena/b4e1fe8a-tradebot2` | `tools/verify_site.py`, `live/tests/check_live.py` (run only; edits only if gate is broken) |
 | `J3-pr-merge-deploy` | in progress | `arena/b4e1fe8a-tradebot2` | PR to `main`, Pages build check |
 
 Scope rule: this session edits only the files in `J1` scope. If a fix requires a file outside that scope, it will be logged here as a request instead of edited. Open PRs #16, #14, #6 (2026-11-22) predate this base and their claims are >60 minutes old with no commits on this branch; this session proceeds as final integration and notes any handoff here. No other session's files will be deleted.
@@ -405,3 +405,27 @@ Rechecked the official references listed above, plus [trades](https://docs.kalsh
 **Parallel session coordination:** independently discovered active [PR #38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38), owner `arena/a32cdd24-tradebot2`, whose branch claims `live/flagged.html`, `flagged.html`, `index.html`, and `VERIFICATION_REPORT.md`. Its claim was not in our base when J1 was pushed. We reverted our local changes to its `live/flagged.html` and requested via [comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38#issuecomment-7226784894) that its owner document the audit limitations on the flagged page and fix duplicate F-13 IDs. No other session's work was discarded. Its PR independently corrects the broken `/legacy/` link and archive warning claims.
 
 **Unverified:** live API re-probe blocked by sandbox egress; demo credentials/orders absent; not every external link or archived page verified. Gate results are recorded at J2 below. Branch naming is fixed by runtime to `arena/b4e1fe8a-tradebot2`.
+
+---
+
+## Session `arena/a32cdd24-tradebot2` — verification and repository audit
+
+Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `aca6cc8`); it cannot be renamed or moved to the requested `session-<id>/<task>` naming convention. No other task in this board is being taken over. This session claims only an independent final audit and recording of findings; it will not change canonical page/data ownership or execute any demo-account trade.
+
+| Task | Status | Owner | File scope | Method |
+|---|---|---|---|---|
+| A32-1 | done | `arena/a32cdd24-tradebot2` | `VERIFICATION_REPORT.md`, `index.html`, `live/flagged.html`, `flagged.html`, this section of `COORDINATION.md` | Independent static audit and test gates; corrected inaccurate `/legacy/`/archive-warning claims and recorded residuals. No live API values inferred. |
+
+### A32-1 close-out (2026-11-27)
+
+- **Official sources:** [Kalshi demo environment](https://docs.kalshi.com/getting_started/demo_env), [API environments](https://docs.kalshi.com/getting_started/api_environments), [events](https://docs.kalshi.com/api-reference/events/get-events), [markets](https://docs.kalshi.com/api-reference/market/get-markets), [order book](https://docs.kalshi.com/api-reference/market/get-market-orderbook), [candlesticks](https://docs.kalshi.com/api-reference/market/get-market-candlesticks), [trades](https://docs.kalshi.com/api-reference/market/get-trades), [settlement](https://docs.kalshi.com/getting_started/market_settlement). They are manual-review references; this session could not independently re-probe current Kalshi API values.
+- **Verification:** `tools/verify_data.py` and `tools/check_site.py --strict` passed; script schema/link checks passed; `pytest` passed 69 tests; archived fixture tests passed; JavaScript syntax passed; live UI smoke passed 87/87; live link/content check passed for 16 pages. Detail and exact outputs are in `VERIFICATION_REPORT.md`.
+- **Corrections:** removed false claim that archived pages live under `/legacy/`; corrected root landing statement that all archives were bannered; reopened root F-18 because `docs/index.html` lacks an archive warning.
+- **Irregularities:** data-feed collections checked by `tools/verify_data.py` were empty (0 rows); root collector metadata is dated Nov 22 with `api_requests: 0`; live API wasn't re-tested; 11/22 fallback is static and explicitly not live; archive warnings are incomplete; demo-account credentials, order status and causal news attribution remain unverified. No demo trade sent.
+- **No conflict:** edits were limited to the audit report, root landing warning, review pages and this close-out. Branch name remains workbench-fixed `arena/a32cdd24-tradebot2`; task claim was pushed immediately before implementation.
+
+### Conflict and integration handoff — 27 November 2026
+
+PR #38 merged to main during this session. Its and our independently appended board sections conflicted during integration; both sections were retained without discarding either session. Discovered later session `arena/600a5dcd-tradebot2` claimed `live/**`, `README.md`, and `EXECUTIVE_SUMMARY.md` at 19:41 UTC, after this session's 19:39 claim but from the same older base and without seeing it. Our documentation edits were already committed before discovering that scope. Handoff requested to that session to preserve or supersede the audit disclosures while it continues its code work.
+
+J2 gate: `tools/verify_site.py` (12 pages, 373 links, 128 markets, 44,192 resolutions); `tools/check_site.py --strict` (14 pages, 406 links); `live/tests/check_live.py` (16 pages); `pytest` (69 passed); live jsdom smoke (87/87); and JS syntax checks passed. `verify_data.py` checked zero rows in the separate feed files and does not verify the full snapshot or current market values. Neither these checks nor the independent documentation review establish every external link or all requirements are complete.
