@@ -21,11 +21,11 @@
   "pull_request": "https://github.com/kanlerxz87-cyber/Tradebot2/pull/47",
   "public_demo_capture": {
     "input": "data/snapshot.json",
-    "sha256": "962311eeaef7c828757d72a8b1b4514b04e4ae4a9d164782d6e3ca9f39384fd1",
-    "selection_at": "2026-11-27T20:17:16.838506Z",
-    "reverified_at": "2026-11-27T20:17:22.851260Z",
+    "sha256": "a9d8ee7c40792879154328eca78d55f90006a3d729e5e6e7c30d00f334e3fbb4",
+    "selection_at": "2026-11-27T20:29:46.894616Z",
+    "reverified_at": "2026-11-27T20:29:54.445276Z",
     "mode": "official REST re-read",
-    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062187383",
+    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598553",
     "selected_markets": 128,
     "topics": {
       "gas": 25,
@@ -34,7 +34,7 @@
       "crypto": 27,
       "golf": 25
     },
-    "bytes": 531231,
+    "bytes": 531239,
     "resolution_sample": 200,
     "qualification": "Only the selected cohort was independently re-read. Counts and resolution sample are dated collector output; not full exchange or authenticated account verification."
   },
@@ -43,9 +43,9 @@
     "python_subtests": 2,
     "live_dom_assertions": 155,
     "quote_integrity_checks": 37,
-    "parallel_frontend": "passed against current capture; 36 historical seed alerts and 9 model picks (not injected into /live/)",
+    "parallel_frontend": "passed against current capture; seed counts are dated input, not injected /live/ signals",
     "live_static_pages": 16,
-    "canonical_and_archive_links": "passed; GitHub workflow-evidence links produce non-market-source warnings",
+    "canonical_and_archive_links": "passed including actual 95-page published tree; GitHub source/workflow evidence is not official price evidence",
     "data_integrity": "passed new non-empty/count/size gate"
   },
   "account_evidence": "data/account-verification.json",
@@ -57,12 +57,20 @@
     "outcome": "not yet asserted for this candidate"
   },
   "account_verification": {
-    "generated_at": "2026-11-27T20:18:06.329071Z",
+    "generated_at": "2026-11-27T20:26:18.208999Z",
     "status": "no_credentials_available_to_this_job",
     "configured": false,
     "verified_account_read": false,
     "credentials_available_to_job": false,
     "orders_submitted": 0,
-    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062483241"
+    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598553"
+  },
+  "candidate_ci": {
+    "verified_code_commit": "3b5ffa600b0b1bba124b273d83f8486a4aed1184",
+    "site": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598684",
+    "engine": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598565",
+    "public_capture_and_account": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598553",
+    "scheduled_collector": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46063598575",
+    "conclusion": "success"
   }
 }
