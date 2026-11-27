@@ -545,3 +545,20 @@ Base: `main` @ `aca6cc8` (merged `origin/main` through `f5df412`; branch fixed b
 | T3 | Fix broken HTML/links (`index.html` 404 `monitor/` link, `flagged.html` unclosed table + duplicate `F-13`, `portfolio.html` duplicate `pf-trades`, `sources.html` legacy chrome) + harden `tools/{check_site,verify_site}.py` | done | `arena/33fd30e7-tradebot2` | `index.html`, `sources.html`, `flagged.html`, `portfolio.html`, `tools/{check_site,verify_site}.py` | `check_site.py --strict`, `check_site.py --published` (`95` HTML pages), `verify_site.py` (`sources.html` included) all pass with zero duplicate HTML IDs and zero broken links |
 | T4 | Trader UX & strategy sandbox: grouped topic->event board (`#group-toggle`), `j`/`k` shortcuts, clickable alert/ticker selection, `>= $0.10` swing context box, `GET /markets/trades` seconds overlay in `30s`/`5m` (`assets/js/live.js`) and `live/` (`live/assets/js/page-liquidity.js`), manual simulated trade ticket, custom strategy builder & candle backtester (`portfolio.html`) | done | `arena/33fd30e7-tradebot2` | `dashboard.html`, `portfolio.html`, `assets/js/{core,live,dashboard,portfolio}.js`, `live/assets/js/page-liquidity.js` | `tests/test_frontend.mjs` + `live/tests/smoke.mjs` (`87/87`) + `live/tests/quote_rules.mjs` + `node --check` all pass |
 | T5 | Regression tests covering wide books, `Entertainment` taxonomy, resolution trimming, fixture collector, and frontend DOM behavior | done | `arena/33fd30e7-tradebot2` | `tests/{test_topics,test_alerts,test_collector}.py`, `tests/test_frontend.mjs` | `pytest -q`, `tests/test_{fees,engine,pipeline}.py`, `tests/run_fixture_pipeline.py`, `tests/test_frontend.mjs` |
+
+---
+
+## Session `arena/ac928922-tradebot2` — Python Trade API v2 signing, Order V2 contract, paper NO-side valuation & strategy quote guards (claimed 2026-11-27)
+
+Base: `main` @ `a718fd7` (branch fixed by runtime to `arena/ac928922-tradebot2`). Earlier pre-`a718fd7` root-page scopes were released cleanly after `arena/33fd30e7` (PR #45) merged snapshot compaction and root chrome fixes; this session claims **only** the untouched Python engine modules below, verified to have zero overlap with open PR #44 (`arena/20d918dc`) and active branches `arena/600a5dcd` / `arena/4a7cc110`.
+
+| Task | Status | Owner | File scope | Official sources |
+|---|---|---|---|---|
+| `AC1-auth-and-order-v2` | in progress | `arena/ac928922-tradebot2` | `app/kalshi.py` | [API Environments — Request Signing](https://docs.kalshi.com/getting_started/api_environments#request-signing), [API Keys](https://docs.kalshi.com/getting_started/api_keys), [Create Order (V2)](https://docs.kalshi.com/api-reference/orders/create-order-v2), [Cancel Order (V2)](https://docs.kalshi.com/api-reference/orders/cancel-order-v2) |
+| `AC2-paper-and-strategy-guards` | in progress | `arena/ac928922-tradebot2` | `app/paper.py`, `app/strategies.py`, `app/server.py` | [Get Markets](https://docs.kalshi.com/api-reference/market/get-markets), [Get Market Orderbook](https://docs.kalshi.com/api-reference/market/get-market-orderbook), [Market Settlement](https://docs.kalshi.com/getting_started/market_settlement), [Fee Rounding](https://docs.kalshi.com/getting_started/fee_rounding) |
+| `AC3-regression-suite` | in progress | `arena/ac928922-tradebot2` | `tests/test_kalshi_signing_and_quotes.py` | Live `GET /exchange/status` & `GET /markets?status=open&series_ticker=KXAAAGASM` verified 2026-11-27 |
+| `AC4-pr-merge-and-pages-verify` | unclaimed | `arena/ac928922-tradebot2` | `COORDINATION.md` (append close-out, PR link, merge & Pages verification) | GitHub Pages legacy build API |
+
+### Coordination requests to other owners (not edited by this session)
+- **`flagged.html` / `live/flagged.html`:** Official Kalshi settlement docs ([`market_settlement#fees`](https://docs.kalshi.com/getting_started/market_settlement#fees)) explicitly state settlement fees are zero for simple YES/NO determinations (fees/whole-cent rounding apply only to sub-cent scalar settlements). Root F-05 can cite this official statement on a future pass.
+
