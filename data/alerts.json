@@ -6,7 +6,7 @@
     "high_roi": 0,
     "up": 0
   },
-  "generated_at": "2026-11-27T19:56:23Z",
+  "generated_at": "2026-11-27T20:22:50Z",
   "high_roi_feed": [],
   "high_roi_rule": "model ROI on risk >= 25% and entry price between $0.10 and $0.90 (mean-reversion reference trade, 10 contracts, taker fee)",
   "rearm_dollars": 0.02,
