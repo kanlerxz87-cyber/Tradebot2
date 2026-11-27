@@ -26,9 +26,9 @@ from .alerts import Alert, _num, quote_price
 #: Kalshi's general (quadratic) trading fee is 0.07 x contracts x price x
 #: (1 - price). The worked example in the official fee-rounding page
 #: (price $0.055 -> model fee $0.00363825) reproduces this formula exactly:
-#: https://docs.kalshi.com/getting_started/fee_rounding.md
-#: The fee is rounded up to 1e-6 per fill; settlement fees are not modelled
-#: (flagged as an assumption on the site).
+#: https://docs.kalshi.com/getting_started/fee_rounding
+#: The fee is rounded up to 1e-6 per fill; settlement fees are zero for simple
+#: YES/NO determinations per https://docs.kalshi.com/getting_started/market_settlement#fees.
 FEE_RATE = 0.07
 
 STRATEGIES = {
@@ -222,18 +222,15 @@ def evaluate(
 
     quotes = _quote_fields(market)
     bid, ask, last = quotes["bid"], quotes["ask"], quotes["last"]
-    if bid is None or ask is None or not (0.0 < ask < 1.0) or ask < bid:
-        return None
-    mid = (bid + ask) / 2.0
-    spread = ask - bid
     liq = _book_metrics(book)
     if liq["best_yes_bid"] is not None:
         bid = liq["best_yes_bid"]
     if liq["best_yes_ask"] is not None:
         ask = liq["best_yes_ask"]
-    if bid is None or ask is None or ask <= 0 or ask >= 1 or ask < bid:
+    if bid is None or ask is None or bid <= 0.0 or ask <= 0.0 or ask >= 1.0 or ask < bid:
         return None
     mid = (bid + ask) / 2.0
+    spread = ask - bid
 
     delta = alert.delta if alert else 0.0
     abs_delta = abs(delta)
@@ -274,7 +271,9 @@ def evaluate(
         return None
 
     # --- score ---------------------------------------------------------------
-    depth = liq["yes_depth"] if side == "yes" else liq["no_depth"]
+    # Binary bid-only orderbook: buying YES lifts the implied YES ask (resting NO
+    # bids = no_depth); buying NO lifts the implied NO ask (resting YES bids = yes_depth).
+    depth = liq["no_depth"] if side == "yes" else liq["yes_depth"]
     if depth is None:
         # Fall back to the quoted size on the side we would trade against.
         size_raw = market.get("yes_ask_size_fp") if side == "yes" else market.get("yes_bid_size_fp")
@@ -375,9 +374,9 @@ def position_size(
     by_risk = int(risk_budget / stop_distance)
     depth = 0.0
     if opportunity.side == "yes":
-        depth = float(opportunity.liquidity.get("yes_depth") or 0.0)
-    else:
         depth = float(opportunity.liquidity.get("no_depth") or 0.0)
+    else:
+        depth = float(opportunity.liquidity.get("yes_depth") or 0.0)
     # No visible depth is not treated as unlimited depth: cap a bookless fill
     # at 25 contracts and let the paper broker record the assumption.
     by_depth = int(depth * depth_fraction) if depth > 0 else 25
