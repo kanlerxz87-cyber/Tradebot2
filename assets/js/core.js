@@ -14,6 +14,13 @@
     hiddenPollMs: 30000,
     modelScoreFloor: 55,
     modelRoiFloor: 0.05,
+    // The selective feed only proposes contracts inside an executable price band.
+    // This mirrors collector/alerts.py qualifies() (0.10 <= entry <= 0.90) and the
+    // rule published in data/alerts.json. Without it a sub-cent contract scores
+    // against an implied return of (1-p)/p: a $0.004 entry reported 6,214% "ROI",
+    // which is arithmetic, not a recommendation. flagged.html F-29.
+    modelEntryFloor: 0.10,
+    modelEntryCeil: 0.90,
     paperCash: 10000,
     maxOpenPerStrategy: 4,
     maxContracts: 250,
@@ -281,6 +288,7 @@
 
     const entry = side === "yes" ? ask : Math.round((1 - bid) * 1e4) / 1e4;
     if (entry <= 0 || entry >= 1) return null;
+    if (entry < CONFIG.modelEntryFloor || entry > CONFIG.modelEntryCeil) return null;
     if (side === "no") modelProb = 1 - modelProb;
     const edge = modelProb - entry;
     if (edge <= 0) return null;

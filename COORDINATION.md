@@ -545,3 +545,74 @@ Base: `main` @ `aca6cc8` (merged `origin/main` through `f5df412`; branch fixed b
 | T3 | Fix broken HTML/links (`index.html` 404 `monitor/` link, `flagged.html` unclosed table + duplicate `F-13`, `portfolio.html` duplicate `pf-trades`, `sources.html` legacy chrome) + harden `tools/{check_site,verify_site}.py` | done | `arena/33fd30e7-tradebot2` | `index.html`, `sources.html`, `flagged.html`, `portfolio.html`, `tools/{check_site,verify_site}.py` | `check_site.py --strict`, `check_site.py --published` (`95` HTML pages), `verify_site.py` (`sources.html` included) all pass with zero duplicate HTML IDs and zero broken links |
 | T4 | Trader UX & strategy sandbox: grouped topic->event board (`#group-toggle`), `j`/`k` shortcuts, clickable alert/ticker selection, `>= $0.10` swing context box, `GET /markets/trades` seconds overlay in `30s`/`5m` (`assets/js/live.js`) and `live/` (`live/assets/js/page-liquidity.js`), manual simulated trade ticket, custom strategy builder & candle backtester (`portfolio.html`) | done | `arena/33fd30e7-tradebot2` | `dashboard.html`, `portfolio.html`, `assets/js/{core,live,dashboard,portfolio}.js`, `live/assets/js/page-liquidity.js` | `tests/test_frontend.mjs` + `live/tests/smoke.mjs` (`87/87`) + `live/tests/quote_rules.mjs` + `node --check` all pass |
 | T5 | Regression tests covering wide books, `Entertainment` taxonomy, resolution trimming, fixture collector, and frontend DOM behavior | done | `arena/33fd30e7-tradebot2` | `tests/{test_topics,test_alerts,test_collector}.py`, `tests/test_frontend.mjs` | `pytest -q`, `tests/test_{fees,engine,pipeline}.py`, `tests/run_fixture_pipeline.py`, `tests/test_frontend.mjs` |
+
+---
+
+## Session `arena/20d918dc-tradebot2` — overlapping discovery, then a narrowed, non-duplicating contribution
+
+Branch is fixed by the runtime to `arena/20d918dc-tradebot2`. This section is deliberately short because **most of
+what this session found was fixed on `main` by session `arena/33fd30e7` (PR #45) while this session was running.**
+That is recorded here rather than glossed over.
+
+### What happened
+
+1. From base `aca6cc8` this session independently verified five defects and fixed them on its own branch
+   (`tools/audit_data.py`, a `resolved_markets_30d` count fix, a `quotePrice()` shape fix for the model chat, the
+   `$0.10–$0.90` entry band, and a `collect.yml`/`data.yml` concurrency fix). PR
+   [#44](https://github.com/kanlerxz87-cyber/Tradebot2/pull/44) was opened.
+2. PR #44 then showed `CONFLICTING`. Rebasing onto `origin/main` revealed PR #45 (`arena/33fd30e7`) had already
+   landed fixes for three of the same five items. The rebase was **aborted** rather than resolved by preferring
+   either side, and the branch was rebuilt on current `main` with only what `main` still lacked.
+3. No work from any session was discarded: the old branch head is preserved as tag `myold` (`22202aa`).
+
+### What `main` had already fixed (so this session dropped its version)
+
+| Finding | Fixed on `main` by #45 | This session's action |
+|---|---|---|
+| `resolved_markets_30d` published a 40-row display cap | yes — full 30-day counts, `resolutions[]` trimmed to 50/topic with a `meta.resolutions_note` | dropped its own data repair entirely |
+| `quotePrice()` ignored the snapshot's `prices` object, so chat 2 was empty | yes — `quotePrice()` now reads `prices` and `liquidity`; `tests/test_frontend.mjs` asserts 13 model picks | dropped |
+| `collect.yml` cancelled at its 25-minute timeout | yes, but by a different route — bulk discovery with `with_nested_markets=true`, so the scan fits in 1m30s | dropped |
+| `data/*.json` zero-row files | partially — `resolutions[]` trimming is documented | kept the "empty file must say why" rule in the new gate |
+
+### What `main` still lacked, and what this session added
+
+| Task | Status | File scope | Verification |
+|---|---|---|---|
+| `20D-A` Integrity gate | done | `tools/audit_data.py` (new), `.github/workflows/{verify,pages}.yml` | Re-derives what the pages print and fails on 8 classes of drift: empty snapshot/alerts, `error_count` mismatch, array totals, `topics[].resolved_markets_30d` vs `stats.settled_markets_in_scope`, a resolution without YES/NO or an official link, a duplicate/untagged/unsourced market, a seed below the advertised threshold, and a zero-row file with no explanation. Each class was re-introduced in a scratch copy and the gate caught all four tested. Currently **PASS** on `main`'s data. |
+| `20D-B` Entry band | done | `assets/js/core.js`, `assets/js/dashboard.js`, `tests/js/model-feed.test.mjs` (new) | `evaluate()` applied no `$0.10–$0.90` bound although the page and `collector/alerts.py` both publish one. With the band absent, seeded feeds produced `$0.004` entries reporting 6,214% "ROI". Now every one of the 13 picks lands between `$0.26` and `$0.72`; asserted in CI. |
+| `20D-C` Flagged record | done | `flagged.html` | F-29 (entry band) and F-30 (the missing integrity gate) with their evidence. |
+
+### What this session verified but did **not** change
+
+* **The retired pages fabricate their charts.** `assets/js/app-core.js` `buildTimeSeries()` generates price history
+  from a seeded PRNG (`seed * 16807 % 2147483647`) and injects a scripted "≥ $0.10 jump" with a catalyst label.
+  It is reachable only from the archived `pages/` generation, never from the canonical root, but it is worth
+  deleting when the archive is retired.
+* **Backtest `avg_roi` is a per-premium ratio, not a comparable return.** `app/paper.py` `roi() = pnl / cost`, so a
+  $0.01 contract turns a 1¢ gain into +100%. The P&L itself (−$252.40 momentum, +$239.41 mean reversion, −$12.99
+  over 37 trades) is sound; the percentage is not an equity return.
+* **Two archived pages still print fabricated tickers** (`docs/index.html`: `OSCAR-BESTPIC-25`,
+  `MASTERS-25-SCHEFFLER`); the fabrication gate in `live/tests/check_live.py` only scans `live/`.
+* **The 5-minute `collect.yml` vs daily `data.yml` concurrency overlap still exists on `main`** (group
+  `kalshi-data`, `data.yml` cancelling in progress). #45 made `collect.yml` fit inside its timeout, which removes
+  the symptom; the coupling itself is unchanged and is noted rather than edited here.
+
+### Gates run on the rebuilt branch (all against `main` + these three additions)
+
+`tools/audit_data.py` PASS · `tools/verify_data.py` PASS · `tools/verify_site.py` PASS ·
+`tools/check_site.py --root . --strict` PASS (427 internal links) · `scripts/check_site.py` PASS ·
+`live/tests/check_live.py` PASS · `pytest` 69 passed · `tests/test_frontend.mjs` PASS (36 alerts, 13 model picks) ·
+`live/tests/smoke.mjs` 87/87 · `node tests/js/model-feed.test.mjs` PASS · `node --check` on every JS file PASS.
+
+### Limits, stated plainly
+
+* This sandbox has **no route to `*.kalshi.co`** (curl exit 35, TLS closed), the limitation F-01 records. No live
+  market value was fetched or inferred in this session; the gate compares published files against each other.
+* Demo-account balance, positions and order entry remain unverified (F-01). No credentials were supplied or
+  requested.
+
+### Open item for the owner
+
+`collect.yml` and `data.yml` should still not share a cancellation group. If scheduled freshness matters, give
+them separate `concurrency.group` values. Logged as a request rather than edited here because #45 already changed
+that workflow and the owner may prefer its current behaviour.

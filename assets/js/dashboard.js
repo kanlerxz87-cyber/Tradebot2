@@ -788,7 +788,9 @@
     $("#chat-all-count").textContent = state.counts.all + " alerts";
     $("#chat-model-count").textContent = state.counts.model + " model picks";
     $("#chat-all-foot").textContent = state.counts.history + " seeded from 1-min candles · " + (state.counts.all - state.counts.history) + " live";
-    $("#chat-model-foot").textContent = "Score ≥ " + TB.CONFIG.modelScoreFloor + " · est. ROI ≥ " + (TB.CONFIG.modelRoiFloor * 100) + "% · heuristic";
+    $("#chat-model-foot").textContent = "Score ≥ " + TB.CONFIG.modelScoreFloor +
+      " · est. ROI ≥ " + (TB.CONFIG.modelRoiFloor * 100) + "% · entry " +
+      TB.money(TB.CONFIG.modelEntryFloor) + "–" + TB.money(TB.CONFIG.modelEntryCeil) + " · heuristic";
   }
 
   function tickClock() {

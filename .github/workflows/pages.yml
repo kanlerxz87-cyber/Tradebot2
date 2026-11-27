@@ -62,6 +62,9 @@ jobs:
       - name: Canonical site data, required pages and local links
         run: python tools/verify_site.py
 
+      - name: Data integrity (empty datasets and count drift fail here)
+        run: python3 tools/audit_data.py --data-dir data
+
       - name: Archived generations internal links and sourced rows
         run: python scripts/check_site.py
 
@@ -69,6 +72,7 @@ jobs:
         run: |
           npm install --no-save --silent jsdom
           node live/tests/smoke.mjs
+          node tests/js/model-feed.test.mjs
 
       - name: Live dashboard links, assets and fabrication check
         run: python3 live/tests/check_live.py
