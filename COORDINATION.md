@@ -610,7 +610,7 @@ Base: `main` @ `a718fd7` (branch fixed by runtime to `arena/ac928922-tradebot2`)
 | `AC1-auth-and-order-v2` | done | `arena/ac928922-tradebot2` | `app/kalshi.py` | [API Environments — Request Signing](https://docs.kalshi.com/getting_started/api_environments#request-signing), [API Keys](https://docs.kalshi.com/getting_started/api_keys), [Create Order (V2)](https://docs.kalshi.com/api-reference/orders/create-order-v2), [Cancel Order (V2)](https://docs.kalshi.com/api-reference/orders/cancel-order-v2) |
 | `AC2-paper-and-strategy-guards` | done | `arena/ac928922-tradebot2` | `app/paper.py`, `app/strategies.py`, `app/server.py` | [Get Markets](https://docs.kalshi.com/api-reference/market/get-markets), [Get Market Orderbook](https://docs.kalshi.com/api-reference/market/get-market-orderbook), [Market Settlement](https://docs.kalshi.com/getting_started/market_settlement#fees), [Fee Rounding](https://docs.kalshi.com/getting_started/fee_rounding) |
 | `AC3-regression-suite` | done | `arena/ac928922-tradebot2` | `tests/test_kalshi_signing_and_quotes.py` | `pytest -q` (88 passed), `verify_site.py`, `check_site.py --strict`, `verify_data.py`, `live/tests/{smoke,quote_rules}.mjs`, `test_frontend.mjs` |
-| `AC4-pr-merge-and-pages-verify` | in progress | `arena/ac928922-tradebot2` | `COORDINATION.md` (append close-out, PR link, merge & Pages verification) | GitHub Pages legacy build API |
+| `AC4-pr-merge-and-pages-verify` | done | `arena/ac928922-tradebot2` | `COORDINATION.md` (append close-out, PR link, merge & Pages verification) | PR [#48](https://github.com/kanlerxz87-cyber/Tradebot2/pull/48) merged at `2026-11-27T20:13:28Z` (`a082105beae6ba0cc852ea26d9bc772252e7963f`); post-merge `Verify site and engine` ([46062148550](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062148550)) and `Verify published site` ([46062148562](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062148562)) succeeded; GitHub Pages legacy build on `a082105` reported `status=built` (`error=null`) at `2026-11-27T20:13:56Z` and live pages (`https://kanlerxz87-cyber.github.io/Tradebot2/`, `executive-summary.html`, `flagged.html`, `live/index.html`) verified HTTP 200 |
 
 ### Coordination requests to other owners (not edited by this session)
 - **`flagged.html` / `live/flagged.html`:** Official Kalshi settlement docs ([`market_settlement#fees`](https://docs.kalshi.com/getting_started/market_settlement#fees)) explicitly state settlement fees are zero for simple YES/NO determinations (fees/whole-cent rounding apply only to sub-cent scalar settlements). Root F-05 can cite this official statement on a future pass.
@@ -705,3 +705,100 @@ The exact completed `9eff3c3` head passed dispatched [Pages 46062350915](https:/
 Final behavior/published-tree pass after PR #44 integration: dashboard event ranking now has five separate topic groups (contracts remain grouped by event inside each); every missing series/count/settlement field is explicitly blank + review-linked; passed close time blocks both new paper entries **and exits/marks** while venue status catches up. No-selection views clear old liquidity/trades/context rather than implying an empty-ticker source. Added targeted regressions: **155/155 DOM**, **37/37 quote**, **100 Python +2 subtests**, both root frontend/model-feed suites and the new data integrity audit pass. The latest coherent runner capture at `20:17:22Z` is **531,231 bytes**, with full input hash and 128 independently re-read selected markets; its count/sample changes are source changes, not defaulted values.
 
 The **actual published-tree** gate then found 3 broken incoming root-audit links that the checkout-only gate missed: tests/tools/collector source files are intentionally not in the Pages tree. Replaced those three with exact GitHub source links and added `tools/check_site.py --published` to Pages CI. Root audit F-31/F-32 were qualified, not silently repeated: current `collector/` contains no snapshot writer, and the daily app/tools `paths` filter does not prove a data-only self-trigger. Historical bloat/cancellation observations remain in their commits/board, but writer/trigger causal attribution is marked unverified. This avoids “fixing” an inferred architecture problem. Complete PR #44 history is preserved; only final-integration findings and links were corrected.
+---
+
+## Session `arena/ba08e592-tradebot2` — requirements register audit (claimed 2026-11-27)
+
+Runtime branch: `arena/ba08e592-tradebot2` (base `main` @ `aca6cc8`, fast-forwarded to `260c432`).
+No other branch will be created. This session claims work no other active session has claimed; it does not
+touch `live/**` (session `arena/600a5dcd` R1), `README.md`/`EXECUTIVE_SUMMARY.md` (sessions `arena/4a7cc110` D1,
+`arena/600a5dcd` R2, `arena/b4e1fe8a` J1 appendix), `scripts/kalshi_collector.py` (session `arena/bce83713`),
+`tools/verify_site.py` (session `arena/b4e1fe8a` J2), `index.html`/`flagged.html`/`live/flagged.html`
+(session `arena/600a5dcd` R2 / prior audits), or the PR-merge-deploy step (sessions `arena/b4e1fe8a` J3 and
+`arena/600a5dcd` R3 both claim it — this session will not race them).
+
+| Task | Status | Owner | File scope |
+|---|---|---|---|
+| K1 — line-by-line audit of the brief's requirements register: every row checked against the repo and official Kalshi docs; statuses corrected; missing brief lines added; unverifiable claims blanked and flagged | **done** | `arena/ba08e592-tradebot2` | `requirements.html`, `data/requirements.json`, `assets/js/requirements.js`, this section of `COORDINATION.md` |
+| K2 — fix the root resolution tracker: `resolutions.html` reads `data/resolutions.json` (empty: 0 records at claim time) and renders "Tracked 0 / Resolved 0 / Yes 0 / No 0" while `data/snapshot.json` held 44,192 settled markets with yes/no results; retargeted the page to the snapshot (fallback to the collector file), honest KPIs, bounded table | **done** | `arena/ba08e592-tradebot2` | `resolutions.html` only |
+
+Claim pushed before implementation, per the board's convention. K2 was discovered during the K1
+audit (read-only render test); no active session's claim covers `resolutions.html` — verified
+against the claims of sessions `arena/600a5dcd` (R1 `live/**`, R2 `index.html`/README/EXEC_SUMMARY/
+workflows), `arena/b4e1fe8a` (J1/J2/J3), `arena/4a7cc110` (D1), `arena/bce83713` (collector).
+
+### K1 close-out — 27 November 2026
+
+**Official sources fetched from the official sites on 2026-11-27 (all returned the expected page):**
+[api_environments](https://docs.kalshi.com/getting_started/api_environments) ·
+[quick_start_websockets](https://docs.kalshi.com/getting_started/quick_start_websockets) ·
+[get-markets](https://docs.kalshi.com/api-reference/market/get-markets) ·
+[get-series-list](https://docs.kalshi.com/api-reference/market/get-series-list) ·
+[get-trades](https://docs.kalshi.com/api-reference/market/get-trades) ·
+[create-order-v2](https://docs.kalshi.com/api-reference/orders/create-order-v2) ·
+[get-balance](https://docs.kalshi.com/api-reference/portfolio/get-balance) ·
+[get-market-candlesticks](https://docs.kalshi.com/api-reference/market/get-market-candlesticks) ·
+[get-market-orderbook](https://docs.kalshi.com/api-reference/market/get-market-orderbook) ·
+[market_settlement](https://docs.kalshi.com/getting_started/market_settlement) ·
+[rate_limits](https://docs.kalshi.com/getting_started/rate_limits) ·
+[fee schedule PDF](https://kalshi.com/docs/kalshi-fee-schedule.pdf) (taker fee = round up(M x 0.07 x C x P x (1-P)); no settlement fee) ·
+[GitHub Pages docs](https://docs.github.com/en/pages) · repo links (commit `003447e`, `flagged.html`, `COORDINATION.md`) returned HTTP 200.
+
+**Verification performed (all green, 2026-11-27):** `python3 tools/check_site.py --root . --strict`
+(14 pages, 422 internal links) · `python3 tools/verify_site.py` (12 pages, 373 links, 128 tracked
+markets, 218 logged resolutions; only pre-existing GitHub-link warnings) ·
+`python3 tools/verify_data.py --data-dir data` · `python3 -m pytest -q` → **80 passed** ·
+`node live/tests/smoke.mjs` → **87/87** · `python3 live/tests/check_live.py` → 0 failures ·
+`node --check` on every `assets/js` file · headless jsdom renders: `requirements.html` 23 rows /
+5 KPI cards / 0 errors / every row carries a source link; `resolutions.html` 346 rows (128 open +
+218 logged settled) / KPI Resolved (30d) = 44,192 / filters verified (yes → 54, open → 128) /
+0 errors; `dashboard.html` 36 `#chat-all` messages and 26 `#chat-model` picks / 0 errors.
+
+**Corrections made to the register (K1):** implementation text that pointed at archived generations
+was retargeted to the files the published pages actually use — chats are `#chat-all`/`#chat-model`
+on `dashboard.html` and `#chatAll`/`#chatRoi` on `live/alerts.html` (not `index.html`); chart ranges
+are 30s/5m/15m/1h/6h/24h in `assets/js/dashboard.js` + `assets/js/live.js` (not `assets/js/chart.js`,
+which only archived pages load, and not `data/history/`, which holds only a README); ranking is
+`volume.notional_24h_est` on the published pages (with the estimate caveat) rather than the archived
+`est_volume_24h_dollars`; R-21's verification now states what actually runs (`verify_data.py` after
+each data cycle in `collect.yml`, `pytest` + `verify_site.py` on every push via `verify.yml`), not
+"verify_data on every push". Statuses were left honest: **17 done, 2 partial, 4 review, 0 not built**
+— the four `review` rows are WS authentication (R-02), demo-account credentials (R-10), order
+execution (R-12) and news-attribution links (R-16), all blocked on evidence the repository does not
+have, and all already published on `flagged.html`.
+
+### K2 close-out — 27 November 2026
+
+`resolutions.html` now reads `data/snapshot.json` first (official `GET /markets` records via
+`tools/build_snapshot.py`): complete 30-day totals in the KPI cards (`stats.resolutions` =
+44,192, `stats.open_markets_in_scope` = 40,863), the newest 50 settled rows per topic plus the 128
+tracked open markets in the table (future close times sort first, so open markets lead), per-row
+`API ↗` / `Kalshi ↗` links, `expiration_value` labelled as the official field the topic pages use,
+and "Awaiting result" left as an em dash because the snapshot does not publish it. If the snapshot
+is unavailable the page falls back to `data/resolutions.json` and says so; it never renders the
+old all-zero state as fact. Source: [market lifecycle](https://docs.kalshi.com/getting_started/market_lifecycle)
+· [market settlement](https://docs.kalshi.com/getting_started/market_settlement).
+
+### Irregularities found (for the board / Flagged register; not edited outside my scope)
+
+1. **Empty legacy feeds.** `data/markets.json`, `data/events.json`, `data/series.json` and
+   `data/orderbooks.json` were committed with 0 rows by the failed 2026-11-22 run while
+   `data/snapshot.json` stayed fresh; pages of the archived generation that read them render zeros.
+   Open PR #44 annotates these files; this session did not touch them.
+2. **`resolutions.html` all-zero tracker** (K2 finding, fixed by K2): it published "Tracked 0 /
+   Resolved 0 / Yes 0 / No 0" while the snapshot held 44,192 results — exactly the class of defect
+   the brief's "never fill in values" rule exists to prevent, in the opposite direction (an empty
+   feed displayed as authoritative counts).
+3. **Stray conflict marker in `COORDINATION.md`.** A bare `>>>>>>> origin/main` line left in the
+   board by an earlier merge (at the end of the `arena/b4e1fe8a` section) was removed in this
+   session's K1 commit; the quoted mention of markers inside line 227's text was kept.
+4. **Navigation generation mismatch.** The canonical gate page `sources.html` (and the
+   `requirements.html` / `performance.html` / `resolutions.html` cluster) uses the main-site nav
+   pointing at `topics/*.html`, while the canonical topic pages are the flat root
+   `gas-prices.html` … `golf.html`. Both generations publish; collapsing the nav is the final
+   integration session's call (logged, not edited — shared navigation).
+5. **Register reachability.** `requirements.html` is two hops from the landing page
+   (canonical pages → `sources.html` → `requirements.html`) and is not in the main nav; adding it
+   to the shared nav is likewise logged for the integration owner rather than edited here.
+
+Main integration cutoff, 2026-11-27T20:23Z: fetched `d44bc77`, retaining merged #49 requirements-register/root resolution-tracker fixes and #50's append-only #48 deployment close-out. The only code/data conflicts were concurrent capture JSON; kept our **newer** `20:17:16Z` source plus its independently re-read bootstrap/hash, rather than the incoming `20:17:05Z` copy (same published totals). Both capture histories remain accessible. Both entire board appendices are retained. No edits were made to the #49-owned requirements data/page or its resolution implementation. Upcoming final release checks are against this combined tree, not just a previous test base. Future independent work should preserve this release's explicit demo/paper/account/provenance separation.
