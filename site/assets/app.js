@@ -620,15 +620,17 @@
       '<div class="kpi"><b>' + yes + '</b><span>Resolved YES</span></div>' +
       '<div class="kpi"><b>' + (rows.length - yes) + '</b><span>Resolved NO</span></div>';
     var h = '<div class="table-wrap"><table class="sourced"><thead><tr><th>Market</th><th>Topic</th><th>Result</th>' +
-      '<th class="num">Settlement value</th><th class="num">Last price before resolution</th><th>Resolved (first seen)</th><th>Source</th></tr></thead><tbody>';
+      '<th class="num">Settlement value</th><th class="num">Last active price observed</th><th>Settled (API time)</th><th>First observed</th><th>Source</th></tr></thead><tbody>';
     h += rows.map(function (x) {
       var v = x.settlement_value;
       return "<tr><td>" + esc(x.title || x.ticker) + '<div class="note">' + esc(x.ticker) + "</div></td><td>" + esc(x.topic_label || "") +
         '</td><td><b class="tag ' + (x.result === "yes" ? "yes" : "no") + '">' + esc((x.result || "").toUpperCase()) + "</b></td>" +
-        '<td class="num">' + (isNum(v) ? price(v) : '<span class="unv">unverified</span>') + "</td>" +
-        '<td class="num">' + (isNum(x.last_before_resolution) ? price(x.last_before_resolution) : '<span class="unv">unverified</span>') + "</td>" +
-        "<td>" + esc(when(x.resolved_at)) + "</td><td>" + srcLink(x.source_url) + "</td></tr>";
-    }).join("") || '<tr><td colspan="7" class="note">No resolutions recorded yet.</td></tr>';
+        '<td class="num">' + (isNum(v) ? price(v) : '<span class="unv">not returned</span>') + "</td>" +
+        '<td class="num">' + (isNum(x.last_observed_while_active) ? price(x.last_observed_while_active) : '<span class="unv">not observed</span>') + "</td>" +
+        "<td>" + (x.settlement_ts ? esc(when(x.settlement_ts)) : '<span class="unv">not returned</span>') + "</td>" +
+        "<td>" + (x.resolution_observed_at ? esc(when(x.resolution_observed_at)) : '<span class="unv">not recorded</span>') + "</td>" +
+        "<td>" + srcLink(x.source_url) + "</td></tr>";
+    }).join("") || '<tr><td colspan="8" class="note">No resolutions recorded yet.</td></tr>';
     document.getElementById("res-table").innerHTML = h + "</tbody></table></div>";
   }
 

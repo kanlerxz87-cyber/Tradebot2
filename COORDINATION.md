@@ -518,7 +518,7 @@ Base: `main` @ `aca6cc898a8abb16bb36928648e1dcda90be7e78`. Arena fixes this sess
 
 | Task | Status | Owner | File scope | Sources / verification |
 |---|---|---|---|---|
-| Take over the stale demo collector safety task; audit the integrated site and record final evidence | `in progress` | `arena/bce83713-tradebot2` | `scripts/kalshi_collector.py`, `scripts/tests/test_collector_safety.py`, `COORDINATION.md`, `VERIFICATION_REPORT.md` | Official Kalshi [demo environment](https://docs.kalshi.com/getting_started/demo_env) and [market lifecycle](https://docs.kalshi.com/getting_started/market_lifecycle); tests pending |
+| Take over the stale demo collector safety task; audit the integrated site and record final evidence | `in progress` | `arena/bce83713-tradebot2` | `scripts/kalshi_collector.py`, `scripts/tests/test_collector_safety.py`, `site/{flagged,resolved}.html`, `site/assets/app.js`, `COORDINATION.md`, `VERIFICATION_REPORT.md` | Official Kalshi [demo environment](https://docs.kalshi.com/getting_started/demo_env) and [market lifecycle](https://docs.kalshi.com/getting_started/market_lifecycle); tests pending |
 
 ### Handoff and scope
 
