@@ -40,20 +40,25 @@
   async function account() {
     let doc = {};
     try {
-      const r = await fetch(TB.pageUrl('../data/portfolio.json'), { cache: 'no-store' });
+      const r = await fetch(TB.pageUrl('data/account-verification.json'), { cache: 'no-store' });
       if (!r.ok) throw new Error('HTTP ' + r.status); doc = await r.json();
     } catch (e) { doc.note = 'Account capture unavailable: ' + e.message; }
     const balanceSource = 'https://external-api.demo.kalshi.co/trade-api/v2/portfolio/balance';
     const positionSource = 'https://external-api.demo.kalshi.co/trade-api/v2/portfolio/positions';
-    const allowed = url => { try { const u = new URL(url); return u.protocol === 'https:' && ['external-api.demo.kalshi.co', 'demo-api.kalshi.co'].includes(u.host); } catch (e) { return false; } };
-    const verified = doc.configured === true && doc.environment === 'demo' && doc.generated_at && allowed(doc.balance_source_url) && allowed(doc.positions_source_url);
+    const allowed = (url, path) => { try { const u = new URL(url); return u.protocol === 'https:' && ['external-api.demo.kalshi.co', 'demo-api.kalshi.co'].includes(u.host) && u.pathname === '/trade-api/v2' + path; } catch (e) { return false; } };
+    const captureTime = Date.parse(doc.generated_at);
+    const verified = doc.configured === true && doc.verified_account_read === true && doc.environment === 'demo'
+      && Number.isFinite(captureTime) && captureTime <= Date.now() + 5000
+      && allowed(doc.balance_source_url, '/portfolio/balance') && allowed(doc.positions_source_url, '/portfolio/positions');
     const rows = [['Available balance ($)', verified ? (TB.num(doc.balance_dollars) ?? (TB.num(doc.balance) == null ? null : Number(doc.balance) / 100)) : null, balanceSource],
       ['Portfolio value ($, cents ÷ 100)', verified && TB.num(doc.portfolio_value) != null ? Number(doc.portfolio_value) / 100 : null, balanceSource],
       ['Authenticated capture time', verified ? doc.generated_at : null, balanceSource],
+      ['Returned market positions (first page, limit 200)', verified && Array.isArray(doc.market_positions) ? doc.market_positions.length : null, positionSource],
       ['Confirmed account order execution', null, positionSource]];
     qs('#accountStatus').textContent = verified ? 'Dated signed DEMO account read; not live streaming. Strategy attribution needs a linked fills/order ledger and is not inferred.' : 'UNVERIFIED — no authenticated demo-account capture. Balance, positions and order execution remain blank. Browser simulations below are separate.';
     qs('#accountTable').innerHTML = `<table><thead><tr><th>Account field</th><th>Verified value</th><th>Official source (requires authentication)</th></tr></thead><tbody>
-      ${rows.map(([label, value, src]) => `<tr><th>${esc(label)}</th><td>${value == null ? TBUI.missing() : esc(value)}</td><td class="src">${TBUI.link(src, 'signed API')} · ${TBUI.link('https://docs.kalshi.com/api-reference/portfolio/get-balance', 'units/auth docs')}</td></tr>`).join('')}</tbody></table>`;
+      ${rows.map(([label, value, src]) => `<tr><th>${esc(label)}</th><td>${value == null ? TBUI.missing() : esc(value)}</td><td class="src">${TBUI.link(src, 'signed API')} · ${TBUI.link('https://docs.kalshi.com/api-reference/portfolio/get-balance', 'units/auth docs')}</td></tr>`).join('')}</tbody></table>
+      <p class="src">${esc(doc.note || 'Account values remain unverified.')} · <a href="${TB.pageUrl('data/account-verification.json')}">Exact read-only capture / runner evidence</a></p>`;
   }
   async function load() {
     try { await TBData.refresh(); TBUI.statusBar(qs('#statusbar'), TBData.state); TBUI.errorBox(qs('#errbox'), TBData.state.errors); }

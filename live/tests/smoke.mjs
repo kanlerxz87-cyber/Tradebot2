@@ -57,7 +57,7 @@ async function makePage(file = 'index.html', opts = {}) {
   w.fetch = async input => {
     const u = new URL(String(input), w.document.baseURI); net.calls.push(u);
     if (u.pathname.endsWith('/data/fallback-snapshot.json')) return response(opts.capture || (opts.blockApi ? committed : capture(fix)));
-    if (u.pathname.endsWith('/data/portfolio.json')) return response({ configured: false, history: [], note: 'Test: no signed capture' });
+    if (u.pathname.endsWith('/data/portfolio.json') || u.pathname.endsWith('/data/account-verification.json')) return response({ configured: false, history: [], note: 'Test: no signed capture' });
     if (net.offline) throw new TypeError('Fixture: network unavailable');
     if (net.status !== 200) return response({ error: 'fixture HTTP error' }, net.status);
     const p = u.pathname, markets = allFixture(fix);

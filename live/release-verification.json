@@ -1,6 +1,6 @@
 {
   "session": "arena/600a5dcd-tradebot2",
-  "status": "integration in progress; release not yet asserted",
+  "status": "candidate checks passed; PR/main/Pages verification pending",
   "documentation_checked_at": "2026-11-27",
   "official_documentation": [
     "https://docs.kalshi.com/getting_started/api_environments",
@@ -12,5 +12,42 @@
     "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
   ],
   "live_api_evidence": "See live/data/fallback-snapshot.json provenance and dated data/probe.json; fixture tests are not API verification.",
-  "account_execution": "unverified; no authenticated account order sent"
+  "account_execution": "Read-only secret-context runner check pending. No authenticated order sent; account values blank until confirmed.",
+  "pull_request": "https://github.com/kanlerxz87-cyber/Tradebot2/pull/47",
+  "public_demo_capture": {
+    "input": "data/snapshot.json",
+    "sha256": "440485d3a0347e3e48ec70371c3aaafd0f7be007a4f7aeff66276740dc216e08",
+    "selection_at": "2026-11-27T20:07:40.191123Z",
+    "reverified_at": "2026-11-27T20:07:51.761882Z",
+    "mode": "official REST re-read",
+    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46060999027",
+    "selected_markets": 128,
+    "topics": {
+      "gas": 25,
+      "elections": 26,
+      "culture": 25,
+      "crypto": 27,
+      "golf": 25
+    },
+    "bytes": 532527,
+    "resolution_sample": 200,
+    "qualification": "Only the selected cohort was independently re-read. Counts and resolution sample are dated collector output; not full exchange or authenticated account verification."
+  },
+  "local_checks": {
+    "python_tests": 92,
+    "python_subtests": 2,
+    "live_dom_assertions": 149,
+    "quote_integrity_checks": 37,
+    "parallel_frontend": "passed against current committed snapshot; 35 historical seed alerts and 23 model picks",
+    "live_static_pages": 16,
+    "canonical_and_archive_links": "passed; GitHub workflow-evidence links produce non-market-source warnings"
+  },
+  "account_evidence": "data/account-verification.json",
+  "publish_target": {
+    "mode": "legacy",
+    "branch": "main",
+    "path": "/",
+    "url": "https://kanlerxz87-cyber.github.io/Tradebot2/",
+    "outcome": "not yet asserted for this candidate"
+  }
 }
