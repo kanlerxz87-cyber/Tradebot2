@@ -25,10 +25,10 @@
 <main class="wrap">
   <h1>Resolution tracker</h1>
   <p class="lede">
-    Each market is polled until it stops trading, then recorded with the settlement the exchange
+    Each market is followed until it stops trading, then recorded with the settlement the exchange
     published. A market counts as <strong>resolved</strong> only when its own <code>result</code>
     field is <code>yes</code> or <code>no</code>; anything else stays in “awaiting result” rather
-    than being inferred.
+    than being inferred. The tracked markets that are still open are listed above the settled rows.
   </p>
   <div class="grid cards" id="kpis"></div>
 
@@ -46,17 +46,23 @@
   <div class="tablewrap"><table>
     <thead><tr>
       <th>Topic</th><th>Market</th><th>State</th><th>Result</th>
-      <th class="num">Settlement value</th><th>Resolved (UTC)</th><th>Closes (UTC)</th><th>Source</th>
+      <th class="num">Expiration value</th><th>Close time (UTC)</th><th>Source</th>
     </tr></thead>
-    <tbody id="rows"><tr><td colspan="8" class="muted">loading…</td></tr></tbody>
+    <tbody id="rows"><tr><td colspan="7" class="muted">loading…</td></tr></tbody>
   </table></div>
+  <p class="small muted" id="row-count"></p>
 
   <div class="section note">
-    <strong>Where the result comes from.</strong> The collector re-reads
-    <code>GET /markets/{ticker}</code> for anything still open; the <code>result</code> and
-    <code>settlement_value_dollars</code> fields are copied verbatim.
+    <strong>Where the result comes from.</strong> Rows are read from
+    <code>data/snapshot.json</code>, built by <code>tools/build_snapshot.py</code> from official
+    <code>GET /markets</code> records on the demo API. The snapshot keeps the newest 50 settled
+    markets per topic for the table and the complete 30-day totals in <code>stats.resolutions</code>
+    (see <code>meta.resolutions_note</code>); the cards above always show the complete counts.
+    <code>result</code> and <code>expiration_value</code> are copied verbatim from the market
+    object — never inferred — and each row links its own API record.
     See <a href="https://docs.kalshi.com/getting_started/market_lifecycle" target="_blank" rel="noopener">market lifecycle ↗</a>
     and <a href="https://docs.kalshi.com/getting_started/market_settlement" target="_blank" rel="noopener">settlement ↗</a>.
+    <span id="snapshot-stamp"></span>
   </div>
 </main>
 <footer><div class="wrap">Tradebot2 · Kalshi demo · <a href="flagged.html">flagged items</a></div></footer>
@@ -65,6 +71,7 @@
 (function () {
   const TB = window.TB; const $ = (s) => document.querySelector(s);
   let records = [], filter = 'all';
+
   const match = (r) => {
     if (filter === 'all') return true;
     if (filter === 'resolved') return r.state === 'resolved';
@@ -73,30 +80,97 @@
     if (filter === 'open') return r.state !== 'resolved';
     return true;
   };
+
   function render() {
     const q = ($('#search').value || '').trim().toLowerCase();
     const rows = records.filter(match).filter((r) => !q || JSON.stringify(r).toLowerCase().includes(q));
-    $('#rows').innerHTML = rows.map((r) => `<tr>
-      <td>${TB.topicTag(r.topic)}</td>
-      <td>${TB.esc(r.title || r.ticker)}<div class="small muted">${TB.esc(r.subtitle || '')} · <code>${TB.esc(r.ticker)}</code></div></td>
-      <td><span class="tag">${TB.esc(r.state || 'open')}</span></td>
-      <td>${r.result ? `<span class="tag ${r.result}">${TB.esc(r.result)}</span>` : '<span class="muted">—</span>'}</td>
-      <td class="num">${r.settlement_value_dollars != null && r.settlement_value_dollars !== '' ? TB.fmtPrice(r.settlement_value_dollars) : '<span class="muted">—</span>'}</td>
-      <td class="small">${TB.utc(r.resolved_at || r.settlement_ts) || '—'}</td>
-      <td class="small">${TB.utc(r.close_time) || '—'}</td>
-      <td>${TB.sourceLink(r.source_url, 'API ↗')}</td></tr>`).join('')
-      || '<tr><td colspan="8" class="muted">No markets in this state.</td></tr>';
+    $('#rows').innerHTML = rows.map((r) => {
+      const val = r.value != null && r.value !== ''
+        ? TB.esc(String(r.value))
+        : '<span class="muted">\u2014</span>';
+      const result = r.result
+        ? `<span class="tag ${r.result}">${TB.esc(r.result)}</span>`
+        : '<span class="muted">\u2014</span>';
+      const src = r.links && r.links.market_api
+        ? `<a href="${TB.esc(r.links.market_api)}" target="_blank" rel="noopener">API \u2197</a>` +
+          (r.links.kalshi ? ` <a href="${TB.esc(r.links.kalshi)}" target="_blank" rel="noopener">Kalshi \u2197</a>` : '')
+        : (r.source_url ? `<a href="${TB.esc(r.source_url)}" target="_blank" rel="noopener">API \u2197</a>` : '<span class="muted">\u2014</span>');
+      return `<tr>
+        <td>${TB.topicTag(r.topic)}</td>
+        <td>${TB.esc(r.title || r.ticker)}<div class="small muted">${TB.esc(r.subtitle || '')} \u00b7 <code>${TB.esc(r.ticker)}</code></div></td>
+        <td><span class="tag">${TB.esc(r.state || 'open')}</span></td>
+        <td>${result}</td>
+        <td class="num">${val}</td>
+        <td class="small">${TB.utc(r.close_time) || '\u2014'}</td>
+        <td class="small">${src}</td></tr>`;
+    }).join('')
+      || '<tr><td colspan="7" class="muted">No markets in this state.</td></tr>';
+    const rc = $('#row-count');
+    if (rc) rc.textContent = `Showing ${rows.length} of ${records.length} logged rows \u00b7 complete 30-day counts are in the cards above \u00b7 data source noted below.`;
   }
+
+  function renderKpis(items) {
+    $('#kpis').innerHTML = items.map(([k, v, s]) =>
+      `<div class="card"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
+  }
+
+  /* Primary source: data/snapshot.json (official GET /markets records, built by
+   * tools/build_snapshot.py). Fallback: data/resolutions.json (collector output,
+   * which can be empty after a failed collection run \u2014 never treated as truth). */
   TB.bootResolution = async () => {
-    const doc = await TB.getJSON('data/resolutions.json');
-    records = doc.records || [];
-    const c = doc.counts || {};
-    $('#kpis').innerHTML = [
-      ['Tracked', TB.fmtNum(c.total), 'markets followed'], ['Resolved', TB.fmtNum(c.resolved), 'with a published result'],
-      ['Yes', TB.fmtNum(c.resolved_yes), 'settled yes'], ['No', TB.fmtNum(c.resolved_no), 'settled no'],
-      ['Awaiting result', TB.fmtNum(c.awaiting_result || 0), 'closed, result not published'],
-      ['Open', TB.fmtNum(c.open), 'still trading'],
-    ].map(([k, v, s]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
+    let snap = null;
+    try { snap = await TB.getJSON('data/snapshot.json'); } catch (e) { snap = null; }
+
+    if (snap && Array.isArray(snap.resolutions)) {
+      const stats = snap.stats || {};
+      const logged = snap.resolutions.map((r) => ({
+        topic: r.topic, title: r.title, ticker: r.ticker, subtitle: r.yes_sub_title || '',
+        state: 'resolved', result: r.result === 'yes' || r.result === 'no' ? r.result : null,
+        value: r.expiration_value, close_time: r.close_time, links: r.links || {},
+      }));
+      const open = (snap.markets || []).filter((m) => m.status === 'active').map((m) => ({
+        topic: m.topic, title: m.title, ticker: m.ticker, subtitle: m.yes_sub_title || '',
+        state: 'open', result: null, value: null, close_time: m.close_time, links: m.links || {},
+      }));
+      /* Future close times sort first, so open markets lead the default view. */
+      records = logged.concat(open).sort((a, b) => String(b.close_time || '').localeCompare(String(a.close_time || '')));
+
+      const yes = logged.filter((r) => r.result === 'yes').length;
+      const no = logged.filter((r) => r.result === 'no').length;
+      const resolved30d = stats.resolutions != null ? TB.fmtNum(stats.resolutions) : TB.fmtNum(logged.length);
+      renderKpis([
+        ['Resolved (30d)', resolved30d, stats.resolutions != null ? 'complete count in snapshot stats' : 'full count unavailable in this snapshot'],
+        ['Yes (logged)', TB.fmtNum(yes), 'among the settled rows listed'],
+        ['No (logged)', TB.fmtNum(no), 'among the settled rows listed'],
+        ['Open tracked', TB.fmtNum(open.length), 'followed here, still trading'],
+        ['Open in scope', stats.open_markets_in_scope != null ? TB.fmtNum(stats.open_markets_in_scope) : '\u2014', 'all open markets in the five topics'],
+        ['Awaiting result', '\u2014', 'not published in the snapshot'],
+      ]);
+      const stamp = $('#snapshot-stamp');
+      if (stamp) stamp.textContent = ` Snapshot generated ${TB.utc(snap.generated_at) || snap.generated_at || 'unknown'} \u00b7 source data/snapshot.json.`;
+    } else {
+      const doc = await TB.getJSON('data/resolutions.json').catch(() => null);
+      const rows = ((doc && doc.records) || []).map((r) => ({
+        topic: r.topic, title: r.title, ticker: r.ticker, subtitle: r.subtitle || '',
+        state: r.state || 'open', result: r.result === 'yes' || r.result === 'no' ? r.result : null,
+        value: r.settlement_value_dollars,
+        close_time: r.resolved_at || r.settlement_ts || r.close_time,
+        source_url: r.source_url, links: {},
+      }));
+      records = rows.sort((a, b) => String(b.close_time || '').localeCompare(String(a.close_time || '')));
+      const c = (doc && doc.counts) || {};
+      renderKpis([
+        ['Tracked', c.total != null ? TB.fmtNum(c.total) : '\u2014', 'snapshot unavailable \u00b7 collector file'],
+        ['Resolved', c.resolved != null ? TB.fmtNum(c.resolved) : '\u2014', 'with a published result'],
+        ['Yes', c.resolved_yes != null ? TB.fmtNum(c.resolved_yes) : '\u2014', 'settled yes'],
+        ['No', c.resolved_no != null ? TB.fmtNum(c.resolved_no) : '\u2014', 'settled no'],
+        ['Awaiting result', c.awaiting_result != null ? TB.fmtNum(c.awaiting_result) : '\u2014', 'closed, result not published'],
+        ['Open', c.open != null ? TB.fmtNum(c.open) : '\u2014', 'still trading'],
+      ]);
+      const stamp = $('#snapshot-stamp');
+      if (stamp) stamp.textContent = ' data/snapshot.json unavailable \u00b7 showing data/resolutions.json (collector output), which may be empty after a failed run.';
+    }
+
     render();
     document.querySelectorAll('#stateFilter button').forEach((b) => b.addEventListener('click', () => {
       filter = b.dataset.state;
