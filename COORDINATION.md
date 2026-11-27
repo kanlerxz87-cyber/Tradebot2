@@ -380,3 +380,19 @@ Base: `main` @ `b379d02`.
 | A2 | Fix `app/alerts.py`, `app/collector.py`, and `app/backtest.py` so `seed_alerts` and `run_backtest` inspect both `1m` and `60m` candlesticks as well as intra-bar `open -> close` moves `>= $0.10` (deduplicated within 1h) | done | `arena/10428a57-tradebot2` | `app/alerts.py`, `app/collector.py`, `app/backtest.py`, `tests/test_alerts.py` | `56` deduplicated `>= $0.10` seed alerts across all 5 topics (`19` crypto, `18` gas_prices, `10` culture, `8` elections, `1` golf); `data/backtest.json` tests `17` markets / `4,797` candle cells (`209` closed trades, `8` open positions) |
 | A3 | Fix `tools/build_category_pages.py` nav template (`Sources` link), `site/*.html` internal `../data/probe.json` links (`scripts/check_site.py`), and `collector/kalshi.py` optional `requests` import; clean up `flagged.html` non-official link warnings | done | `arena/10428a57-tradebot2` | `tools/build_category_pages.py`, `site/{alerts,findings,flagged,sources}.html`, `collector/kalshi.py`, `flagged.html`, `.github/workflows/data.yml` | Zero warnings/failures in `tools/verify_site.py`, `tools/check_site.py --root . --strict`, `scripts/check_site.py`, `scripts/verify_site.py`, `live/tests/check_live.py`, and `tests/run_fixture_pipeline.py` |
 
+
+---
+
+## Session `arena/b4e1fe8a-tradebot2` — final integration verification (claimed 2026-11-27)
+
+Base: `main` @ `aca6cc8` (branch `arena/b4e1fe8a-tradebot2`). This session acts as the final integration session per the brief: line-by-line verification against official Kalshi docs, site build check, PR to `main`, merge without waiting, Pages deploy confirmation.
+
+| Task | Status | Owner | File scope |
+|---|---|---|---|
+| `J1-official-verification` | in progress | `arena/b4e1fe8a-tradebot2` | `COORDINATION.md`, `EXECUTIVE_SUMMARY.md`, `live/executive-summary.html`, `live/verification.html`, `live/flagged.html`, `README.md` (verification appendix only) |
+| `J2-site-gate` | unclaimed | — | `tools/verify_site.py`, `live/tests/check_live.py` (run only; edits only if gate is broken) |
+| `J3-pr-merge-deploy` | unclaimed | — | PR to `main`, Pages build check |
+
+Scope rule: this session edits only the files in `J1` scope. If a fix requires a file outside that scope, it will be logged here as a request instead of edited. Open PRs #16, #14, #6 (2026-11-22) predate this base and their claims are >60 minutes old with no commits on this branch; this session proceeds as final integration and notes any handoff here. No other session's files will be deleted.
+
+Official sources re-verified 2026-11-27 via docs.kalshi.com (fetch): `getting_started/demo_env`, `getting_started/api_environments`, `getting_started/quick_start_websockets`, `api-reference/market/get-market-candlesticks`, `api-reference/market/get-market-orderbook`, `getting_started/market_settlement`, `getting_started/market_lifecycle`, `api-reference/orders/create-order-v2`, `api-reference/market/get-markets`, `getting_started/api_keys`, `getting_started/rate_limits`, `api-reference/search/get-tags-for-series-categories`. Findings recorded in `J1` completion below.
