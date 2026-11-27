@@ -20,6 +20,7 @@ import time
 import uuid
 from dataclasses import dataclass
 from typing import Any, Iterator
+from urllib.parse import urlparse
 
 import requests
 from cryptography.hazmat.primitives import hashes, serialization
@@ -75,11 +76,27 @@ class KalshiClient:
     def authenticated(self) -> bool:
         return bool(self.api_key_id and self.private_key is not None)
 
+    def _signed_path(self, path: str) -> str:
+        """Return the full API path from host root without query parameters.
+
+        Per https://docs.kalshi.com/getting_started/api_environments#request-signing,
+        Kalshi verifies signatures against the full path from the API root (for
+        example ``/trade-api/v2/portfolio/orders``), never a base-URL-relative
+        suffix and never with query parameters.
+        """
+        clean = path.split("?", 1)[0]
+        if not clean.startswith("/"):
+            clean = "/" + clean
+        base_prefix = urlparse(self.base_url).path.rstrip("/")
+        if base_prefix and clean != base_prefix and not clean.startswith(base_prefix + "/"):
+            clean = f"{base_prefix}{clean}"
+        return clean
+
     def sign(self, timestamp_ms: str, method: str, path: str) -> str:
-        """Sign ``timestamp + METHOD + path`` (query string stripped)."""
+        """Sign ``timestamp + METHOD + full_path`` (query string stripped)."""
         if self.private_key is None:
             raise KalshiError(401, "missing_private_key", "No private key configured")
-        clean_path = path.split("?", 1)[0]
+        clean_path = self._signed_path(path)
         message = f"{timestamp_ms}{method.upper()}{clean_path}".encode("utf-8")
         if isinstance(self.private_key, Ed25519PrivateKey):
             signature = self.private_key.sign(message)
@@ -317,18 +334,30 @@ class KalshiClient:
         price: float,
         count: float,
         time_in_force: str = "immediate_or_cancel",
+        self_trade_prevention_type: str = "taker_at_cross",
         client_order_id: str | None = None,
     ) -> dict[str, Any]:
         """Place an order using the current V2 event-order shape.
 
         ``side`` is expressed on the YES leg (docs: "bid means buy YES, ask means
         sell YES"). Selling YES is economically equivalent to buying NO.
+        Per https://docs.kalshi.com/api-reference/orders/create-order-v2,
+        ``ticker``, ``side``, ``count``, ``price``, ``time_in_force`` and
+        ``self_trade_prevention_type`` are all required fields.
         """
 
         if side not in {"bid", "ask"}:
             raise ValueError("side must be 'bid' (buy YES) or 'ask' (sell YES / buy NO)")
         if not (0.01 <= price <= 0.99):
             raise ValueError("price must be between $0.01 and $0.99")
+        if count <= 0:
+            raise ValueError("count must be positive")
+        if time_in_force not in {"fill_or_kill", "good_till_canceled", "immediate_or_cancel"}:
+            raise ValueError(
+                "time_in_force must be 'fill_or_kill', 'good_till_canceled', or 'immediate_or_cancel'"
+            )
+        if self_trade_prevention_type not in {"taker_at_cross", "maker"}:
+            raise ValueError("self_trade_prevention_type must be 'taker_at_cross' or 'maker'")
         body = {
             "ticker": ticker,
             "client_order_id": client_order_id or str(uuid.uuid4()),
@@ -336,11 +365,33 @@ class KalshiClient:
             "count": f"{count:.2f}",
             "price": f"{price:.4f}",
             "time_in_force": time_in_force,
+            "self_trade_prevention_type": self_trade_prevention_type,
         }
         return self.request("POST", "/portfolio/events/orders", json_body=body, auth=True)
 
-    def cancel_order(self, order_id: str) -> dict[str, Any]:
-        return self.request("DELETE", f"/portfolio/events/orders/{order_id}", auth=True)
+    def cancel_order(
+        self,
+        order_id: str,
+        *,
+        market_ticker: str | None = None,
+        exchange_index: int | None = None,
+    ) -> dict[str, Any]:
+        """Cancel an event order via ``DELETE /portfolio/events/orders/{order_id}``.
+
+        Per https://docs.kalshi.com/api-reference/orders/cancel-order-v2, shard
+        auto-routing requires ``market_ticker`` when ``exchange_index`` is omitted.
+        """
+        params: dict[str, Any] = {}
+        if market_ticker:
+            params["market_ticker"] = market_ticker
+        if exchange_index is not None:
+            params["exchange_index"] = exchange_index
+        return self.request(
+            "DELETE",
+            f"/portfolio/events/orders/{order_id}",
+            params=params or None,
+            auth=True,
+        )
 
 
 def public_client(environment: str = "demo") -> KalshiClient:

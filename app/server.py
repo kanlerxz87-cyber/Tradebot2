@@ -141,10 +141,29 @@ class LiveEngine:
             for market in quotes:
                 ticker = str(market.get("ticker"))
                 price, basis = quote_price(market)
-                previous = (self.quotes.get(ticker) or {}).get("prices") or {}
+                existing = self.quotes.get(ticker) or {}
+                previous = existing.get("prices") or {}
+                topic = existing.get("topic") or next(
+                    (
+                        m.get("topic", "")
+                        for m in self.snapshot.get("markets", [])
+                        if m.get("ticker") == ticker
+                    ),
+                    "",
+                )
+                links = existing.get("links") or next(
+                    (
+                        m.get("links")
+                        for m in self.snapshot.get("markets", [])
+                        if m.get("ticker") == ticker
+                    ),
+                    None,
+                )
                 self.quotes[ticker] = {
                     "ticker": ticker,
                     "title": market.get("title"),
+                    "topic": topic,
+                    "links": links,
                     "event_ticker": market.get("event_ticker"),
                     "prices": {
                         "yes_bid": market.get("yes_bid_dollars"),
@@ -159,14 +178,6 @@ class LiveEngine:
                         "open_interest_contracts": market.get("open_interest_fp"),
                     },
                 }
-                topic = next(
-                    (
-                        m.get("topic", "")
-                        for m in self.snapshot.get("markets", [])
-                        if m.get("ticker") == ticker
-                    ),
-                    "",
-                )
                 alert = self.detector.observe(
                     market, topic=topic, title=str(market.get("title") or ticker), ts=now
                 )
@@ -411,6 +422,9 @@ def demo_order(payload: dict[str, Any]) -> dict[str, Any]:
             price=float(payload["price"]),
             count=float(payload.get("count", 1)),
             time_in_force=str(payload.get("time_in_force", "immediate_or_cancel")),
+            self_trade_prevention_type=str(
+                payload.get("self_trade_prevention_type", "taker_at_cross")
+            ),
         )
     except (KeyError, ValueError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
