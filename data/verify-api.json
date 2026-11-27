@@ -6,15 +6,15 @@
     "allow_origin": "https://kanlerxz87-cyber.github.io",
     "http_status": 204,
     "origin": "https://kanlerxz87-cyber.github.io",
-    "requested_at": "2026-11-27T08:22:39Z",
+    "requested_at": "2026-11-27T21:13:24Z",
     "requested_headers": "kalshi-access-key, kalshi-access-signature, kalshi-access-timestamp, content-type",
     "url": "https://external-api.demo.kalshi.co/trade-api/v2/portfolio/balance"
   },
   "environment": "Kalshi demo",
-  "generated_at": "2026-11-27T08:22:36Z",
+  "generated_at": "2026-11-27T21:13:22Z",
   "generated_by": "tools/probe_api.py",
   "rest": {
-    "checked_at": "2026-11-27T08:22:39Z",
+    "checked_at": "2026-11-27T21:13:24Z",
     "hosts": [
       "https://external-api.demo.kalshi.co/trade-api/v2",
       "https://demo-api.kalshi.co/trade-api/v2"
@@ -32,7 +32,7 @@
         "name": "exchange_status",
         "ok": true,
         "path": "/exchange/status",
-        "requested_at": "2026-11-27T08:22:36Z",
+        "requested_at": "2026-11-27T21:13:22Z",
         "top_level_keys": [
           "exchange_active",
           "exchange_index_statuses",
@@ -44,8 +44,8 @@
       {
         "allow_credentials": "",
         "allow_origin_echo": "",
-        "body_bytes": 10842,
-        "body_sha256": "bbc80d967b53b8bcf9c50c7005777a8630d9c9771c20d3f7dab05a725529dd38",
+        "body_bytes": 10886,
+        "body_sha256": "7d51b745d34b8a03b3125963db38e4c7cf02637580e960d7dd4675c9d7b7ad43",
         "content_type": "application/json",
         "expose_headers": "",
         "host": "https://external-api.demo.kalshi.co/trade-api/v2",
@@ -53,7 +53,7 @@
         "name": "markets_open",
         "ok": true,
         "path": "/markets?limit=5&status=open",
-        "requested_at": "2026-11-27T08:22:36Z",
+        "requested_at": "2026-11-27T21:13:22Z",
         "top_level_keys": [
           "cursor",
           "markets"
@@ -72,7 +72,7 @@
         "name": "events_open",
         "ok": true,
         "path": "/events?limit=5&status=open",
-        "requested_at": "2026-11-27T08:22:37Z",
+        "requested_at": "2026-11-27T21:13:22Z",
         "top_level_keys": [
           "cursor",
           "events",
@@ -83,8 +83,8 @@
       {
         "allow_credentials": "",
         "allow_origin_echo": "",
-        "body_bytes": 925090,
-        "body_sha256": "23c3736ec7876123c6b7ec97a765fbd2dce3517f9482c91dc10e09666756aa3f",
+        "body_bytes": 925071,
+        "body_sha256": "9876ac294d6e43502bf1d815f329e7e1675966443764960dd8bfb490bb63cf3d",
         "content_type": "application/json",
         "expose_headers": "",
         "host": "https://external-api.demo.kalshi.co/trade-api/v2",
@@ -92,7 +92,7 @@
         "name": "series_list",
         "ok": true,
         "path": "/series?category=Economics&limit=5",
-        "requested_at": "2026-11-27T08:22:37Z",
+        "requested_at": "2026-11-27T21:13:22Z",
         "top_level_keys": [
           "series"
         ],
@@ -101,8 +101,8 @@
       {
         "allow_credentials": "",
         "allow_origin_echo": "",
-        "body_bytes": 1543,
-        "body_sha256": "053a62dfc91cf12b1960f143447c933c94c55512b2227794e463243fd9ff00bb",
+        "body_bytes": 1550,
+        "body_sha256": "26465b90a842ca9947e3367a89b11da2cd7d5a5ab655b87e85bee8294cfae12c",
         "content_type": "application/json; charset=utf-8",
         "expose_headers": "",
         "host": "https://external-api.demo.kalshi.co/trade-api/v2",
@@ -110,7 +110,7 @@
         "name": "trades",
         "ok": true,
         "path": "/markets/trades?limit=5",
-        "requested_at": "2026-11-27T08:22:38Z",
+        "requested_at": "2026-11-27T21:13:23Z",
         "top_level_keys": [
           "cursor",
           "trades"
@@ -129,7 +129,7 @@
         "name": "exchange_status",
         "ok": true,
         "path": "/exchange/status",
-        "requested_at": "2026-11-27T08:22:38Z",
+        "requested_at": "2026-11-27T21:13:23Z",
         "top_level_keys": [
           "exchange_active",
           "exchange_index_statuses",
@@ -141,8 +141,8 @@
       {
         "allow_credentials": "",
         "allow_origin_echo": "",
-        "body_bytes": 10842,
-        "body_sha256": "bbc80d967b53b8bcf9c50c7005777a8630d9c9771c20d3f7dab05a725529dd38",
+        "body_bytes": 10886,
+        "body_sha256": "7d51b745d34b8a03b3125963db38e4c7cf02637580e960d7dd4675c9d7b7ad43",
         "content_type": "application/json",
         "expose_headers": "",
         "host": "https://demo-api.kalshi.co/trade-api/v2",
@@ -150,7 +150,7 @@
         "name": "markets_open",
         "ok": true,
         "path": "/markets?limit=5&status=open",
-        "requested_at": "2026-11-27T08:22:38Z",
+        "requested_at": "2026-11-27T21:13:23Z",
         "top_level_keys": [
           "cursor",
           "markets"
@@ -169,7 +169,7 @@
         "name": "events_open",
         "ok": true,
         "path": "/events?limit=5&status=open",
-        "requested_at": "2026-11-27T08:22:38Z",
+        "requested_at": "2026-11-27T21:13:23Z",
         "top_level_keys": [
           "cursor",
           "events",
@@ -180,8 +180,8 @@
       {
         "allow_credentials": "",
         "allow_origin_echo": "",
-        "body_bytes": 925090,
-        "body_sha256": "78247910deeb3ddbdd5b15bd5cb2930fa77353b5da4556004c06ac230a8613f0",
+        "body_bytes": 925071,
+        "body_sha256": "9761b33ca0cf83826c191972a9d30921f277288496eb635ed9e9a687db9eb30a",
         "content_type": "application/json",
         "expose_headers": "",
         "host": "https://demo-api.kalshi.co/trade-api/v2",
@@ -189,7 +189,7 @@
         "name": "series_list",
         "ok": true,
         "path": "/series?category=Economics&limit=5",
-        "requested_at": "2026-11-27T08:22:39Z",
+        "requested_at": "2026-11-27T21:13:23Z",
         "top_level_keys": [
           "series"
         ],
@@ -198,8 +198,8 @@
       {
         "allow_credentials": "",
         "allow_origin_echo": "",
-        "body_bytes": 1546,
-        "body_sha256": "93c4bf03f87d0e6279e073310a9d7c66ea429fb2a50fe994b426abd71f5344c5",
+        "body_bytes": 1555,
+        "body_sha256": "83daffdac99b20ea1e4de9fcc7958b26463fd3d3c5096d4caca8b52633f38698",
         "content_type": "application/json; charset=utf-8",
         "expose_headers": "",
         "host": "https://demo-api.kalshi.co/trade-api/v2",
@@ -207,7 +207,7 @@
         "name": "trades",
         "ok": true,
         "path": "/markets/trades?limit=5",
-        "requested_at": "2026-11-27T08:22:39Z",
+        "requested_at": "2026-11-27T21:13:23Z",
         "top_level_keys": [
           "cursor",
           "trades"
@@ -220,13 +220,13 @@
     "allow_origin": "https://kanlerxz87-cyber.github.io",
     "body_head": "{\"error\":{\"code\":\"token_authentication_failure\",\"message\":\"token authentication failure\"}}",
     "http_status": 401,
-    "requested_at": "2026-11-27T08:22:39Z",
+    "requested_at": "2026-11-27T21:13:24Z",
     "url": "https://external-api.demo.kalshi.co/trade-api/v2/portfolio/balance"
   },
   "websockets": {
     "authenticated": [],
     "authenticated_note": "Skipped: no KALSHI_DEMO_API_KEY_ID / KALSHI_DEMO_PRIVATE_KEY secrets configured.",
-    "checked_at": "2026-11-27T08:22:39Z",
+    "checked_at": "2026-11-27T21:13:24Z",
     "unauthenticated": [
       {
         "connected": false,
