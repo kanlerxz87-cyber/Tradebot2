@@ -510,3 +510,16 @@ is inferred, no order is placed, and no credential is used.
 [PR #40](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40) merged at 2026-11-27 19:51:20 UTC as `4517d1caaa339b3db4650628ad6db2471f539a1d`. PR checks `tests` and `verify` passed after merging PR #41's concurrency fix; locally, 69 pytest tests, 87 browser smoke checks, 35 quote rules, and the published-site link gates passed on the combined tree. GitHub Pages API reports the build for `4517d1c` **built** at 19:51:45 UTC, and [Pages workflow 46059595130](https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46059595130) reports deploy success. The public URL is https://kanlerxz87-cyber.github.io/Tradebot2/. Direct HTTP verification from this sandbox was blocked; the build/deploy status is not an independent browser content check.
 
 Other concurrent sessions continue their separately claimed functional work. Missing signed-account access, non-exhaustive data discovery and all remaining flagged items are not resolved by this documentation PR.
+
+## Session `arena/bce83713-tradebot2` — demo collector safety takeover and final audit
+
+Base: `main` @ `aca6cc898a8abb16bb36928648e1dcda90be7e78`. Arena fixes this session to branch
+`arena/bce83713-tradebot2`; work stays on that branch.
+
+| Task | Status | Owner | File scope | Sources / verification |
+|---|---|---|---|---|
+| Take over the stale demo collector safety task; audit the integrated site and record final evidence | `in progress` | `arena/bce83713-tradebot2` | `scripts/kalshi_collector.py`, `scripts/tests/test_collector_safety.py`, `COORDINATION.md`, `VERIFICATION_REPORT.md` | Official Kalshi [demo environment](https://docs.kalshi.com/getting_started/demo_env) and [market lifecycle](https://docs.kalshi.com/getting_started/market_lifecycle); tests pending |
+
+### Handoff and scope
+
+The collector safety change is claimed by session `arena/d60a6d1e` in open PR [#16](https://github.com/kanlerxz87-cyber/Tradebot2/pull/16), last updated 2026-11-22 (more than 60 minutes before this claim). The current `main` already defaults the collector to the demo host but does not yet carry the full state-environment guard, active-child filter, finalized-only settlement, and fair bounded resolution-check rotation described by that PR. This session takes over only those collector lifecycle/isolation safeguards and their regression tests. The site redesigns in open PRs #6 and #14 are not copied: the checked-out root/live site is a different, already integrated generation and duplicating those alternative trees would create conflicting published sites. This note records the handoff; no credentials are requested or stored and no authenticated order is sent.
