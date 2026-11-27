@@ -389,4 +389,12 @@ Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `ac
 
 | Task | Status | Owner | File scope | Method |
 |---|---|---|---|---|
-| A32-1 | in progress | `arena/a32cdd24-tradebot2` | `VERIFICATION_REPORT.md`, this section of `COORDINATION.md` | Run existing repo/site/data/test gates, review source provenance and public pages; record verified outcomes and residual irregularities without inferring live market values. |
+| A32-1 | done | `arena/a32cdd24-tradebot2` | `VERIFICATION_REPORT.md`, `index.html`, `live/flagged.html`, `flagged.html`, this section of `COORDINATION.md` | Independent static audit and test gates; corrected inaccurate `/legacy/`/archive-warning claims and recorded residuals. No live API values inferred. |
+
+### A32-1 close-out (2026-11-27)
+
+- **Official sources:** [Kalshi demo environment](https://docs.kalshi.com/getting_started/demo_env), [API environments](https://docs.kalshi.com/getting_started/api_environments), [events](https://docs.kalshi.com/api-reference/events/get-events), [markets](https://docs.kalshi.com/api-reference/market/get-markets), [order book](https://docs.kalshi.com/api-reference/market/get-market-orderbook), [candlesticks](https://docs.kalshi.com/api-reference/market/get-market-candlesticks), [trades](https://docs.kalshi.com/api-reference/market/get-trades), [settlement](https://docs.kalshi.com/getting_started/market_settlement). They are manual-review references; this session could not independently re-probe current Kalshi API values.
+- **Verification:** `tools/verify_data.py` and `tools/check_site.py --strict` passed; script schema/link checks passed; `pytest` passed 69 tests; archived fixture tests passed; JavaScript syntax passed; live UI smoke passed 87/87; live link/content check passed for 16 pages. Detail and exact outputs are in `VERIFICATION_REPORT.md`.
+- **Corrections:** removed false claim that archived pages live under `/legacy/`; corrected root landing statement that all archives were bannered; reopened root F-18 because `docs/index.html` lacks an archive warning.
+- **Irregularities:** data-feed collections checked by `tools/verify_data.py` were empty (0 rows); root collector metadata is dated Nov 22 with `api_requests: 0`; live API wasn't re-tested; 11/22 fallback is static and explicitly not live; archive warnings are incomplete; demo-account credentials, order status and causal news attribution remain unverified. No demo trade sent.
+- **No conflict:** edits were limited to the audit report, root landing warning, review pages and this close-out. Branch name remains workbench-fixed `arena/a32cdd24-tradebot2`; task claim was pushed immediately before implementation.

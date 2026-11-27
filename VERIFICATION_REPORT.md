@@ -1,8 +1,9 @@
 # Repository Audit & Line-by-Line Verification Report
 
 > **Repository:** `kanlerxz87-cyber/Tradebot2`  
-> **Audit Date:** 2026-11-22 (UTC)  
-> **Branch:** `arena/4f9ce955-tradebot2` (from base commit `003447ea92f5fdd7c2ee66558876c99237818f38`)
+> **Original audit date:** 2026-11-22 (UTC)
+> **Original audit branch:** `arena/4f9ce955-tradebot2` (from base commit `003447ea92f5fdd7c2ee66558876c99237818f38`)
+> **Latest supplemental audit:** 2026-11-27 (UTC), branch `arena/a32cdd24-tradebot2` (base `aca6cc898a8abb16bb36928648e1dcda90be7e78`)
 
 ---
 
@@ -60,3 +61,42 @@ All items below are published on `pages/flagged-for-review.html` and stored in `
 | `IR-10` | Medium | Order Execution V2 | Legacy `/portfolio/orders` mutations cost 10x write tokens vs V2 `/portfolio/events/orders` | — | [Create Order V2](https://docs.kalshi.com/api-reference/orders/create-order-v2) |
 | `IR-11` | Low | Historical Partitioning | Settled markets older than `market_settled_ts` move to `/historical/*` endpoints | Current live `market_settled_ts` cutoff | [Historical Data](https://docs.kalshi.com/getting_started/historical_data) |
 | `IR-12` | Info | Security & Credentials | No Demo API keys or private keys are stored in Git | User Demo API Key ID & PEM | [Demo Account Setup](https://help.kalshi.com/en/articles/13823775-creating-and-using-a-demo-account) |
+
+---
+
+## 7. Supplemental audit (2026-11-27 UTC)
+
+**Scope and limits.** This was a static repository and test audit of the current branch, not a fresh live Kalshi API probe. I did not treat stored snapshots or prior session notes as a substitute for current API verification. The official API documentation used by the site is linked below and in `live/verification.html`; an official-source reference does not, by itself, prove a current market value.
+
+### Findings corrected
+
+- The canonical `live/flagged.html` said prior dashboard files had been moved to `/legacy/`, while no such directory exists and the files remain in their original repository paths. It also linked to a nonexistent deployed archive URL. This is corrected: the review page now states the actual file layout, links to existing archive files, and clearly says the earlier ticker checks were not repeated in this audit.
+- The root `index.html` said all older pages were labelled as archives. Inspection found archived dashboard files without an archive banner, including `docs/index.html`. The landing warning now says not all archived pages carry warnings and marks `/live/` as the only authoritative dashboard.
+- Root `flagged.html` item F-18 said the illustrative-performance issue was closed by adding visible warnings to archive pages. That was not true for every archived page. F-18 now remains marked for review and records the warning gap rather than claiming it is closed.
+
+### Automated verification run
+
+All commands below completed on this branch after installing test-only dependencies in an ignored local environment; no dependency manifest was changed.
+
+| Check | Result |
+|---|---|
+| `python3 tools/verify_data.py --data-dir data` | Pass; integrity rules passed. The report showed **0** rows in its checked `all_feed`, `high_roi_feed`, `markets`, `orderbooks`, `resolutions`, and `trades` collections, so it validates source-link rules but does not establish those collections have current data. |
+| `python3 tools/check_site.py --root . --strict` | Pass; 14 canonical pages and 406 internal links. |
+| `python3 scripts/verify_site.py` | Pass; JSON schemas, five topics, official source URL patterns, 54 relative HTML links. |
+| `python3 scripts/check_site.py` | Pass; 18 pages, no broken internal links; informational notes for empty archived tables and absent `site/data`. |
+| `.venv/bin/python -m pytest -q` | Pass; 69 tests. |
+| Archived fixture/regression tests (`tests/test_fees.py`, `test_engine.py`, `test_pipeline.py`, `run_fixture_pipeline.py`) | Pass; fee table values, alert boundaries, topic filtering and fixture pipeline. |
+| JavaScript syntax (`node --check` over `assets/js`, `js`, `dash/assets`) | Pass. |
+| `node live/tests/smoke.mjs` | Pass; 87/87 browser checks including $0.10 boundaries, topics, event links, two feeds, charts, ladder, simulated portfolio and offline snapshot labelling. |
+| `python3 live/tests/check_live.py` | Pass; 16 pages, 0 failures. |
+
+### Data freshness and remaining review items
+
+- `data/snapshot.json` says `generated_at: 2026-11-27T19:03:10.263062Z` and includes 128 markets and 44,192 resolutions. This audit did not independently fetch those records from Kalshi; the file is stored evidence, not a claim that each value remains current.
+- `live/data/fallback-snapshot.json` identifies itself as a read-only capture from 2026-11-22 and contains 40 markets. The automated browser checks confirm the UI labels this as a snapshot and pauses alerts/paper trading in fallback mode; do not describe it as live data.
+- `data/meta.json` records a collector run at `2026-11-22T07:17:34Z` and `api_requests: 0`; it is not evidence of a current successful collector run.
+- No demo-account key is present and no authenticated balance, position or real order execution was verified. No real or demo order was sent during this audit.
+- News causes for price moves remain unverified and are intentionally not attributed. The current browser-only dashboard cannot ensure every transient move is captured between polling intervals.
+- Official references for manual review: [Kalshi demo environment](https://docs.kalshi.com/getting_started/demo_env), [API environments](https://docs.kalshi.com/getting_started/api_environments), [Events endpoint](https://docs.kalshi.com/api-reference/events/get-events), [Markets endpoint](https://docs.kalshi.com/api-reference/market/get-markets), [Order book endpoint](https://docs.kalshi.com/api-reference/market/get-market-orderbook), [Candlesticks endpoint](https://docs.kalshi.com/api-reference/market/get-market-candlesticks), [Trades endpoint](https://docs.kalshi.com/api-reference/market/get-trades), and [settlement](https://docs.kalshi.com/getting_started/market_settlement). These links are official documentation references; current live API behavior and values were not re-probed in this supplemental audit.
+
+**Residual site irregularity:** old page generations remain published at their historical paths. The root landing page and both review pages now describe this honestly, but this audit did not add warning banners to every archive page. Open this as a review item, not as verified archived content; start at `/live/` for the maintained dashboard.
