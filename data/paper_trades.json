@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T20:27:49Z",
+  "generated_at": "2026-11-27T20:35:28Z",
   "trades": [
     {
       "entry": {
@@ -240,6 +240,251 @@
       "ticker": "KXSENATEDEMLEAD-28JAN01-BSCH",
       "title": "Who will win the next Senate Democratic Leader election?",
       "topic": "elections"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 9.73,
+        "contracts": 10.0,
+        "cost_dollars": 9.7,
+        "entry_price": 0.97,
+        "fee_dollars": 0.03,
+        "max_loss_dollars": -9.73,
+        "max_profit_dollars": 0.27,
+        "observed_move": -0.9385,
+        "roi_on_risk_pct": 2.77,
+        "side": "no",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S1_MOMENTUM::KXPRESPERSON-28-KHAR::2026-11-27T20:35:28Z",
+      "market_at_entry": {
+        "close_time": "2029-11-07T15:00:00Z",
+        "last": "0.9700",
+        "open_interest_fp": "8525412.24",
+        "volume_fp": "38361938.15",
+        "yes_ask": "0.0330",
+        "yes_bid": "0.0300"
+      },
+      "opened_at": "2026-11-27T20:35:28Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-KHAR",
+      "status": "open",
+      "strategy_id": "S1_MOMENTUM",
+      "strategy_kind": "momentum",
+      "strategy_name": "Swing momentum",
+      "subtitle": "Kamala Harris",
+      "ticker": "KXPRESPERSON-28-KHAR",
+      "title": "Pres person",
+      "topic": "elections"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 8.59,
+        "contracts": 10.0,
+        "cost_dollars": 8.5,
+        "entry_price": 0.85,
+        "fee_dollars": 0.09,
+        "max_loss_dollars": -8.59,
+        "max_profit_dollars": 1.41,
+        "observed_move": -0.805,
+        "roi_on_risk_pct": 16.41,
+        "side": "no",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S1_MOMENTUM::KXPRESNOMR-28-RDS::2026-11-27T20:35:28Z",
+      "market_at_entry": {
+        "close_time": "2028-11-07T15:00:00Z",
+        "last": "0.1600",
+        "open_interest_fp": "5315763.13",
+        "volume_fp": "17684961.75",
+        "yes_ask": "0.1600",
+        "yes_bid": "0.1500"
+      },
+      "opened_at": "2026-11-27T20:35:28Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-RDS",
+      "status": "open",
+      "strategy_id": "S1_MOMENTUM",
+      "strategy_kind": "momentum",
+      "strategy_name": "Swing momentum",
+      "subtitle": "Ron DeSantis",
+      "ticker": "KXPRESNOMR-28-RDS",
+      "title": "Republican Primary winner",
+      "topic": "elections"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 0.86,
+        "contracts": 10.0,
+        "cost_dollars": 0.8,
+        "entry_price": 0.08,
+        "fee_dollars": 0.06,
+        "max_loss_dollars": -0.86,
+        "max_profit_dollars": 9.14,
+        "roi_on_risk_pct": 1062.79,
+        "side": "no",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S4_RICH_FAVOURITE::KXSENATEDEMLEAD-28JAN01-CSHU::2026-11-27T20:35:28Z",
+      "market_at_entry": {
+        "close_time": "2028-12-31T15:00:00Z",
+        "last": "0.9500",
+        "open_interest_fp": "97827.51",
+        "volume_fp": "105853.70",
+        "yes_ask": "0.9300",
+        "yes_bid": "0.9200"
+      },
+      "opened_at": "2026-11-27T20:35:28Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXSENATEDEMLEAD-28JAN01-CSHU",
+      "status": "open",
+      "strategy_id": "S4_RICH_FAVOURITE",
+      "strategy_kind": "value",
+      "strategy_name": "Rich favourite fade",
+      "subtitle": "Chuck Schumer",
+      "ticker": "KXSENATEDEMLEAD-28JAN01-CSHU",
+      "title": "Who will win the next Senate Democratic Leader election?",
+      "topic": "elections"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 8.21,
+        "contracts": 10.0,
+        "cost_dollars": 8.1,
+        "entry_price": 0.81,
+        "fee_dollars": 0.11,
+        "max_loss_dollars": -8.21,
+        "max_profit_dollars": 1.79,
+        "observed_move": 0.11,
+        "roi_on_risk_pct": 21.8,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S1_MOMENTUM::KXRT-HEX-65::2026-11-27T20:35:28Z",
+      "market_at_entry": {
+        "close_time": "2026-11-30T15:00:00Z",
+        "last": "0.7700",
+        "open_interest_fp": "7326.65",
+        "volume_fp": "10524.32",
+        "yes_ask": "0.8100",
+        "yes_bid": "0.8000"
+      },
+      "opened_at": "2026-11-27T20:35:28Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXRT-HEX-65",
+      "status": "open",
+      "strategy_id": "S1_MOMENTUM",
+      "strategy_kind": "momentum",
+      "strategy_name": "Swing momentum",
+      "subtitle": "Above 65",
+      "ticker": "KXRT-HEX-65",
+      "title": "Rotten Tomatoes Scores",
+      "topic": "culture"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 2.64,
+        "contracts": 10.0,
+        "cost_dollars": 2.5,
+        "entry_price": 0.25,
+        "fee_dollars": 0.14,
+        "max_loss_dollars": -2.64,
+        "max_profit_dollars": 7.36,
+        "observed_move": 0.177,
+        "roi_on_risk_pct": 278.79,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S1_MOMENTUM::KXDPWORLDTOUR-BMAPC26-TMCK::2026-11-27T20:35:28Z",
+      "market_at_entry": {
+        "close_time": "2026-12-13T00:00:00Z",
+        "last": "0.2500",
+        "open_interest_fp": "40265.76",
+        "volume_fp": "42851.79",
+        "yes_ask": "0.2500",
+        "yes_bid": "0.2300"
+      },
+      "opened_at": "2026-11-27T20:35:28Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-TMCK",
+      "status": "open",
+      "strategy_id": "S1_MOMENTUM",
+      "strategy_kind": "momentum",
+      "strategy_name": "Swing momentum",
+      "subtitle": "Tom McKibbin",
+      "ticker": "KXDPWORLDTOUR-BMAPC26-TMCK",
+      "title": "DP World Tour Tournament Winner",
+      "topic": "golf"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 2.95,
+        "contracts": 10.0,
+        "cost_dollars": 2.8,
+        "entry_price": 0.28,
+        "fee_dollars": 0.15,
+        "max_loss_dollars": -2.95,
+        "max_profit_dollars": 7.05,
+        "observed_move": 0.185,
+        "roi_on_risk_pct": 238.98,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S1_MOMENTUM::KXDPWORLDTOUR-BMAPC26-NVON::2026-11-27T20:35:28Z",
+      "market_at_entry": {
+        "close_time": "2026-12-13T00:00:00Z",
+        "last": "0.2800",
+        "open_interest_fp": "25104.34",
+        "volume_fp": "25114.64",
+        "yes_ask": "0.2800",
+        "yes_bid": "0.2600"
+      },
+      "opened_at": "2026-11-27T20:35:28Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-NVON",
+      "status": "open",
+      "strategy_id": "S1_MOMENTUM",
+      "strategy_kind": "momentum",
+      "strategy_name": "Swing momentum",
+      "subtitle": "Nicolai von Dellingshausen",
+      "ticker": "KXDPWORLDTOUR-BMAPC26-NVON",
+      "title": "DP World Tour Tournament Winner",
+      "topic": "golf"
     }
   ]
 }

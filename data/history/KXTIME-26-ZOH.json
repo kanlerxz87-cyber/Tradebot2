@@ -35,12 +35,24 @@
       "t": "2026-11-27T20:26:16Z",
       "ts": 1795811176,
       "vol": 54818.72
+    },
+    {
+      "ask": 0.22,
+      "bid": 0.21,
+      "bid_depth": 3377.82,
+      "last": 0.22,
+      "mid": 0.215,
+      "oi": 43052.72,
+      "spread": 0.01,
+      "t": "2026-11-27T20:33:58Z",
+      "ts": 1795811638,
+      "vol": 56300.92
     }
   ],
   "series_ticker": "KXTIME",
   "subtitle": "Zohran Mamdani",
   "ticker": "KXTIME-26-ZOH",
-  "title": "TIME’s Person of the Year",
+  "title": "TIME\u2019s Person of the Year",
   "topic": "culture",
   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-ZOH"
 }

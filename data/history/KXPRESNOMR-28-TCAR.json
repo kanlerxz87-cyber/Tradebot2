@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.034,
+      "bid": 0.033,
+      "bid_depth": 47366.71,
+      "last": 0.034,
+      "mid": 0.0335,
+      "oi": 19490989.94,
+      "spread": 0.001,
+      "t": "2026-11-27T20:33:58Z",
+      "ts": 1795811638,
+      "vol": 69082761.79
+    }
+  ],
+  "series_ticker": "KXPRESNOMR",
+  "subtitle": "Tucker Carlson",
+  "ticker": "KXPRESNOMR-28-TCAR",
+  "title": "Republican Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-TCAR"
+}

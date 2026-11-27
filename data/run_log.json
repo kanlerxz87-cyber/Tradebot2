@@ -1,25 +1,25 @@
 {
-  "finished_at": "2026-11-27T20:27:49Z",
+  "finished_at": "2026-11-27T20:35:28Z",
   "ok": true,
   "stages": [
     {
       "ok": true,
-      "seconds": 57.34,
+      "seconds": 55.01,
       "stage": "collect"
     },
     {
       "ok": true,
-      "seconds": 0.0,
+      "seconds": 0.01,
       "stage": "alerts"
     },
     {
       "ok": true,
-      "seconds": 36.01,
+      "seconds": 35.67,
       "stage": "resolutions"
     },
     {
       "ok": true,
-      "seconds": 0.0,
+      "seconds": 0.01,
       "stage": "paper_trading"
     },
     {
@@ -28,6 +28,6 @@
       "stage": "portfolio_sync"
     }
   ],
-  "started_at": "2026-11-27T20:26:16Z",
+  "started_at": "2026-11-27T20:33:58Z",
   "warnings": []
 }

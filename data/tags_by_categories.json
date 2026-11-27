@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T20:26:17Z",
+  "generated_at": "2026-11-27T20:33:58Z",
   "source": "https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories",
   "tags_by_categories": {
     "AI": null,
@@ -142,7 +142,7 @@
       "The Voice",
       "Daily Views",
       "Eurovision",
-      "Pokémon",
+      "Pok\u00e9mon",
       "Singles",
       "Streamer Awards",
       "Weekly Views"
@@ -153,11 +153,11 @@
       "Markets",
       "Indices",
       "Industries",
-      "Foreign Exchange",
       "Interest Rates",
       "Company metrics",
       "Credit Card Spend",
       "IPOs",
+      "Foreign Exchange",
       "Product launches",
       "CEOs",
       "M&A",

@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.09,
+      "bid": 0.08,
+      "bid_depth": 14524.1,
+      "last": 0.09,
+      "mid": 0.085,
+      "oi": 41727.53,
+      "spread": 0.01,
+      "t": "2026-11-27T20:33:58Z",
+      "ts": 1795811638,
+      "vol": 48180.28
+    }
+  ],
+  "series_ticker": "KXTIME",
+  "subtitle": "Benjamin Netanyahu",
+  "ticker": "KXTIME-26-BEN",
+  "title": "TIME\u2019s Person of the Year",
+  "topic": "culture",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-BEN"
+}

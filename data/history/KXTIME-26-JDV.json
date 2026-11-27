@@ -35,12 +35,24 @@
       "t": "2026-11-27T20:26:16Z",
       "ts": 1795811176,
       "vol": 279914.61
+    },
+    {
+      "ask": 0.03,
+      "bid": 0.02,
+      "bid_depth": 24999.99,
+      "last": 0.03,
+      "mid": 0.025,
+      "oi": 153577.03,
+      "spread": 0.01,
+      "t": "2026-11-27T20:33:58Z",
+      "ts": 1795811638,
+      "vol": 279914.61
     }
   ],
   "series_ticker": "KXTIME",
   "subtitle": "JD Vance",
   "ticker": "KXTIME-26-JDV",
-  "title": "TIME’s Person of the Year",
+  "title": "TIME\u2019s Person of the Year",
   "topic": "culture",
   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-JDV"
 }

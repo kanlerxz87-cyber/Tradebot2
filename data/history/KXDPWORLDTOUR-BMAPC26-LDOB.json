@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.005,
+      "bid": 0.003,
+      "bid_depth": 561980.03,
+      "last": 0.005,
+      "mid": 0.004,
+      "oi": 118894.79,
+      "spread": 0.002,
+      "t": "2026-11-27T20:33:58Z",
+      "ts": 1795811638,
+      "vol": 132116.09
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "Louis Dobbelaar",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-LDOB",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-LDOB"
+}

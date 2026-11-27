@@ -35,12 +35,24 @@
       "t": "2026-11-27T20:26:16Z",
       "ts": 1795811176,
       "vol": 68862.29
+    },
+    {
+      "ask": 0.14,
+      "bid": 0.13,
+      "bid_depth": 8796.77,
+      "last": 0.14,
+      "mid": 0.135,
+      "oi": 40964.39,
+      "spread": 0.01,
+      "t": "2026-11-27T20:33:58Z",
+      "ts": 1795811638,
+      "vol": 68862.29
     }
   ],
   "series_ticker": "KXTIME",
   "subtitle": "Jon Ossoff",
   "ticker": "KXTIME-26-JON",
-  "title": "TIME’s Person of the Year",
+  "title": "TIME\u2019s Person of the Year",
   "topic": "culture",
   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-JON"
 }

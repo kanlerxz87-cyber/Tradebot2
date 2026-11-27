@@ -1,18 +1,18 @@
 {
   "api_requests": 250,
-  "collected_at": "2026-11-27T20:27:13Z",
-  "duration_seconds": 56.8,
+  "collected_at": "2026-11-27T20:34:52Z",
+  "duration_seconds": 54.3,
   "environment": "demo",
   "host": "https://external-api.demo.kalshi.co/trade-api/v2",
   "run_log": {
     "exchange_active": true,
     "exchange_status_url": "https://external-api.demo.kalshi.co/trade-api/v2/exchange/status",
-    "history_pruned": 0,
+    "history_pruned": 2,
     "open_events": 7221,
     "orderbooks_captured": 90,
     "series_pages_fetched": 58,
     "series_seen": 16851,
-    "started_at": "2026-11-27T20:26:16Z",
+    "started_at": "2026-11-27T20:33:58Z",
     "tags_by_categories": "https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories",
     "topic_counts": {
       "crypto": {
@@ -46,8 +46,8 @@
       "id": "gas",
       "name": "Gas prices",
       "rules": [
-        "series tag ∈ {Oil & Gas}",
-        "series category ∈ {Economics | Commodities}, title ~ /gas(oline)?\\s*pric/i"
+        "series tag \u2208 {Oil & Gas}",
+        "series category \u2208 {Economics | Commodities}, title ~ /gas(oline)?\\s*pric/i"
       ],
       "series": [
         "AAAGASD",
@@ -222,8 +222,8 @@
       "id": "elections",
       "name": "Elections",
       "rules": [
-        "series category ∈ {Elections}",
-        "series tag ∈ {US Elections | International elections | Presidential winner | Senate | House | Governor | Primaries | Nomination race | Leadership races | Referendums | Mayors & local | Election Combos}"
+        "series category \u2208 {Elections}",
+        "series tag \u2208 {US Elections | International elections | Presidential winner | Senate | House | Governor | Primaries | Nomination race | Leadership races | Referendums | Mayors & local | Election Combos}"
       ],
       "series": [
         "CLOSESTSTATE",
@@ -434,8 +434,8 @@
       "id": "culture",
       "name": "Culture",
       "rules": [
-        "series category ∈ {Culture | Entertainment | Mentions}",
-        "series tag ∈ {Music | Awards | Movies | Television | People | Video games | Oscars | Grammys | Collectibles | Critics Choice Awards | Reality TV | Music charts | Art | Food}"
+        "series category \u2208 {Culture | Entertainment | Mentions}",
+        "series tag \u2208 {Music | Awards | Movies | Television | People | Video games | Oscars | Grammys | Collectibles | Critics Choice Awards | Reality TV | Music charts | Art | Food}"
       ],
       "series": [
         "1SONG-DRAKE",
@@ -646,8 +646,8 @@
       "id": "crypto",
       "name": "Crypto",
       "rules": [
-        "series category ∈ {Crypto}",
-        "series tag ∈ {BTC | ETH | SOL | XRP | DOGE | BNB | HYPE | ZEC | NEAR | Shiba Inu | Crypto | Bitcoin | Ethereum | Solana | Zcash}"
+        "series category \u2208 {Crypto}",
+        "series tag \u2208 {BTC | ETH | SOL | XRP | DOGE | BNB | HYPE | ZEC | NEAR | Shiba Inu | Crypto | Bitcoin | Ethereum | Solana | Zcash}"
       ],
       "series": [
         "BITCOINMAXY",
@@ -858,7 +858,7 @@
       "id": "golf",
       "name": "Golf",
       "rules": [
-        "series tag ∈ {Golf}"
+        "series tag \u2208 {Golf}"
       ],
       "series": [
         "KXBDSHOLEINONE",

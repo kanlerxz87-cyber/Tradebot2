@@ -35,12 +35,24 @@
       "t": "2026-11-27T20:26:16Z",
       "ts": 1795811176,
       "vol": 115941.39
+    },
+    {
+      "ask": 0.04,
+      "bid": 0.01,
+      "bid_depth": 50000.98,
+      "last": 0.02,
+      "mid": 0.025,
+      "oi": 77302.9,
+      "spread": 0.01,
+      "t": "2026-11-27T20:33:58Z",
+      "ts": 1795811638,
+      "vol": 129830.27
     }
   ],
   "series_ticker": "KXTIME",
   "subtitle": "Elon Musk",
   "ticker": "KXTIME-26-EM",
-  "title": "TIME’s Person of the Year",
+  "title": "TIME\u2019s Person of the Year",
   "topic": "culture",
   "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-EM"
 }
