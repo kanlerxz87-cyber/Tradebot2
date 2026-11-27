@@ -69,6 +69,7 @@ jobs:
         run: |
           npm install --no-save --silent jsdom
           node live/tests/smoke.mjs
+          node tests/test_frontend.mjs
 
       - name: Live dashboard links, assets and fabrication check
         run: python3 live/tests/check_live.py
