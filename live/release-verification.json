@@ -9,10 +9,15 @@
     "https://docs.kalshi.com/api-reference/market/get-market-candlesticks",
     "https://docs.kalshi.com/api-reference/market/get-market-orderbook",
     "https://docs.kalshi.com/getting_started/market_lifecycle",
-    "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+    "https://kalshi.com/docs/kalshi-fee-schedule.pdf",
+    "https://docs.kalshi.com/getting_started/quick_start_authenticated_requests",
+    "https://docs.kalshi.com/api-reference/events/get-event",
+    "https://docs.kalshi.com/api-reference/market/get-trades",
+    "https://docs.kalshi.com/getting_started/fixed_point_migration",
+    "https://docs.kalshi.com/getting_started/market_settlement"
   ],
   "live_api_evidence": "See live/data/fallback-snapshot.json provenance and dated data/probe.json; fixture tests are not API verification.",
-  "account_execution": "Read-only secret-context runner check pending. No authenticated order sent; account values blank until confirmed.",
+  "account_execution": "Read-only Actions check found no demo credentials available to that job; no signed request or account order sent. All account values remain blank. Not a claim that keys are globally absent.",
   "pull_request": "https://github.com/kanlerxz87-cyber/Tradebot2/pull/47",
   "public_demo_capture": {
     "input": "data/snapshot.json",
@@ -34,7 +39,7 @@
     "qualification": "Only the selected cohort was independently re-read. Counts and resolution sample are dated collector output; not full exchange or authenticated account verification."
   },
   "local_checks": {
-    "python_tests": 92,
+    "python_tests": 100,
     "python_subtests": 2,
     "live_dom_assertions": 149,
     "quote_integrity_checks": 37,
@@ -49,5 +54,14 @@
     "path": "/",
     "url": "https://kanlerxz87-cyber.github.io/Tradebot2/",
     "outcome": "not yet asserted for this candidate"
+  },
+  "account_verification": {
+    "generated_at": "2026-11-27T20:13:59.431121Z",
+    "status": "no_credentials_available_to_this_job",
+    "configured": false,
+    "verified_account_read": false,
+    "credentials_available_to_job": false,
+    "orders_submitted": 0,
+    "actions_run": "https://github.com/kanlerxz87-cyber/Tradebot2/actions/runs/46062187383"
   }
 }

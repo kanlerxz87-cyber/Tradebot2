@@ -39,7 +39,7 @@ The dated `data/probe.json` records demo REST CORS and an unsigned WebSocket HTT
 - **Charts:** actual REST read times, compatible last-trade candle closes and available exchange-timestamped trade prints; 30s/60s are real time windows, **not a complete tick tape**. Official candles are 1/60/1440-minute intervals with a 5,000-period request limit. Missing periods are not invented trades.
 - **Book:** official `orderbook_fp` contains bids. YES asks complement NO bids. Nearest levels are sorted before truncation, with quantities and an exact source link on every row.
 - **Paper execution:** enabled by default **only for simulation**, DEMO environment, fresh active binary $1-face contract, ask entry / side-bid exit and visible side size. Closed/paused/stale quotes cannot fill; unresolved positions wait for finalized settlement. General taker M=1 fees and $10,000 starting cash are assumptions, not account figures. No settlement fee. Fee overrides, slippage/queue/impact, cross-tab locking and continuous server execution are not modeled.
-- **Account:** balance/positions and an actual submitted demo order have **not been verified by this session**. Credential availability is unknown (secret-enumeration permission denied), not proven absent. Existing secret-backed collector/manual order tools remain intact; none is portrayed as a confirmed account order. No credentials are requested in chat.
+- **Account:** balance/positions and an actual submitted demo order have **not been verified by this session**. The [read-only Actions check](live/data/account-verification.json) found no credentials available to that job; global absence of keys is not inferred. Existing secret-backed collector/manual order tools remain intact; none is portrayed as a confirmed account order. No credentials are requested in chat.
 - **Context:** settlement/reference links provide official context; no headline is asserted to cause a move. Verified causal-news values remain blank.
 - **Persistence:** environment-isolated browser history/watch list/paper ledger; unresolved watched tickers survive cohort changes and missing tickers rotate through current/historical rechecks. Browser closure/storage loss and bounded finalized audit history limit completeness. A durable ledger and signed streaming gateway are recommendations, not delivered services.
 
@@ -50,6 +50,7 @@ Sources: [markets](https://docs.kalshi.com/api-reference/market/get-markets), [b
 ```text
 .github/workflows/data.yml       daily / dispatch: tools/build_snapshot.py → data/snapshot.json + probes
                                 then tools/build_live_snapshot.py --verify-live
+                                + separate GET-only demo-account availability job
                                 → live/data/fallback-snapshot.json
 .github/workflows/collect.yml    scheduled / dispatch: collector/run.py → other data/*.json + paper ledger
 .github/workflows/pages.yml      push / PR: engine, static links, rendered UI and quote-integrity checks
