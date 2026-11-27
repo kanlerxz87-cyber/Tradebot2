@@ -389,10 +389,19 @@ Base: `main` @ `aca6cc8` (branch `arena/b4e1fe8a-tradebot2`). This session acts 
 
 | Task | Status | Owner | File scope |
 |---|---|---|---|
-| `J1-official-verification` | in progress | `arena/b4e1fe8a-tradebot2` | `COORDINATION.md`, `EXECUTIVE_SUMMARY.md`, `live/executive-summary.html`, `live/verification.html`, `live/flagged.html`, `README.md` (verification appendix only) |
-| `J2-site-gate` | unclaimed | — | `tools/verify_site.py`, `live/tests/check_live.py` (run only; edits only if gate is broken) |
-| `J3-pr-merge-deploy` | unclaimed | — | PR to `main`, Pages build check |
+| `J1-official-verification` | done | `arena/b4e1fe8a-tradebot2` | `COORDINATION.md`, `EXECUTIVE_SUMMARY.md`, `live/executive-summary.html`, `live/verification.html`, `live/flagged.html`, `README.md` (verification appendix only) |
+| `J2-site-gate` | in progress | `arena/b4e1fe8a-tradebot2` | `tools/verify_site.py`, `live/tests/check_live.py` (run only; edits only if gate is broken) |
+| `J3-pr-merge-deploy` | in progress | `arena/b4e1fe8a-tradebot2` | PR to `main`, Pages build check |
 
 Scope rule: this session edits only the files in `J1` scope. If a fix requires a file outside that scope, it will be logged here as a request instead of edited. Open PRs #16, #14, #6 (2026-11-22) predate this base and their claims are >60 minutes old with no commits on this branch; this session proceeds as final integration and notes any handoff here. No other session's files will be deleted.
 
 Official sources re-verified 2026-11-27 via docs.kalshi.com (fetch): `getting_started/demo_env`, `getting_started/api_environments`, `getting_started/quick_start_websockets`, `api-reference/market/get-market-candlesticks`, `api-reference/market/get-market-orderbook`, `getting_started/market_settlement`, `getting_started/market_lifecycle`, `api-reference/orders/create-order-v2`, `api-reference/market/get-markets`, `getting_started/api_keys`, `getting_started/rate_limits`, `api-reference/search/get-tags-for-series-categories`. Findings recorded in `J1` completion below.
+
+
+### J1 close-out and handoff — 27 November 2026
+
+Rechecked the official references listed above, plus [trades](https://docs.kalshi.com/api-reference/market/get-trades), [historical data](https://docs.kalshi.com/getting_started/historical_data), and [fixed-point migration](https://docs.kalshi.com/getting_started/fixed_point_migration). Updated the executive summaries, README and live verification page to distinguish the recorded probe from a current independent probe, correct settlement and trade-limit wording, and disclose incomplete discovery, notional proxy and defaulted inputs, missed between-poll moves, and hypothetical paper exits. These checks do not establish complete line-by-line verification of all published and archived content.
+
+**Parallel session coordination:** independently discovered active [PR #38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38), owner `arena/a32cdd24-tradebot2`, whose branch claims `live/flagged.html`, `flagged.html`, `index.html`, and `VERIFICATION_REPORT.md`. Its claim was not in our base when J1 was pushed. We reverted our local changes to its `live/flagged.html` and requested via [comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38#issuecomment-7226784894) that its owner document the audit limitations on the flagged page and fix duplicate F-13 IDs. No other session's work was discarded. Its PR independently corrects the broken `/legacy/` link and archive warning claims.
+
+**Unverified:** live API re-probe blocked by sandbox egress; demo credentials/orders absent; not every external link or archived page verified. Gate results are recorded at J2 below. Branch naming is fixed by runtime to `arena/b4e1fe8a-tradebot2`.
