@@ -465,3 +465,19 @@ is inferred, no order is placed, and no credential is used.
    `"status":"active"`. The request filter enum (`unopened|open|closed|settled`) and the response enum
    (`initialized|inactive|active|closed|determined|disputed|amended|finalized`) are different vocabularies.
    `core.js` already handles both correctly; an earlier note in this session that it did not was wrong.
+
+#### Post-deploy verification (recorded after the merge, from the published site)
+
+GitHub Pages: `status=built`, `build_type=legacy`, source `main:/`, build for `565df6918` at
+2026-11-27T19:50:13Z. `origin/main` head is `565df69`. Fetched and read from the live URL, not assumed:
+
+| Page / asset | What the published copy shows |
+|---|---|
+| `/live/assets/js/core.js` | contains `quotedPrice()` with the "A quoted zero is not a price" rationale, and the corrected `spread` (both sides required) |
+| `/live/start.html` | serves the corrected text: "There is no /legacy/ directory; earlier text on this page … said there was, and that link returned 404" |
+| `/live/flagged.html` | F-01 now reads "the files remain at their original paths; there is no /legacy/ directory", with the archive + `get-markets` source links intact |
+| `/` (root landing) | unchanged overview, still pointing at `/live/` as the verified dashboard |
+
+Final gate sweep on the merged tree: `quote_rules` 35/35 · `smoke` 87/87 · `check_live` 0 failures ·
+`pytest` 69 passed · `verify_site` OK (128 markets, 44,192 resolutions) · `check_site --strict` OK
+(407 links) · `scripts/check_site` OK · `verify_data` OK · `py_compile` clean.
