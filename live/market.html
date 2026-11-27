@@ -17,15 +17,18 @@
     <div class="stack">
       <div class="card" style="margin-bottom:0">
         <div class="spread"><h2>Price history</h2><div class="seg" id="span" role="group" aria-label="Window">
-          <button data-min="60" aria-pressed="true">1h</button>
-          <button data-min="360" aria-pressed="false">6h</button>
-          <button data-min="1440" aria-pressed="false">24h</button>
-          <button data-min="10080" aria-pressed="false">7d</button>
+          <button data-seconds="30" aria-pressed="false">30s</button>
+          <button data-seconds="60" aria-pressed="false">60s</button>
+          <button data-seconds="3600" aria-pressed="true">1h</button>
+          <button data-seconds="21600" aria-pressed="false">6h</button>
+          <button data-seconds="86400" aria-pressed="false">24h</button>
+          <button data-seconds="604800" aria-pressed="false">7d</button>
         </div></div>
         <div class="chart-box tall"><canvas id="chart" height="380"></canvas></div>
-        <div class="chart-legend"><span><i style="background:#0b6b56"></i>close</span><span><i style="background:rgba(11,107,86,.25)"></i>volume</span></div>
+        <p class="hint" id="chartMeta"></p><div class="chart-legend"><span><i style="background:#0b6b56"></i>close</span><span><i style="background:rgba(11,107,86,.25)"></i>volume</span></div>
       </div>
       <div class="card" style="margin-bottom:0">
+        <h2>Contract fields</h2><div id="contractMeta"></div>
         <h2>Rules (from the API's <span class="mono">rules_primary</span>)</h2>
         <div id="rules" class="src">—</div>
       </div>
@@ -46,7 +49,7 @@
         <div class="stack">
           <div class="row"><label class="chk"><input type="radio" name="side" value="yes" checked> Buy YES</label>
             <label class="chk"><input type="radio" name="side" value="no"> Buy NO</label></div>
-          <div class="row"><label>Qty <input type="text" id="qty" value="10" size="6"></label>
+          <div class="row"><label>Qty <input type="number" min="1" step="1" id="qty" value="10" size="6"></label>
             <span class="src" id="pxHint"></span></div>
           <div class="row"><button class="btn primary" id="buyBtn">Place simulated order</button></div>
           <div id="orderMsg" class="src"></div>
@@ -58,6 +61,7 @@
       </div>
     </div>
   </section>
+  <section class="card" id="move-context"><h2>Observed jumps &amp; reference websites</h2><div id="moveContext"></div></section>
   <p class="src" style="margin-top:1rem">Data source: <span class="mono">external-api.demo.kalshi.co/trade-api/v2</span> ·
     <a href="https://docs.kalshi.com/api-reference/market/get-markets">get-markets</a> ·
     <a href="https://docs.kalshi.com/api-reference/market/get-market-candlesticks">candlesticks</a> ·
@@ -70,6 +74,7 @@
 <script src="assets/js/data.js"></script>
 <script src="assets/js/charts.js"></script>
 <script src="assets/js/ui.js"></script>
+<script src="assets/js/market-view.js"></script>
 <script src="assets/js/page-market.js"></script>
 </body>
 </html>

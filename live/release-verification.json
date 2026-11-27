@@ -1,0 +1,16 @@
+{
+  "session": "arena/600a5dcd-tradebot2",
+  "status": "integration in progress; release not yet asserted",
+  "documentation_checked_at": "2026-11-27",
+  "official_documentation": [
+    "https://docs.kalshi.com/getting_started/api_environments",
+    "https://docs.kalshi.com/api-reference/market/get-markets",
+    "https://docs.kalshi.com/api-reference/market/get-market",
+    "https://docs.kalshi.com/api-reference/market/get-market-candlesticks",
+    "https://docs.kalshi.com/api-reference/market/get-market-orderbook",
+    "https://docs.kalshi.com/getting_started/market_lifecycle",
+    "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+  ],
+  "live_api_evidence": "See live/data/fallback-snapshot.json provenance and dated data/probe.json; fixture tests are not API verification.",
+  "account_execution": "unverified; no authenticated account order sent"
+}

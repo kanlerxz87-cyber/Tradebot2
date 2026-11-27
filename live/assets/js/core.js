@@ -50,7 +50,7 @@ var TB = (() => {
      ------------------------------------------------------------------------- */
   const TOPICS = [
     { id: 'gas', name: 'Gas prices', icon: '⛽', filter: { category: 'Commodities', tags: 'Oil & Gas' },
-      note: 'Kalshi category “Commodities”, tag “Oil & Gas”. The API has no retail-gasoline tag; see flagged F-02.' },
+      note: 'Retail gasoline series in the verified capture (AAA rules). Broader Oil & Gas discovery is not treated as retail gasoline; see F-02.' },
     { id: 'elections', name: 'Elections', icon: '🗳️', filter: { category: 'Elections' },
       note: 'Kalshi category “Elections”.' },
     { id: 'culture', name: 'Culture', icon: '🎭', filter: { category: 'Entertainment' },
@@ -76,7 +76,7 @@ var TB = (() => {
 
   /* ======================= small helpers ================================= */
   function num(v) {
-    if (v === null || v === undefined || v === '') return null;
+    if (v === null || v === undefined || typeof v === 'boolean' || (typeof v === 'string' && !v.trim())) return null;
     const n = Number(v);
     return Number.isFinite(n) ? n : null;
   }
@@ -147,6 +147,9 @@ var TB = (() => {
     if (html != null) n.innerHTML = html;
     return n;
   }
+  const script = [...document.scripts].find(s => /assets\/js\/core\.js/.test(s.getAttribute('src') || ''));
+  const liveRoot = new URL('../../', script ? script.src : new URL('assets/js/core.js', location.href));
+  const pageUrl = path => new URL(path, liveRoot).toString();
   const qs = (sel, root) => (root || document).querySelector(sel);
   const qsa = (sel, root) => [...(root || document).querySelectorAll(sel)];
 
@@ -170,7 +173,7 @@ var TB = (() => {
     let alt = false;
     const cache = new Map();       // url -> {t, data}
     const log = [];                // recent request log for the "sources" panel
-    let okCount = 0, failCount = 0;
+    let okCount = 0, failCount = 0, blockedUntil = 0;
 
     function base() { const e = ENVS[envKey]; return alt ? e.restAlt : e.rest; }
     function setEnv(k) {
@@ -191,23 +194,34 @@ var TB = (() => {
 
     /** GET with a small in-memory TTL cache. Throws a descriptive Error on failure. */
     async function get(path, params, opts) {
-      const ttl = (opts && opts.ttl) || 8000;
+      const ttl = opts && opts.ttl != null ? opts.ttl : 8000;
+      if (Date.now() < blockedUntil) throw new Error('Kalshi rate-limit cooldown; next scheduled refresh will retry.');
       const u = url(path, params);
       const hit = cache.get(u);
       if (hit && Date.now() - hit.t < ttl) return hit.data;
       const t0 = performance.now();
       let res;
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 12000);
       try {
-        res = await fetch(u, { headers: { accept: 'application/json' }, cache: 'no-store' });
+        res = await fetch(u, { headers: { accept: 'application/json' }, cache: 'no-store', signal: controller.signal });
       } catch (err) {
+        clearTimeout(timeout);
         failCount++;
         pushLog(u, 'network/CORS error', null, performance.now() - t0);
         if (!alt) { alt = true; return get(path, params, Object.assign({}, opts, { ttl: 0 })); }
         throw new Error('Network or CORS error reaching ' + new URL(u).host + '. ' + (err && err.message ? err.message : ''));
       }
+      clearTimeout(timeout);
       if (!res.ok) {
+        failCount++;
+        pushLog(u, 'HTTP ' + res.status, null, performance.now() - t0);
         const body = await res.text().catch(() => '');
-        if (res.status === 429) throw new Error('Rate limited (HTTP 429) by the Kalshi API — slow down or wait a moment.');
+        if (res.status === 429) {
+          const retry = Number(res.headers.get('retry-after'));
+          blockedUntil = Date.now() + (Number.isFinite(retry) && retry > 0 ? Math.min(retry, 300) : 60) * 1000;
+          throw new Error('Rate limited (HTTP 429); requests paused until the next retry window.');
+        }
         if (res.status === 401) throw new Error('HTTP 401 — this endpoint needs signed API-key authentication.');
         throw new Error('HTTP ' + res.status + ' from ' + new URL(u).pathname + (body ? ' — ' + body.slice(0, 160) : ''));
       }
@@ -215,6 +229,7 @@ var TB = (() => {
       okCount++;
       pushLog(u, '200 OK', res.headers.get('access-control-allow-origin'), performance.now() - t0);
       cache.set(u, { t: Date.now(), data });
+      if (cache.size > 300) cache.delete(cache.keys().next().value);
       return data;
     }
 
@@ -230,6 +245,7 @@ var TB = (() => {
       tagsByCategories: () => get('/search/tags_by_categories', null, { ttl: 600000 }),
       series: (f) => get('/series', Object.assign({ include_volume: true }, f), { ttl: 120000 }),
       events: (f) => get('/events', f),
+      markets: (tickers) => get('/markets', { tickers: tickers.join(',') }, { ttl: 0 }),
       candlesticks: (seriesTicker, ticker, interval, startTs, endTs) => get(
         `/series/${encodeURIComponent(seriesTicker)}/markets/${encodeURIComponent(ticker)}/candlesticks`,
         { start_ts: startTs, end_ts: endTs, period_interval: interval }, { ttl: 30000 }),
@@ -269,6 +285,10 @@ var TB = (() => {
       status: m.status || null,
       statusLabel: STATUS_MAP[m.status] || (m.status || '—'),
       result: (m.result === 'yes' || m.result === 'no') ? m.result : (m.result || ''),
+      marketType: m.market_type || null,
+      observedAt: ctx && ctx.observedAt != null ? ctx.observedAt : null,
+      fallback: !!(ctx && ctx.fallback),
+      sourceUrl: ctx && ctx.sourceUrl || api.url(`/markets/${encodeURIComponent(m.ticker)}`),
       yesBid, yesAsk, noBid: num(m.no_bid_dollars), noAsk: num(m.no_ask_dollars),
       yesBidSize: num(m.yes_bid_size_fp), yesAskSize: num(m.yes_ask_size_fp),
       last, prev, mid,
@@ -295,7 +315,7 @@ var TB = (() => {
 
   /** Is the market still live (trading or awaiting determination)? */
   function isLive(m) {
-    return m.status === 'active' || m.status === 'inactive' || m.status === 'initialized';
+    return m.status === 'active';
   }
   function isClosed(m) {
     return m.status === 'closed' || m.status === 'determined' || m.status === 'disputed' || m.status === 'amended';
@@ -335,10 +355,10 @@ var TB = (() => {
     const host = qs('#site-head');
     if (!host) return;
     const links = NAV.map(n =>
-      `<a href="${n.href}"${n.href === activeHref ? ' aria-current="page"' : ''}>${n.label}</a>`).join('');
+      `<a href="${pageUrl(n.href)}"${n.href === activeHref ? ' aria-current="page"' : ''}>${n.label}</a>`).join('');
     host.className = 'site-head';
     host.innerHTML = `<div class="bar">
-      <a class="brand" href="index.html">
+      <a class="brand" href="${pageUrl('index.html')}">
         <span class="mark">TB</span>
         <span>Tradebot2<span class="sub" style="display:block">Kalshi demo · live</span></span>
       </a>
@@ -368,7 +388,7 @@ var TB = (() => {
     host.className = 'foot';
     host.innerHTML = `<div class="in">
       <div>Tradebot2 · data © Kalshi via the official Trade API · simulated trades only · not investment advice</div>
-      <div><a href="verification.html">Sources &amp; verification</a> · <a href="flagged.html">Flagged for review</a> · <a href="https://docs.kalshi.com/">docs.kalshi.com</a></div>
+      <div><a href="${pageUrl('verification.html')}">Sources &amp; verification</a> · <a href="${pageUrl('flagged.html')}">Flagged for review</a> · <a href="https://docs.kalshi.com/">docs.kalshi.com</a></div>
     </div>`;
   }
   function pageShell(activeHref) {
@@ -398,6 +418,6 @@ var TB = (() => {
     store, settings, saveSettings,
     api, normMarket, STATUS_MAP, isLive, isClosed, isSettled,
     freshness, NAV, renderHeader, renderFooter, pageShell, setStatusPill, noDataRow, copyText,
-    startedAt
+    startedAt, pageUrl
   };
 })();

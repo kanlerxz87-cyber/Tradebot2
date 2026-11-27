@@ -15,14 +15,14 @@
   <div id="truncbox"></div>
 
   <h1>Resolutions <span class="tag">tracked until each event settles</span></h1>
-  <p class="hint">Every market in the five topics is tracked past its close. Once the exchange finalises it, the final outcome
+  <p class="hint">Selected and previously watched contracts are retained in this browser past their close. A bounded dated resolution sample is also shown; this is not the complete exchange archive. Once the exchange finalises it, the final outcome
     (YES or NO) and settlement timestamp appear here. A market past its close but not yet determined stays in “awaiting result”.</p>
 
   <section class="grid g4" id="kpis"></section>
 
   <section class="card">
     <h2>Awaiting result <span class="tag">closed, not yet finalised</span></h2>
-    <p class="hint">These have passed <span class="mono">close_time</span> but the API has not published a YES/NO result yet.</p>
+    <p class="hint">Watched markets not yet finalized remain tracked, including provisional determined/disputed/amended outcomes. Missing tickers are not assumed resolved.</p>
     <div id="pending"></div>
   </section>
 

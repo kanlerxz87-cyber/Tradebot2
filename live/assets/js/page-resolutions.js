@@ -16,7 +16,7 @@
     const a = all();
     const res = resolvedAll();
     const yes = res.filter(m => m.result === 'yes').length;
-    const pending = a.filter(m => TB.isClosed(m) && !(m.result === 'yes' || m.result === 'no'));
+    const pending = a.filter(m => TB.isClosed(m) && m.status !== 'finalized');
     qs('#kpis').innerHTML = [
       TBUI.kpi('Resolved', String(res.length), 'result published'),
       TBUI.kpi('YES outcomes', String(yes), res.length ? pct(yes / res.length, 0) + ' of resolved' : '—'),
@@ -26,7 +26,7 @@
   }
 
   function renderPending() {
-    const rows = all().filter(m => TB.isClosed(m) && !(m.result === 'yes' || m.result === 'no')).sort((a, b) => new Date(b.closeTime || 0) - new Date(a.closeTime || 0));
+    const rows = all().filter(m => TB.isClosed(m) && m.status !== 'finalized').sort((a, b) => new Date(b.closeTime || 0) - new Date(a.closeTime || 0));
     const host = qs('#pending');
     if (!rows.length) { host.innerHTML = '<div class="t-blank" style="padding:.6rem">Nothing is awaiting a result right now.</div>'; return; }
     TBUI.marketsTable(host, rows, { topic: true });
@@ -52,10 +52,10 @@
           <td>${t ? t.icon + ' ' + esc(t.name) : '—'}</td>
           <td><span class="t">${esc(m.title)}</span><div class="s mono">${esc(m.ticker)}</div></td>
           <td>${TBUI.statusPill(m)}</td>
-          <td class="num">${m.settlementValue !== null ? dollar(m.settlementValue, 2) : (m.result === 'yes' ? '$1.00' : '$0.00')}</td>
+          <td class="num">${m.settlementValue !== null ? dollar(m.settlementValue, 4) : TBUI.missing()}</td>
           <td>${m.settlementTs ? new Date(m.settlementTs).toLocaleString() : '<span class="t-blank">—</span>'}</td>
           <td class="src">${ss.length ? ss.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>`).join('<br>') : '<span class="t-blank">not returned</span>'}</td>
-          <td class="src"><a href="${esc(api.url(`/markets/${encodeURIComponent(m.ticker)}`))}" target="_blank" rel="noopener">market API</a></td>
+          <td class="src"><a href="${esc(TBUI.source(m))}" target="_blank" rel="noopener">market API</a></td>
         </tr>`;
       }).join('')}</tbody></table></div>`;
   }
@@ -76,10 +76,11 @@
     ]);
   });
 
-  TBData.refresh({ events: { maxPages: 8, statuses: ['open', 'closed'] } }).then(() => {
+  function load() { return TBData.refresh().then(() => {
     TBUI.statusBar(qs('#statusbar'), TBData.state);
     TBUI.errorBox(qs('#errbox'), TBData.state.errors);
     TBUI.truncBox(qs('#truncbox'), TBData.state.truncated);
     renderKpis(); renderPending(); renderResolved();
-  }).catch(e => TBUI.errorBox(qs('#errbox'), [e.message]));
+  }).catch(e => TBUI.errorBox(qs('#errbox'), [e.message])); }
+  load(); setInterval(() => { if (!document.hidden) load(); }, 60000);
 })();

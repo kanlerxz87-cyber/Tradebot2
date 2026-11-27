@@ -18,12 +18,11 @@
     const mk = meta();
     const live = mk.filter(TB.isLive);
     const resolved = mk.filter(m => m.result === 'yes' || m.result === 'no');
-    const notional = live.reduce((s, m) => s + (m.volume || 0) * (m.notional || 1), 0);
-    const v24 = live.reduce((s, m) => s + (m.volume24h || 0) * (m.notional || 1), 0);
+    const summary = TBData.computeStats().byTopic.find(t => t.id === topicId);
     qs('#kpis').innerHTML = [
       TBUI.kpi('Live markets', String(live.length), `${new Set(mk.map(m => m.eventTicker)).size} events`),
-      TBUI.kpi('Notional traded', dollar(notional, 0), 'live markets'),
-      TBUI.kpi('24h notional', dollar(v24, 0), 'volume_24h_fp × $1'),
+      TBUI.kpi('Notional traded', dollar(summary.notional, 0), 'calculated from reported face values; not cash traded'),
+      TBUI.kpi('24h notional', dollar(summary.vol24, 0), 'missing face values stay blank'),
       TBUI.kpi('Resolved', String(resolved.length), 'YES/NO results from the API')
     ].join('');
   }
@@ -69,7 +68,7 @@
         <td>${esc(s.frequency || '—')}</td>
         <td class="src">${(s.settlementSources || []).slice(0, 4).map(x => x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name || 'source')}</a>` : esc(x.name || '')).join('<br>') || '<span class="t-blank">—</span>'}</td>
         <td class="src">${s.contractTermsUrl ? `<a href="${esc(s.contractTermsUrl)}" target="_blank" rel="noopener">terms (PDF)</a>` : '<span class="t-blank">—</span>'}
-          <div><a href="${esc(api.url('/series', { category: topic.filter.category, tags: topic.filter.tags }))}" target="_blank" rel="noopener">series API</a></div></td>
+          <div><a href="${esc(api.url(`/series/${encodeURIComponent(s.ticker)}`))}" target="_blank" rel="noopener">series API</a></div></td>
       </tr>`).join('')}
       </tbody></table></div>`;
   }
@@ -106,5 +105,5 @@
       { label: 'market_api', get: m => api.url(`/markets/${m.ticker}`) }
     ]);
   });
-  load();
+  load(); setInterval(() => { if (!document.hidden) load(); }, 60000);
 })();

@@ -16,8 +16,8 @@
     <div class="row" style="justify-content:space-between">
       <div>
         <h1>Kalshi demo · live event dashboard</h1>
-        <p>Highest-dollar live events on the Kalshi <b>demo</b> exchange in five topics — gas prices, elections,
-        culture, crypto and golf. Every number is read from the official Trade API at the moment shown; each row links
+        <p>A source-linked watch list on the Kalshi <b>demo</b> exchange in five topics — gas prices, elections,
+        culture, crypto and golf. Quotes are sampled from the official Trade API, or explicitly labelled as dated captures; each row links
         to the exact endpoint that produced it. Trades on this site are <b>simulated</b>.</p>
       </div>
       <div class="stack" style="min-width:220px">
@@ -49,14 +49,15 @@
 
   <section class="card">
     <div class="spread">
-      <h2>Highest-dollar live events <span class="tag">ranked by 24h traded notional</span></h2>
+      <h2>Highest-flow selected events <span class="tag">24h face-notional proxy, not cash traded</span></h2>
       <div class="row">
         <input type="search" id="evSearch" placeholder="Filter events…" aria-label="Filter events by text">
         <button class="btn" id="evCsv">Export CSV</button>
       </div>
     </div>
-    <p class="hint">Notional = contracts traded × $1 contract value (docs.kalshi.com/getting_started/market_settlement).
-      “24h” uses <span class="mono">volume_24h_fp</span>; the total uses <span class="mono">volume_fp</span>. Both are reported by the API.</p>
+    <p class="hint">Ranked by 24h volume × the API's reported settlement face value when every active row supplies it;
+      otherwise by 24h contracts, with dollar values blank and unverified. Only the selected contracts within each event are summed — not the full event or exchange.
+      <a href="https://docs.kalshi.com/api-reference/market/get-markets">Official field definitions</a>.</p>
     <div id="events"></div>
   </section>
 
@@ -69,7 +70,7 @@
       <p class="hint">Every move of $0.10 or more in either direction, measured between two refreshes.</p>
       <div class="chat" id="chatAll" aria-live="polite"></div>
       <div class="row" style="margin-top:.5rem"><a class="btn" href="alerts.html">Open full alerts page →</a>
-      <button class="btn" id="testAlert">Insert demo alert</button></div>
+      </div>
     </div>
     <div class="card" style="margin-bottom:0">
       <div class="spread">
@@ -89,10 +90,12 @@
       <div class="row" style="margin-bottom:.5rem">
         <select id="chartPick" style="min-width:280px" aria-label="Market to chart"></select>
         <div class="seg" id="chartSpan" role="group" aria-label="Chart window">
-          <button data-min="15" aria-pressed="false">15m</button>
-          <button data-min="60" aria-pressed="true">1h</button>
-          <button data-min="240" aria-pressed="false">4h</button>
-          <button data-min="1440" aria-pressed="false">24h</button>
+          <button data-seconds="30" aria-pressed="false">30s</button>
+          <button data-seconds="60" aria-pressed="false">60s</button>
+          <button data-seconds="900" aria-pressed="false">15m</button>
+          <button data-seconds="3600" aria-pressed="true">1h</button>
+          <button data-seconds="14400" aria-pressed="false">4h</button>
+          <button data-seconds="86400" aria-pressed="false">24h</button>
         </div>
         <div class="seg" id="chartInterval" role="group" aria-label="Candle interval">
           <button data-iv="1" aria-pressed="true">1m candles</button>
@@ -101,6 +104,7 @@
         </div>
       </div>
       <div class="chart-box"><canvas id="dashChart" height="320" aria-label="Contract price over time"></canvas></div>
+      <p class="hint" id="dashChartMeta"></p>
       <div class="chart-legend">
         <span><i style="background:#0b6b56"></i>YES price (¢)</span>
         <span><i style="background:rgba(11,107,86,.25)"></i>volume</span>
@@ -117,6 +121,8 @@
     </div>
   </section>
 
+  <section class="card" id="move-context"><h2>Move context · official reference websites</h2><div id="moveContext"></div></section>
+
   <section class="card" style="margin-top:1rem">
     <div class="spread">
       <h2>Simulated portfolio</h2>
@@ -126,7 +132,7 @@
         <a class="btn" href="portfolio.html">Portfolio &amp; strategy analysis →</a>
       </div>
     </div>
-    <p class="hint">$10,000 simulated starting cash. Fills pay the official taker fee. No real order is ever placed — this account is local to your browser.</p>
+    <p class="hint">$10,000 simulated starting cash. Fills use a disclosed general-fee scenario (M=1); series/event overrides are unverified. Orders require a fresh active quote and enough visible size, with at most 10 open positions. No real order is ever placed — this account is local to your browser.</p>
     <div class="grid g4" id="paperKpis"></div>
     <div style="margin-top:.8rem" id="paperOpen"></div>
   </section>
@@ -141,7 +147,7 @@
   <section class="card">
     <h2>What this dashboard can and cannot tell you</h2>
     <ul class="tight">
-      <li><b>Moves, not causes.</b> The API reports prices and trades, not news. The site never claims a headline caused a move; where a candidate cause is shown it is clearly labelled as a reference and unlinked to the price data.</li>
+      <li><b>Moves, not causes.</b> The API reports prices and trades, not verified news causality. The site never claims a headline caused a move; where a candidate cause is shown it is clearly labelled as a reference and unlinked to the price data.</li>
       <li><b>Demo ≠ production.</b> Kalshi states demo prices may not reflect real markets, and the demo carries a subset of markets. Some series are empty here by design.</li>
       <li><b>Refresh cadence.</b> Alerts compare consecutive refreshes (default 60 s), not a per-second tape. Intra-minute moves between two refreshes can be missed; the 1-minute candles show them after the fact.</li>
       <li><b>Paper trading.</b> Simulated, browser-local, fee-aware. Not a Kalshi demo-account balance — that needs signed API keys.</li>
@@ -160,6 +166,7 @@
 <script src="assets/js/data.js"></script>
 <script src="assets/js/charts.js"></script>
 <script src="assets/js/ui.js"></script>
+<script src="assets/js/market-view.js"></script>
 <script src="assets/js/page-dashboard.js"></script>
 </body>
 </html>
