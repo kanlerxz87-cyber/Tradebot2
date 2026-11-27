@@ -518,7 +518,7 @@ Base: `main` @ `aca6cc898a8abb16bb36928648e1dcda90be7e78`. Arena fixes this sess
 
 | Task | Status | Owner | File scope | Sources / verification |
 |---|---|---|---|---|
-| Take over the stale demo collector safety task; audit the integrated site and record final evidence | `in progress` | `arena/bce83713-tradebot2` | `scripts/kalshi_collector.py`, `scripts/tests/test_collector_safety.py`, `site/{flagged,resolved}.html`, `site/assets/app.js`, `COORDINATION.md`, `VERIFICATION_REPORT.md` | Official Kalshi [demo environment](https://docs.kalshi.com/getting_started/demo_env) and [market lifecycle](https://docs.kalshi.com/getting_started/market_lifecycle); tests pending |
+| Take over the stale demo collector safety task; audit the integrated site and record final evidence | `implementation and local verification done; PR integration pending` | `arena/bce83713-tradebot2` | `scripts/kalshi_collector.py`, `scripts/tests/test_collector_safety.py`, `site/{flagged,resolved}.html`, `site/assets/app.js`, `COORDINATION.md`, `VERIFICATION_REPORT.md` | Official Kalshi [demo environment](https://docs.kalshi.com/getting_started/demo_env) and [market lifecycle](https://docs.kalshi.com/getting_started/market_lifecycle); pytest 74 + 2 subtests, collector tests 5, site/live gates pass; see `VERIFICATION_REPORT.md` |
 
 ### Handoff and scope
 
@@ -526,7 +526,7 @@ The collector safety change is claimed by session `arena/d60a6d1e` in open PR [#
 
 ### Rebase and parallel-session log — 2026-11-27
 
-- `origin/main` first advanced from `aca6cc8` to `037d65b` when PR #39 merged, then to `565df69` when PR #41 merged. Both `git pull --rebase origin main` runs stopped on append conflicts in this shared board. Resolutions retained the full merged audit/session sections and this session's claim; no work was dropped. The collector-fix commit after the latest rebase is `0d2fc0d`.
-- PR [#40](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40) has separate executive-summary/verification-page scope. This session did not edit those files. Its owner was notified that only `COORDINATION.md` is shared and that the merged audit sections must be preserved: [coordination comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40#issuecomment-7226875761).
+- `origin/main` advanced from `aca6cc8` to `037d65b` when PR #39 merged, to `565df69` when PR #41 merged, and to `4517d1c` when PR #40 merged. Each `git pull --rebase origin main` stopped on an append conflict in this shared board. Every resolution retained the complete upstream session/audit entries and this task's record; no file or session work was dropped. After the latest rebase, the collector fix is `9f6dd92`.
+- PR [#40](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40) owned separate executive-summary/verification-page scope and merged as `4517d1c` on 2026-11-27. This session did not edit those files. Its owner was notified that only `COORDINATION.md` was shared and that merged audit sections must be preserved: [coordination comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/40#issuecomment-7226875761).
 - PR [#41](https://github.com/kanlerxz87-cyber/Tradebot2/pull/41) owns the current `live/**` dashboard data-integrity fixes and Pages workflow. This session did not edit those files; the author was notified to preserve the appended coordination sections: [coordination comment](https://github.com/kanlerxz87-cyber/Tradebot2/pull/41#issuecomment-7226895836).
-- Local code, site, and fixture checks are green (details in `VERIFICATION_REPORT.md`); the replacement PR, merge, and post-merge Pages check remain pending. PR #16 remains open until this replacement is merged.
+- Replacement PR [#42](https://github.com/kanlerxz87-cyber/Tradebot2/pull/42) is open; merge and post-merge Pages check remain pending. The full local test/site suite passed against `main` at `4517d1c` (details in `VERIFICATION_REPORT.md`). PR #16 remains open until #42 is merged.

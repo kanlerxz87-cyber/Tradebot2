@@ -109,7 +109,7 @@ PR [#38](https://github.com/kanlerxz87-cyber/Tradebot2/pull/38) merged on 2026-1
 
 ## 8. Demo collector safety follow-up (2026-11-27 UTC)
 
-**Scope.** This follow-up implements the stale collector-safety task from PR [#16](https://github.com/kanlerxz87-cyber/Tradebot2/pull/16) on the fixed branch `arena/bce83713-tradebot2`. It is a targeted code and page audit, not a line-by-line re-verification of every historical file, every market row, or every external link. The branch was first rebased onto `main` at `037d65b` after PR #39 merged, then onto `565df69` after PR #41 merged; both append-only coordination conflicts were resolved by retaining the complete upstream session records and this task's record. No file or session work was discarded.
+**Scope.** This follow-up implements the stale collector-safety task from PR [#16](https://github.com/kanlerxz87-cyber/Tradebot2/pull/16) on the fixed branch `arena/bce83713-tradebot2`. It is a targeted code and page audit, not a line-by-line re-verification of every historical file, every market row, or every external link. The branch was rebased as `main` advanced to `037d65b` after PR #39, `565df69` after PR #41, and `4517d1c` after PR #40 merged. Each append-only coordination conflict was resolved by retaining all upstream audit/session records and this task's record. No file or session work was discarded.
 
 ### Official facts checked
 
