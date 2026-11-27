@@ -380,3 +380,21 @@ Base: `main` @ `b379d02`.
 | A2 | Fix `app/alerts.py`, `app/collector.py`, and `app/backtest.py` so `seed_alerts` and `run_backtest` inspect both `1m` and `60m` candlesticks as well as intra-bar `open -> close` moves `>= $0.10` (deduplicated within 1h) | done | `arena/10428a57-tradebot2` | `app/alerts.py`, `app/collector.py`, `app/backtest.py`, `tests/test_alerts.py` | `56` deduplicated `>= $0.10` seed alerts across all 5 topics (`19` crypto, `18` gas_prices, `10` culture, `8` elections, `1` golf); `data/backtest.json` tests `17` markets / `4,797` candle cells (`209` closed trades, `8` open positions) |
 | A3 | Fix `tools/build_category_pages.py` nav template (`Sources` link), `site/*.html` internal `../data/probe.json` links (`scripts/check_site.py`), and `collector/kalshi.py` optional `requests` import; clean up `flagged.html` non-official link warnings | done | `arena/10428a57-tradebot2` | `tools/build_category_pages.py`, `site/{alerts,findings,flagged,sources}.html`, `collector/kalshi.py`, `flagged.html`, `.github/workflows/data.yml` | Zero warnings/failures in `tools/verify_site.py`, `tools/check_site.py --root . --strict`, `scripts/check_site.py`, `scripts/verify_site.py`, `live/tests/check_live.py`, and `tests/run_fixture_pipeline.py` |
 
+
+---
+
+## Session `arena/a32cdd24-tradebot2` — verification and repository audit
+
+Runtime branch is fixed by the workbench to `arena/a32cdd24-tradebot2` (base `aca6cc8`); it cannot be renamed or moved to the requested `session-<id>/<task>` naming convention. No other task in this board is being taken over. This session claims only an independent final audit and recording of findings; it will not change canonical page/data ownership or execute any demo-account trade.
+
+| Task | Status | Owner | File scope | Method |
+|---|---|---|---|---|
+| A32-1 | done | `arena/a32cdd24-tradebot2` | `VERIFICATION_REPORT.md`, `index.html`, `live/flagged.html`, `flagged.html`, this section of `COORDINATION.md` | Independent static audit and test gates; corrected inaccurate `/legacy/`/archive-warning claims and recorded residuals. No live API values inferred. |
+
+### A32-1 close-out (2026-11-27)
+
+- **Official sources:** [Kalshi demo environment](https://docs.kalshi.com/getting_started/demo_env), [API environments](https://docs.kalshi.com/getting_started/api_environments), [events](https://docs.kalshi.com/api-reference/events/get-events), [markets](https://docs.kalshi.com/api-reference/market/get-markets), [order book](https://docs.kalshi.com/api-reference/market/get-market-orderbook), [candlesticks](https://docs.kalshi.com/api-reference/market/get-market-candlesticks), [trades](https://docs.kalshi.com/api-reference/market/get-trades), [settlement](https://docs.kalshi.com/getting_started/market_settlement). They are manual-review references; this session could not independently re-probe current Kalshi API values.
+- **Verification:** `tools/verify_data.py` and `tools/check_site.py --strict` passed; script schema/link checks passed; `pytest` passed 69 tests; archived fixture tests passed; JavaScript syntax passed; live UI smoke passed 87/87; live link/content check passed for 16 pages. Detail and exact outputs are in `VERIFICATION_REPORT.md`.
+- **Corrections:** removed false claim that archived pages live under `/legacy/`; corrected root landing statement that all archives were bannered; reopened root F-18 because `docs/index.html` lacks an archive warning.
+- **Irregularities:** data-feed collections checked by `tools/verify_data.py` were empty (0 rows); root collector metadata is dated Nov 22 with `api_requests: 0`; live API wasn't re-tested; 11/22 fallback is static and explicitly not live; archive warnings are incomplete; demo-account credentials, order status and causal news attribution remain unverified. No demo trade sent.
+- **No conflict:** edits were limited to the audit report, root landing warning, review pages and this close-out. Branch name remains workbench-fixed `arena/a32cdd24-tradebot2`; task claim was pushed immediately before implementation.
