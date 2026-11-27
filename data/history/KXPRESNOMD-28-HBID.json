@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.815,
+      "bid": 0.0,
+      "bid_depth": 0,
+      "last": 0.815,
+      "mid": 0.815,
+      "oi": 140234529.05,
+      "spread": null,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 537285231.26
+    }
+  ],
+  "series_ticker": "KXPRESNOMD",
+  "subtitle": "Hunter Biden",
+  "ticker": "KXPRESNOMD-28-HBID",
+  "title": "Democratic Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-HBID"
+}

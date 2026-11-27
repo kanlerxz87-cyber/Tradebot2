@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.035,
+      "bid": 0.014,
+      "bid_depth": 122681.74,
+      "last": 0.035,
+      "mid": 0.0245,
+      "oi": 42921.28,
+      "spread": 0.021,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 46138.08
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "Wenyi Ding",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-WDIN",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-WDIN"
+}

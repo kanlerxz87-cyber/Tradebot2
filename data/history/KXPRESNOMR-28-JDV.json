@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.32,
+      "bid": 0.31,
+      "bid_depth": 3854.93,
+      "last": 0.32,
+      "mid": 0.315,
+      "oi": 3125873.87,
+      "spread": 0.01,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 6836990.4
+    }
+  ],
+  "series_ticker": "KXPRESNOMR",
+  "subtitle": "J.D. Vance",
+  "ticker": "KXPRESNOMR-28-JDV",
+  "title": "Republican Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-JDV"
+}

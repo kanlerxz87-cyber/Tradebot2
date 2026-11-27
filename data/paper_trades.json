@@ -1,4 +1,245 @@
 {
-  "generated_at": null,
-  "trades": []
+  "generated_at": "2026-11-27T19:56:51Z",
+  "trades": [
+    {
+      "entry": {
+        "cash_out_dollars": 0.5,
+        "contracts": 20.0,
+        "cost_dollars": 0.46,
+        "entry_price": 0.023,
+        "fee_dollars": 0.04,
+        "max_loss_dollars": -0.5,
+        "max_profit_dollars": 19.5,
+        "roi_on_risk_pct": 3900.0,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S3_CHEAP_TAIL::KXPRESNOMR-28-JMCE::2026-11-27T19:56:51Z",
+      "market_at_entry": {
+        "close_time": "2028-11-07T15:00:00Z",
+        "last": "0.0230",
+        "open_interest_fp": "329949.13",
+        "volume_fp": "626156.05",
+        "yes_ask": "0.0230",
+        "yes_bid": "0.0190"
+      },
+      "opened_at": "2026-11-27T19:56:51Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-JMCE",
+      "status": "open",
+      "strategy_id": "S3_CHEAP_TAIL",
+      "strategy_kind": "value",
+      "strategy_name": "Cheap-tail value",
+      "subtitle": "John McEntee",
+      "ticker": "KXPRESNOMR-28-JMCE",
+      "title": "Republican Primary winner",
+      "topic": "elections"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 0.22,
+        "contracts": 20.0,
+        "cost_dollars": 0.2,
+        "entry_price": 0.01,
+        "fee_dollars": 0.02,
+        "max_loss_dollars": -0.22,
+        "max_profit_dollars": 19.78,
+        "roi_on_risk_pct": 8990.91,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S3_CHEAP_TAIL::KXPRESNOMD-28-CHOL::2026-11-27T19:56:51Z",
+      "market_at_entry": {
+        "close_time": "2028-11-07T15:00:00Z",
+        "last": "0.0100",
+        "open_interest_fp": "559073.34",
+        "volume_fp": "1034672.33",
+        "yes_ask": "1.0000",
+        "yes_bid": "0.0000"
+      },
+      "opened_at": "2026-11-27T19:56:51Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-CHOL",
+      "status": "open",
+      "strategy_id": "S3_CHEAP_TAIL",
+      "strategy_kind": "value",
+      "strategy_name": "Cheap-tail value",
+      "subtitle": "Chris Van Hollen",
+      "ticker": "KXPRESNOMD-28-CHOL",
+      "title": "Democratic Primary winner",
+      "topic": "elections"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 2.09,
+        "contracts": 20.0,
+        "cost_dollars": 1.96,
+        "entry_price": 0.098,
+        "fee_dollars": 0.13,
+        "max_loss_dollars": -2.09,
+        "max_profit_dollars": 17.91,
+        "roi_on_risk_pct": 856.94,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S3_CHEAP_TAIL::KXPRESPERSON-28-MRUB::2026-11-27T19:56:51Z",
+      "market_at_entry": {
+        "close_time": "2029-11-07T15:00:00Z",
+        "last": "0.0980",
+        "open_interest_fp": "3521452.35",
+        "volume_fp": "21820059.91",
+        "yes_ask": "0.0980",
+        "yes_bid": "0.0950"
+      },
+      "opened_at": "2026-11-27T19:56:51Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-MRUB",
+      "status": "open",
+      "strategy_id": "S3_CHEAP_TAIL",
+      "strategy_kind": "value",
+      "strategy_name": "Cheap-tail value",
+      "subtitle": "Marco Rubio",
+      "ticker": "KXPRESPERSON-28-MRUB",
+      "title": "Pres person",
+      "topic": "elections"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 0.22,
+        "contracts": 20.0,
+        "cost_dollars": 0.2,
+        "entry_price": 0.01,
+        "fee_dollars": 0.02,
+        "max_loss_dollars": -0.22,
+        "max_profit_dollars": 19.78,
+        "roi_on_risk_pct": 8990.91,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S3_CHEAP_TAIL::KXPRESNOMR-28-CSUN::2026-11-27T19:56:51Z",
+      "market_at_entry": {
+        "close_time": "2028-11-07T15:00:00Z",
+        "last": "0.0100",
+        "open_interest_fp": "515312.65",
+        "volume_fp": "933142.43",
+        "yes_ask": "1.0000",
+        "yes_bid": "0.0000"
+      },
+      "opened_at": "2026-11-27T19:56:51Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-CSUN",
+      "status": "open",
+      "strategy_id": "S3_CHEAP_TAIL",
+      "strategy_kind": "value",
+      "strategy_name": "Cheap-tail value",
+      "subtitle": "Chris Sununu",
+      "ticker": "KXPRESNOMR-28-CSUN",
+      "title": "Republican Primary winner",
+      "topic": "elections"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 0.22,
+        "contracts": 20.0,
+        "cost_dollars": 0.2,
+        "entry_price": 0.01,
+        "fee_dollars": 0.02,
+        "max_loss_dollars": -0.22,
+        "max_profit_dollars": 19.78,
+        "roi_on_risk_pct": 8990.91,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S3_CHEAP_TAIL::KXPRESNOMR-28-SPRA::2026-11-27T19:56:51Z",
+      "market_at_entry": {
+        "close_time": "2028-11-07T15:00:00Z",
+        "last": "0.0100",
+        "open_interest_fp": "492049.43",
+        "volume_fp": "1184601.67",
+        "yes_ask": "1.0000",
+        "yes_bid": "0.0000"
+      },
+      "opened_at": "2026-11-27T19:56:51Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-SPRA",
+      "status": "open",
+      "strategy_id": "S3_CHEAP_TAIL",
+      "strategy_kind": "value",
+      "strategy_name": "Cheap-tail value",
+      "subtitle": "Spencer Pratt",
+      "ticker": "KXPRESNOMR-28-SPRA",
+      "title": "Republican Primary winner",
+      "topic": "elections"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 0.86,
+        "contracts": 20.0,
+        "cost_dollars": 0.8,
+        "entry_price": 0.04,
+        "fee_dollars": 0.06,
+        "max_loss_dollars": -0.86,
+        "max_profit_dollars": 19.14,
+        "roi_on_risk_pct": 2225.58,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S3_CHEAP_TAIL::KXSENATEDEMLEAD-28JAN01-BSCH::2026-11-27T19:56:51Z",
+      "market_at_entry": {
+        "close_time": "2028-12-31T15:00:00Z",
+        "last": "0.0400",
+        "open_interest_fp": "205647.66",
+        "volume_fp": "557724.63",
+        "yes_ask": "0.0400",
+        "yes_bid": "0.0100"
+      },
+      "opened_at": "2026-11-27T19:56:51Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXSENATEDEMLEAD-28JAN01-BSCH",
+      "status": "open",
+      "strategy_id": "S3_CHEAP_TAIL",
+      "strategy_kind": "value",
+      "strategy_name": "Cheap-tail value",
+      "subtitle": "Brian Schatz",
+      "ticker": "KXSENATEDEMLEAD-28JAN01-BSCH",
+      "title": "Who will win the next Senate Democratic Leader election?",
+      "topic": "elections"
+    }
+  ]
 }

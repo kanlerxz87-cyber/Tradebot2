@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.02,
+      "bid": 0.01,
+      "bid_depth": 16666.66,
+      "last": 0.03,
+      "mid": 0.015,
+      "oi": 85606.5,
+      "spread": 0.01,
+      "t": "2026-11-27T19:55:36Z",
+      "ts": 1795809336,
+      "vol": 113427.45
+    }
+  ],
+  "series_ticker": "KXOSCARPIC",
+  "subtitle": "The Invite",
+  "ticker": "KXOSCARPIC-27-INV",
+  "title": "Oscar for Best Picture",
+  "topic": "culture",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXOSCARPIC-27-INV"
+}
