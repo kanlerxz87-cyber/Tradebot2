@@ -38,6 +38,16 @@ This session stopped when the original shared-output PR #4 was closed, released 
 - If a session crashes or its claim is >60 minutes old with no commits, any other session may take over and note the handoff here.
 - Shared outputs (table data, site index/navigation) are changed only by the final integration session once all other tasks are done.
 
+## Active claim — `arena/4a7cc110-tradebot2`
+
+The runtime fixes this session to branch `arena/4a7cc110-tradebot2` (base `aca6cc8`); no other branch will be created or used.
+
+| Task | Status | Owner | File scope |
+|---|---|---|---|
+| D1 — reconcile published-entry-point documentation and executive summary | in progress | `arena/4a7cc110-tradebot2` | `README.md`, `EXECUTIVE_SUMMARY.md`, `COORDINATION.md` (claim/log only) |
+
+Handoff: PR [#14](https://github.com/kanlerxz87-cyber/Tradebot2/pull/14) also touched `README.md`; its last recorded update is 2026-11-22, over 60 minutes before this claim. This session takes over only the documentation-consistency portion and will not modify the PR's other files. Active branches `arena/a32cdd24-tradebot2` (root/site findings) and `arena/bce83713-tradebot2` (collector claim) are left untouched.
+
 ## Official sources (to be verified line by line)
 - Demo REST: https://external-api.demo.kalshi.co/trade-api/v2 and https://demo-api.kalshi.co/trade-api/v2
 - Demo WebSocket: wss://external-api-ws.demo.kalshi.co/trade-api/ws/v2 and wss://demo-api.kalshi.co/trade-api/ws/v2
