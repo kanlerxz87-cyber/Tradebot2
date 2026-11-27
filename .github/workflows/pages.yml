@@ -22,8 +22,20 @@ on:
 permissions:
   contents: read
 
+# One group per ref + event, NOT one global group.
+#
+# With a single global `verify-pages` group, every push to any branch cancelled the
+# verification run of every other branch. That is not harmless: a cancelled PR check
+# is reported as a failed check, which hides real failures and blocks merges for
+# reasons unrelated to the code. It bit this very PR (run 46059135289 cancelled at
+# `actions/setup-node@v4` while another session pushed to its own branch).
+#
+# Scoping by ref keeps the property the original group was for — a newer push to the
+# SAME branch cancels its own stale run — without cross-branch cancellation.
+# `pull_request` gets its own suffix so the PR run and the push run for the same
+# commit do not cancel each other either.
 concurrency:
-  group: verify-pages
+  group: verify-pages-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
