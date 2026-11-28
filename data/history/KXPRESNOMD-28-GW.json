@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.009,
+      "bid": 0.008,
+      "bid_depth": 222058.64,
+      "last": 0.009,
+      "mid": 0.0085,
+      "oi": 169543575.29,
+      "spread": 0.001,
+      "t": "2026-11-28T12:19:43Z",
+      "ts": 1795868383,
+      "vol": 432214979.35
+    }
+  ],
+  "series_ticker": "KXPRESNOMD",
+  "subtitle": "Gretchen Whitmer",
+  "ticker": "KXPRESNOMD-28-GW",
+  "title": "Democratic Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-GW"
+}

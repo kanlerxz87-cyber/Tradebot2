@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.01,
+      "bid": 0.002,
+      "bid_depth": 166706.66,
+      "last": 0.01,
+      "mid": 0.006,
+      "oi": 251395.77,
+      "spread": 0.008,
+      "t": "2026-11-28T12:19:43Z",
+      "ts": 1795868383,
+      "vol": 265705.55
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "Nicolai Hojgaard",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-NHOJ",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-NHOJ"
+}

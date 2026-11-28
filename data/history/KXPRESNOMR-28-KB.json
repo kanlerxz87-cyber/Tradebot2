@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.003,
+      "bid": 0.002,
+      "bid_depth": 249999.99,
+      "last": 0.003,
+      "mid": 0.0025,
+      "oi": 79118565.77,
+      "spread": 0.002,
+      "t": "2026-11-28T12:19:43Z",
+      "ts": 1795868383,
+      "vol": 95095492.2
+    }
+  ],
+  "series_ticker": "KXPRESNOMR",
+  "subtitle": "Katie Britt",
+  "ticker": "KXPRESNOMR-28-KB",
+  "title": "Republican Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-KB"
+}

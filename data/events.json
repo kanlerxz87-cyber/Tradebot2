@@ -37899,7 +37899,7 @@
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
       "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CT04",
+      "event_ticker": "KXMIDTERMVOTETURN-CA52",
       "mutually_exclusive": false,
       "series_ticker": "KXMIDTERMVOTETURN",
       "settlement_sources": [
@@ -37908,8 +37908,8 @@
           "url": "https://kalshi.com/"
         }
       ],
-      "sub_title": "Connecticut 04 House General Election",
-      "title": "Connecticut 04 House General Election: voter turnout",
+      "sub_title": "California 52 House General Election",
+      "title": "California 52 House General Election: voter turnout",
       "topics": [
         "elections"
       ]
@@ -37917,7 +37917,7 @@
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
       "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CT05",
+      "event_ticker": "KXMIDTERMVOTETURN-CAGOV",
       "mutually_exclusive": false,
       "series_ticker": "KXMIDTERMVOTETURN",
       "settlement_sources": [
@@ -37926,8 +37926,8 @@
           "url": "https://kalshi.com/"
         }
       ],
-      "sub_title": "Connecticut 05 House General Election",
-      "title": "Connecticut 05 House General Election: voter turnout",
+      "sub_title": "California Governor General Election",
+      "title": "California Governor General Election: voter turnout",
       "topics": [
         "elections"
       ]
@@ -318680,5 +318680,5 @@
       ]
     }
   ],
-  "generated_at": "2026-11-28T03:35:02Z"
+  "generated_at": "2026-11-28T12:20:37Z"
 }

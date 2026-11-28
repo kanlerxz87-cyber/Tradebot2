@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.01,
+      "bid": 0.0,
+      "bid_depth": 0,
+      "last": 0.01,
+      "mid": 0.01,
+      "oi": 528532.94,
+      "spread": null,
+      "t": "2026-11-28T12:19:43Z",
+      "ts": 1795868383,
+      "vol": 953333.43
+    }
+  ],
+  "series_ticker": "KXPRESNOMR",
+  "subtitle": "Doug Burgum",
+  "ticker": "KXPRESNOMR-28-DBUR",
+  "title": "Republican Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-DBUR"
+}

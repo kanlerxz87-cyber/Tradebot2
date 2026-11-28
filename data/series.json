@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T03:35:02Z",
+  "generated_at": "2026-11-28T12:20:37Z",
   "series": [
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=1SONG-DRAKE",
@@ -18528,7 +18528,7 @@
       "topics": [
         "gas"
       ],
-      "volume_fp": "74928106.00"
+      "volume_fp": "74929357.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXAAAGASMAX",
@@ -19061,7 +19061,7 @@
       "topics": [
         "gas"
       ],
-      "volume_fp": "94792067.00"
+      "volume_fp": "94803573.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXAAAGASWNJ",
@@ -35666,7 +35666,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "3448.00"
+      "volume_fp": "3449.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXARTISTVS",
@@ -50903,7 +50903,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "20710.00"
+      "volume_fp": "20770.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBNBD",
@@ -50951,7 +50951,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "130097.00"
+      "volume_fp": "130703.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBNBMAXMON",
@@ -55652,7 +55652,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "117425463.00"
+      "volume_fp": "117425473.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTC100",
@@ -55730,7 +55730,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "10260597.00"
+      "volume_fp": "10978615.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTC1M-D",
@@ -56160,7 +56160,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "3485795.00"
+      "volume_fp": "3488493.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTC60VS100",
@@ -56653,7 +56653,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "5729495742.00"
+      "volume_fp": "5729508663.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTCD-B",
@@ -58157,7 +58157,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "19610199.00"
+      "volume_fp": "19617222.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTCPERP",
@@ -58235,7 +58235,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "41.00"
+      "volume_fp": "47.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTCQ",
@@ -58821,7 +58821,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "1977756439.00"
+      "volume_fp": "1978080130.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTCYEAR",
@@ -60308,7 +60308,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "91.00"
+      "volume_fp": "92.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXCA01S",
@@ -83360,7 +83360,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "60976.00"
+      "volume_fp": "61180.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXDOGED",
@@ -84955,7 +84955,7 @@
       "topics": [
         "golf"
       ],
-      "volume_fp": "8259672396.00"
+      "volume_fp": "8260232090.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXDPWORLDTOURMAKECUT",
@@ -95541,7 +95541,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "219044.00"
+      "volume_fp": "219359.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXECDJT270",
@@ -104252,7 +104252,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "72112707.00"
+      "volume_fp": "72112715.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXETH15M",
@@ -104295,7 +104295,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "1287503.00"
+      "volume_fp": "1287707.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXETHABOVE2500BY",
@@ -104518,7 +104518,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "142686619.00"
+      "volume_fp": "142691754.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXETHE",
@@ -114635,7 +114635,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "13064792.00"
+      "volume_fp": "13223125.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXFRENCHPRES1R",
@@ -116721,7 +116721,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "2429121.00"
+      "volume_fp": "2462740.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXGAMEAWARDSBA",
@@ -134875,7 +134875,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "303944.00"
+      "volume_fp": "315861.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXGTA7RELEASEDATE",
@@ -142417,7 +142417,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "18245.00"
+      "volume_fp": "18257.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXHYPED",
@@ -142465,7 +142465,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "6614.00"
+      "volume_fp": "8119.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXHYPEEVENT",
@@ -146091,7 +146091,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "940371.00"
+      "volume_fp": "955778.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXISRAELTHRESH",
@@ -184133,7 +184133,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "5238829.00"
+      "volume_fp": "5238834.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXMIDTERMVOTETURN",
@@ -196451,7 +196451,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "34554.00"
+      "volume_fp": "34558.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXNEARD",
@@ -199309,7 +199309,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "2474.00"
+      "volume_fp": "3798.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXNEWTAYLOR",
@@ -203948,7 +203948,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "81652.00"
+      "volume_fp": "81891.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXNVGOVNOTC",
@@ -211695,7 +211695,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "47772929.00"
+      "volume_fp": "47787494.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXOSCARPROD",
@@ -221461,7 +221461,7 @@
       "topics": [
         "golf"
       ],
-      "volume_fp": "42202651112.00"
+      "volume_fp": "42202721360.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXPGATOURCHAMP",
@@ -227182,7 +227182,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "7990265444.00"
+      "volume_fp": "7991117995.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXPRESNOMG",
@@ -227323,7 +227323,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "1037723558.00"
+      "volume_fp": "1038705580.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXPRESOUTCOME",
@@ -227490,7 +227490,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "1449352623.00"
+      "volume_fp": "1449950401.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXPRESPERSONMAM",
@@ -240460,7 +240460,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "200334101.00"
+      "volume_fp": "200334939.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXRT28YEARSLATER",
@@ -255158,7 +255158,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "2269818.00"
+      "volume_fp": "2339408.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSENATEDER",
@@ -259062,7 +259062,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "474719.00"
+      "volume_fp": "479848.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSENMAJLEAVE",
@@ -265131,7 +265131,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "325081.00"
+      "volume_fp": "325239.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSOL26500",
@@ -265527,7 +265527,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "165813.00"
+      "volume_fp": "170633.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSOLD26",
@@ -276952,7 +276952,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "433033.00"
+      "volume_fp": "433035.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSPOTIFYXMAS",
@@ -287603,7 +287603,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "34036.00"
+      "volume_fp": "40333.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXTAIPEIMAYORCOMBO",
@@ -291574,7 +291574,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "30492781.00"
+      "volume_fp": "30671656.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXTIMEDECADE20S",
@@ -299313,7 +299313,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "3269842.00"
+      "volume_fp": "3269843.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXTOPARTISTRUNNERUP",
@@ -328874,7 +328874,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "286819.00"
+      "volume_fp": "288185.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXXRPATH",
@@ -328957,7 +328957,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "43273033.00"
+      "volume_fp": "43273198.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXXRPMAXATH",
@@ -331007,7 +331007,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "16036.00"
+      "volume_fp": "16042.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXZECD",

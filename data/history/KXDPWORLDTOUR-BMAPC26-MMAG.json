@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.005,
+      "bid": 0.004,
+      "bid_depth": 388888.86,
+      "last": 0.005,
+      "mid": 0.0045,
+      "oi": 421674.68,
+      "spread": 0.001,
+      "t": "2026-11-28T12:19:43Z",
+      "ts": 1795868383,
+      "vol": 435211.62
+    }
+  ],
+  "series_ticker": "KXDPWORLDTOUR",
+  "subtitle": "MJ Maguire",
+  "ticker": "KXDPWORLDTOUR-BMAPC26-MMAG",
+  "title": "DP World Tour Tournament Winner",
+  "topic": "golf",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-MMAG"
+}

@@ -1,18 +1,18 @@
 {
   "api_requests": 250,
-  "collected_at": "2026-11-28T03:35:02Z",
-  "duration_seconds": 54.9,
+  "collected_at": "2026-11-28T12:20:37Z",
+  "duration_seconds": 53.7,
   "environment": "demo",
   "host": "https://external-api.demo.kalshi.co/trade-api/v2",
   "run_log": {
     "exchange_active": true,
     "exchange_status_url": "https://external-api.demo.kalshi.co/trade-api/v2/exchange/status",
-    "history_pruned": 9,
+    "history_pruned": 13,
     "open_events": 7206,
     "orderbooks_captured": 90,
     "series_pages_fetched": 58,
     "series_seen": 16880,
-    "started_at": "2026-11-28T03:34:07Z",
+    "started_at": "2026-11-28T12:19:43Z",
     "tags_by_categories": "https://external-api.demo.kalshi.co/trade-api/v2/search/tags_by_categories",
     "topic_counts": {
       "crypto": {
@@ -25,7 +25,7 @@
       },
       "elections": {
         "kept": 60,
-        "open_markets": 18932
+        "open_markets": 18935
       },
       "gas": {
         "kept": 60,

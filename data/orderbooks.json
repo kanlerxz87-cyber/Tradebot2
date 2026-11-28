@@ -1,62 +1,134 @@
 {
-  "generated_at": "2026-11-28T03:35:02Z",
+  "generated_at": "2026-11-28T12:20:37Z",
   "orderbooks": {
+    "KXAAAGASM-26NOV30-3.50": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXAAAGASM-26NOV30-3.50/orderbook?depth=20",
+      "best_yes_ask": 0.97,
+      "best_yes_bid": 0.96,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 744.09,
+      "contracts_bid": 729.27,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 5
+      },
+      "notional_ask_dollars": 731.51,
+      "notional_bid_dollars": 664.97,
+      "spread_dollars": 0.01,
+      "ticker": "KXAAAGASM-26NOV30-3.50",
+      "topic": "gas",
+      "yes_asks_implied": [
+        [
+          0.97,
+          171.82
+        ],
+        [
+          0.98,
+          170.06
+        ],
+        [
+          0.99,
+          402.21
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          20.0
+        ],
+        [
+          0.92,
+          181.15
+        ],
+        [
+          0.93,
+          179.21
+        ],
+        [
+          0.94,
+          175.3
+        ],
+        [
+          0.96,
+          173.61
+        ]
+      ]
+    },
+    "KXAAAGASW-26NOV30-3.4800": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXAAAGASW-26NOV30-3.4800/orderbook?depth=20",
+      "best_yes_ask": null,
+      "best_yes_bid": null,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
+      "contracts_bid": 0,
+      "depth_levels": {
+        "yes_ask": 0,
+        "yes_bid": 0
+      },
+      "notional_ask_dollars": 0,
+      "notional_bid_dollars": 0,
+      "spread_dollars": null,
+      "ticker": "KXAAAGASW-26NOV30-3.4800",
+      "topic": "gas",
+      "yes_asks_implied": [],
+      "yes_bids": []
+    },
     "KXAAAGASW-26NOV30-3.5000": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXAAAGASW-26NOV30-3.5000/orderbook?depth=20",
       "best_yes_ask": null,
-      "best_yes_bid": 0.38,
-      "captured_at": "2026-11-28T03:34:07Z",
+      "best_yes_bid": 0.96,
+      "captured_at": "2026-11-28T12:19:43Z",
       "contracts_ask": 0,
-      "contracts_bid": 1352.0,
+      "contracts_bid": 3.0,
       "depth_levels": {
         "yes_ask": 0,
-        "yes_bid": 3
+        "yes_bid": 1
       },
       "notional_ask_dollars": 0,
-      "notional_bid_dollars": 500.0,
+      "notional_bid_dollars": 2.88,
       "spread_dollars": null,
       "ticker": "KXAAAGASW-26NOV30-3.5000",
       "topic": "gas",
       "yes_asks_implied": [],
       "yes_bids": [
         [
-          0.36,
-          462.96
-        ],
-        [
-          0.37,
-          450.45
-        ],
-        [
-          0.38,
-          438.59
+          0.96,
+          3.0
         ]
       ]
     },
     "KXAAAGASW-26NOV30-3.5200": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXAAAGASW-26NOV30-3.5200/orderbook?depth=20",
-      "best_yes_ask": 0.06,
-      "best_yes_bid": 0.01,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 6233.38,
-      "contracts_bid": 40.0,
+      "best_yes_ask": 0.04,
+      "best_yes_bid": 0.03,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 21148.08,
+      "contracts_bid": 50041.79,
       "depth_levels": {
-        "yes_ask": 4,
-        "yes_bid": 1
+        "yes_ask": 6,
+        "yes_bid": 3
       },
-      "notional_ask_dollars": 494.12,
-      "notional_bid_dollars": 0.4,
-      "spread_dollars": 0.05,
+      "notional_ask_dollars": 1206.08,
+      "notional_bid_dollars": 667.12,
+      "spread_dollars": 0.01,
       "ticker": "KXAAAGASW-26NOV30-3.5200",
       "topic": "gas",
       "yes_asks_implied": [
         [
+          0.04,
+          5701.53
+        ],
+        [
+          0.05,
+          6666.66
+        ],
+        [
           0.06,
-          9.0
+          2777.77
         ],
         [
           0.07,
-          2289.2
+          2066.94
         ],
         [
           0.08,
@@ -70,52 +142,52 @@
       "yes_bids": [
         [
           0.01,
-          40.0
+          33373.32
+        ],
+        [
+          0.02,
+          16666.66
+        ],
+        [
+          0.03,
+          1.81
         ]
       ]
     },
     "KXDPWORLDTOUR-BMAPC26-ANOR": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-ANOR/orderbook?depth=20",
-      "best_yes_ask": 0.05,
-      "best_yes_bid": 0.035,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 16518.02,
-      "contracts_bid": 60760.41,
+      "best_yes_ask": 0.24,
+      "best_yes_bid": 0.23,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 1469.54,
+      "contracts_bid": 31764.57,
       "depth_levels": {
         "yes_ask": 3,
-        "yes_bid": 6
+        "yes_bid": 7
       },
-      "notional_ask_dollars": 845.26,
-      "notional_bid_dollars": 1500.0,
-      "spread_dollars": 0.015,
+      "notional_ask_dollars": 372.18,
+      "notional_bid_dollars": 1500.06,
+      "spread_dollars": 0.01,
       "ticker": "KXDPWORLDTOUR-BMAPC26-ANOR",
       "topic": "golf",
       "yes_asks_implied": [
         [
-          0.05,
-          3571.84
+          0.24,
+          161.86
         ],
         [
-          0.051,
-          6535.94
+          0.25,
+          666.66
         ],
         [
-          0.052,
-          6410.24
+          0.26,
+          641.02
         ]
       ],
       "yes_bids": [
         [
-          0.015,
-          11111.11
-        ],
-        [
-          0.016,
-          10416.66
-        ],
-        [
-          0.017,
-          9803.92
+          0.001,
+          60.0
         ],
         [
           0.033,
@@ -128,55 +200,55 @@
         [
           0.035,
           9523.8
+        ],
+        [
+          0.21,
+          793.65
+        ],
+        [
+          0.22,
+          757.57
+        ],
+        [
+          0.23,
+          724.63
         ]
       ]
     },
     "KXDPWORLDTOUR-BMAPC26-ASCO": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-ASCO/orderbook?depth=20",
-      "best_yes_ask": 0.01,
-      "best_yes_bid": 0.006,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 52763.58,
-      "contracts_bid": 102857.76,
+      "best_yes_ask": 0.023,
+      "best_yes_bid": 0.021,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 20315.17,
+      "contracts_bid": 127879.51,
       "depth_levels": {
-        "yes_ask": 6,
-        "yes_bid": 4
+        "yes_ask": 3,
+        "yes_bid": 7
       },
-      "notional_ask_dollars": 820.52,
-      "notional_bid_dollars": 500.08,
-      "spread_dollars": 0.004,
+      "notional_ask_dollars": 487.53,
+      "notional_bid_dollars": 1000.06,
+      "spread_dollars": 0.002,
       "ticker": "KXDPWORLDTOUR-BMAPC26-ASCO",
       "topic": "golf",
       "yes_asks_implied": [
         [
-          0.01,
-          13482.62
+          0.023,
+          6704.07
         ],
         [
-          0.011,
-          15151.51
+          0.024,
+          6944.44
         ],
         [
-          0.012,
-          13888.88
-        ],
-        [
-          0.033,
-          576.71
-        ],
-        [
-          0.034,
-          4901.96
-        ],
-        [
-          0.035,
-          4761.9
+          0.025,
+          6666.66
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          80.0
+          60.0
         ],
         [
           0.004,
@@ -189,156 +261,6 @@
         [
           0.006,
           27777.77
-        ]
-      ]
-    },
-    "KXDPWORLDTOUR-BMAPC26-CSMI": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-CSMI/orderbook?depth=20",
-      "best_yes_ask": 0.17,
-      "best_yes_bid": 0.15,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 3248.96,
-      "contracts_bid": 8468.94,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 7
-      },
-      "notional_ask_dollars": 588.36,
-      "notional_bid_dollars": 1000.02,
-      "spread_dollars": 0.02,
-      "ticker": "KXDPWORLDTOUR-BMAPC26-CSMI",
-      "topic": "golf",
-      "yes_asks_implied": [
-        [
-          0.17,
-          522.32
-        ],
-        [
-          0.18,
-          1849.45
-        ],
-        [
-          0.19,
-          877.19
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          20.0
-        ],
-        [
-          0.099,
-          1683.5
-        ],
-        [
-          0.1,
-          1666.66
-        ],
-        [
-          0.11,
-          1515.15
-        ],
-        [
-          0.13,
-          1282.05
-        ],
-        [
-          0.14,
-          1190.47
-        ],
-        [
-          0.15,
-          1111.11
-        ]
-      ]
-    },
-    "KXDPWORLDTOUR-BMAPC26-DHIL": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-DHIL/orderbook?depth=20",
-      "best_yes_ask": null,
-      "best_yes_bid": 0.07,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 0,
-      "contracts_bid": 7247.38,
-      "depth_levels": {
-        "yes_ask": 0,
-        "yes_bid": 3
-      },
-      "notional_ask_dollars": 0,
-      "notional_bid_dollars": 500.0,
-      "spread_dollars": null,
-      "ticker": "KXDPWORLDTOUR-BMAPC26-DHIL",
-      "topic": "golf",
-      "yes_asks_implied": [],
-      "yes_bids": [
-        [
-          0.068,
-          2450.98
-        ],
-        [
-          0.069,
-          2415.45
-        ],
-        [
-          0.07,
-          2380.95
-        ]
-      ]
-    },
-    "KXDPWORLDTOUR-BMAPC26-DPUI": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-DPUI/orderbook?depth=20",
-      "best_yes_ask": 0.028,
-      "best_yes_bid": 0.021,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 25718.77,
-      "contracts_bid": 81240.25,
-      "depth_levels": {
-        "yes_ask": 5,
-        "yes_bid": 7
-      },
-      "notional_ask_dollars": 775.92,
-      "notional_bid_dollars": 1000.18,
-      "spread_dollars": 0.007,
-      "ticker": "KXDPWORLDTOUR-BMAPC26-DPUI",
-      "topic": "golf",
-      "yes_asks_implied": [
-        [
-          0.028,
-          2846.36
-        ],
-        [
-          0.029,
-          5747.12
-        ],
-        [
-          0.03,
-          6540.62
-        ],
-        [
-          0.031,
-          5376.34
-        ],
-        [
-          0.032,
-          5208.33
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          180.0
-        ],
-        [
-          0.008,
-          20833.33
-        ],
-        [
-          0.009,
-          18518.51
-        ],
-        [
-          0.01,
-          16666.66
         ],
         [
           0.019,
@@ -354,34 +276,117 @@
         ]
       ]
     },
-    "KXDPWORLDTOUR-BMAPC26-HBAR": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-HBAR/orderbook?depth=20",
-      "best_yes_ask": 0.074,
-      "best_yes_bid": 0.055,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 4811.96,
-      "contracts_bid": 18561.72,
+    "KXDPWORLDTOUR-BMAPC26-CSMI": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-CSMI/orderbook?depth=20",
+      "best_yes_ask": 0.003,
+      "best_yes_bid": 0.002,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 131060.45,
+      "contracts_bid": 250019.99,
+      "depth_levels": {
+        "yes_ask": 4,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 596.09,
+      "notional_bid_dollars": 333.35,
+      "spread_dollars": 0.001,
+      "ticker": "KXDPWORLDTOUR-BMAPC26-CSMI",
+      "topic": "golf",
+      "yes_asks_implied": [
+        [
+          0.003,
+          55554.71
+        ],
+        [
+          0.004,
+          41666.66
+        ],
+        [
+          0.005,
+          33333.33
+        ],
+        [
+          0.19,
+          505.75
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.001,
+          166686.66
+        ],
+        [
+          0.002,
+          83333.33
+        ]
+      ]
+    },
+    "KXDPWORLDTOUR-BMAPC26-DHIL": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-DHIL/orderbook?depth=20",
+      "best_yes_ask": null,
+      "best_yes_bid": null,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
+      "contracts_bid": 0,
+      "depth_levels": {
+        "yes_ask": 0,
+        "yes_bid": 0
+      },
+      "notional_ask_dollars": 0,
+      "notional_bid_dollars": 0,
+      "spread_dollars": null,
+      "ticker": "KXDPWORLDTOUR-BMAPC26-DHIL",
+      "topic": "golf",
+      "yes_asks_implied": [],
+      "yes_bids": []
+    },
+    "KXDPWORLDTOUR-BMAPC26-KKOB": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-KKOB/orderbook?depth=20",
+      "best_yes_ask": null,
+      "best_yes_bid": null,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
+      "contracts_bid": 0,
+      "depth_levels": {
+        "yes_ask": 0,
+        "yes_bid": 0
+      },
+      "notional_ask_dollars": 0,
+      "notional_bid_dollars": 0,
+      "spread_dollars": null,
+      "ticker": "KXDPWORLDTOUR-BMAPC26-KKOB",
+      "topic": "golf",
+      "yes_asks_implied": [],
+      "yes_bids": []
+    },
+    "KXDPWORLDTOUR-BMAPC26-MLAS": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-MLAS/orderbook?depth=20",
+      "best_yes_ask": 0.011,
+      "best_yes_bid": 0.01,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 76426.28,
+      "contracts_bid": 112077.0,
       "depth_levels": {
         "yes_ask": 3,
         "yes_bid": 4
       },
-      "notional_ask_dollars": 362.69,
-      "notional_bid_dollars": 999.98,
-      "spread_dollars": 0.019,
-      "ticker": "KXDPWORLDTOUR-BMAPC26-HBAR",
+      "notional_ask_dollars": 919.75,
+      "notional_bid_dollars": 1000.04,
+      "spread_dollars": 0.001,
+      "ticker": "KXDPWORLDTOUR-BMAPC26-MLAS",
       "topic": "golf",
       "yes_asks_implied": [
         [
-          0.074,
-          396.76
+          0.011,
+          23007.5
         ],
         [
-          0.075,
-          2222.22
+          0.012,
+          27777.76
         ],
         [
-          0.076,
-          2192.98
+          0.013,
+          25641.02
         ]
       ],
       "yes_bids": [
@@ -390,166 +395,39 @@
           40.0
         ],
         [
-          0.053,
-          6289.3
-        ],
-        [
-          0.054,
-          6172.82
-        ],
-        [
-          0.055,
-          6059.6
-        ]
-      ]
-    },
-    "KXDPWORLDTOUR-BMAPC26-KKOB": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-KKOB/orderbook?depth=20",
-      "best_yes_ask": null,
-      "best_yes_bid": 0.065,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 0,
-      "contracts_bid": 7813.76,
-      "depth_levels": {
-        "yes_ask": 0,
-        "yes_bid": 3
-      },
-      "notional_ask_dollars": 0,
-      "notional_bid_dollars": 500.0,
-      "spread_dollars": null,
-      "ticker": "KXDPWORLDTOUR-BMAPC26-KKOB",
-      "topic": "golf",
-      "yes_asks_implied": [],
-      "yes_bids": [
-        [
-          0.063,
-          2645.5
-        ],
-        [
-          0.064,
-          2604.16
-        ],
-        [
-          0.065,
-          2564.1
-        ]
-      ]
-    },
-    "KXDPWORLDTOUR-BMAPC26-MLAS": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-MLAS/orderbook?depth=20",
-      "best_yes_ask": 0.011,
-      "best_yes_bid": 0.01,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 50587.2,
-      "contracts_bid": 56118.5,
-      "depth_levels": {
-        "yes_ask": 6,
-        "yes_bid": 4
-      },
-      "notional_ask_dollars": 859.56,
-      "notional_bid_dollars": 500.1,
-      "spread_dollars": 0.001,
-      "ticker": "KXDPWORLDTOUR-BMAPC26-MLAS",
-      "topic": "golf",
-      "yes_asks_implied": [
-        [
-          0.011,
-          12033.97
-        ],
-        [
-          0.012,
-          13888.88
-        ],
-        [
-          0.013,
-          12820.51
-        ],
-        [
-          0.032,
-          1891.38
-        ],
-        [
-          0.033,
-          5050.5
-        ],
-        [
-          0.034,
-          4901.96
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          100.0
-        ],
-        [
           0.008,
-          20833.33
+          41666.66
         ],
         [
           0.009,
-          18518.51
+          37037.02
         ],
         [
           0.01,
-          16666.66
+          33333.32
         ]
       ]
     },
     "KXDPWORLDTOUR-BMAPC26-MLEE": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-MLEE/orderbook?depth=20",
-      "best_yes_ask": 0.015,
-      "best_yes_bid": 0.008,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 37489.13,
-      "contracts_bid": 72480.62,
+      "best_yes_ask": 0.005,
+      "best_yes_bid": 0.003,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 100683.41,
+      "contracts_bid": 305575.54,
       "depth_levels": {
-        "yes_ask": 8,
-        "yes_bid": 4
+        "yes_ask": 6,
+        "yes_bid": 3
       },
-      "notional_ask_dollars": 1347.77,
-      "notional_bid_dollars": 500.06,
-      "spread_dollars": 0.007,
+      "notional_ask_dollars": 885.37,
+      "notional_bid_dollars": 500.02,
+      "spread_dollars": 0.002,
       "ticker": "KXDPWORLDTOUR-BMAPC26-MLEE",
       "topic": "golf",
       "yes_asks_implied": [
         [
-          0.015,
-          10824.32
-        ],
-        [
-          0.016,
-          10416.66
-        ],
-        [
-          0.017,
-          9803.92
-        ],
-        [
-          0.11,
-          295.61
-        ],
-        [
-          0.12,
-          1388.88
-        ],
-        [
-          0.13,
-          2458.16
-        ],
-        [
-          0.14,
-          1190.47
-        ],
-        [
-          0.15,
-          1111.11
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          60.0
+          0.005,
+          21442.86
         ],
         [
           0.006,
@@ -560,39 +438,122 @@
           23809.52
         ],
         [
-          0.008,
-          20833.33
+          0.015,
+          7432.68
+        ],
+        [
+          0.016,
+          10416.66
+        ],
+        [
+          0.017,
+          9803.92
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.001,
+          166686.66
+        ],
+        [
+          0.002,
+          83333.33
+        ],
+        [
+          0.003,
+          55555.55
         ]
       ]
     },
-    "KXDPWORLDTOUR-BMAPC26-NVON": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-NVON/orderbook?depth=20",
-      "best_yes_ask": 0.28,
-      "best_yes_bid": 0.26,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 1394.05,
-      "contracts_bid": 15201.52,
+    "KXDPWORLDTOUR-BMAPC26-MMAG": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-MMAG/orderbook?depth=20",
+      "best_yes_ask": 0.005,
+      "best_yes_bid": 0.004,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 140548.68,
+      "contracts_bid": 388888.86,
       "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 7
+        "yes_ask": 6,
+        "yes_bid": 4
       },
-      "notional_ask_dollars": 407.19,
-      "notional_bid_dollars": 1500.03,
-      "spread_dollars": 0.02,
-      "ticker": "KXDPWORLDTOUR-BMAPC26-NVON",
+      "notional_ask_dollars": 1400.43,
+      "notional_bid_dollars": 833.33,
+      "spread_dollars": 0.001,
+      "ticker": "KXDPWORLDTOUR-BMAPC26-MMAG",
       "topic": "golf",
       "yes_asks_implied": [
         [
-          0.28,
-          263.79
+          0.005,
+          32737.73
         ],
         [
-          0.29,
-          574.71
+          0.006,
+          27777.77
         ],
         [
-          0.3,
-          555.55
+          0.007,
+          23809.52
+        ],
+        [
+          0.015,
+          15782.5
+        ],
+        [
+          0.016,
+          20833.32
+        ],
+        [
+          0.017,
+          19607.84
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.001,
+          166666.66
+        ],
+        [
+          0.002,
+          83333.33
+        ],
+        [
+          0.003,
+          55555.55
+        ],
+        [
+          0.004,
+          83333.32
+        ]
+      ]
+    },
+    "KXDPWORLDTOUR-BMAPC26-NHOJ": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-NHOJ/orderbook?depth=20",
+      "best_yes_ask": 0.01,
+      "best_yes_bid": 0.002,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 84510.66,
+      "contracts_bid": 166706.66,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 930.97,
+      "notional_bid_dollars": 333.37,
+      "spread_dollars": 0.008,
+      "ticker": "KXDPWORLDTOUR-BMAPC26-NHOJ",
+      "topic": "golf",
+      "yes_asks_implied": [
+        [
+          0.01,
+          26429.88
+        ],
+        [
+          0.011,
+          30303.02
+        ],
+        [
+          0.012,
+          27777.76
         ]
       ],
       "yes_bids": [
@@ -601,17 +562,42 @@
           40.0
         ],
         [
-          0.075,
-          4444.44
+          0.002,
+          166666.66
+        ]
+      ]
+    },
+    "KXDPWORLDTOUR-BMAPC26-NVON": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-NVON/orderbook?depth=20",
+      "best_yes_ask": 0.5,
+      "best_yes_bid": 0.49,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 743.16,
+      "contracts_bid": 3044.07,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 6
+      },
+      "notional_ask_dollars": 381.26,
+      "notional_bid_dollars": 999.99,
+      "spread_dollars": 0.01,
+      "ticker": "KXDPWORLDTOUR-BMAPC26-NVON",
+      "topic": "golf",
+      "yes_asks_implied": [
+        [
+          0.5,
+          95.86
         ],
         [
-          0.076,
-          4385.96
+          0.51,
+          326.79
         ],
         [
-          0.077,
-          4329.0
-        ],
+          0.52,
+          320.51
+        ]
+      ],
+      "yes_bids": [
         [
           0.24,
           694.44
@@ -623,29 +609,41 @@
         [
           0.26,
           641.02
+        ],
+        [
+          0.47,
+          354.6
+        ],
+        [
+          0.48,
+          347.22
+        ],
+        [
+          0.49,
+          340.13
         ]
       ]
     },
     "KXDPWORLDTOUR-BMAPC26-SYEL": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-SYEL/orderbook?depth=20",
       "best_yes_ask": 0.043,
-      "best_yes_bid": 0.036,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 14229.65,
-      "contracts_bid": 14313.48,
+      "best_yes_bid": 0.001,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 10357.48,
+      "contracts_bid": 40.0,
       "depth_levels": {
-        "yes_ask": 6,
-        "yes_bid": 4
+        "yes_ask": 3,
+        "yes_bid": 1
       },
-      "notional_ask_dollars": 744.94,
-      "notional_bid_dollars": 500.02,
-      "spread_dollars": 0.007,
+      "notional_ask_dollars": 456.57,
+      "notional_bid_dollars": 0.04,
+      "spread_dollars": 0.042,
       "ticker": "KXDPWORLDTOUR-BMAPC26-SYEL",
       "topic": "golf",
       "yes_asks_implied": [
         [
           0.043,
-          737.02
+          2865.91
         ],
         [
           0.044,
@@ -654,85 +652,36 @@
         [
           0.045,
           3703.7
-        ],
-        [
-          0.062,
-          751.4
-        ],
-        [
-          0.063,
-          2645.5
-        ],
-        [
-          0.064,
-          2604.16
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          20.0
-        ],
-        [
-          0.034,
-          4901.96
-        ],
-        [
-          0.035,
-          4761.9
-        ],
-        [
-          0.036,
-          4629.62
-        ]
-      ]
-    },
-    "KXDPWORLDTOUR-BMAPC26-TMCK": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-TMCK/orderbook?depth=20",
-      "best_yes_ask": 0.25,
-      "best_yes_bid": 0.23,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 1472.96,
-      "contracts_bid": 10650.71,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 7
-      },
-      "notional_ask_dollars": 387.0,
-      "notional_bid_dollars": 1000.04,
-      "spread_dollars": 0.02,
-      "ticker": "KXDPWORLDTOUR-BMAPC26-TMCK",
-      "topic": "golf",
-      "yes_asks_implied": [
-        [
-          0.25,
-          214.66
-        ],
-        [
-          0.26,
-          641.02
-        ],
-        [
-          0.27,
-          617.28
         ]
       ],
       "yes_bids": [
         [
           0.001,
           40.0
-        ],
+        ]
+      ]
+    },
+    "KXDPWORLDTOUR-BMAPC26-TMCK": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-TMCK/orderbook?depth=20",
+      "best_yes_ask": null,
+      "best_yes_bid": 0.23,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
+      "contracts_bid": 2355.85,
+      "depth_levels": {
+        "yes_ask": 0,
+        "yes_bid": 4
+      },
+      "notional_ask_dollars": 0,
+      "notional_bid_dollars": 500.08,
+      "spread_dollars": null,
+      "ticker": "KXDPWORLDTOUR-BMAPC26-TMCK",
+      "topic": "golf",
+      "yes_asks_implied": [],
+      "yes_bids": [
         [
-          0.059,
-          2824.85
-        ],
-        [
-          0.06,
-          2777.77
-        ],
-        [
-          0.061,
-          2732.24
+          0.001,
+          80.0
         ],
         [
           0.21,
@@ -750,107 +699,25 @@
     },
     "KXDPWORLDTOUR-BMAPC26-WDIN": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-WDIN/orderbook?depth=20",
-      "best_yes_ask": 0.036,
-      "best_yes_bid": 0.014,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 18833.21,
-      "contracts_bid": 94712.65,
+      "best_yes_ask": null,
+      "best_yes_bid": 0.001,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
+      "contracts_bid": 40.0,
       "depth_levels": {
-        "yes_ask": 5,
-        "yes_bid": 7
+        "yes_ask": 0,
+        "yes_bid": 1
       },
-      "notional_ask_dollars": 720.76,
-      "notional_bid_dollars": 1000.08,
-      "spread_dollars": 0.022,
+      "notional_ask_dollars": 0,
+      "notional_bid_dollars": 0.04,
+      "spread_dollars": null,
       "ticker": "KXDPWORLDTOUR-BMAPC26-WDIN",
       "topic": "golf",
-      "yes_asks_implied": [
-        [
-          0.036,
-          1502.59
-        ],
-        [
-          0.037,
-          4504.5
-        ],
-        [
-          0.038,
-          4385.96
-        ],
-        [
-          0.039,
-          4273.5
-        ],
-        [
-          0.04,
-          4166.66
-        ]
-      ],
+      "yes_asks_implied": [],
       "yes_bids": [
         [
           0.001,
-          80.0
-        ],
-        [
-          0.008,
-          20833.33
-        ],
-        [
-          0.009,
-          18518.51
-        ],
-        [
-          0.01,
-          16666.66
-        ],
-        [
-          0.012,
-          13888.88
-        ],
-        [
-          0.013,
-          12820.51
-        ],
-        [
-          0.014,
-          11904.76
-        ]
-      ]
-    },
-    "KXDSENATESEATS-29-E48": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDSENATESEATS-29-E48/orderbook?depth=20",
-      "best_yes_ask": 0.02,
-      "best_yes_bid": 0.01,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 18055.54,
-      "contracts_bid": 16666.66,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 1
-      },
-      "notional_ask_dollars": 500.0,
-      "notional_bid_dollars": 166.67,
-      "spread_dollars": 0.01,
-      "ticker": "KXDSENATESEATS-29-E48",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.02,
-          8333.33
-        ],
-        [
-          0.03,
-          5555.55
-        ],
-        [
-          0.04,
-          4166.66
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          16666.66
+          40.0
         ]
       ]
     },
@@ -858,7 +725,7 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXECCOMPACT-30/orderbook?depth=20",
       "best_yes_ask": null,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
+      "captured_at": "2026-11-28T12:19:43Z",
       "contracts_ask": 0,
       "contracts_bid": 0,
       "depth_levels": {
@@ -873,64 +740,11 @@
       "yes_asks_implied": [],
       "yes_bids": []
     },
-    "KXOSCARPIC-27-BLA": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXOSCARPIC-27-BLA/orderbook?depth=20",
-      "best_yes_ask": 0.07,
-      "best_yes_bid": 0.06,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 17519.81,
-      "contracts_bid": 22539.96,
-      "depth_levels": {
-        "yes_ask": 4,
-        "yes_bid": 4
-      },
-      "notional_ask_dollars": 1500.0,
-      "notional_bid_dollars": 1167.06,
-      "spread_dollars": 0.01,
-      "ticker": "KXOSCARPIC-27-BLA",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.07,
-          2380.95
-        ],
-        [
-          0.08,
-          6249.99
-        ],
-        [
-          0.09,
-          5555.55
-        ],
-        [
-          0.1,
-          3333.32
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          40.0
-        ],
-        [
-          0.04,
-          4166.66
-        ],
-        [
-          0.05,
-          9999.99
-        ],
-        [
-          0.06,
-          8333.31
-        ]
-      ]
-    },
-    "KXOSCARPIC-27-INV": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXOSCARPIC-27-INV/orderbook?depth=20",
+    "KXOSCARPIC-27-ART": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXOSCARPIC-27-ART/orderbook?depth=20",
       "best_yes_ask": 0.02,
       "best_yes_bid": 0.01,
-      "captured_at": "2026-11-28T03:34:07Z",
+      "captured_at": "2026-11-28T12:19:43Z",
       "contracts_ask": 22222.2,
       "contracts_bid": 33333.32,
       "depth_levels": {
@@ -940,7 +754,7 @@
       "notional_ask_dollars": 666.67,
       "notional_bid_dollars": 333.33,
       "spread_dollars": 0.01,
-      "ticker": "KXOSCARPIC-27-INV",
+      "ticker": "KXOSCARPIC-27-ART",
       "topic": "culture",
       "yes_asks_implied": [
         [
@@ -963,34 +777,167 @@
         ]
       ]
     },
+    "KXOSCARPIC-27-BLA": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXOSCARPIC-27-BLA/orderbook?depth=20",
+      "best_yes_ask": 0.07,
+      "best_yes_bid": 0.06,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 18234.1,
+      "contracts_bid": 26706.62,
+      "depth_levels": {
+        "yes_ask": 4,
+        "yes_bid": 4
+      },
+      "notional_ask_dollars": 1500.0,
+      "notional_bid_dollars": 1333.73,
+      "spread_dollars": 0.01,
+      "ticker": "KXOSCARPIC-27-BLA",
+      "topic": "culture",
+      "yes_asks_implied": [
+        [
+          0.07,
+          4761.9
+        ],
+        [
+          0.08,
+          6249.99
+        ],
+        [
+          0.09,
+          5555.55
+        ],
+        [
+          0.1,
+          1666.66
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          40.0
+        ],
+        [
+          0.04,
+          8333.32
+        ],
+        [
+          0.05,
+          9999.99
+        ],
+        [
+          0.06,
+          8333.31
+        ]
+      ]
+    },
+    "KXOSCARPIC-27-INV": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXOSCARPIC-27-INV/orderbook?depth=20",
+      "best_yes_ask": null,
+      "best_yes_bid": null,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
+      "contracts_bid": 0,
+      "depth_levels": {
+        "yes_ask": 0,
+        "yes_bid": 0
+      },
+      "notional_ask_dollars": 0,
+      "notional_bid_dollars": 0,
+      "spread_dollars": null,
+      "ticker": "KXOSCARPIC-27-INV",
+      "topic": "culture",
+      "yes_asks_implied": [],
+      "yes_bids": []
+    },
+    "KXPGATOUR-MAST27-MFIT": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPGATOUR-MAST27-MFIT/orderbook?depth=20",
+      "best_yes_ask": 0.023,
+      "best_yes_bid": 0.022,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 37527.19,
+      "contracts_bid": 56066.25,
+      "depth_levels": {
+        "yes_ask": 6,
+        "yes_bid": 4
+      },
+      "notional_ask_dollars": 1500.0,
+      "notional_bid_dollars": 1166.67,
+      "spread_dollars": 0.001,
+      "ticker": "KXPGATOUR-MAST27-MFIT",
+      "topic": "golf",
+      "yes_asks_implied": [
+        [
+          0.023,
+          7246.37
+        ],
+        [
+          0.024,
+          6944.44
+        ],
+        [
+          0.025,
+          6666.66
+        ],
+        [
+          0.059,
+          5649.7
+        ],
+        [
+          0.06,
+          5555.54
+        ],
+        [
+          0.061,
+          5464.48
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.019,
+          8771.92
+        ],
+        [
+          0.02,
+          8333.33
+        ],
+        [
+          0.021,
+          23809.5
+        ],
+        [
+          0.022,
+          15151.5
+        ]
+      ]
+    },
     "KXPRESNOMD-28-AB": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-AB/orderbook?depth=20",
       "best_yes_ask": 0.038,
       "best_yes_bid": 0.036,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 2042269.25,
-      "contracts_bid": 2057439.42,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 2034106.69,
+      "contracts_bid": 2043105.94,
       "depth_levels": {
         "yes_ask": 5,
         "yes_bid": 7
       },
-      "notional_ask_dollars": 1960095.89,
-      "notional_bid_dollars": 32003.76,
+      "notional_ask_dollars": 1959773.11,
+      "notional_bid_dollars": 31503.72,
       "spread_dollars": 0.002,
       "ticker": "KXPRESNOMD-28-AB",
       "topic": "elections",
       "yes_asks_implied": [
         [
           0.038,
-          10183.25
+          10460.85
         ],
         [
           0.039,
-          17094.0
+          12820.5
         ],
         [
           0.04,
-          16666.64
+          12499.98
         ],
         [
           0.97,
@@ -1004,7 +951,7 @@
       "yes_bids": [
         [
           0.001,
-          140.0
+          100.0
         ],
         [
           0.01,
@@ -1020,84 +967,67 @@
         ],
         [
           0.034,
-          19607.84
+          14705.88
         ],
         [
           0.035,
-          19047.6
+          14285.7
         ],
         [
           0.036,
-          18518.48
+          13888.86
         ]
       ]
     },
     "KXPRESNOMD-28-AHAM": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-AHAM/orderbook?depth=20",
-      "best_yes_ask": 0.01,
+      "best_yes_ask": null,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 30549.81,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
       "contracts_bid": 0,
       "depth_levels": {
-        "yes_ask": 3,
+        "yes_ask": 0,
         "yes_bid": 0
       },
-      "notional_ask_dollars": 499.94,
+      "notional_ask_dollars": 0,
       "notional_bid_dollars": 0,
       "spread_dollars": null,
       "ticker": "KXPRESNOMD-28-AHAM",
       "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.01,
-          16660.93
-        ],
-        [
-          0.02,
-          8333.33
-        ],
-        [
-          0.03,
-          5555.55
-        ]
-      ],
+      "yes_asks_implied": [],
       "yes_bids": []
     },
     "KXPRESNOMD-28-AOC": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-AOC/orderbook?depth=20",
-      "best_yes_ask": 0.17,
+      "best_yes_ask": 0.171,
       "best_yes_bid": 0.16,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 3804.62,
-      "contracts_bid": 6598.06,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 5609.65,
+      "contracts_bid": 9702.78,
       "depth_levels": {
-        "yes_ask": 3,
+        "yes_ask": 2,
         "yes_bid": 9
       },
-      "notional_ask_dollars": 652.41,
-      "notional_bid_dollars": 1021.62,
-      "spread_dollars": 0.01,
+      "notional_ask_dollars": 962.16,
+      "notional_bid_dollars": 1521.57,
+      "spread_dollars": 0.011,
       "ticker": "KXPRESNOMD-28-AOC",
       "topic": "elections",
       "yes_asks_implied": [
         [
-          0.17,
-          118.96
-        ],
-        [
           0.171,
-          1747.68
+          2702.68
         ],
         [
           0.172,
-          1937.98
+          2906.97
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          60.0
+          20.0
         ],
         [
           0.01,
@@ -1121,15 +1051,68 @@
         ],
         [
           0.158,
-          2109.7
+          3164.55
         ],
         [
           0.159,
-          2096.42
+          3144.63
         ],
         [
           0.16,
-          2083.32
+          3124.98
+        ]
+      ]
+    },
+    "KXPRESNOMD-28-BOBA": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-BOBA/orderbook?depth=20",
+      "best_yes_ask": 0.004,
+      "best_yes_bid": 0.002,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 150260.29,
+      "contracts_bid": 499999.98,
+      "depth_levels": {
+        "yes_ask": 6,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 1385.97,
+      "notional_bid_dollars": 666.67,
+      "spread_dollars": 0.002,
+      "ticker": "KXPRESNOMD-28-BOBA",
+      "topic": "elections",
+      "yes_asks_implied": [
+        [
+          0.004,
+          82870.8
+        ],
+        [
+          0.005,
+          66666.66
+        ],
+        [
+          0.996,
+          119.83
+        ],
+        [
+          0.997,
+          181.0
+        ],
+        [
+          0.998,
+          232.0
+        ],
+        [
+          0.999,
+          190.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.001,
+          333333.32
+        ],
+        [
+          0.002,
+          166666.66
         ]
       ]
     },
@@ -1137,14 +1120,14 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-CHOL/orderbook?depth=20",
       "best_yes_ask": 0.01,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 30553.15,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 30555.54,
       "contracts_bid": 0,
       "depth_levels": {
         "yes_ask": 3,
         "yes_bid": 0
       },
-      "notional_ask_dollars": 499.98,
+      "notional_ask_dollars": 500.0,
       "notional_bid_dollars": 0,
       "spread_dollars": null,
       "ticker": "KXPRESNOMD-28-CHOL",
@@ -1152,7 +1135,7 @@
       "yes_asks_implied": [
         [
           0.01,
-          16664.27
+          16666.66
         ],
         [
           0.02,
@@ -1167,30 +1150,38 @@
     },
     "KXPRESNOMD-28-GN": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-GN/orderbook?depth=20",
-      "best_yes_ask": 0.122,
+      "best_yes_ask": 0.12,
       "best_yes_bid": 0.11,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 689.42,
-      "contracts_bid": 4890.65,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 7007.34,
+      "contracts_bid": 14085.45,
       "depth_levels": {
-        "yes_ask": 1,
+        "yes_ask": 3,
         "yes_bid": 7
       },
-      "notional_ask_dollars": 84.11,
-      "notional_bid_dollars": 503.48,
-      "spread_dollars": 0.012,
+      "notional_ask_dollars": 849.1,
+      "notional_bid_dollars": 1503.5,
+      "spread_dollars": 0.01,
       "ticker": "KXPRESNOMD-28-GN",
       "topic": "elections",
       "yes_asks_implied": [
         [
+          0.12,
+          1520.28
+        ],
+        [
+          0.121,
+          2754.82
+        ],
+        [
           0.122,
-          689.42
+          2732.24
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          40.0
+          60.0
         ],
         [
           0.01,
@@ -1206,15 +1197,136 @@
         ],
         [
           0.108,
-          1543.2
+          4629.6
         ],
         [
           0.109,
-          1529.05
+          4587.15
         ],
         [
           0.11,
-          1515.15
+          4545.45
+        ]
+      ]
+    },
+    "KXPRESNOMD-28-GW": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-GW/orderbook?depth=20",
+      "best_yes_ask": 0.009,
+      "best_yes_bid": 0.008,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 141158.22,
+      "contracts_bid": 222058.64,
+      "depth_levels": {
+        "yes_ask": 20,
+        "yes_bid": 5
+      },
+      "notional_ask_dollars": 23509.01,
+      "notional_bid_dollars": 1338.09,
+      "spread_dollars": 0.001,
+      "ticker": "KXPRESNOMD-28-GW",
+      "topic": "elections",
+      "yes_asks_implied": [
+        [
+          0.009,
+          36479.13
+        ],
+        [
+          0.01,
+          49999.98
+        ],
+        [
+          0.011,
+          15151.51
+        ],
+        [
+          0.012,
+          13888.88
+        ],
+        [
+          0.864,
+          1357.72
+        ],
+        [
+          0.865,
+          1736.0
+        ],
+        [
+          0.866,
+          1575.0
+        ],
+        [
+          0.867,
+          1531.0
+        ],
+        [
+          0.868,
+          1790.0
+        ],
+        [
+          0.869,
+          1595.0
+        ],
+        [
+          0.87,
+          1665.0
+        ],
+        [
+          0.871,
+          1297.0
+        ],
+        [
+          0.872,
+          1488.0
+        ],
+        [
+          0.873,
+          1462.0
+        ],
+        [
+          0.874,
+          1568.0
+        ],
+        [
+          0.875,
+          1874.0
+        ],
+        [
+          0.876,
+          1648.0
+        ],
+        [
+          0.877,
+          1699.0
+        ],
+        [
+          0.878,
+          1688.0
+        ],
+        [
+          0.879,
+          1665.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.001,
+          40.0
+        ],
+        [
+          0.005,
+          66668.66
+        ],
+        [
+          0.006,
+          83333.31
+        ],
+        [
+          0.007,
+          71428.56
+        ],
+        [
+          0.008,
+          588.11
         ]
       ]
     },
@@ -1222,14 +1334,14 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-HJEF/orderbook?depth=20",
       "best_yes_ask": 0.01,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 27317.13,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 30555.54,
       "contracts_bid": 0,
       "depth_levels": {
         "yes_ask": 3,
         "yes_bid": 0
       },
-      "notional_ask_dollars": 467.62,
+      "notional_ask_dollars": 500.0,
       "notional_bid_dollars": 0,
       "spread_dollars": null,
       "ticker": "KXPRESNOMD-28-HJEF",
@@ -1237,7 +1349,7 @@
       "yes_asks_implied": [
         [
           0.01,
-          13428.25
+          16666.66
         ],
         [
           0.02,
@@ -1252,69 +1364,69 @@
     },
     "KXPRESNOMD-28-JAM": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-JAM/orderbook?depth=20",
-      "best_yes_ask": 0.004,
+      "best_yes_ask": 0.003,
       "best_yes_bid": 0.002,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 147611.25,
-      "contracts_bid": 500022.44,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 280335.24,
+      "contracts_bid": 750022.43,
       "depth_levels": {
-        "yes_ask": 2,
+        "yes_ask": 3,
         "yes_bid": 2
       },
-      "notional_ask_dollars": 657.11,
-      "notional_bid_dollars": 666.69,
-      "spread_dollars": 0.002,
+      "notional_ask_dollars": 1165.79,
+      "notional_bid_dollars": 1000.02,
+      "spread_dollars": 0.001,
       "ticker": "KXPRESNOMD-28-JAM",
       "topic": "elections",
       "yes_asks_implied": [
         [
+          0.003,
+          55555.55
+        ],
+        [
           0.004,
-          80944.59
+          124779.7
         ],
         [
           0.005,
-          66666.66
+          99999.99
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          333355.75
+          500022.41
         ],
         [
           0.002,
-          166666.69
+          250000.02
         ]
       ]
     },
     "KXPRESNOMD-28-JOSS": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-JOSS/orderbook?depth=20",
-      "best_yes_ask": 0.24,
+      "best_yes_ask": 0.241,
       "best_yes_bid": 0.23,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 1752.54,
-      "contracts_bid": 19630.31,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 2554.86,
+      "contracts_bid": 21813.73,
       "depth_levels": {
-        "yes_ask": 3,
+        "yes_ask": 2,
         "yes_bid": 13
       },
-      "notional_ask_dollars": 422.68,
-      "notional_bid_dollars": 1524.86,
-      "spread_dollars": 0.01,
+      "notional_ask_dollars": 617.1,
+      "notional_bid_dollars": 2024.86,
+      "spread_dollars": 0.011,
       "ticker": "KXPRESNOMD-28-JOSS",
       "topic": "elections",
       "yes_asks_implied": [
         [
-          0.24,
-          372.28
-        ],
-        [
           0.241,
-          691.56
+          1177.46
         ],
         [
           0.242,
-          688.7
+          1377.4
         ]
       ],
       "yes_bids": [
@@ -1360,42 +1472,46 @@
         ],
         [
           0.228,
-          730.99
+          1461.98
         ],
         [
           0.229,
-          727.8
+          1455.6
         ],
         [
           0.23,
-          724.63
+          1449.26
         ]
       ]
     },
     "KXPRESNOMD-28-JP": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-JP/orderbook?depth=20",
-      "best_yes_ask": 0.004,
+      "best_yes_ask": 0.003,
       "best_yes_bid": 0.002,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 159480.64,
-      "contracts_bid": 499999.98,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 292139.15,
+      "contracts_bid": 749999.97,
       "depth_levels": {
-        "yes_ask": 13,
+        "yes_ask": 14,
         "yes_bid": 2
       },
-      "notional_ask_dollars": 12444.7,
-      "notional_bid_dollars": 666.67,
-      "spread_dollars": 0.002,
+      "notional_ask_dollars": 12953.23,
+      "notional_bid_dollars": 1000.0,
+      "spread_dollars": 0.001,
       "ticker": "KXPRESNOMD-28-JP",
       "topic": "elections",
       "yes_asks_implied": [
         [
+          0.003,
+          55435.73
+        ],
+        [
           0.004,
-          80954.34
+          124843.79
         ],
         [
           0.005,
-          66666.66
+          99999.99
         ],
         [
           0.989,
@@ -1445,34 +1561,38 @@
       "yes_bids": [
         [
           0.001,
-          333333.32
+          499999.98
         ],
         [
           0.002,
-          166666.66
+          249999.99
         ]
       ]
     },
     "KXPRESNOMD-28-JS": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-JS/orderbook?depth=20",
-      "best_yes_ask": 0.05,
+      "best_yes_ask": 0.049,
       "best_yes_bid": 0.047,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 4489.04,
-      "contracts_bid": 10925.27,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 7357.77,
+      "contracts_bid": 10905.27,
       "depth_levels": {
-        "yes_ask": 2,
-        "yes_bid": 6
+        "yes_ask": 3,
+        "yes_bid": 5
       },
-      "notional_ask_dollars": 227.72,
-      "notional_bid_dollars": 500.97,
-      "spread_dollars": 0.003,
+      "notional_ask_dollars": 370.4,
+      "notional_bid_dollars": 500.95,
+      "spread_dollars": 0.002,
       "ticker": "KXPRESNOMD-28-JS",
       "topic": "elections",
       "yes_asks_implied": [
         [
+          0.049,
+          756.47
+        ],
+        [
           0.05,
-          1221.07
+          3333.33
         ],
         [
           0.051,
@@ -1480,10 +1600,6 @@
         ]
       ],
       "yes_bids": [
-        [
-          0.001,
-          20.0
-        ],
         [
           0.01,
           1.0
@@ -1506,149 +1622,40 @@
         ]
       ]
     },
-    "KXPRESNOMD-28-JSTE": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-JSTE/orderbook?depth=20",
-      "best_yes_ask": 0.004,
-      "best_yes_bid": 0.002,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 156932.15,
-      "contracts_bid": 499999.98,
-      "depth_levels": {
-        "yes_ask": 20,
-        "yes_bid": 2
-      },
-      "notional_ask_dollars": 8778.54,
-      "notional_bid_dollars": 666.67,
-      "spread_dollars": 0.002,
-      "ticker": "KXPRESNOMD-28-JSTE",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.004,
-          80781.21
-        ],
-        [
-          0.005,
-          66666.66
-        ],
-        [
-          0.848,
-          634.28
-        ],
-        [
-          0.849,
-          401.0
-        ],
-        [
-          0.85,
-          530.0
-        ],
-        [
-          0.851,
-          695.0
-        ],
-        [
-          0.852,
-          472.0
-        ],
-        [
-          0.853,
-          473.0
-        ],
-        [
-          0.854,
-          530.0
-        ],
-        [
-          0.855,
-          600.0
-        ],
-        [
-          0.856,
-          511.0
-        ],
-        [
-          0.857,
-          460.0
-        ],
-        [
-          0.858,
-          532.0
-        ],
-        [
-          0.859,
-          557.0
-        ],
-        [
-          0.86,
-          478.0
-        ],
-        [
-          0.861,
-          666.0
-        ],
-        [
-          0.862,
-          446.0
-        ],
-        [
-          0.863,
-          496.0
-        ],
-        [
-          0.864,
-          572.0
-        ],
-        [
-          0.865,
-          431.0
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          333333.32
-        ],
-        [
-          0.002,
-          166666.66
-        ]
-      ]
-    },
     "KXPRESNOMD-28-KH": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-KH/orderbook?depth=20",
       "best_yes_ask": 0.05,
       "best_yes_bid": 0.049,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 6727.6,
-      "contracts_bid": 10493.07,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 15900.43,
+      "contracts_bid": 20892.74,
       "depth_levels": {
         "yes_ask": 3,
         "yes_bid": 5
       },
-      "notional_ask_dollars": 346.06,
-      "notional_bid_dollars": 501.04,
+      "notional_ask_dollars": 814.38,
+      "notional_bid_dollars": 1001.02,
       "spread_dollars": 0.001,
       "ticker": "KXPRESNOMD-28-KH",
       "topic": "elections",
       "yes_asks_implied": [
         [
           0.05,
-          254.51
+          2954.25
         ],
         [
           0.051,
-          3267.97
+          6535.94
         ],
         [
           0.052,
-          3205.12
+          6410.24
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          40.0
+          20.0
         ],
         [
           0.03,
@@ -1656,15 +1663,104 @@
         ],
         [
           0.047,
-          3546.09
+          7092.18
         ],
         [
           0.048,
-          3472.22
+          6944.44
         ],
         [
           0.049,
-          3401.36
+          6802.72
+        ]
+      ]
+    },
+    "KXPRESNOMD-28-MK": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-MK/orderbook?depth=20",
+      "best_yes_ask": 0.028,
+      "best_yes_bid": 0.026,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 28566.81,
+      "contracts_bid": 41434.7,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 14
+      },
+      "notional_ask_dollars": 833.59,
+      "notional_bid_dollars": 1014.93,
+      "spread_dollars": 0.002,
+      "ticker": "KXPRESNOMD-28-MK",
+      "topic": "elections",
+      "yes_asks_implied": [
+        [
+          0.028,
+          5961.47
+        ],
+        [
+          0.029,
+          11494.24
+        ],
+        [
+          0.03,
+          11111.1
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.001,
+          60.0
+        ],
+        [
+          0.01,
+          1158.0
+        ],
+        [
+          0.011,
+          10.0
+        ],
+        [
+          0.012,
+          10.0
+        ],
+        [
+          0.014,
+          10.0
+        ],
+        [
+          0.016,
+          30.0
+        ],
+        [
+          0.017,
+          10.0
+        ],
+        [
+          0.02,
+          14.0
+        ],
+        [
+          0.021,
+          40.0
+        ],
+        [
+          0.022,
+          20.0
+        ],
+        [
+          0.023,
+          10.0
+        ],
+        [
+          0.024,
+          13908.88
+        ],
+        [
+          0.025,
+          13333.32
+        ],
+        [
+          0.026,
+          12820.5
         ]
       ]
     },
@@ -1672,14 +1768,14 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-MLAN/orderbook?depth=20",
       "best_yes_ask": 0.01,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 30553.92,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 27958.38,
       "contracts_bid": 0,
       "depth_levels": {
         "yes_ask": 3,
         "yes_bid": 0
       },
-      "notional_ask_dollars": 499.98,
+      "notional_ask_dollars": 474.03,
       "notional_bid_dollars": 0,
       "spread_dollars": null,
       "ticker": "KXPRESNOMD-28-MLAN",
@@ -1687,7 +1783,7 @@
       "yes_asks_implied": [
         [
           0.01,
-          16665.04
+          14069.5
         ],
         [
           0.02,
@@ -1700,71 +1796,30 @@
       ],
       "yes_bids": []
     },
-    "KXPRESNOMD-28-MSHE": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-MSHE/orderbook?depth=20",
-      "best_yes_ask": 0.003,
-      "best_yes_bid": 0.002,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 279851.72,
-      "contracts_bid": 749999.97,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 2
-      },
-      "notional_ask_dollars": 1163.85,
-      "notional_bid_dollars": 1000.0,
-      "spread_dollars": 0.001,
-      "ticker": "KXPRESNOMD-28-MSHE",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.003,
-          55555.55
-        ],
-        [
-          0.004,
-          124296.18
-        ],
-        [
-          0.005,
-          99999.99
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          499999.98
-        ],
-        [
-          0.002,
-          249999.99
-        ]
-      ]
-    },
     "KXPRESNOMD-28-PB": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-PB/orderbook?depth=20",
       "best_yes_ask": 0.057,
       "best_yes_bid": 0.055,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 13255.29,
-      "contracts_bid": 18706.82,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 13364.82,
+      "contracts_bid": 18666.82,
       "depth_levels": {
         "yes_ask": 5,
         "yes_bid": 14
       },
-      "notional_ask_dollars": 792.89,
-      "notional_bid_dollars": 1003.5,
+      "notional_ask_dollars": 798.51,
+      "notional_bid_dollars": 1003.46,
       "spread_dollars": 0.002,
       "ticker": "KXPRESNOMD-28-PB",
       "topic": "elections",
       "yes_asks_implied": [
         [
           0.057,
-          1643.47
+          2378.1
         ],
         [
           0.058,
-          5747.12
+          5122.02
         ],
         [
           0.059,
@@ -1782,7 +1837,7 @@
       "yes_bids": [
         [
           0.001,
-          60.0
+          20.0
         ],
         [
           0.01,
@@ -1842,36 +1897,36 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-RC/orderbook?depth=20",
       "best_yes_ask": 0.004,
       "best_yes_bid": 0.002,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 147378.99,
-      "contracts_bid": 499999.98,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 224631.12,
+      "contracts_bid": 749999.97,
       "depth_levels": {
         "yes_ask": 2,
         "yes_bid": 2
       },
-      "notional_ask_dollars": 656.18,
-      "notional_bid_dollars": 666.67,
+      "notional_ask_dollars": 998.52,
+      "notional_bid_dollars": 1000.0,
       "spread_dollars": 0.002,
       "ticker": "KXPRESNOMD-28-RC",
       "topic": "elections",
       "yes_asks_implied": [
         [
           0.004,
-          80712.33
+          124631.13
         ],
         [
           0.005,
-          66666.66
+          99999.99
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          333333.32
+          499999.98
         ],
         [
           0.002,
-          166666.66
+          249999.99
         ]
       ]
     },
@@ -1879,30 +1934,30 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-RW/orderbook?depth=20",
       "best_yes_ask": 0.04,
       "best_yes_bid": 0.039,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 45303.57,
-      "contracts_bid": 13223.22,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 65596.19,
+      "contracts_bid": 39571.14,
       "depth_levels": {
         "yes_ask": 20,
         "yes_bid": 7
       },
-      "notional_ask_dollars": 30140.32,
-      "notional_bid_dollars": 500.49,
+      "notional_ask_dollars": 30975.26,
+      "notional_bid_dollars": 1500.51,
       "spread_dollars": 0.001,
       "ticker": "KXPRESNOMD-28-RW",
       "topic": "elections",
       "yes_asks_implied": [
         [
           0.04,
-          698.4
+          5695.04
         ],
         [
           0.041,
-          4065.04
+          11424.52
         ],
         [
           0.042,
-          3968.25
+          11904.75
         ],
         [
           0.806,
@@ -1976,7 +2031,7 @@
       "yes_bids": [
         [
           0.001,
-          20.0
+          40.0
         ],
         [
           0.01,
@@ -1992,75 +2047,38 @@
         ],
         [
           0.037,
-          4504.5
+          13513.5
         ],
         [
           0.038,
-          4385.96
+          13157.88
         ],
         [
           0.039,
-          4273.5
+          12820.5
         ]
       ]
     },
-    "KXPRESNOMD-28-SCOL": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-SCOL/orderbook?depth=20",
-      "best_yes_ask": 0.004,
-      "best_yes_bid": 0.002,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 147675.15,
-      "contracts_bid": 499999.98,
-      "depth_levels": {
-        "yes_ask": 2,
-        "yes_bid": 2
-      },
-      "notional_ask_dollars": 657.37,
-      "notional_bid_dollars": 666.67,
-      "spread_dollars": 0.002,
-      "ticker": "KXPRESNOMD-28-SCOL",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.004,
-          81008.49
-        ],
-        [
-          0.005,
-          66666.66
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          333333.32
-        ],
-        [
-          0.002,
-          166666.66
-        ]
-      ]
-    },
-    "KXPRESNOMD-28-SFAI": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-SFAI/orderbook?depth=20",
+    "KXPRESNOMD-28-SBRO": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-SBRO/orderbook?depth=20",
       "best_yes_ask": 0.01,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 27361.64,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 29997.65,
       "contracts_bid": 0,
       "depth_levels": {
         "yes_ask": 3,
         "yes_bid": 0
       },
-      "notional_ask_dollars": 468.06,
+      "notional_ask_dollars": 494.42,
       "notional_bid_dollars": 0,
       "spread_dollars": null,
-      "ticker": "KXPRESNOMD-28-SFAI",
+      "ticker": "KXPRESNOMD-28-SBRO",
       "topic": "elections",
       "yes_asks_implied": [
         [
           0.01,
-          13472.76
+          16108.77
         ],
         [
           0.02,
@@ -2073,11 +2091,30 @@
       ],
       "yes_bids": []
     },
+    "KXPRESNOMD-28-SFAI": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-SFAI/orderbook?depth=20",
+      "best_yes_ask": null,
+      "best_yes_bid": null,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
+      "contracts_bid": 0,
+      "depth_levels": {
+        "yes_ask": 0,
+        "yes_bid": 0
+      },
+      "notional_ask_dollars": 0,
+      "notional_bid_dollars": 0,
+      "spread_dollars": null,
+      "ticker": "KXPRESNOMD-28-SFAI",
+      "topic": "elections",
+      "yes_asks_implied": [],
+      "yes_bids": []
+    },
     "KXPRESNOMR-28-CCHR": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-CCHR/orderbook?depth=20",
       "best_yes_ask": null,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
+      "captured_at": "2026-11-28T12:19:43Z",
       "contracts_ask": 0,
       "contracts_bid": 0,
       "depth_levels": {
@@ -2094,102 +2131,121 @@
     },
     "KXPRESNOMR-28-COWE": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-COWE/orderbook?depth=20",
-      "best_yes_ask": 0.01,
+      "best_yes_ask": null,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 30551.0,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
       "contracts_bid": 0,
       "depth_levels": {
-        "yes_ask": 3,
+        "yes_ask": 0,
         "yes_bid": 0
       },
-      "notional_ask_dollars": 499.95,
+      "notional_ask_dollars": 0,
       "notional_bid_dollars": 0,
       "spread_dollars": null,
       "ticker": "KXPRESNOMR-28-COWE",
       "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.01,
-          16662.12
-        ],
-        [
-          0.02,
-          8333.33
-        ],
-        [
-          0.03,
-          5555.55
-        ]
-      ],
+      "yes_asks_implied": [],
       "yes_bids": []
     },
-    "KXPRESNOMR-28-CSUN": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-CSUN/orderbook?depth=20",
-      "best_yes_ask": 0.01,
+    "KXPRESNOMR-28-DBUR": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-DBUR/orderbook?depth=20",
+      "best_yes_ask": null,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 30554.0,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
       "contracts_bid": 0,
       "depth_levels": {
-        "yes_ask": 3,
+        "yes_ask": 0,
         "yes_bid": 0
       },
-      "notional_ask_dollars": 499.98,
+      "notional_ask_dollars": 0,
       "notional_bid_dollars": 0,
       "spread_dollars": null,
-      "ticker": "KXPRESNOMR-28-CSUN",
+      "ticker": "KXPRESNOMR-28-DBUR",
+      "topic": "elections",
+      "yes_asks_implied": [],
+      "yes_bids": []
+    },
+    "KXPRESNOMR-28-DMCC": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-DMCC/orderbook?depth=20",
+      "best_yes_ask": 0.003,
+      "best_yes_bid": 0.002,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 279692.25,
+      "contracts_bid": 749999.97,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 1163.22,
+      "notional_bid_dollars": 1000.0,
+      "spread_dollars": 0.001,
+      "ticker": "KXPRESNOMR-28-DMCC",
       "topic": "elections",
       "yes_asks_implied": [
         [
-          0.01,
-          16665.12
+          0.003,
+          55553.64
         ],
         [
-          0.02,
-          8333.33
+          0.004,
+          124138.62
         ],
         [
-          0.03,
-          5555.55
+          0.005,
+          99999.99
         ]
       ],
-      "yes_bids": []
+      "yes_bids": [
+        [
+          0.001,
+          499999.98
+        ],
+        [
+          0.002,
+          249999.99
+        ]
+      ]
     },
     "KXPRESNOMR-28-JDV": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-JDV/orderbook?depth=20",
       "best_yes_ask": 0.32,
       "best_yes_bid": 0.31,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 2319.72,
-      "contracts_bid": 3834.93,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 2002.2,
+      "contracts_bid": 5483.05,
       "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 10
+        "yes_ask": 4,
+        "yes_bid": 11
       },
-      "notional_ask_dollars": 745.41,
-      "notional_bid_dollars": 1012.23,
+      "notional_ask_dollars": 645.22,
+      "notional_bid_dollars": 1513.34,
       "spread_dollars": 0.01,
       "ticker": "KXPRESNOMR-28-JDV",
       "topic": "elections",
       "yes_asks_implied": [
         [
           0.32,
-          253.19
+          474.59
         ],
         [
           0.321,
-          1031.35
+          519.21
         ],
         [
           0.322,
-          1035.18
+          998.4
+        ],
+        [
+          0.52,
+          10.0
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          20.0
+          40.0
         ],
         [
           0.01,
@@ -2212,20 +2268,24 @@
           30.99
         ],
         [
+          0.11,
+          10.0
+        ],
+        [
           0.25,
           12.9
         ],
         [
           0.308,
-          1082.24
+          1623.36
         ],
         [
           0.309,
-          1078.74
+          1618.11
         ],
         [
           0.31,
-          1075.26
+          1612.89
         ]
       ]
     },
@@ -2233,7 +2293,7 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-JKEN/orderbook?depth=20",
       "best_yes_ask": null,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
+      "captured_at": "2026-11-28T12:19:43Z",
       "contracts_ask": 0,
       "contracts_bid": 0,
       "depth_levels": {
@@ -2248,80 +2308,69 @@
       "yes_asks_implied": [],
       "yes_bids": []
     },
-    "KXPRESNOMR-28-JMCE": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-JMCE/orderbook?depth=20",
-      "best_yes_ask": 0.023,
-      "best_yes_bid": 0.021,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 35148.55,
-      "contracts_bid": 53036.84,
+    "KXPRESNOMR-28-KB": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-KB/orderbook?depth=20",
+      "best_yes_ask": 0.004,
+      "best_yes_bid": 0.002,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 74786.22,
+      "contracts_bid": 249999.99,
       "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 6
+        "yes_ask": 2,
+        "yes_bid": 2
       },
-      "notional_ask_dollars": 848.97,
-      "notional_bid_dollars": 1000.16,
+      "notional_ask_dollars": 332.48,
+      "notional_bid_dollars": 333.33,
       "spread_dollars": 0.002,
-      "ticker": "KXPRESNOMR-28-JMCE",
+      "ticker": "KXPRESNOMR-28-KB",
       "topic": "elections",
       "yes_asks_implied": [
         [
-          0.023,
-          7926.35
+          0.004,
+          41452.89
         ],
         [
-          0.024,
-          13888.88
-        ],
-        [
-          0.025,
-          13333.32
+          0.005,
+          33333.33
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          160.0
+          166666.66
         ],
         [
-          0.017,
-          9803.92
-        ],
-        [
-          0.018,
-          9259.25
-        ],
-        [
-          0.019,
-          17543.84
-        ],
-        [
-          0.02,
-          8333.33
-        ],
-        [
-          0.021,
-          7936.5
+          0.002,
+          83333.33
         ]
       ]
     },
     "KXPRESNOMR-28-MR": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-MR/orderbook?depth=20",
-      "best_yes_ask": null,
-      "best_yes_bid": 0.23,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 0,
-      "contracts_bid": 2706.26,
+      "best_yes_ask": 0.211,
+      "best_yes_bid": 0.2,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 1327.42,
+      "contracts_bid": 3035.44,
       "depth_levels": {
-        "yes_ask": 0,
+        "yes_ask": 2,
         "yes_bid": 8
       },
-      "notional_ask_dollars": 0,
-      "notional_bid_dollars": 505.54,
-      "spread_dollars": null,
+      "notional_ask_dollars": 280.87,
+      "notional_bid_dollars": 505.55,
+      "spread_dollars": 0.011,
       "ticker": "KXPRESNOMR-28-MR",
       "topic": "elections",
-      "yes_asks_implied": [],
+      "yes_asks_implied": [
+        [
+          0.211,
+          541.26
+        ],
+        [
+          0.212,
+          786.16
+        ]
+      ],
       "yes_bids": [
         [
           0.001,
@@ -2344,185 +2393,39 @@
           1.54
         ],
         [
-          0.228,
-          730.99
+          0.198,
+          841.75
         ],
         [
-          0.229,
-          727.8
+          0.199,
+          837.52
         ],
         [
-          0.23,
-          724.63
+          0.2,
+          833.33
         ]
       ]
     },
     "KXPRESNOMR-28-PHEG": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-PHEG/orderbook?depth=20",
-      "best_yes_ask": 0.003,
-      "best_yes_bid": 0.002,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 278246.48,
-      "contracts_bid": 749999.97,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 2
-      },
-      "notional_ask_dollars": 1157.43,
-      "notional_bid_dollars": 1000.0,
-      "spread_dollars": 0.001,
-      "ticker": "KXPRESNOMR-28-PHEG",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.003,
-          55555.23
-        ],
-        [
-          0.004,
-          122691.26
-        ],
-        [
-          0.005,
-          99999.99
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          499999.98
-        ],
-        [
-          0.002,
-          249999.99
-        ]
-      ]
-    },
-    "KXPRESNOMR-28-RDS": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-RDS/orderbook?depth=20",
-      "best_yes_ask": 0.16,
-      "best_yes_bid": 0.15,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 40144.96,
-      "contracts_bid": 3418.05,
-      "depth_levels": {
-        "yes_ask": 6,
-        "yes_bid": 7
-      },
-      "notional_ask_dollars": 36875.96,
-      "notional_bid_dollars": 500.75,
-      "spread_dollars": 0.01,
-      "ticker": "KXPRESNOMR-28-RDS",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.16,
-          23.33
-        ],
-        [
-          0.161,
-          1035.19
-        ],
-        [
-          0.162,
-          1028.8
-        ],
-        [
-          0.96,
-          37937.64
-        ],
-        [
-          0.97,
-          2.0
-        ],
-        [
-          0.99,
-          118.0
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          40.0
-        ],
-        [
-          0.02,
-          2.4
-        ],
-        [
-          0.03,
-          16.3
-        ],
-        [
-          0.05,
-          3.56
-        ],
-        [
-          0.148,
-          1126.12
-        ],
-        [
-          0.149,
-          1118.56
-        ],
-        [
-          0.15,
-          1111.11
-        ]
-      ]
-    },
-    "KXPRESNOMR-28-SPRA": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-SPRA/orderbook?depth=20",
-      "best_yes_ask": 0.01,
-      "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 30554.19,
-      "contracts_bid": 0,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 0
-      },
-      "notional_ask_dollars": 499.99,
-      "notional_bid_dollars": 0,
-      "spread_dollars": null,
-      "ticker": "KXPRESNOMR-28-SPRA",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.01,
-          16665.31
-        ],
-        [
-          0.02,
-          8333.33
-        ],
-        [
-          0.03,
-          5555.55
-        ]
-      ],
-      "yes_bids": []
-    },
-    "KXPRESNOMR-28-STE": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-STE/orderbook?depth=20",
       "best_yes_ask": 0.004,
       "best_yes_bid": 0.002,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 147873.29,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 149267.89,
       "contracts_bid": 499999.98,
       "depth_levels": {
         "yes_ask": 2,
         "yes_bid": 2
       },
-      "notional_ask_dollars": 658.16,
+      "notional_ask_dollars": 663.74,
       "notional_bid_dollars": 666.67,
       "spread_dollars": 0.002,
-      "ticker": "KXPRESNOMR-28-STE",
+      "ticker": "KXPRESNOMR-28-PHEG",
       "topic": "elections",
       "yes_asks_implied": [
         [
           0.004,
-          81206.63
+          82601.23
         ],
         [
           0.005,
@@ -2540,30 +2443,163 @@
         ]
       ]
     },
+    "KXPRESNOMR-28-RDS": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-RDS/orderbook?depth=20",
+      "best_yes_ask": 0.16,
+      "best_yes_bid": 0.15,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 45476.45,
+      "contracts_bid": 10089.63,
+      "depth_levels": {
+        "yes_ask": 6,
+        "yes_bid": 6
+      },
+      "notional_ask_dollars": 37734.82,
+      "notional_bid_dollars": 1500.71,
+      "spread_dollars": 0.01,
+      "ticker": "KXPRESNOMR-28-RDS",
+      "topic": "elections",
+      "yes_asks_implied": [
+        [
+          0.16,
+          1231.7
+        ],
+        [
+          0.161,
+          3101.16
+        ],
+        [
+          0.162,
+          3086.4
+        ],
+        [
+          0.96,
+          37937.19
+        ],
+        [
+          0.97,
+          2.0
+        ],
+        [
+          0.99,
+          118.0
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.02,
+          2.4
+        ],
+        [
+          0.03,
+          16.3
+        ],
+        [
+          0.05,
+          3.56
+        ],
+        [
+          0.148,
+          3378.36
+        ],
+        [
+          0.149,
+          3355.68
+        ],
+        [
+          0.15,
+          3333.33
+        ]
+      ]
+    },
+    "KXPRESNOMR-28-SPRA": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-SPRA/orderbook?depth=20",
+      "best_yes_ask": null,
+      "best_yes_bid": null,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
+      "contracts_bid": 0,
+      "depth_levels": {
+        "yes_ask": 0,
+        "yes_bid": 0
+      },
+      "notional_ask_dollars": 0,
+      "notional_bid_dollars": 0,
+      "spread_dollars": null,
+      "ticker": "KXPRESNOMR-28-SPRA",
+      "topic": "elections",
+      "yes_asks_implied": [],
+      "yes_bids": []
+    },
+    "KXPRESNOMR-28-STE": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-STE/orderbook?depth=20",
+      "best_yes_ask": 0.003,
+      "best_yes_bid": 0.002,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 280150.47,
+      "contracts_bid": 749999.97,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 1165.05,
+      "notional_bid_dollars": 1000.0,
+      "spread_dollars": 0.001,
+      "ticker": "KXPRESNOMR-28-STE",
+      "topic": "elections",
+      "yes_asks_implied": [
+        [
+          0.003,
+          55555.55
+        ],
+        [
+          0.004,
+          124594.93
+        ],
+        [
+          0.005,
+          99999.99
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.001,
+          499999.98
+        ],
+        [
+          0.002,
+          249999.99
+        ]
+      ]
+    },
     "KXPRESNOMR-28-TCAR": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMR-28-TCAR/orderbook?depth=20",
-      "best_yes_ask": 0.034,
-      "best_yes_bid": 0.033,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 1016535.97,
-      "contracts_bid": 30111.66,
+      "best_yes_ask": 0.033,
+      "best_yes_bid": 0.032,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 1019379.59,
+      "contracts_bid": 26844.59,
       "depth_levels": {
-        "yes_ask": 7,
-        "yes_bid": 9
+        "yes_ask": 8,
+        "yes_bid": 6
       },
-      "notional_ask_dollars": 945187.62,
-      "notional_bid_dollars": 905.63,
+      "notional_ask_dollars": 945281.51,
+      "notional_bid_dollars": 833.97,
       "spread_dollars": 0.001,
       "ticker": "KXPRESNOMR-28-TCAR",
       "topic": "elections",
       "yes_asks_implied": [
         [
+          0.033,
+          2269.51
+        ],
+        [
           0.034,
-          3806.36
+          4901.96
         ],
         [
           0.035,
-          9523.8
+          9002.31
         ],
         [
           0.036,
@@ -2589,7 +2625,7 @@
       "yes_bids": [
         [
           0.001,
-          60.0
+          80.0
         ],
         [
           0.01,
@@ -2600,48 +2636,48 @@
           16.0
         ],
         [
-          0.028,
-          5952.38
-        ],
-        [
-          0.029,
-          5747.12
-        ],
-        [
           0.03,
           5555.55
         ],
         [
           0.031,
-          5376.34
+          10752.68
         ],
         [
           0.032,
-          5208.33
-        ],
-        [
-          0.033,
-          2172.24
+          10416.66
         ]
       ]
     },
     "KXPRESPERSON-28-AOCA": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-AOCA/orderbook?depth=20",
-      "best_yes_ask": 0.12,
-      "best_yes_bid": 0.11,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 7898.46,
-      "contracts_bid": 9319.7,
+      "best_yes_ask": 0.11,
+      "best_yes_bid": 0.109,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 10890.05,
+      "contracts_bid": 11378.24,
       "depth_levels": {
-        "yes_ask": 4,
-        "yes_bid": 7
+        "yes_ask": 7,
+        "yes_bid": 9
       },
-      "notional_ask_dollars": 975.26,
-      "notional_bid_dollars": 1001.65,
-      "spread_dollars": 0.01,
+      "notional_ask_dollars": 1308.81,
+      "notional_bid_dollars": 1168.14,
+      "spread_dollars": 0.001,
       "ticker": "KXPRESPERSON-28-AOCA",
       "topic": "elections",
       "yes_asks_implied": [
+        [
+          0.11,
+          2.0
+        ],
+        [
+          0.111,
+          1501.5
+        ],
+        [
+          0.112,
+          1488.09
+        ],
         [
           0.12,
           2368.68
@@ -2662,7 +2698,7 @@
       "yes_bids": [
         [
           0.001,
-          80.0
+          120.0
         ],
         [
           0.01,
@@ -2677,196 +2713,192 @@
           1.0
         ],
         [
+          0.098,
+          1700.68
+        ],
+        [
+          0.099,
+          1683.5
+        ],
+        [
+          0.1,
+          1666.66
+        ],
+        [
           0.108,
           3086.4
         ],
         [
           0.109,
-          3058.1
-        ],
-        [
-          0.11,
-          3030.3
-        ]
-      ]
-    },
-    "KXPRESPERSON-28-GNEWS": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-GNEWS/orderbook?depth=20",
-      "best_yes_ask": 0.072,
-      "best_yes_bid": 0.07,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 11355.48,
-      "contracts_bid": 14561.68,
-      "depth_levels": {
-        "yes_ask": 4,
-        "yes_bid": 5
-      },
-      "notional_ask_dollars": 833.33,
-      "notional_bid_dollars": 1000.85,
-      "spread_dollars": 0.002,
-      "ticker": "KXPRESPERSON-28-GNEWS",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.072,
-          2314.81
-        ],
-        [
-          0.073,
-          4566.2
-        ],
-        [
-          0.074,
-          2252.25
-        ],
-        [
-          0.075,
-          2222.22
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          40.0
-        ],
-        [
-          0.03,
-          26.92
-        ],
-        [
-          0.068,
-          4901.96
-        ],
-        [
-          0.069,
-          4830.9
-        ],
-        [
-          0.07,
-          4761.9
+          3056.1
         ]
       ]
     },
     "KXPRESPERSON-28-GWHI": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-GWHI/orderbook?depth=20",
       "best_yes_ask": 0.004,
-      "best_yes_bid": 0.002,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 74999.99,
-      "contracts_bid": 249999.99,
+      "best_yes_bid": 0.003,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 234920.6,
+      "contracts_bid": 805575.52,
       "depth_levels": {
-        "yes_ask": 2,
-        "yes_bid": 2
+        "yes_ask": 4,
+        "yes_bid": 3
       },
-      "notional_ask_dollars": 333.33,
-      "notional_bid_dollars": 333.33,
-      "spread_dollars": 0.002,
+      "notional_ask_dollars": 1166.67,
+      "notional_bid_dollars": 1166.69,
+      "spread_dollars": 0.001,
       "ticker": "KXPRESPERSON-28-GWHI",
       "topic": "elections",
       "yes_asks_implied": [
         [
           0.004,
-          41666.66
+          83333.32
         ],
         [
           0.005,
-          33333.33
+          99999.99
+        ],
+        [
+          0.006,
+          27777.77
+        ],
+        [
+          0.007,
+          23809.52
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          166666.66
+          500019.98
         ],
         [
           0.002,
-          83333.33
+          249999.99
+        ],
+        [
+          0.003,
+          55555.55
+        ]
+      ]
+    },
+    "KXPRESPERSON-28-JDIM": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-JDIM/orderbook?depth=20",
+      "best_yes_ask": 0.003,
+      "best_yes_bid": 0.002,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 280555.52,
+      "contracts_bid": 749999.97,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 1166.67,
+      "notional_bid_dollars": 1000.0,
+      "spread_dollars": 0.001,
+      "ticker": "KXPRESPERSON-28-JDIM",
+      "topic": "elections",
+      "yes_asks_implied": [
+        [
+          0.003,
+          55555.55
+        ],
+        [
+          0.004,
+          124999.98
+        ],
+        [
+          0.005,
+          99999.99
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.001,
+          499999.98
+        ],
+        [
+          0.002,
+          249999.99
         ]
       ]
     },
     "KXPRESPERSON-28-JKEN": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-JKEN/orderbook?depth=20",
-      "best_yes_ask": 0.004,
+      "best_yes_ask": 0.003,
       "best_yes_bid": 0.002,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 74999.99,
-      "contracts_bid": 249999.99,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 280555.52,
+      "contracts_bid": 749999.97,
       "depth_levels": {
-        "yes_ask": 2,
+        "yes_ask": 3,
         "yes_bid": 2
       },
-      "notional_ask_dollars": 333.33,
-      "notional_bid_dollars": 333.33,
-      "spread_dollars": 0.002,
+      "notional_ask_dollars": 1166.67,
+      "notional_bid_dollars": 1000.0,
+      "spread_dollars": 0.001,
       "ticker": "KXPRESPERSON-28-JKEN",
       "topic": "elections",
       "yes_asks_implied": [
         [
+          0.003,
+          55555.55
+        ],
+        [
           0.004,
-          41666.66
+          124999.98
         ],
         [
           0.005,
-          33333.33
+          99999.99
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          166666.66
+          499999.98
         ],
         [
           0.002,
-          83333.33
+          249999.99
         ]
       ]
     },
     "KXPRESPERSON-28-JOSS": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-JOSS/orderbook?depth=20",
       "best_yes_ask": 0.17,
-      "best_yes_bid": 0.169,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 7939.41,
-      "contracts_bid": 19354.09,
+      "best_yes_bid": 0.16,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 8560.67,
+      "contracts_bid": 20480.56,
       "depth_levels": {
-        "yes_ask": 6,
-        "yes_bid": 11
+        "yes_ask": 3,
+        "yes_bid": 9
       },
-      "notional_ask_dollars": 1381.3,
-      "notional_bid_dollars": 1448.03,
-      "spread_dollars": 0.001,
+      "notional_ask_dollars": 1464.05,
+      "notional_bid_dollars": 1614.65,
+      "spread_dollars": 0.01,
       "ticker": "KXPRESPERSON-28-JOSS",
       "topic": "elections",
       "yes_asks_implied": [
         [
           0.17,
-          1749.36
+          2729.75
         ],
         [
           0.171,
-          1949.3
+          2923.95
         ],
         [
           0.172,
-          1937.98
-        ],
-        [
-          0.18,
-          466.21
-        ],
-        [
-          0.181,
-          920.81
-        ],
-        [
-          0.182,
-          915.75
+          2906.97
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          60.0
+          20.0
         ],
         [
           0.01,
@@ -2890,259 +2922,15 @@
         ],
         [
           0.158,
-          2109.7
+          3164.55
         ],
         [
           0.159,
-          2096.42
+          3144.63
         ],
         [
           0.16,
-          2083.32
-        ],
-        [
-          0.168,
-          992.06
-        ],
-        [
-          0.169,
-          986.19
-        ]
-      ]
-    },
-    "KXPRESPERSON-28-JTAL": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-JTAL/orderbook?depth=20",
-      "best_yes_ask": 0.02,
-      "best_yes_bid": 0.01,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 18055.54,
-      "contracts_bid": 16690.36,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 1
-      },
-      "notional_ask_dollars": 500.0,
-      "notional_bid_dollars": 166.9,
-      "spread_dollars": 0.01,
-      "ticker": "KXPRESPERSON-28-JTAL",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.02,
-          8333.33
-        ],
-        [
-          0.03,
-          5555.55
-        ],
-        [
-          0.04,
-          4166.66
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          16690.36
-        ]
-      ]
-    },
-    "KXPRESPERSON-28-JVAN": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-JVAN/orderbook?depth=20",
-      "best_yes_ask": 0.12,
-      "best_yes_bid": 0.11,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 10311.78,
-      "contracts_bid": 15617.56,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 8
-      },
-      "notional_ask_dollars": 1249.74,
-      "notional_bid_dollars": 1519.2,
-      "spread_dollars": 0.01,
-      "ticker": "KXPRESPERSON-28-JVAN",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.12,
-          2081.19
-        ],
-        [
-          0.121,
-          4132.23
-        ],
-        [
-          0.122,
-          4098.36
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          80.0
-        ],
-        [
-          0.008,
-          10.0
-        ],
-        [
-          0.01,
-          1706.0
-        ],
-        [
-          0.03,
-          55.95
-        ],
-        [
-          0.09,
-          3.41
-        ],
-        [
-          0.108,
-          4629.6
-        ],
-        [
-          0.109,
-          4587.15
-        ],
-        [
-          0.11,
-          4545.45
-        ]
-      ]
-    },
-    "KXPRESPERSON-28-KHAR": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-KHAR/orderbook?depth=20",
-      "best_yes_ask": 0.033,
-      "best_yes_bid": 0.03,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 14714.36,
-      "contracts_bid": 31238.05,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 6
-      },
-      "notional_ask_dollars": 500.0,
-      "notional_bid_dollars": 684.69,
-      "spread_dollars": 0.003,
-      "ticker": "KXPRESPERSON-28-KHAR",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.033,
-          5050.5
-        ],
-        [
-          0.034,
-          4901.96
-        ],
-        [
-          0.035,
-          4761.9
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          40.0
-        ],
-        [
-          0.01,
-          9421.0
-        ],
-        [
-          0.02,
-          4522.0
-        ],
-        [
-          0.028,
-          5952.38
-        ],
-        [
-          0.029,
-          5747.12
-        ],
-        [
-          0.03,
-          5555.55
-        ]
-      ]
-    },
-    "KXPRESPERSON-28-MRUB": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-MRUB/orderbook?depth=20",
-      "best_yes_ask": 0.096,
-      "best_yes_bid": 0.094,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 14119.97,
-      "contracts_bid": 17221.36,
-      "depth_levels": {
-        "yes_ask": 6,
-        "yes_bid": 8
-      },
-      "notional_ask_dollars": 1556.79,
-      "notional_bid_dollars": 1520.41,
-      "spread_dollars": 0.002,
-      "ticker": "KXPRESPERSON-28-MRUB",
-      "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.096,
-          3472.22
-        ],
-        [
-          0.097,
-          3436.42
-        ],
-        [
-          0.098,
-          3661.17
-        ],
-        [
-          0.099,
-          1683.5
-        ],
-        [
-          0.1,
-          1666.66
-        ],
-        [
-          0.99,
-          200.0
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.001,
-          40.0
-        ],
-        [
-          0.01,
-          786.0
-        ],
-        [
-          0.03,
-          54.0
-        ],
-        [
-          0.05,
-          200.0
-        ],
-        [
-          0.08,
-          11.14
-        ],
-        [
-          0.092,
-          5434.77
-        ],
-        [
-          0.093,
-          5376.33
-        ],
-        [
-          0.094,
-          5319.12
+          3124.98
         ]
       ]
     },
@@ -3150,7 +2938,7 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-RCOO/orderbook?depth=20",
       "best_yes_ask": null,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
+      "captured_at": "2026-11-28T12:19:43Z",
       "contracts_ask": 0,
       "contracts_bid": 0,
       "depth_levels": {
@@ -3165,105 +2953,90 @@
       "yes_asks_implied": [],
       "yes_bids": []
     },
-    "KXPRESPERSON-28-RDES": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-RDES/orderbook?depth=20",
-      "best_yes_ask": 0.055,
-      "best_yes_bid": 0.053,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 32951.3,
-      "contracts_bid": 45191.66,
+    "KXPRESPERSON-28-RKHA": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-RKHA/orderbook?depth=20",
+      "best_yes_ask": null,
+      "best_yes_bid": null,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
+      "contracts_bid": 0,
+      "depth_levels": {
+        "yes_ask": 0,
+        "yes_bid": 0
+      },
+      "notional_ask_dollars": 0,
+      "notional_bid_dollars": 0,
+      "spread_dollars": null,
+      "ticker": "KXPRESPERSON-28-RKHA",
+      "topic": "elections",
+      "yes_asks_implied": [],
+      "yes_bids": []
+    },
+    "KXPRESPERSON-28-SSMI": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-SSMI/orderbook?depth=20",
+      "best_yes_ask": 0.003,
+      "best_yes_bid": 0.002,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 280555.52,
+      "contracts_bid": 749999.97,
       "depth_levels": {
         "yes_ask": 3,
-        "yes_bid": 6
+        "yes_bid": 2
       },
-      "notional_ask_dollars": 1847.62,
-      "notional_bid_dollars": 2067.43,
-      "spread_dollars": 0.002,
-      "ticker": "KXPRESPERSON-28-RDES",
+      "notional_ask_dollars": 1166.67,
+      "notional_bid_dollars": 1000.0,
+      "spread_dollars": 0.001,
+      "ticker": "KXPRESPERSON-28-SSMI",
       "topic": "elections",
       "yes_asks_implied": [
         [
-          0.055,
-          9350.66
+          0.003,
+          55555.55
         ],
         [
-          0.056,
-          11904.76
+          0.004,
+          124999.98
         ],
         [
-          0.057,
-          11695.88
+          0.005,
+          99999.99
         ]
       ],
       "yes_bids": [
         [
           0.001,
-          20.0
+          499999.98
         ],
         [
-          0.01,
-          6660.0
-        ],
-        [
-          0.02,
-          40.7
-        ],
-        [
-          0.051,
-          13071.88
-        ],
-        [
-          0.052,
-          12820.48
-        ],
-        [
-          0.053,
-          12578.6
+          0.002,
+          249999.99
         ]
       ]
     },
-    "KXPRESPERSON-28-REMA": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-REMA/orderbook?depth=20",
-      "best_yes_ask": 0.02,
-      "best_yes_bid": 0.01,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 21244.55,
-      "contracts_bid": 33333.32,
+    "KXPRESPERSON-28-TCRU": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-TCRU/orderbook?depth=20",
+      "best_yes_ask": null,
+      "best_yes_bid": null,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
+      "contracts_bid": 0,
       "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 1
+        "yes_ask": 0,
+        "yes_bid": 0
       },
-      "notional_ask_dollars": 627.56,
-      "notional_bid_dollars": 333.33,
-      "spread_dollars": 0.01,
-      "ticker": "KXPRESPERSON-28-REMA",
+      "notional_ask_dollars": 0,
+      "notional_bid_dollars": 0,
+      "spread_dollars": null,
+      "ticker": "KXPRESPERSON-28-TCRU",
       "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.02,
-          8333.33
-        ],
-        [
-          0.03,
-          5555.55
-        ],
-        [
-          0.04,
-          7355.67
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          33333.32
-        ]
-      ]
+      "yes_asks_implied": [],
+      "yes_bids": []
     },
-    "KXPRESPERSON-28-RKHA": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-RKHA/orderbook?depth=20",
+    "KXPRESPERSON-28-TMAS": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-TMAS/orderbook?depth=20",
       "best_yes_ask": 0.01,
       "best_yes_bid": null,
-      "captured_at": "2026-11-28T03:34:07Z",
+      "captured_at": "2026-11-28T12:19:43Z",
       "contracts_ask": 30555.54,
       "contracts_bid": 0,
       "depth_levels": {
@@ -3273,7 +3046,7 @@
       "notional_ask_dollars": 500.0,
       "notional_bid_dollars": 0,
       "spread_dollars": null,
-      "ticker": "KXPRESPERSON-28-RKHA",
+      "ticker": "KXPRESPERSON-28-TMAS",
       "topic": "elections",
       "yes_asks_implied": [
         [
@@ -3295,14 +3068,14 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-VRAM/orderbook?depth=20",
       "best_yes_ask": 0.003,
       "best_yes_bid": 0.002,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 376314.58,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 377423.69,
       "contracts_bid": 749999.97,
       "depth_levels": {
         "yes_ask": 20,
         "yes_bid": 2
       },
-      "notional_ask_dollars": 79747.91,
+      "notional_ask_dollars": 79752.34,
       "notional_bid_dollars": 1000.0,
       "spread_dollars": 0.001,
       "ticker": "KXPRESPERSON-28-VRAM",
@@ -3314,7 +3087,7 @@
         ],
         [
           0.004,
-          123890.87
+          124999.98
         ],
         [
           0.005,
@@ -3400,60 +3173,43 @@
         ]
       ]
     },
-    "KXRT-AVE-95": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXRT-AVE-95/orderbook?depth=20",
-      "best_yes_ask": 0.04,
-      "best_yes_bid": 0.02,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 7499.99,
-      "contracts_bid": 24999.99,
-      "depth_levels": {
-        "yes_ask": 2,
-        "yes_bid": 2
-      },
-      "notional_ask_dollars": 333.33,
-      "notional_bid_dollars": 333.33,
-      "spread_dollars": 0.02,
-      "ticker": "KXRT-AVE-95",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.04,
-          4166.66
-        ],
-        [
-          0.05,
-          3333.33
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          16666.66
-        ],
-        [
-          0.02,
-          8333.33
-        ]
-      ]
-    },
     "KXRT-HEX-65": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXRT-HEX-65/orderbook?depth=20",
-      "best_yes_ask": 0.81,
-      "best_yes_bid": 0.8,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 609.81,
-      "contracts_bid": 1473.42,
+      "best_yes_ask": 0.44,
+      "best_yes_bid": 0.42,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 1747.27,
+      "contracts_bid": 1320.98,
       "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 8
+        "yes_ask": 8,
+        "yes_bid": 5
       },
-      "notional_ask_dollars": 499.99,
-      "notional_bid_dollars": 977.57,
-      "spread_dollars": 0.01,
+      "notional_ask_dollars": 1012.83,
+      "notional_bid_dollars": 501.32,
+      "spread_dollars": 0.02,
       "ticker": "KXRT-HEX-65",
       "topic": "culture",
       "yes_asks_implied": [
+        [
+          0.44,
+          378.78
+        ],
+        [
+          0.45,
+          370.37
+        ],
+        [
+          0.46,
+          362.31
+        ],
+        [
+          0.49,
+          25.0
+        ],
+        [
+          0.59,
+          1.0
+        ],
         [
           0.81,
           205.76
@@ -3470,96 +3226,23 @@
       "yes_bids": [
         [
           0.01,
-          140.0
+          100.0
         ],
         [
-          0.67,
-          248.75
-        ],
-        [
-          0.68,
-          245.09
-        ],
-        [
-          0.69,
-          203.61
-        ],
-        [
-          0.76,
+          0.33,
           1.0
         ],
         [
-          0.78,
-          213.67
+          0.4,
+          416.66
         ],
         [
-          0.79,
-          210.97
+          0.41,
+          406.5
         ],
         [
-          0.8,
-          210.33
-        ]
-      ]
-    },
-    "KXRT-HEX-70": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXRT-HEX-70/orderbook?depth=20",
-      "best_yes_ask": 0.08,
-      "best_yes_bid": 0.07,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 8979.15,
-      "contracts_bid": 17670.42,
-      "depth_levels": {
-        "yes_ask": 5,
-        "yes_bid": 5
-      },
-      "notional_ask_dollars": 834.24,
-      "notional_bid_dollars": 914.61,
-      "spread_dollars": 0.01,
-      "ticker": "KXRT-HEX-70",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.08,
-          2093.33
-        ],
-        [
-          0.09,
-          3703.7
-        ],
-        [
-          0.1,
-          1666.66
-        ],
-        [
-          0.11,
-          1515.15
-        ],
-        [
-          0.36,
-          0.31
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          140.0
-        ],
-        [
-          0.04,
-          4167.66
-        ],
-        [
-          0.05,
-          6666.66
-        ],
-        [
-          0.06,
-          5555.54
-        ],
-        [
-          0.07,
-          1140.56
+          0.42,
+          396.82
         ]
       ]
     },
@@ -3567,7 +3250,7 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXRT-VIO-45/orderbook?depth=20",
       "best_yes_ask": 0.7,
       "best_yes_bid": 0.69,
-      "captured_at": "2026-11-28T03:34:07Z",
+      "captured_at": "2026-11-28T12:19:43Z",
       "contracts_ask": 1391.67,
       "contracts_bid": 1065.91,
       "depth_levels": {
@@ -3636,22 +3319,22 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXRT-VIO-60/orderbook?depth=20",
       "best_yes_ask": 0.27,
       "best_yes_bid": 0.25,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 3292.0,
-      "contracts_bid": 2560.07,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 3298.0,
+      "contracts_bid": 2600.07,
       "depth_levels": {
         "yes_ask": 8,
         "yes_bid": 5
       },
-      "notional_ask_dollars": 1000.87,
-      "notional_bid_dollars": 504.32,
+      "notional_ask_dollars": 1002.49,
+      "notional_bid_dollars": 504.72,
       "spread_dollars": 0.02,
       "ticker": "KXRT-VIO-60",
       "topic": "culture",
       "yes_asks_implied": [
         [
           0.27,
-          2.0
+          8.0
         ],
         [
           0.28,
@@ -3685,7 +3368,7 @@
       "yes_bids": [
         [
           0.01,
-          40.0
+          80.0
         ],
         [
           0.19,
@@ -3705,73 +3388,42 @@
         ]
       ]
     },
-    "KXRT-VIO-90": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXRT-VIO-90/orderbook?depth=20",
-      "best_yes_ask": 0.02,
-      "best_yes_bid": 0.01,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 18055.54,
-      "contracts_bid": 16666.66,
+    "KXSENATEDEMLEAD-28JAN01-BSCH": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXSENATEDEMLEAD-28JAN01-BSCH/orderbook?depth=20",
+      "best_yes_ask": null,
+      "best_yes_bid": null,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
+      "contracts_bid": 0,
       "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 1
+        "yes_ask": 0,
+        "yes_bid": 0
       },
-      "notional_ask_dollars": 500.0,
-      "notional_bid_dollars": 166.67,
-      "spread_dollars": 0.01,
-      "ticker": "KXRT-VIO-90",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.02,
-          8333.33
-        ],
-        [
-          0.03,
-          5555.55
-        ],
-        [
-          0.04,
-          4166.66
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          16666.66
-        ]
-      ]
+      "notional_ask_dollars": 0,
+      "notional_bid_dollars": 0,
+      "spread_dollars": null,
+      "ticker": "KXSENATEDEMLEAD-28JAN01-BSCH",
+      "topic": "elections",
+      "yes_asks_implied": [],
+      "yes_bids": []
     },
     "KXSENATEDEMLEAD-28JAN01-CSHU": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXSENATEDEMLEAD-28JAN01-CSHU/orderbook?depth=20",
-      "best_yes_ask": 0.93,
+      "best_yes_ask": null,
       "best_yes_bid": 0.92,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 531.94,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 0,
       "contracts_bid": 569.48,
       "depth_levels": {
-        "yes_ask": 3,
+        "yes_ask": 0,
         "yes_bid": 4
       },
-      "notional_ask_dollars": 499.99,
+      "notional_ask_dollars": 0,
       "notional_bid_dollars": 500.19,
-      "spread_dollars": 0.01,
+      "spread_dollars": null,
       "ticker": "KXSENATEDEMLEAD-28JAN01-CSHU",
       "topic": "elections",
-      "yes_asks_implied": [
-        [
-          0.93,
-          179.21
-        ],
-        [
-          0.94,
-          177.3
-        ],
-        [
-          0.95,
-          175.43
-        ]
-      ],
+      "yes_asks_implied": [],
       "yes_bids": [
         [
           0.01,
@@ -3793,51 +3445,21 @@
     },
     "KXTIME-26-ABD": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-ABD/orderbook?depth=20",
-      "best_yes_ask": 0.24,
-      "best_yes_bid": 0.23,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 4708.67,
-      "contracts_bid": 2335.85,
+      "best_yes_ask": 0.21,
+      "best_yes_bid": 0.2,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 4682.06,
+      "contracts_bid": 2696.44,
       "depth_levels": {
-        "yes_ask": 6,
+        "yes_ask": 8,
         "yes_bid": 4
       },
-      "notional_ask_dollars": 1265.59,
+      "notional_ask_dollars": 1156.27,
       "notional_bid_dollars": 500.6,
       "spread_dollars": 0.01,
       "ticker": "KXTIME-26-ABD",
       "topic": "culture",
       "yes_asks_implied": [
-        [
-          0.24,
-          694.44
-        ],
-        [
-          0.25,
-          666.66
-        ],
-        [
-          0.26,
-          641.02
-        ],
-        [
-          0.27,
-          373.31
-        ],
-        [
-          0.28,
-          1183.82
-        ],
-        [
-          0.29,
-          1149.42
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          60.0
-        ],
         [
           0.21,
           793.65
@@ -3849,6 +3471,44 @@
         [
           0.23,
           724.63
+        ],
+        [
+          0.25,
+          221.94
+        ],
+        [
+          0.26,
+          641.02
+        ],
+        [
+          0.27,
+          373.31
+        ],
+        [
+          0.28,
+          595.23
+        ],
+        [
+          0.29,
+          574.71
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          60.0
+        ],
+        [
+          0.18,
+          925.92
+        ],
+        [
+          0.19,
+          877.19
+        ],
+        [
+          0.2,
+          833.33
         ]
       ]
     },
@@ -3856,26 +3516,26 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-ADA/orderbook?depth=20",
       "best_yes_ask": 0.19,
       "best_yes_bid": 0.18,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 2063.51,
-      "contracts_bid": 3027.97,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 4214.69,
+      "contracts_bid": 5361.49,
       "depth_levels": {
         "yes_ask": 3,
-        "yes_bid": 4
+        "yes_bid": 5
       },
-      "notional_ask_dollars": 416.27,
-      "notional_bid_dollars": 500.8,
+      "notional_ask_dollars": 833.33,
+      "notional_bid_dollars": 856.86,
       "spread_dollars": 0.01,
       "ticker": "KXTIME-26-ADA",
       "topic": "culture",
       "yes_asks_implied": [
         [
           0.19,
-          436.53
+          1754.38
         ],
         [
           0.2,
-          833.33
+          1666.66
         ],
         [
           0.21,
@@ -3888,16 +3548,20 @@
           80.0
         ],
         [
+          0.15,
+          1111.11
+        ],
+        [
           0.16,
-          1041.66
+          2083.32
         ],
         [
           0.17,
-          980.39
+          1960.78
         ],
         [
           0.18,
-          925.92
+          126.28
         ]
       ]
     },
@@ -3905,26 +3569,26 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-ALE/orderbook?depth=20",
       "best_yes_ask": 0.04,
       "best_yes_bid": 0.03,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 34631.98,
-      "contracts_bid": 88988.84,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 36251.52,
+      "contracts_bid": 105655.5,
       "depth_levels": {
         "yes_ask": 4,
         "yes_bid": 3
       },
-      "notional_ask_dollars": 1874.64,
-      "notional_bid_dollars": 1667.67,
+      "notional_ask_dollars": 1877.04,
+      "notional_bid_dollars": 1834.33,
       "spread_dollars": 0.01,
       "ticker": "KXTIME-26-ALE",
       "topic": "culture",
       "yes_asks_implied": [
         [
           0.04,
-          6330.71
+          9426.17
         ],
         [
           0.05,
-          12428.29
+          13333.32
         ],
         [
           0.06,
@@ -3932,13 +3596,13 @@
         ],
         [
           0.07,
-          4761.9
+          2380.95
         ]
       ],
       "yes_bids": [
         [
           0.01,
-          33433.32
+          50099.98
         ],
         [
           0.02,
@@ -3954,124 +3618,30 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-ANN/orderbook?depth=20",
       "best_yes_ask": 0.22,
       "best_yes_bid": 0.21,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 7934.13,
-      "contracts_bid": 10076.68,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 5498.88,
+      "contracts_bid": 7592.51,
       "depth_levels": {
         "yes_ask": 3,
         "yes_bid": 4
       },
-      "notional_ask_dollars": 1829.98,
-      "notional_bid_dollars": 2000.59,
+      "notional_ask_dollars": 1273.16,
+      "notional_bid_dollars": 1500.8,
       "spread_dollars": 0.01,
       "ticker": "KXTIME-26-ANN",
       "topic": "culture",
       "yes_asks_implied": [
         [
           0.22,
-          2264.45
+          1241.67
         ],
         [
           0.23,
-          2891.92
+          2173.89
         ],
         [
           0.24,
-          2777.76
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          60.0
-        ],
-        [
-          0.19,
-          3508.76
-        ],
-        [
-          0.2,
-          3333.32
-        ],
-        [
-          0.21,
-          3174.6
-        ]
-      ]
-    },
-    "KXTIME-26-BAD": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-BAD/orderbook?depth=20",
-      "best_yes_ask": 0.04,
-      "best_yes_bid": 0.03,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 26759.3,
-      "contracts_bid": 80656.9,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 3
-      },
-      "notional_ask_dollars": 1281.48,
-      "notional_bid_dollars": 1167.71,
-      "spread_dollars": 0.01,
-      "ticker": "KXTIME-26-BAD",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.04,
-          11203.77
-        ],
-        [
-          0.05,
-          9999.99
-        ],
-        [
-          0.06,
-          5555.54
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          50099.98
-        ],
-        [
-          0.02,
-          24999.99
-        ],
-        [
-          0.03,
-          5556.93
-        ]
-      ]
-    },
-    "KXTIME-26-BEN": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-BEN/orderbook?depth=20",
-      "best_yes_ask": 0.09,
-      "best_yes_bid": 0.08,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 8695.09,
-      "contracts_bid": 14564.1,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 4
-      },
-      "notional_ask_dollars": 876.5,
-      "notional_bid_dollars": 1000.8,
-      "spread_dollars": 0.01,
-      "ticker": "KXTIME-26-BEN",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.09,
-          2331.47
-        ],
-        [
-          0.1,
-          3333.32
-        ],
-        [
-          0.11,
-          3030.3
+          2083.32
         ]
       ],
       "yes_bids": [
@@ -4080,65 +3650,57 @@
           80.0
         ],
         [
-          0.06,
-          5555.54
+          0.19,
+          2631.57
         ],
         [
-          0.07,
-          4761.9
+          0.2,
+          2499.99
         ],
         [
-          0.08,
-          4166.66
+          0.21,
+          2380.95
         ]
       ]
     },
-    "KXTIME-26-DAR": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-DAR/orderbook?depth=20",
-      "best_yes_ask": 0.06,
-      "best_yes_bid": 0.05,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 7242.05,
-      "contracts_bid": 13155.54,
+    "KXTIME-26-BER": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-BER/orderbook?depth=20",
+      "best_yes_ask": 0.03,
+      "best_yes_bid": 0.02,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 20555.53,
+      "contracts_bid": 49999.98,
       "depth_levels": {
         "yes_ask": 3,
-        "yes_bid": 4
+        "yes_bid": 2
       },
-      "notional_ask_dollars": 500.0,
-      "notional_bid_dollars": 501.0,
+      "notional_ask_dollars": 833.33,
+      "notional_bid_dollars": 666.67,
       "spread_dollars": 0.01,
-      "ticker": "KXTIME-26-DAR",
+      "ticker": "KXTIME-26-BER",
       "topic": "culture",
       "yes_asks_implied": [
-        [
-          0.06,
-          2777.77
-        ],
-        [
-          0.07,
-          2380.95
-        ],
-        [
-          0.08,
-          2083.33
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          100.0
-        ],
         [
           0.03,
           5555.55
         ],
         [
           0.04,
-          4166.66
+          8333.32
         ],
         [
           0.05,
-          3333.33
+          6666.66
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          33333.32
+        ],
+        [
+          0.02,
+          16666.66
         ]
       ]
     },
@@ -4146,22 +3708,22 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-EM/orderbook?depth=20",
       "best_yes_ask": 0.04,
       "best_yes_bid": 0.01,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 7499.99,
-      "contracts_bid": 16667.66,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 11314.25,
+      "contracts_bid": 33334.32,
       "depth_levels": {
         "yes_ask": 2,
         "yes_bid": 1
       },
-      "notional_ask_dollars": 333.33,
-      "notional_bid_dollars": 166.68,
+      "notional_ask_dollars": 485.9,
+      "notional_bid_dollars": 333.34,
       "spread_dollars": 0.03,
       "ticker": "KXTIME-26-EM",
       "topic": "culture",
       "yes_asks_implied": [
         [
           0.04,
-          4166.66
+          7980.92
         ],
         [
           0.05,
@@ -4171,42 +3733,38 @@
       "yes_bids": [
         [
           0.01,
-          16667.66
+          33334.32
         ]
       ]
     },
     "KXTIME-26-JAM": {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-JAM/orderbook?depth=20",
       "best_yes_ask": 0.3,
-      "best_yes_bid": 0.29,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 8210.62,
-      "contracts_bid": 6146.94,
+      "best_yes_bid": 0.28,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 6307.82,
+      "contracts_bid": 5580.59,
       "depth_levels": {
-        "yes_ask": 7,
-        "yes_bid": 5
+        "yes_ask": 6,
+        "yes_bid": 4
       },
-      "notional_ask_dollars": 3683.95,
-      "notional_bid_dollars": 1667.65,
-      "spread_dollars": 0.01,
+      "notional_ask_dollars": 3073.49,
+      "notional_bid_dollars": 1500.19,
+      "spread_dollars": 0.02,
       "ticker": "KXTIME-26-JAM",
       "topic": "culture",
       "yes_asks_implied": [
         [
           0.3,
-          868.92
+          387.49
         ],
         [
           0.31,
-          1503.33
+          1612.89
         ],
         [
           0.32,
-          2083.32
-        ],
-        [
-          0.33,
-          1010.1
+          1562.49
         ],
         [
           0.7,
@@ -4224,23 +3782,19 @@
       "yes_bids": [
         [
           0.01,
-          100.0
+          20.0
         ],
         [
           0.26,
-          1282.04
+          1923.06
         ],
         [
           0.27,
-          1234.56
+          1851.84
         ],
         [
           0.28,
-          2380.92
-        ],
-        [
-          0.29,
-          1149.42
+          1785.69
         ]
       ]
     },
@@ -4248,7 +3802,146 @@
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-JAME/orderbook?depth=20",
       "best_yes_ask": 0.04,
       "best_yes_bid": 0.01,
-      "captured_at": "2026-11-28T03:34:07Z",
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 3809.79,
+      "contracts_bid": 16666.66,
+      "depth_levels": {
+        "yes_ask": 1,
+        "yes_bid": 1
+      },
+      "notional_ask_dollars": 152.39,
+      "notional_bid_dollars": 166.67,
+      "spread_dollars": 0.03,
+      "ticker": "KXTIME-26-JAME",
+      "topic": "culture",
+      "yes_asks_implied": [
+        [
+          0.04,
+          3809.79
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          16666.66
+        ]
+      ]
+    },
+    "KXTIME-26-JON": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-JON/orderbook?depth=20",
+      "best_yes_ask": 0.16,
+      "best_yes_bid": 0.15,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 5031.29,
+      "contracts_bid": 12400.4,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 7
+      },
+      "notional_ask_dollars": 833.33,
+      "notional_bid_dollars": 1500.6,
+      "spread_dollars": 0.01,
+      "ticker": "KXTIME-26-JON",
+      "topic": "culture",
+      "yes_asks_implied": [
+        [
+          0.16,
+          3124.98
+        ],
+        [
+          0.17,
+          980.39
+        ],
+        [
+          0.18,
+          925.92
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          60.0
+        ],
+        [
+          0.1,
+          1666.66
+        ],
+        [
+          0.11,
+          3030.3
+        ],
+        [
+          0.12,
+          2777.76
+        ],
+        [
+          0.13,
+          2564.1
+        ],
+        [
+          0.14,
+          1190.47
+        ],
+        [
+          0.15,
+          1111.11
+        ]
+      ]
+    },
+    "KXTIME-26-JOS": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-JOS/orderbook?depth=20",
+      "best_yes_ask": 0.18,
+      "best_yes_bid": 0.17,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 5127.03,
+      "contracts_bid": 6476.4,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 4
+      },
+      "notional_ask_dollars": 973.74,
+      "notional_bid_dollars": 1000.0,
+      "spread_dollars": 0.01,
+      "ticker": "KXTIME-26-JOS",
+      "topic": "culture",
+      "yes_asks_implied": [
+        [
+          0.18,
+          1705.99
+        ],
+        [
+          0.19,
+          1754.38
+        ],
+        [
+          0.2,
+          1666.66
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.14,
+          1190.47
+        ],
+        [
+          0.15,
+          2222.22
+        ],
+        [
+          0.16,
+          2083.32
+        ],
+        [
+          0.17,
+          980.39
+        ]
+      ]
+    },
+    "KXTIME-26-LIO": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-LIO/orderbook?depth=20",
+      "best_yes_ask": 0.04,
+      "best_yes_bid": 0.01,
+      "captured_at": "2026-11-28T12:19:43Z",
       "contracts_ask": 4166.66,
       "contracts_bid": 16666.66,
       "depth_levels": {
@@ -4258,7 +3951,7 @@
       "notional_ask_dollars": 166.67,
       "notional_bid_dollars": 166.67,
       "spread_dollars": 0.03,
-      "ticker": "KXTIME-26-JAME",
+      "ticker": "KXTIME-26-LIO",
       "topic": "culture",
       "yes_asks_implied": [
         [
@@ -4273,11 +3966,244 @@
         ]
       ]
     },
-    "KXTIME-26-JAR": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-JAR/orderbook?depth=20",
+    "KXTIME-26-MARY": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-MARY/orderbook?depth=20",
+      "best_yes_ask": 0.19,
+      "best_yes_bid": 0.18,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 8520.23,
+      "contracts_bid": 8746.9,
+      "depth_levels": {
+        "yes_ask": 4,
+        "yes_bid": 4
+      },
+      "notional_ask_dollars": 1772.47,
+      "notional_bid_dollars": 1500.79,
+      "spread_dollars": 0.01,
+      "ticker": "KXTIME-26-MARY",
+      "topic": "culture",
+      "yes_asks_implied": [
+        [
+          0.19,
+          877.19
+        ],
+        [
+          0.2,
+          2195.73
+        ],
+        [
+          0.21,
+          3174.6
+        ],
+        [
+          0.22,
+          2272.71
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          80.0
+        ],
+        [
+          0.16,
+          1041.66
+        ],
+        [
+          0.17,
+          3921.56
+        ],
+        [
+          0.18,
+          3703.68
+        ]
+      ]
+    },
+    "KXTIME-26-MOH": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-MOH/orderbook?depth=20",
+      "best_yes_ask": 0.03,
+      "best_yes_bid": 0.02,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 20555.53,
+      "contracts_bid": 49999.98,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 833.33,
+      "notional_bid_dollars": 666.67,
+      "spread_dollars": 0.01,
+      "ticker": "KXTIME-26-MOH",
+      "topic": "culture",
+      "yes_asks_implied": [
+        [
+          0.03,
+          5555.55
+        ],
+        [
+          0.04,
+          8333.32
+        ],
+        [
+          0.05,
+          6666.66
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          33333.32
+        ],
+        [
+          0.02,
+          16666.66
+        ]
+      ]
+    },
+    "KXTIME-26-MOJ": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-MOJ/orderbook?depth=20",
+      "best_yes_ask": 0.05,
+      "best_yes_bid": 0.02,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 15953.01,
+      "contracts_bid": 16726.66,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 948.44,
+      "notional_bid_dollars": 333.93,
+      "spread_dollars": 0.03,
+      "ticker": "KXTIME-26-MOJ",
+      "topic": "culture",
+      "yes_asks_implied": [
+        [
+          0.05,
+          5635.57
+        ],
+        [
+          0.06,
+          5555.54
+        ],
+        [
+          0.07,
+          4761.9
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          60.0
+        ],
+        [
+          0.02,
+          16666.66
+        ]
+      ]
+    },
+    "KXTIME-26-SA": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-SA/orderbook?depth=20",
+      "best_yes_ask": 0.03,
+      "best_yes_bid": 0.02,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 20397.83,
+      "contracts_bid": 49999.98,
+      "depth_levels": {
+        "yes_ask": 3,
+        "yes_bid": 2
+      },
+      "notional_ask_dollars": 827.02,
+      "notional_bid_dollars": 666.67,
+      "spread_dollars": 0.01,
+      "ticker": "KXTIME-26-SA",
+      "topic": "culture",
+      "yes_asks_implied": [
+        [
+          0.03,
+          5555.55
+        ],
+        [
+          0.04,
+          8175.62
+        ],
+        [
+          0.05,
+          6666.66
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          33333.32
+        ],
+        [
+          0.02,
+          16666.66
+        ]
+      ]
+    },
+    "KXTIME-26-SCO": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-SCO/orderbook?depth=20",
+      "best_yes_ask": 0.23,
+      "best_yes_bid": 0.22,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 5007.33,
+      "contracts_bid": 5587.19,
+      "depth_levels": {
+        "yes_ask": 4,
+        "yes_bid": 5
+      },
+      "notional_ask_dollars": 1240.15,
+      "notional_bid_dollars": 1175.49,
+      "spread_dollars": 0.01,
+      "ticker": "KXTIME-26-SCO",
+      "topic": "culture",
+      "yes_asks_implied": [
+        [
+          0.23,
+          724.63
+        ],
+        [
+          0.24,
+          1000.68
+        ],
+        [
+          0.25,
+          1999.98
+        ],
+        [
+          0.26,
+          1282.04
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          40.0
+        ],
+        [
+          0.14,
+          60.2
+        ],
+        [
+          0.2,
+          833.33
+        ],
+        [
+          0.21,
+          2380.95
+        ],
+        [
+          0.22,
+          2272.71
+        ]
+      ]
+    },
+    "KXTIME-26-SHE": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-SHE/orderbook?depth=20",
       "best_yes_ask": 0.02,
       "best_yes_bid": 0.01,
-      "captured_at": "2026-11-28T03:34:07Z",
+      "captured_at": "2026-11-28T12:19:43Z",
       "contracts_ask": 22222.2,
       "contracts_bid": 33333.32,
       "depth_levels": {
@@ -4287,7 +4213,7 @@
       "notional_ask_dollars": 666.67,
       "notional_bid_dollars": 333.33,
       "spread_dollars": 0.01,
-      "ticker": "KXTIME-26-JAR",
+      "ticker": "KXTIME-26-SHE",
       "topic": "culture",
       "yes_asks_implied": [
         [
@@ -4310,232 +4236,38 @@
         ]
       ]
     },
-    "KXTIME-26-JEN": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-JEN/orderbook?depth=20",
-      "best_yes_ask": 0.08,
-      "best_yes_bid": 0.07,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 16805.52,
-      "contracts_bid": 24840.63,
+    "KXTIME-26-TRO": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-TRO/orderbook?depth=20",
+      "best_yes_ask": 0.16,
+      "best_yes_bid": 0.15,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 5298.75,
+      "contracts_bid": 3643.63,
       "depth_levels": {
-        "yes_ask": 3,
+        "yes_ask": 6,
         "yes_bid": 4
       },
-      "notional_ask_dollars": 1500.0,
-      "notional_bid_dollars": 1451.91,
+      "notional_ask_dollars": 994.59,
+      "notional_bid_dollars": 500.6,
       "spread_dollars": 0.01,
-      "ticker": "KXTIME-26-JEN",
+      "ticker": "KXTIME-26-TRO",
       "topic": "culture",
       "yes_asks_implied": [
-        [
-          0.08,
-          6249.99
-        ],
-        [
-          0.09,
-          5555.55
-        ],
-        [
-          0.1,
-          4999.98
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          60.0
-        ],
-        [
-          0.05,
-          9999.99
-        ],
-        [
-          0.06,
-          8333.31
-        ],
-        [
-          0.07,
-          6447.33
-        ]
-      ]
-    },
-    "KXTIME-26-JON": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-JON/orderbook?depth=20",
-      "best_yes_ask": 0.14,
-      "best_yes_bid": 0.13,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 6636.47,
-      "contracts_bid": 8816.77,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 5
-      },
-      "notional_ask_dollars": 992.99,
-      "notional_bid_dollars": 1000.6,
-      "spread_dollars": 0.01,
-      "ticker": "KXTIME-26-JON",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.14,
-          2330.93
-        ],
-        [
-          0.15,
-          2222.22
-        ],
         [
           0.16,
-          2083.32
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          60.0
+          1007.89
         ],
         [
-          0.1,
-          1666.66
+          0.17,
+          980.39
         ],
-        [
-          0.11,
-          3030.3
-        ],
-        [
-          0.12,
-          2777.76
-        ],
-        [
-          0.13,
-          1282.05
-        ]
-      ]
-    },
-    "KXTIME-26-JOS": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-JOS/orderbook?depth=20",
-      "best_yes_ask": 0.23,
-      "best_yes_bid": 0.2,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 520.17,
-      "contracts_bid": 2636.44,
-      "depth_levels": {
-        "yes_ask": 1,
-        "yes_bid": 3
-      },
-      "notional_ask_dollars": 119.64,
-      "notional_bid_dollars": 500.0,
-      "spread_dollars": 0.03,
-      "ticker": "KXTIME-26-JOS",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.23,
-          520.17
-        ]
-      ],
-      "yes_bids": [
         [
           0.18,
           925.92
         ],
         [
-          0.19,
-          877.19
-        ],
-        [
           0.2,
           833.33
-        ]
-      ]
-    },
-    "KXTIME-26-MARY": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-MARY/orderbook?depth=20",
-      "best_yes_ask": 0.2,
-      "best_yes_bid": 0.19,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 8628.22,
-      "contracts_bid": 11154.0,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 4
-      },
-      "notional_ask_dollars": 1817.97,
-      "notional_bid_dollars": 2000.19,
-      "spread_dollars": 0.01,
-      "ticker": "KXTIME-26-MARY",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.2,
-          2426.05
-        ],
-        [
-          0.21,
-          3171.89
-        ],
-        [
-          0.22,
-          3030.28
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          20.0
-        ],
-        [
-          0.17,
-          3921.56
-        ],
-        [
-          0.18,
-          3703.68
-        ],
-        [
-          0.19,
-          3508.76
-        ]
-      ]
-    },
-    "KXTIME-26-SCO": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-SCO/orderbook?depth=20",
-      "best_yes_ask": 0.24,
-      "best_yes_bid": 0.23,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 2002.12,
-      "contracts_bid": 2436.05,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 5
-      },
-      "notional_ask_dollars": 500.0,
-      "notional_bid_dollars": 509.42,
-      "spread_dollars": 0.01,
-      "ticker": "KXTIME-26-SCO",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.24,
-          694.44
-        ],
-        [
-          0.25,
-          666.66
-        ],
-        [
-          0.26,
-          641.02
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          100.0
-        ],
-        [
-          0.14,
-          60.2
         ],
         [
           0.21,
@@ -4544,30 +4276,66 @@
         [
           0.22,
           757.57
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          60.0
         ],
         [
-          0.23,
-          724.63
+          0.13,
+          1282.05
+        ],
+        [
+          0.14,
+          1190.47
+        ],
+        [
+          0.15,
+          1111.11
         ]
       ]
     },
-    "KXTIME-26-TRO": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-TRO/orderbook?depth=20",
-      "best_yes_ask": 0.2,
-      "best_yes_bid": 0.19,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 4011.53,
-      "contracts_bid": 5343.48,
+    "KXTIME-26-ZOH": {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-ZOH/orderbook?depth=20",
+      "best_yes_ask": 0.23,
+      "best_yes_bid": 0.22,
+      "captured_at": "2026-11-28T12:19:43Z",
+      "contracts_ask": 2600.14,
+      "contracts_bid": 5028.72,
       "depth_levels": {
         "yes_ask": 3,
         "yes_bid": 5
       },
-      "notional_ask_dollars": 833.33,
-      "notional_bid_dollars": 919.08,
+      "notional_ask_dollars": 623.45,
+      "notional_bid_dollars": 1001.4,
       "spread_dollars": 0.01,
-      "ticker": "KXTIME-26-TRO",
+      "ticker": "KXTIME-26-ZOH",
       "topic": "culture",
       "yes_asks_implied": [
+        [
+          0.23,
+          724.63
+        ],
+        [
+          0.24,
+          1208.85
+        ],
+        [
+          0.25,
+          666.66
+        ]
+      ],
+      "yes_bids": [
+        [
+          0.01,
+          140.0
+        ],
+        [
+          0.19,
+          877.19
+        ],
         [
           0.2,
           1666.66
@@ -4579,130 +4347,6 @@
         [
           0.22,
           757.57
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          40.0
-        ],
-        [
-          0.16,
-          1041.66
-        ],
-        [
-          0.17,
-          1960.78
-        ],
-        [
-          0.18,
-          1851.84
-        ],
-        [
-          0.19,
-          449.2
-        ]
-      ]
-    },
-    "KXTIME-26-XIJ": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-XIJ/orderbook?depth=20",
-      "best_yes_ask": 0.04,
-      "best_yes_bid": 0.03,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 20555.52,
-      "contracts_bid": 57574.58,
-      "depth_levels": {
-        "yes_ask": 3,
-        "yes_bid": 3
-      },
-      "notional_ask_dollars": 1000.0,
-      "notional_bid_dollars": 893.9,
-      "spread_dollars": 0.01,
-      "ticker": "KXTIME-26-XIJ",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.04,
-          8333.32
-        ],
-        [
-          0.05,
-          6666.66
-        ],
-        [
-          0.06,
-          5555.54
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          33333.32
-        ],
-        [
-          0.02,
-          16666.66
-        ],
-        [
-          0.03,
-          7574.6
-        ]
-      ]
-    },
-    "KXTIME-26-ZOH": {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-ZOH/orderbook?depth=20",
-      "best_yes_ask": 0.22,
-      "best_yes_bid": 0.21,
-      "captured_at": "2026-11-28T03:34:07Z",
-      "contracts_ask": 2863.05,
-      "contracts_bid": 3417.82,
-      "depth_levels": {
-        "yes_ask": 5,
-        "yes_bid": 4
-      },
-      "notional_ask_dollars": 698.71,
-      "notional_bid_dollars": 667.87,
-      "spread_dollars": 0.01,
-      "ticker": "KXTIME-26-ZOH",
-      "topic": "culture",
-      "yes_asks_implied": [
-        [
-          0.22,
-          32.94
-        ],
-        [
-          0.23,
-          724.63
-        ],
-        [
-          0.24,
-          797.8
-        ],
-        [
-          0.25,
-          666.66
-        ],
-        [
-          0.26,
-          641.02
-        ]
-      ],
-      "yes_bids": [
-        [
-          0.01,
-          120.0
-        ],
-        [
-          0.19,
-          877.19
-        ],
-        [
-          0.2,
-          833.33
-        ],
-        [
-          0.21,
-          1587.3
         ]
       ]
     }

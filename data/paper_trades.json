@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T03:35:38Z",
+  "generated_at": "2026-11-28T12:21:13Z",
   "trades": [
     {
       "entry": {
@@ -686,6 +686,168 @@
       "strategy_id": "S2_MEAN_REVERT",
       "strategy_kind": "mean_reversion",
       "strategy_name": "Overreaction fade",
+      "subtitle": "Nicolai von Dellingshausen",
+      "ticker": "KXDPWORLDTOUR-BMAPC26-NVON",
+      "title": "DP World Tour Tournament Winner",
+      "topic": "golf"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 9.73,
+        "contracts": 10.0,
+        "cost_dollars": 9.7,
+        "entry_price": 0.97,
+        "fee_dollars": 0.03,
+        "max_loss_dollars": -9.73,
+        "max_profit_dollars": 0.27,
+        "observed_move": 0.25,
+        "roi_on_risk_pct": 2.77,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S1_MOMENTUM::KXAAAGASM-26NOV30-3.50::2026-11-28T12:21:13Z",
+      "market_at_entry": {
+        "close_time": "2026-11-30T04:59:00Z",
+        "last": "0.9700",
+        "open_interest_fp": "12208.32",
+        "volume_fp": "17642.18",
+        "yes_ask": "0.9900",
+        "yes_bid": "0.9400"
+      },
+      "opened_at": "2026-11-28T12:21:13Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXAAAGASM-26NOV30-3.50",
+      "status": "open",
+      "strategy_id": "S1_MOMENTUM",
+      "strategy_kind": "momentum",
+      "strategy_name": "Swing momentum",
+      "subtitle": "Above 3.50",
+      "ticker": "KXAAAGASM-26NOV30-3.50",
+      "title": "US gas price",
+      "topic": "gas"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 0.43,
+        "contracts": 10.0,
+        "cost_dollars": 0.4,
+        "entry_price": 0.04,
+        "fee_dollars": 0.03,
+        "max_loss_dollars": -0.43,
+        "max_profit_dollars": 9.57,
+        "observed_move": 0.23,
+        "roi_on_risk_pct": 2225.58,
+        "side": "no",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S2_MEAN_REVERT::KXAAAGASW-26NOV30-3.5000::2026-11-28T12:21:13Z",
+      "market_at_entry": {
+        "close_time": "2026-11-30T04:59:00Z",
+        "last": "0.9700",
+        "open_interest_fp": "10103.04",
+        "volume_fp": "11734.71",
+        "yes_ask": "1.0000",
+        "yes_bid": "0.9600"
+      },
+      "opened_at": "2026-11-28T12:21:13Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXAAAGASW-26NOV30-3.5000",
+      "status": "open",
+      "strategy_id": "S2_MEAN_REVERT",
+      "strategy_kind": "mean_reversion",
+      "strategy_name": "Overreaction fade",
+      "subtitle": "Above 3.5000",
+      "ticker": "KXAAAGASW-26NOV30-3.5000",
+      "title": "US gas price up",
+      "topic": "gas"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 4.58,
+        "contracts": 10.0,
+        "cost_dollars": 4.4,
+        "entry_price": 0.44,
+        "fee_dollars": 0.18,
+        "max_loss_dollars": -4.58,
+        "max_profit_dollars": 5.42,
+        "roi_on_risk_pct": 118.34,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S5_LIQUID_MID::KXRT-HEX-65::2026-11-28T12:21:13Z",
+      "market_at_entry": {
+        "close_time": "2026-11-30T15:00:00Z",
+        "last": "0.7600",
+        "open_interest_fp": "8481.15",
+        "volume_fp": "11687.84",
+        "yes_ask": "0.4400",
+        "yes_bid": "0.4200"
+      },
+      "opened_at": "2026-11-28T12:21:13Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXRT-HEX-65",
+      "status": "open",
+      "strategy_id": "S5_LIQUID_MID",
+      "strategy_kind": "liquidity",
+      "strategy_name": "Liquid mid-range",
+      "subtitle": "Above 65",
+      "ticker": "KXRT-HEX-65",
+      "title": "Rotten Tomatoes Scores",
+      "topic": "culture"
+    },
+    {
+      "entry": {
+        "cash_out_dollars": 5.18,
+        "contracts": 10.0,
+        "cost_dollars": 5.0,
+        "entry_price": 0.5,
+        "fee_dollars": 0.18,
+        "max_loss_dollars": -5.18,
+        "max_profit_dollars": 4.82,
+        "roi_on_risk_pct": 93.05,
+        "side": "yes",
+        "trigger": "scheduled cycle"
+      },
+      "fee_model": {
+        "multiplier": 0.07,
+        "role": "taker",
+        "rounding": "round up to next whole cent (reproduces the fee schedule table)",
+        "schedule": "https://kalshi.com/docs/kalshi-fee-schedule.pdf"
+      },
+      "id": "S5_LIQUID_MID::KXDPWORLDTOUR-BMAPC26-NVON::2026-11-28T12:21:13Z",
+      "market_at_entry": {
+        "close_time": "2026-12-13T00:00:00Z",
+        "last": "0.5000",
+        "open_interest_fp": "29192.41",
+        "volume_fp": "34152.55",
+        "yes_ask": "0.5000",
+        "yes_bid": "0.4900"
+      },
+      "opened_at": "2026-11-28T12:21:13Z",
+      "source": "paper",
+      "source_url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXDPWORLDTOUR-BMAPC26-NVON",
+      "status": "open",
+      "strategy_id": "S5_LIQUID_MID",
+      "strategy_kind": "liquidity",
+      "strategy_name": "Liquid mid-range",
       "subtitle": "Nicolai von Dellingshausen",
       "ticker": "KXDPWORLDTOUR-BMAPC26-NVON",
       "title": "DP World Tour Tournament Winner",

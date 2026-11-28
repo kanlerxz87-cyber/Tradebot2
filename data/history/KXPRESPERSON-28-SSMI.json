@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.003,
+      "bid": 0.002,
+      "bid_depth": 749999.97,
+      "last": 0.003,
+      "mid": 0.0025,
+      "oi": 14475729.1,
+      "spread": 0.001,
+      "t": "2026-11-28T12:19:43Z",
+      "ts": 1795868383,
+      "vol": 40866540.19
+    }
+  ],
+  "series_ticker": "KXPRESPERSON",
+  "subtitle": "Stephen A. Smith",
+  "ticker": "KXPRESPERSON-28-SSMI",
+  "title": "Pres person",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-SSMI"
+}

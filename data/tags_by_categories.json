@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T03:34:07Z",
+  "generated_at": "2026-11-28T12:19:43Z",
   "source": "https://docs.kalshi.com/api-reference/search/get-tags-for-series-categories",
   "tags_by_categories": {
     "AI": null,
@@ -15,8 +15,7 @@
       "Climate change",
       "Hurricanes",
       "Cold",
-      "Degree days",
-      "Wind"
+      "Degree days"
     ],
     "Commodities": [
       "Metals",
@@ -261,8 +260,8 @@
       "Basketball",
       "Hockey",
       "Tennis",
-      "Golf",
       "Motorsport",
+      "Golf",
       "Baseball",
       "Esports",
       "MMA",
