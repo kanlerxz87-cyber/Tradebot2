@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T21:42:14Z",
+  "generated_at": "2026-11-28T03:35:02Z",
   "series": [
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=1SONG-DRAKE",
@@ -13568,7 +13568,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "465637.00"
+      "volume_fp": "465639.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KX2028RRUN",
@@ -18528,7 +18528,7 @@
       "topics": [
         "gas"
       ],
-      "volume_fp": "74928104.00"
+      "volume_fp": "74928106.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXAAAGASMAX",
@@ -18980,7 +18980,7 @@
       "topics": [
         "gas"
       ],
-      "volume_fp": "34785.00"
+      "volume_fp": "34786.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXAAAGASMTX",
@@ -50903,7 +50903,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "20698.00"
+      "volume_fp": "20710.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBNBD",
@@ -50951,7 +50951,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "129591.00"
+      "volume_fp": "130097.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBNBMAXMON",
@@ -53279,7 +53279,7 @@
       "topics": [
         "gas"
       ],
-      "volume_fp": "109.00"
+      "volume_fp": "114.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBRENTD",
@@ -55652,7 +55652,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "117425395.00"
+      "volume_fp": "117425463.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTC100",
@@ -55730,7 +55730,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "10188633.00"
+      "volume_fp": "10260597.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTC1M-D",
@@ -56160,7 +56160,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "3485770.00"
+      "volume_fp": "3485795.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTC60VS100",
@@ -56653,7 +56653,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "5729489844.00"
+      "volume_fp": "5729495742.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTCD-B",
@@ -58157,7 +58157,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "19610193.00"
+      "volume_fp": "19610199.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTCPERP",
@@ -58821,7 +58821,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "1977756438.00"
+      "volume_fp": "1977756439.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXBTCYEAR",
@@ -66503,6 +66503,49 @@
         "elections"
       ],
       "volume_fp": "45.00"
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXCHICAGOMAYOR1R",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/USELECTION.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/USELECTION.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=US Elections",
+          "value": "US Elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Chicago Board of Election Commissioners",
+          "url": "https://chicagoelections.gov/elections/results"
+        }
+      ],
+      "tags": [
+        "Mayors & local",
+        "US Elections"
+      ],
+      "ticker": "KXCHICAGOMAYOR1R",
+      "title": "Who will win the first round of the Chicago mayoral election?",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": "0.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXCHICOUTIMI",
@@ -83317,7 +83360,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "60866.00"
+      "volume_fp": "60976.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXDOGED",
@@ -84032,6 +84075,49 @@
       "volume_fp": "35651.00"
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXDOMINICAPARLI",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/ELECTION.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/ELECTION.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=International elections",
+          "value": "International elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Electoral Office of Dominica",
+          "url": "https://electoraloffice.gov.dm/"
+        }
+      ],
+      "tags": [
+        "International elections",
+        "South & Central America"
+      ],
+      "ticker": "KXDOMINICAPARLI",
+      "title": "Dominica parliamentary election winner",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": "0.00"
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXDONALDSLTGOV",
       "categories": [
         "Elections"
@@ -84388,6 +84474,108 @@
       ],
       "ticker": "KXDPCCCHAIR120",
       "title": "House Democratic Policy and Communications Committee Chair",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": "0.00"
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXDPRESDELCOUNT",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/PRESDELEGATES.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/PRESDELEGATES.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=Nomination race",
+          "value": "Nomination race"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=US Elections",
+          "value": "US Elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "MS Now",
+          "url": "https://www.ms.now/"
+        },
+        {
+          "name": "ABC",
+          "url": "https://abcnews.go.com/"
+        },
+        {
+          "name": "BBC",
+          "url": "https://www.bbc.com/"
+        },
+        {
+          "name": "The Wall Street Journal",
+          "url": "https://www.wsj.com/"
+        },
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com"
+        },
+        {
+          "name": "CBS",
+          "url": "https://www.cbsnews.com/"
+        },
+        {
+          "name": "NBC",
+          "url": "https://www.nbcnews.com/"
+        },
+        {
+          "name": "The Washington Post",
+          "url": "https://www.washingtonpost.com/"
+        },
+        {
+          "name": "Fox News",
+          "url": "https://www.foxnews.com"
+        },
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/"
+        },
+        {
+          "name": "CNN",
+          "url": "https://www.cnn.com"
+        },
+        {
+          "name": "Bloomberg News",
+          "url": "https://www.bloomberg.com"
+        },
+        {
+          "name": "the Associated Press",
+          "url": "https://apnews.com/"
+        },
+        {
+          "name": "the New York Times",
+          "url": "https://www.nytimes.com"
+        }
+      ],
+      "tags": [
+        "2028",
+        "Nomination race",
+        "Democratic primaries",
+        "US Elections"
+      ],
+      "ticker": "KXDPRESDELCOUNT",
+      "title": "Democratic presidential primary delegate count",
       "topics": [
         "elections"
       ],
@@ -84767,7 +84955,7 @@
       "topics": [
         "golf"
       ],
-      "volume_fp": "8259600282.00"
+      "volume_fp": "8259672396.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXDPWORLDTOURMAKECUT",
@@ -95353,7 +95541,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "218833.00"
+      "volume_fp": "219044.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXECDJT270",
@@ -104107,7 +104295,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "1286232.00"
+      "volume_fp": "1287503.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXETHABOVE2500BY",
@@ -104330,7 +104518,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "142682290.00"
+      "volume_fp": "142686619.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXETHE",
@@ -104894,7 +105082,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "249551767.00"
+      "volume_fp": "249551768.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXEULEADEROUT",
@@ -142229,7 +142417,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "18233.00"
+      "volume_fp": "18245.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXHYPED",
@@ -142277,7 +142465,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "5806.00"
+      "volume_fp": "6614.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXHYPEEVENT",
@@ -153520,7 +153708,7 @@
       "settlement_sources": [
         {
           "name": "National Election Commission of Korea",
-          "url": "https://nec.go.kr/site/eng/03/10303000000002020070601.jsp"
+          "url": "https://www.nec.go.kr/site/eng/main.do"
         },
         {
           "name": "Reuters",
@@ -160926,6 +161114,49 @@
       ],
       "ticker": "KXLEPENEURCOMBO",
       "title": "2027 French election winner \u00d7 EUR/USD change",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": "0.00"
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXLESOTHOPARLI",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/ELECTION.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/ELECTION.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=International elections",
+          "value": "International elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Independent Electoral Commission of Lesotho",
+          "url": "https://iec.org.ls/"
+        }
+      ],
+      "tags": [
+        "International elections",
+        "Africa & Middle East"
+      ],
+      "ticker": "KXLESOTHOPARLI",
+      "title": "Lesotho parliamentary election winner",
       "topics": [
         "elections"
       ],
@@ -170843,6 +171074,53 @@
       ],
       "ticker": "KXMARSEILLEMAYOR",
       "title": "Who will win the Marseille mayoral election?",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": "0.00"
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXMARSHALLPRES",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/ELECTION.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/ELECTION.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=International elections",
+          "value": "International elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Nitijela of the Republic of the Marshall Islands",
+          "url": "https://rmiparliament.org/cms/"
+        },
+        {
+          "name": "The Marshall Islands Journal",
+          "url": "https://marshallislandsjournal.com/"
+        }
+      ],
+      "tags": [
+        "International elections",
+        "South Asia & Pacific"
+      ],
+      "ticker": "KXMARSHALLPRES",
+      "title": "Marshallese presidential election winner",
       "topics": [
         "elections"
       ],
@@ -183855,7 +184133,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "5238822.00"
+      "volume_fp": "5238829.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXMIDTERMVOTETURN",
@@ -183897,7 +184175,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "7589.00"
+      "volume_fp": "7591.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXMIGUELHIDALGOMAYOR",
@@ -185360,6 +185638,49 @@
       "volume_fp": "0.00"
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXMIYAZAKIGOV",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/ELECTION.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/ELECTION.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=International elections",
+          "value": "International elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Miyazaki Prefectural Election Management Commission",
+          "url": "https://www.pref.miyazaki.lg.jp/senkyo/index.html"
+        }
+      ],
+      "tags": [
+        "International elections",
+        "East Asia"
+      ],
+      "ticker": "KXMIYAZAKIGOV",
+      "title": "Miyazaki gubernatorial election winner",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": "0.00"
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXMJACKSON",
       "categories": [
         "Entertainment"
@@ -186658,7 +186979,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "131306.00"
+      "volume_fp": "131310.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXMONGOLIADPPRIMARY",
@@ -196130,7 +196451,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "34544.00"
+      "volume_fp": "34554.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXNEARD",
@@ -197583,7 +197904,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "44.00"
+      "volume_fp": "45.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXNETFLIXTOPVIEWSTV",
@@ -198988,7 +199309,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "2464.00"
+      "volume_fp": "2474.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXNEWTAYLOR",
@@ -202751,6 +203072,49 @@
       "volume_fp": "0.00"
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXNORTHCYPRUSPARLI",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/ELECTION.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/ELECTION.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=International elections",
+          "value": "International elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Supreme Electoral Council of Northern Cyprus (YSK)",
+          "url": "https://ysk.gov.ct.tr/"
+        }
+      ],
+      "tags": [
+        "International elections",
+        "Rest of Europe"
+      ],
+      "ticker": "KXNORTHCYPRUSPARLI",
+      "title": "Northern Cyprus parliamentary election winner",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": "0.00"
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXNORTHMIDLANDSMAYOR",
       "categories": [
         "Elections"
@@ -203584,7 +203948,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "81651.00"
+      "volume_fp": "81652.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXNVGOVNOTC",
@@ -211331,7 +211695,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "47772928.00"
+      "volume_fp": "47772929.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXOSCARPROD",
@@ -221097,7 +221461,7 @@
       "topics": [
         "golf"
       ],
-      "volume_fp": "42202651111.00"
+      "volume_fp": "42202651112.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXPGATOURCHAMP",
@@ -226818,7 +227182,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "7990163812.00"
+      "volume_fp": "7990265444.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXPRESNOMG",
@@ -226959,7 +227323,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "1037664159.00"
+      "volume_fp": "1037723558.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXPRESOUTCOME",
@@ -239521,6 +239885,80 @@
       "volume_fp": "0.00"
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXRPRESDELCOUNT",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/PRESDELEGATES.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/PRESDELEGATES.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=Nomination race",
+          "value": "Nomination race"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=US Elections",
+          "value": "US Elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Associated Press",
+          "url": "https://apnews.com"
+        },
+        {
+          "name": "New York Times",
+          "url": "https://www.nytimes.com/"
+        },
+        {
+          "name": "NBC",
+          "url": "https://www.nbcnews.com/"
+        },
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/"
+        },
+        {
+          "name": "CNN",
+          "url": "https://www.cnn.com"
+        },
+        {
+          "name": "Washington Post",
+          "url": "https://www.washingtonpost.com"
+        },
+        {
+          "name": "Bloomberg News",
+          "url": "https://www.bloomberg.com"
+        }
+      ],
+      "tags": [
+        "2028",
+        "Republican primaries",
+        "Nomination race",
+        "US Elections"
+      ],
+      "ticker": "KXRPRESDELCOUNT",
+      "title": "Republican presidential primary delegate count",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": "0.00"
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXRPRESDELEGATE",
       "categories": [
         "Elections"
@@ -240022,7 +240460,7 @@
       "topics": [
         "culture"
       ],
-      "volume_fp": "200333572.00"
+      "volume_fp": "200334101.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXRT28YEARSLATER",
@@ -247523,6 +247961,49 @@
       "title": "Actors strike ends",
       "topics": [
         "culture"
+      ],
+      "volume_fp": "0.00"
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSAGAGOV",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/ELECTION.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/ELECTION.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=International elections",
+          "value": "International elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Saga Prefecture Election Management Commission",
+          "url": "https://www.pref.saga.lg.jp/list06771.html"
+        }
+      ],
+      "tags": [
+        "International elections",
+        "East Asia"
+      ],
+      "ticker": "KXSAGAGOV",
+      "title": "Saga gubernatorial election winner",
+      "topics": [
+        "elections"
       ],
       "volume_fp": "0.00"
     },
@@ -258581,7 +259062,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "474661.00"
+      "volume_fp": "474719.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSENMAJLEAVE",
@@ -261173,6 +261654,49 @@
         "elections"
       ],
       "volume_fp": "3.00"
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSKNPARLI",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/ELECTION.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/ELECTION.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=International elections",
+          "value": "International elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Electoral Office of Saint Kitts and Nevis",
+          "url": "https://legal.gov.kn/electoral-office-2"
+        }
+      ],
+      "tags": [
+        "International elections",
+        "South & Central America"
+      ],
+      "ticker": "KXSKNPARLI",
+      "title": "Saint Kitts and Nevis general election winner",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": "0.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSKPRES",
@@ -264607,7 +265131,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "324402.00"
+      "volume_fp": "325081.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSOL26500",
@@ -265003,7 +265527,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "163198.00"
+      "volume_fp": "165813.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSOLD26",
@@ -268759,10 +269283,6 @@
         {
           "name": "Semafor",
           "url": "https://www.semafor.com/"
-        },
-        {
-          "name": "Clerk of the U.S. House of Representatives",
-          "url": "https://clerk.house.gov/DischargePetition/2026083127"
         },
         {
           "name": "CBS",
@@ -279136,6 +279656,77 @@
       "volume_fp": "1440.00"
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSTATELEGMS",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/ELECTIONWINMS.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/ELECTIONWINMS.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=US Elections",
+          "value": "US Elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Associated Press",
+          "url": "https://apnews.com"
+        },
+        {
+          "name": "Mississippi Secretary of State",
+          "url": "https://www.sos.ms.gov/elections-voting"
+        },
+        {
+          "name": "New York Times",
+          "url": "https://www.nytimes.com/"
+        },
+        {
+          "name": "NBC News",
+          "url": "https://www.nbcnews.com"
+        },
+        {
+          "name": "ABC News",
+          "url": "https://abcnews.go.com/"
+        },
+        {
+          "name": "CNN",
+          "url": "https://www.cnn.com/"
+        },
+        {
+          "name": "Fox News",
+          "url": "https://www.foxnews.com"
+        },
+        {
+          "name": "CBS News",
+          "url": "https://cbsnews.com"
+        }
+      ],
+      "tags": [
+        "State legislatures",
+        "US Elections"
+      ],
+      "ticker": "KXSTATELEGMS",
+      "title": "Mississippi Legislature race winner?",
+      "topics": [
+        "elections"
+      ],
+      "volume_fp": "0.00"
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXSTATELEGMT",
       "categories": [
         "Elections"
@@ -287012,7 +287603,7 @@
       "topics": [
         "elections"
       ],
-      "volume_fp": "33586.00"
+      "volume_fp": "34036.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXTAIPEIMAYORCOMBO",
@@ -288088,6 +288679,49 @@
       "title": "The Art of loving by Olivia Dean album streams",
       "topics": [
         "culture"
+      ],
+      "volume_fp": "0.00"
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXTAOYUANMAYOR",
+      "categories": [
+        "Elections"
+      ],
+      "category": "Elections",
+      "contract_terms_url": "https://assets.kalshi.com/contract_terms/ELECTION.pdf",
+      "contract_url": "https://kalshi-public-docs-staging.s3.us-east-1.amazonaws.com/regulatory/product-certifications/ELECTION.pdf",
+      "discovery": [
+        {
+          "by": "category",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?category=Elections",
+          "value": "Elections"
+        },
+        {
+          "by": "tags",
+          "url": "https://external-api.demo.kalshi.co/trade-api/v2/series?tags=International elections",
+          "value": "International elections"
+        }
+      ],
+      "fee_multiplier": 1,
+      "fee_type": "quadratic",
+      "frequency": "one_off",
+      "matched_rules": {
+        "elections": "series category \u2208 {Elections}"
+      },
+      "settlement_sources": [
+        {
+          "name": "Central Election Commission of Taiwan",
+          "url": "https://web.cec.gov.tw/central?Menu_id=1392"
+        }
+      ],
+      "tags": [
+        "International elections",
+        "East Asia"
+      ],
+      "ticker": "KXTAOYUANMAYOR",
+      "title": "Taoyuan mayoral election winner",
+      "topics": [
+        "elections"
       ],
       "volume_fp": "0.00"
     },
@@ -315114,10 +315748,6 @@
       },
       "settlement_sources": [
         {
-          "name": "United States Postal Service",
-          "url": "https://about.usps.com/"
-        },
-        {
           "name": "ABC",
           "url": "https://abcnews.go.com/"
         },
@@ -315219,10 +315849,6 @@
         "elections": "series category \u2208 {Elections}"
       },
       "settlement_sources": [
-        {
-          "name": "United States Postal Service",
-          "url": "https://about.usps.com/"
-        },
         {
           "name": "ABC",
           "url": "https://abcnews.go.com/"
@@ -327094,7 +327720,7 @@
       "topics": [
         "gas"
       ],
-      "volume_fp": "4565.00"
+      "volume_fp": "4597.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXWTIDIRY",
@@ -328248,7 +328874,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "285969.00"
+      "volume_fp": "286819.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXXRPATH",
@@ -328331,7 +328957,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "43272980.00"
+      "volume_fp": "43273033.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXXRPMAXATH",
@@ -330381,7 +331007,7 @@
       "topics": [
         "crypto"
       ],
-      "volume_fp": "16022.00"
+      "volume_fp": "16036.00"
     },
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/series?ticker=KXZECD",

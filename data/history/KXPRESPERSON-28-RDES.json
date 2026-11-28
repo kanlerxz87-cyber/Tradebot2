@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.055,
+      "bid": 0.053,
+      "bid_depth": 45191.66,
+      "last": 0.055,
+      "mid": 0.054,
+      "oi": 10884392.54,
+      "spread": 0.002,
+      "t": "2026-11-28T03:34:07Z",
+      "ts": 1795836847,
+      "vol": 34003321.88
+    }
+  ],
+  "series_ticker": "KXPRESPERSON",
+  "subtitle": "Ron DeSantis",
+  "ticker": "KXPRESPERSON-28-RDES",
+  "title": "Pres person",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-RDES"
+}

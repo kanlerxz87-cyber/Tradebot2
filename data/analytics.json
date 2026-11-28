@@ -167,8 +167,8 @@
   },
   "fee_model": "taker 0.07 x C x P x (1-P), rounded up to the next whole cent",
   "fee_schedule_url": "https://kalshi.com/docs/kalshi-fee-schedule.pdf",
-  "generated_at": "2026-11-27T21:42:43Z",
-  "opened_this_cycle": 5,
+  "generated_at": "2026-11-28T03:35:38Z",
+  "opened_this_cycle": 0,
   "overall": {
     "avg_pnl_per_settled_dollars": null,
     "invested_dollars": 0,

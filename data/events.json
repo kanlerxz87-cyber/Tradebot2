@@ -3477,24 +3477,6 @@
       ]
     },
     {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXBRENTW&status=open",
-      "category": "Commodities",
-      "event_ticker": "KXBRENTW-26NOV2717",
-      "mutually_exclusive": false,
-      "series_ticker": "KXBRENTW",
-      "settlement_sources": [
-        {
-          "name": "Pyth - Brent",
-          "url": "https://app.pyth.com/explore/Commodities.Index.BRENT%2FUSD?returnUrl=%2Fexplore%3Fsearch%3Dbrent%2Bindex%26state%3Dstable"
-        }
-      ],
-      "sub_title": "Nov 27, 2026 at 5:00 PM EST",
-      "title": "Brent crude oil price on Nov 27, 2026 at 5:00 PM EST?",
-      "topics": [
-        "gas"
-      ]
-    },
-    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXBRSENATEPRES&status=open",
       "category": "Elections",
       "event_ticker": "KXBRSENATEPRES-27FEB01",
@@ -5207,6 +5189,24 @@
       ]
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXCHICAGOMAYOR1R&status=open",
+      "category": "Elections",
+      "event_ticker": "KXCHICAGOMAYOR1R-27",
+      "mutually_exclusive": true,
+      "series_ticker": "KXCHICAGOMAYOR1R",
+      "settlement_sources": [
+        {
+          "name": "Chicago Board of Election Commissioners",
+          "url": "https://chicagoelections.gov/"
+        }
+      ],
+      "sub_title": "In 2027",
+      "title": "Chicago mayoral election: first round winner?",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXCHIMAYOR1RMOV&status=open",
       "category": "Elections",
       "event_ticker": "KXCHIMAYOR1RMOV-27FEB23",
@@ -6461,6 +6461,60 @@
       ]
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXDPRESDELCOUNT&status=open",
+      "category": "Elections",
+      "event_ticker": "KXDPRESDELCOUNT-28AOC",
+      "mutually_exclusive": false,
+      "series_ticker": "KXDPRESDELCOUNT",
+      "settlement_sources": [
+        {
+          "name": "the Associated Press",
+          "url": "https://apnews.com/"
+        }
+      ],
+      "sub_title": "Before Jul 1, 2028",
+      "title": "How many pledged delegates will Alexandria Ocasio-Cortez win?",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXDPRESDELCOUNT&status=open",
+      "category": "Elections",
+      "event_ticker": "KXDPRESDELCOUNT-28NEWSOM",
+      "mutually_exclusive": false,
+      "series_ticker": "KXDPRESDELCOUNT",
+      "settlement_sources": [
+        {
+          "name": "the Associated Press",
+          "url": "https://apnews.com/"
+        }
+      ],
+      "sub_title": "Before Jul 1, 2028",
+      "title": "How many pledged delegates will Gavin Newsom win?",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXDPRESDELCOUNT&status=open",
+      "category": "Elections",
+      "event_ticker": "KXDPRESDELCOUNT-28OSSOFF",
+      "mutually_exclusive": false,
+      "series_ticker": "KXDPRESDELCOUNT",
+      "settlement_sources": [
+        {
+          "name": "the Associated Press",
+          "url": "https://apnews.com/"
+        }
+      ],
+      "sub_title": "Before Jul 1, 2028",
+      "title": "How many pledged delegates will Jon Ossoff win?",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXDPRESDELEGATE&status=open",
       "category": "Elections",
       "event_ticker": "KXDPRESDELEGATE-28SC",
@@ -6474,6 +6528,24 @@
       ],
       "sub_title": "Before Feb 6, 2028",
       "title": "South Carolina Democratic primary: who will win a pledged delegate?",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXDPRESDELEGATE&status=open",
+      "category": "Elections",
+      "event_ticker": "KXDPRESDELEGATE-28US100",
+      "mutually_exclusive": false,
+      "series_ticker": "KXDPRESDELEGATE",
+      "settlement_sources": [
+        {
+          "name": "the Associated Press",
+          "url": "https://apnews.com/"
+        }
+      ],
+      "sub_title": "Before Jul 1, 2028",
+      "title": "Who will win at least 100 pledged Democratic delegates?",
       "topics": [
         "elections"
       ]
@@ -35999,6 +36071,24 @@
       ]
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXLESOTHOPARLI&status=open",
+      "category": "Elections",
+      "event_ticker": "KXLESOTHOPARLI-28FEB17",
+      "mutually_exclusive": true,
+      "series_ticker": "KXLESOTHOPARLI",
+      "settlement_sources": [
+        {
+          "name": "Independent Electoral Commission of Lesotho",
+          "url": "https://iec.org.ls/"
+        }
+      ],
+      "sub_title": "Next parliamentary election",
+      "title": "Lesotho parliamentary election winner?",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXLINZMAYOR&status=open",
       "category": "Elections",
       "event_ticker": "KXLINZMAYOR-27SEP26",
@@ -37802,150 +37892,6 @@
       ],
       "sub_title": "in 2030",
       "title": "2030 Mexico Presidential election winner? (Party)",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CO06",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Colorado 06 House General Election",
-      "title": "Colorado 06 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CO07",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Colorado 07 House General Election",
-      "title": "Colorado 07 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CO08",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Colorado 08 House General Election",
-      "title": "Colorado 08 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-COGOV",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Colorado Governor General Election",
-      "title": "Colorado Governor General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-COSEN",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Colorado Senate General Election",
-      "title": "Colorado Senate General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CT01",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Connecticut 01 House General Election",
-      "title": "Connecticut 01 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CT02",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Connecticut 02 House General Election",
-      "title": "Connecticut 02 House General Election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXMIDTERMVOTETURN&status=open",
-      "category": "Elections",
-      "event_ticker": "KXMIDTERMVOTETURN-CT03",
-      "mutually_exclusive": false,
-      "series_ticker": "KXMIDTERMVOTETURN",
-      "settlement_sources": [
-        {
-          "name": "the relevant election commission of the country in which  takes place",
-          "url": "https://kalshi.com/"
-        }
-      ],
-      "sub_title": "Connecticut 03 House General Election",
-      "title": "Connecticut 03 House General Election: voter turnout",
       "topics": [
         "elections"
       ]
@@ -44811,6 +44757,24 @@
       ]
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXNORTHCYPRUSPARLI&status=open",
+      "category": "Elections",
+      "event_ticker": "KXNORTHCYPRUSPARLI-26DEC06",
+      "mutually_exclusive": true,
+      "series_ticker": "KXNORTHCYPRUSPARLI",
+      "settlement_sources": [
+        {
+          "name": "Supreme Electoral Council of Northern Cyprus (YSK)",
+          "url": "https://ysk.gov.ct.tr/"
+        }
+      ],
+      "sub_title": "in 2026",
+      "title": "Northern Cyprus parliamentary election winner?",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXNVSTATELEG&status=open",
       "category": "Elections",
       "event_ticker": "KXNVSTATELEG-28ASM",
@@ -51312,6 +51276,60 @@
       ]
     },
     {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXRPRESDELCOUNT&status=open",
+      "category": "Elections",
+      "event_ticker": "KXRPRESDELCOUNT-28DESANTIS",
+      "mutually_exclusive": false,
+      "series_ticker": "KXRPRESDELCOUNT",
+      "settlement_sources": [
+        {
+          "name": "the Associated Press",
+          "url": "https://apnews.com/"
+        }
+      ],
+      "sub_title": "Before Jul 1, 2028",
+      "title": "How many pledged delegates will Ron DeSantis win?",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXRPRESDELCOUNT&status=open",
+      "category": "Elections",
+      "event_ticker": "KXRPRESDELCOUNT-28RUBIO",
+      "mutually_exclusive": false,
+      "series_ticker": "KXRPRESDELCOUNT",
+      "settlement_sources": [
+        {
+          "name": "the Associated Press",
+          "url": "https://apnews.com/"
+        }
+      ],
+      "sub_title": "Before Jul 1, 2028",
+      "title": "How many pledged delegates will Marco Rubio win?",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXRPRESDELCOUNT&status=open",
+      "category": "Elections",
+      "event_ticker": "KXRPRESDELCOUNT-28VANCE",
+      "mutually_exclusive": false,
+      "series_ticker": "KXRPRESDELCOUNT",
+      "settlement_sources": [
+        {
+          "name": "the Associated Press",
+          "url": "https://apnews.com/"
+        }
+      ],
+      "sub_title": "Before Jul 1, 2028",
+      "title": "How many pledged delegates will J.D. Vance win?",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXRPRESDELEGATE&status=open",
       "category": "Elections",
       "event_ticker": "KXRPRESDELEGATE-28IA",
@@ -51349,6 +51367,24 @@
       ],
       "sub_title": "14 days after the caucuses",
       "title": "Iowa Republican caucuses: who will win a delegate?",
+      "topics": [
+        "elections"
+      ]
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXRPRESDELEGATE&status=open",
+      "category": "Elections",
+      "event_ticker": "KXRPRESDELEGATE-28US100",
+      "mutually_exclusive": false,
+      "series_ticker": "KXRPRESDELEGATE",
+      "settlement_sources": [
+        {
+          "name": "the Associated Press",
+          "url": "https://apnews.com/"
+        }
+      ],
+      "sub_title": "Before Jul 1, 2028",
+      "title": "Who will win at least 100 pledged Republican delegates?",
       "topics": [
         "elections"
       ]
@@ -316130,24 +316166,6 @@
       ]
     },
     {
-      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXUSTURNOUT&status=open",
-      "category": "Elections",
-      "event_ticker": "KXUSTURNOUT-MAYORLA26",
-      "mutually_exclusive": false,
-      "series_ticker": "KXUSTURNOUT",
-      "settlement_sources": [
-        {
-          "name": "City of Los Angeles",
-          "url": "https://lacity.gov/"
-        }
-      ],
-      "sub_title": "the 2026 Los Angeles mayoral election",
-      "title": "Los Angeles mayoral election: voter turnout",
-      "topics": [
-        "elections"
-      ]
-    },
-    {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXUTSTATELEG&status=open",
       "category": "Elections",
       "event_ticker": "KXUTSTATELEG-28HOUSE",
@@ -317220,6 +317238,24 @@
     {
       "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXWTI&status=open",
       "category": "Commodities",
+      "event_ticker": "KXWTI-26DEC0114",
+      "mutually_exclusive": false,
+      "series_ticker": "KXWTI",
+      "settlement_sources": [
+        {
+          "name": "ICE",
+          "url": "https://www.theice.com/products/213/WTI-Crude-Futures"
+        }
+      ],
+      "sub_title": "Dec 1, 2026",
+      "title": "Oil Price (WTI) on Tuesday?",
+      "topics": [
+        "gas"
+      ]
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXWTI&status=open",
+      "category": "Commodities",
       "event_ticker": "KXWTI-26NOV3014",
       "mutually_exclusive": false,
       "series_ticker": "KXWTI",
@@ -317267,6 +317303,24 @@
       ],
       "sub_title": "In 2026",
       "title": "How high will WTI oil get by Nov 30, 2026?",
+      "topics": [
+        "gas"
+      ]
+    },
+    {
+      "api_url": "https://external-api.demo.kalshi.co/trade-api/v2/events?series_ticker=KXWTIW&status=open",
+      "category": "Commodities",
+      "event_ticker": "KXWTIW-26DEC0414",
+      "mutually_exclusive": true,
+      "series_ticker": "KXWTIW",
+      "settlement_sources": [
+        {
+          "name": "ICE",
+          "url": "https://www.theice.com/products/213/WTI-Crude-Futures"
+        }
+      ],
+      "sub_title": "Dec 4, 2026",
+      "title": "Oil Price (WTI) on Dec 4, 2026?",
       "topics": [
         "gas"
       ]
@@ -318626,5 +318680,5 @@
       ]
     }
   ],
-  "generated_at": "2026-11-27T21:42:14Z"
+  "generated_at": "2026-11-28T03:35:02Z"
 }

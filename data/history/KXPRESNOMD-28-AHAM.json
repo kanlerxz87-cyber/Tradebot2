@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.01,
+      "bid": 0.0,
+      "bid_depth": 0,
+      "last": 0.01,
+      "mid": 0.01,
+      "oi": 553885.04,
+      "spread": null,
+      "t": "2026-11-28T03:34:07Z",
+      "ts": 1795836847,
+      "vol": 1016263.12
+    }
+  ],
+  "series_ticker": "KXPRESNOMD",
+  "subtitle": "Adam Hamilton",
+  "ticker": "KXPRESNOMD-28-AHAM",
+  "title": "Democratic Primary winner",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESNOMD-28-AHAM"
+}

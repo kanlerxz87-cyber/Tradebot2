@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.04,
+      "bid": 0.03,
+      "bid_depth": 57574.58,
+      "last": 0.04,
+      "mid": 0.035,
+      "oi": 67368.31,
+      "spread": 0.01,
+      "t": "2026-11-28T03:34:07Z",
+      "ts": 1795836847,
+      "vol": 98553.43
+    }
+  ],
+  "series_ticker": "KXTIME",
+  "subtitle": "Xi Jinping",
+  "ticker": "KXTIME-26-XIJ",
+  "title": "TIME\u2019s Person of the Year",
+  "topic": "culture",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXTIME-26-XIJ"
+}

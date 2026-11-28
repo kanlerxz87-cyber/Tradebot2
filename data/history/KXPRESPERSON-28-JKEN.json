@@ -1,0 +1,22 @@
+{
+  "points": [
+    {
+      "ask": 0.004,
+      "bid": 0.002,
+      "bid_depth": 249999.99,
+      "last": 0.003,
+      "mid": 0.003,
+      "oi": 889596.32,
+      "spread": 0.002,
+      "t": "2026-11-28T03:34:07Z",
+      "ts": 1795836847,
+      "vol": 1548104.54
+    }
+  ],
+  "series_ticker": "KXPRESPERSON",
+  "subtitle": "Joe Kent",
+  "ticker": "KXPRESPERSON-28-JKEN",
+  "title": "Pres person",
+  "topic": "elections",
+  "url": "https://external-api.demo.kalshi.co/trade-api/v2/markets/KXPRESPERSON-28-JKEN"
+}
